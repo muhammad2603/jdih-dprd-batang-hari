@@ -11,6 +11,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=7">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
     <!-- TODO Open Graph Meta masih dalam tahap perencanaan, perbaiki Open Graph agar jauh lebih baik saat digunakan berulang -->
     <meta property="og:title" content="<?= $page_title ?>">
     <meta property="og:description" content="<?= $page_description ?>">
@@ -26,6 +27,7 @@
     <!-- __COMMENT__ og:image harus memiliki fallback untuk gambar Open Graph saat dishare ke-media sosial -->
     <meta name="twitter:image" content="">
 
+    <link rel="stylesheet" href="/assets/css/base.css" />
     <!-- TODO buat preconnect dan dns-prefetch jika menggunakan asset dari domain lain, contohnya font google -->
     <!-- <link rel="preconnect" content="https://fonts.googleapis.com" -->
     <!-- <link rel="dns-prefetch" content="//fonts.googleapis.com" -->
