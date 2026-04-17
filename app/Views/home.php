@@ -3,10 +3,10 @@
 <?= $this->section('konten') ?>
 <?php
 $frontend_config = new App\Models\FrontendConfig;
+$docCategsModel = new App\Models\DocumentCategories;
 // __FIX__ Perbaiki data beranda yang masih ambigu atau sulit dimengerti
-$home_data = $frontend_config->select("content")->where("id = 6 OR id = 7 OR id = 8 OR id = 9")->orderBy("id", "ASC")->findAll();
-$builder = (Config\Database::connect())->table("document_categories");
-$doc_categs = $builder->select("category")->orderBy("id", "ASC")->get()->getResultArray();
+$home_data = $frontend_config->select("content")->where("id BETWEEN 6 AND 9")->orderBy("id", "ASC")->findAll();
+$doc_categs = $docCategsModel->getDocumentCategories("ASC");
 ?>
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
     <div class="jumbotron-image-view w-full h-full absolute top-0 left-0 -z-10">
