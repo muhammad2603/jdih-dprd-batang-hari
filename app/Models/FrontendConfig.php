@@ -37,7 +37,11 @@ class FrontendConfig extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // __FIX__ Terlalu banyak syntax builder yang berulang.
+    /**
+     * Mengambil path Logo
+     * 
+     * @return array
+     */
     public function getLogo(): array
     {
         return $this
@@ -46,7 +50,11 @@ class FrontendConfig extends Model
             ->where("fecateg.category", "Logo")
             ->first();
     }
-
+    /**
+     * Mengambil data navigasi beserta link untuk header
+     * 
+     * @return array
+     */
     public function getNavigationHeader(): array
     {
         return $this
@@ -57,7 +65,11 @@ class FrontendConfig extends Model
             ->where("fecateg.category", "Navigasi")
             ->findAll();
     }
-
+    /**
+     * Mengambil identitas
+     * 
+     * @return array
+     */
     public function getIdentity(): array
     {
         return $this
