@@ -11,6 +11,7 @@ class Home extends BaseController
             "page_description"  => 'Website resmi JDIH DPRD Kabupaten Batang Hari untuk publikasi dokumen hukum daerah.',
             "page_keywords"     => ['JDIH', 'DPRD Batang Hari', 'Layanan DPRD Batang Hari', 'Informasi Dokumen Hukum'],
             "page_author"       => 'DPRD Batang Hari',
+            "page_alias"        => 'Beranda'
         ];
         return view('home', $page_data);
     }
