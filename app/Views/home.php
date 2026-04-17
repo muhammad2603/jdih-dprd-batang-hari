@@ -2,11 +2,12 @@
 
 <?= $this->section('konten') ?>
 <?php
+helper("array");
 $frontend_config = new App\Models\FrontendConfig;
 $docCategsModel = new App\Models\DocumentCategories;
-// __FIX__ Perbaiki data beranda yang masih ambigu atau sulit dimengerti
-$home_data = $frontend_config->select("content")->where("id BETWEEN 6 AND 9")->orderBy("id", "ASC")->findAll();
-$doc_categs = $docCategsModel->getDocumentCategories("ASC");
+$pagesMetaModel = new App\Models\PagesMeta;
+$doc_categs = $docCategsModel->getDocumentCategories();
+$get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
 ?>
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
     <div class="jumbotron-image-view w-full h-full absolute top-0 left-0 -z-10">
@@ -19,13 +20,13 @@ $doc_categs = $docCategsModel->getDocumentCategories("ASC");
     <div class="jumbotron-text-view max-w-7xl h-full mx-auto px-6 flex items-center">
         <div class="jumbotron-text max-w-2xl">
             <div class="badge-subtitle w-fit mb-10 py-2 px-4 bg-accent/20 rounded-full backdrop-blur-sm">
-                <h2 class="text-accent"><?= $home_data[2]["content"] ?></h2>
+                <h2 class="text-accent"><?= dot_array_search("jumbotron.about_media", $get_meta_home) ?></h2>
             </div>
             <h2 class="mb-6 md:text-7xl font-bold leading-tight">
-                <span class="text-foreground"><?= $home_data[0]["content"] ?></span>
-                <span class="text-accent"><?= $home_data[1]["content"] ?></span>
+                <span class="text-foreground"><?= dot_array_search("jumbotron.title", $get_meta_home) ?></span>
+                <span class="text-accent"><?= dot_array_search("jumbotron.sub_title", $get_meta_home) ?></span>
             </h2>
-            <p class="motto max-w-xl mb-8 text-xl text-white/90"><?= $home_data[3]["content"] ?></p>
+            <p class="motto max-w-xl mb-8 text-xl text-white/90"><?= dot_array_search("jumbotron.web_motto", $get_meta_home) ?></p>
             <div class="btn-cari-dokumen-wrapper">
                 <a href="#cari-dokumen" class="inline-block py-4 px-8 bg-accent text-white rounded-lg transform transition-all duration-100 ease-in hover:bg-accent/90 hover:scale-105">Cari Dokumen Hukum</a>
             </div>
@@ -35,8 +36,8 @@ $doc_categs = $docCategsModel->getDocumentCategories("ASC");
 <section class="pencarian-dokumen py-20 bg-linear-to-b from-white to-muted/30">
     <div class="content max-w-4xl mx-auto px-6">
         <div id="cari-dokumen" class="top-content mb-12 text-center">
-            <h2 class="mb-4 text-4xl font-bold">Pencarian Dokumen Hukum</h2>
-            <p class="text-muted-foreground">Temukan peraturan daerah, keputusan, dan dokumen hukum lainnya dengan mudah</p>
+            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("pencarian_dokumen_hukum.title", $get_meta_home) ?></h2>
+            <p class="text-muted-foreground"><?= dot_array_search("pencarian_dokumen_hukum.sub_title", $get_meta_home) ?></p>
         </div>
         <div class="input-pencarian-dokumen p-8 bg-white rounded-2xl shadow-lg">
             <div class="input-wrapper mb-6 flex gap-4">
@@ -66,8 +67,8 @@ $doc_categs = $docCategsModel->getDocumentCategories("ASC");
 <section class="kategori-produk-hukum py-20 bg-white">
     <div class="content max-w-7xl mx-auto px-6">
         <div class="top-content mb-16 text-center">
-            <h2 class="mb-4 text-4xl font-bold">Kategori Produk Hukum</h2>
-            <p class="text-muted-foreground">Jelajahi berbagai jenis dokumen hukum daerah yang telah terarsipkan dengan rapi</p>
+            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("kategori_produk_hukum.title", $get_meta_home) ?></h2>
+            <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $get_meta_home) ?></p>
         </div>
         <div class="produk-hukum-categories-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <button type="button" class="group bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
@@ -144,8 +145,8 @@ $doc_categs = $docCategsModel->getDocumentCategories("ASC");
 <section class="pencarian-dokumen py-20 bg-linear-to-b from-white to-muted/30">
     <div class="content max-w-7xl mx-auto px-6">
         <div id="cari-dokumen" class="top-content mb-12 text-center">
-            <h2 class="mb-4 text-4xl font-bold">Statistik</h2>
-            <p class="text-muted-foreground">Data pengunjung dan aktivitas yang tercatat</p>
+            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $get_meta_home) ?></h2>
+            <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $get_meta_home) ?></p>
         </div>
         <div class="statistics-data grid grid-cols-1 justify-center md:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="statistic bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
@@ -195,10 +196,10 @@ $doc_categs = $docCategsModel->getDocumentCategories("ASC");
     <div class="content max-w-7xl mx-auto px-6">
         <div class="top-content flex items-end justify-between mb-12">
             <div class="title-section">
-                <h2 class="mb-4 text-4xl font-bold">Dokumen Terbaru</h2>
-                <p class="text-muted-foreground">Produk hukum yang baru dipublikasikan</p>
+                <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("dokumen_terbaru.title", $get_meta_home) ?></h2>
+                <p class="text-muted-foreground"><?= dot_array_search("dokumen_terbaru.sub_title", $get_meta_home) ?></p>
             </div>
-            <!-- __COMMENT__ Ubah link dengan data yang terkait didatabase -->
+            <!-- __COMMENT__ Ubah link "/produk-hukum" dengan data yang terkait didatabase -->
             <a href="/produk-hukum" class="hidden md:flex items-center gap-2 text-primary hover:gap-3 transition-all">
                 <span>Lihat semua</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
