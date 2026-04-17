@@ -6,4 +6,11 @@
     --color-muted-foreground: #717182;
     --color-primary: #8b1538;
     --color-foreground: #fff;
+    --color-accent: #c9a961;
+    --color-accent-foreground: #fff;
+    --color-muted: #ececf0;
+    --color-muted-foreground: #717182;
+    --color-input: transparent;
+    --color-input-background: #f3f3f5;
+    --color-primary-border: #0000001a;
 }
