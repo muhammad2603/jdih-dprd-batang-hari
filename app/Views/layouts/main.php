@@ -36,7 +36,9 @@
 
 <body>
     <?= $this->include('layouts/header') ?>
-    <?= $this->renderSection('konten') ?>
+    <main>
+        <?= $this->renderSection('konten') ?>
+    </main>
     <?= $this->include('layouts/footer') ?>
 </body>
 
