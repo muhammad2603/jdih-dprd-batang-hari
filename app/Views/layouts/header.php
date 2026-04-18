@@ -1,8 +1,5 @@
 <?php
-// __FIX__ Logo atau Identitas kemungkinan juga akan dipakai difooter, query akan dijalankan 2x dalam 1 halaman
-$fe_config = new App\Models\FrontendConfig;
-$get_all_data_feconfig = $fe_config->getAllData();
-["Header" => $header, "Common" => $common] = array_group_by($get_all_data_feconfig, ["component", "category"]);
+["Header" => $header, "Common" => $common] = $frontend_config;
 ?>
 <!-- __COMMENT__ Selalu pantau tinggi header agar tidak merusak jumbotron diberanda -->
 <header class="h-20 bg-default text-default-foreground sticky top-0 left-0 shadow-sm z-50">
