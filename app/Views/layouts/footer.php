@@ -1,8 +1,6 @@
 <?php
 $time = (new CodeIgniter\I18n\Time);
-$frontend_config = new App\Models\FrontendConfig;
-$get_all_data_feconfig = $frontend_config->getAllData();
-["Footer" => $footer, "Kontak" => $kontak, "Common" => $common] = array_group_by($get_all_data_feconfig, ["component", "category"]);
+["Footer" => $footer, "Kontak" => $kontak, "Common" => $common] = $frontend_config;
 ?>
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
