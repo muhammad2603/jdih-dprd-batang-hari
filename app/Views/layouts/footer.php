@@ -1,5 +1,4 @@
 <?php
-helper("array");
 $time = (new CodeIgniter\I18n\Time);
 $frontend_config = new App\Models\FrontendConfig;
 $get_all_data_feconfig = $frontend_config->getAllData();

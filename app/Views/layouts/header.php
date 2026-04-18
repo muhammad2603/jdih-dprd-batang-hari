@@ -1,5 +1,4 @@
 <?php
-helper("array");
 // __FIX__ Logo atau Identitas kemungkinan juga akan dipakai difooter, query akan dijalankan 2x dalam 1 halaman
 $fe_config = new App\Models\FrontendConfig;
 $get_all_data_feconfig = $fe_config->getAllData();
