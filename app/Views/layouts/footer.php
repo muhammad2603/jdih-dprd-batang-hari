@@ -1,4 +1,5 @@
 <?php
+// __FIX__ navigasi footer seperti Tautan Cepat dan Layanan harus ditambah secara manual, jika ada data navigasi baru, harus ditambah dengan manual pula. ini akan sulit jika dimasa depan akan ada data baru yang ditambah
 $time = (new CodeIgniter\I18n\Time);
 ["Footer" => $footer, "Kontak" => $kontak, "Common" => $common] = $frontend_config;
 ?>
@@ -22,9 +23,11 @@ $time = (new CodeIgniter\I18n\Time);
                 </div>
                 <p class="text-sm text-white/70 mb-6"><?= dot_array_search("Identitas.0.content", $footer) ?></p>
                 <div class="footer-media-sosials flex gap-3 flex-wrap">
-                    <a href="#" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"></a>
-                    <a href="#" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"></a>
-                    <a href="#" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"></a>
+                    <?php foreach ($common["Media Sosial"] as $medsos): ?>
+                        <a href="<?= $medsos["link"] ?>" target="_blank" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
+                            <?= $medsos["content"] ?>
+                        </a>
+                    <?php endforeach ?>
                 </div>
             </div>
             <div class="second-col-content fast-links">
