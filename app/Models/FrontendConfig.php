@@ -79,4 +79,13 @@ class FrontendConfig extends Model
             ->orderBy("feconf.id", "ASC")
             ->findAll();
     }
+
+    public function getAllData(): array
+    {
+        return $this
+            ->select("content, link, component, category")
+            ->join("frontend_components fecomp", "fecomp.id = feconf.component_id")
+            ->join("frontend_categories fecateg", "fecateg.id = feconf.category_id")
+            ->findAll();
+    }
 }

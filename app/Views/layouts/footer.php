@@ -1,17 +1,9 @@
 <?php
 helper("array");
-$builder = (Config\Database::connect())->table("frontend_config feconf");
-$frontend_config = new App\Models\FrontendConfig;
-["content" => $logo_title, "link" => $logo_path] = $frontend_config->getLogo();
-[$title, $subtitle, $footer_identity] = $frontend_config->getIdentity();
-$sql = $builder
-    ->select("content, link, component, category")
-    ->join("frontend_components fecomp", "fecomp.id = feconf.component_id")
-    ->join("frontend_categories fecateg", "fecateg.id = feconf.category_id")
-    ->where("component = 'Footer' OR component = 'Kontak' OR component = 'Common'")
-    ->get()->getResultArray();
-["Footer" => $footer, "Kontak" => $kontak] = array_group_by($sql, ["component", "category"]);
 $time = (new CodeIgniter\I18n\Time);
+$frontend_config = new App\Models\FrontendConfig;
+$get_all_data_feconfig = $frontend_config->getAllData();
+["Footer" => $footer, "Kontak" => $kontak, "Common" => $common] = array_group_by($get_all_data_feconfig, ["component", "category"]);
 ?>
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
@@ -20,18 +12,18 @@ $time = (new CodeIgniter\I18n\Time);
                 <div class="footer-identities flex items-center gap-3 mb-6">
                     <figure class="footer-logo">
                         <img
-                            src="<?= $logo_path ?>"
-                            alt="<?= $logo_title ?>"
+                            src="<?= dot_array_search("Logo.*.link", $common) ?>"
+                            alt="<?= dot_array_search("Logo.*.content", $common) ?>"
                             class="w-12.5 aspect-square rounded-full" />
                     </figure>
                     <div class="footer-identity">
                         <h2>
-                            <span class="font-semibold block"><?= $title["content"] ?></span>
-                            <span class="text-sm text-white/70"><?= $subtitle["content"] ?></span>
+                            <span class="font-semibold block"><?= dot_array_search("Identitas.0.content", $common) ?></span>
+                            <span class="text-sm text-white/70"><?= dot_array_search("Identitas.1.content", $common) ?></span>
                         </h2>
                     </div>
                 </div>
-                <p class="text-sm text-white/70 mb-6"><?= $footer["Identitas"][0]["content"] ?></p>
+                <p class="text-sm text-white/70 mb-6"><?= dot_array_search("Identitas.0.content", $footer) ?></p>
                 <div class="footer-media-sosials flex gap-3 flex-wrap">
                     <a href="#" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"></a>
                     <a href="#" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors"></a>
