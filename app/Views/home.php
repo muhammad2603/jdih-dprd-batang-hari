@@ -258,6 +258,49 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                     </svg>
                                     <span>238 unduhan</span>
                                 </div>
+<<<<<<< HEAD
+=======
+                                <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2">Tentang Rencana Pembangunan Jangka Menengah Daerah Kabupaten Batang Hari Tahun 2026-2031</h3>
+                            </div>
+                            <a href="/path/to/document-detail" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 7v14" />
+                                    <path d="M16 12h2" />
+                                    <path d="M16 8h2" />
+                                    <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                                    <path d="M6 12h2" />
+                                    <path d="M6 8h2" />
+                                </svg>
+                                <span>Detail</span>
+                            </a>
+                            <a href="/path/to/file-document" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>Unduh</span>
+                            </a>
+                        </header>
+                        <div class="other-details flex items-center gap-6 text-sm text-muted-foreground">
+                            <div class="upload-date flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M11 14h1v4" />
+                                    <path d="M16 2v4" />
+                                    <path d="M3 10h18" />
+                                    <path d="M8 2v4" />
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                </svg>
+                                <time datetime="2026-04-14">14 April 2026</time>
+                            </div>
+                            <div class="upload-date flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>238 unduhan</span>
+>>>>>>> 195f051 (Membuat link detail dokumen hukum disection dokumen terbaru)
                             </div>
                         </div>
                     </div>
@@ -312,6 +355,49 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                     </svg>
                                     <span>476 unduhan</span>
                                 </div>
+<<<<<<< HEAD
+=======
+                                <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2">Tentang Penetapan Tim Koordinasi Penanggulangan Kemiskinan Daerah</h3>
+                            </div>
+                            <a href="/path/to/document-detail" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 7v14" />
+                                    <path d="M16 12h2" />
+                                    <path d="M16 8h2" />
+                                    <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                                    <path d="M6 12h2" />
+                                    <path d="M6 8h2" />
+                                </svg>
+                                <span>Detail</span>
+                            </a>
+                            <a href="/path/to/file-document" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>Unduh</span>
+                            </a>
+                        </header>
+                        <div class="other-details flex items-center gap-6 text-sm text-muted-foreground">
+                            <div class="upload-date flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M11 14h1v4" />
+                                    <path d="M16 2v4" />
+                                    <path d="M3 10h18" />
+                                    <path d="M8 2v4" />
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                </svg>
+                                <time datetime="2026-04-14">15 Maret 2026</time>
+                            </div>
+                            <div class="upload-date flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>476 unduhan</span>
+>>>>>>> 195f051 (Membuat link detail dokumen hukum disection dokumen terbaru)
                             </div>
                         </div>
                     </div>
@@ -366,6 +452,49 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                     </svg>
                                     <span>647 unduhan</span>
                                 </div>
+<<<<<<< HEAD
+=======
+                                <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2">Tentang Penyelenggaraan Perizinan Berusaha Terintegrasi Secara Elektronik</h3>
+                            </div>
+                            <a href="/path/to/document-detail" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 7v14" />
+                                    <path d="M16 12h2" />
+                                    <path d="M16 8h2" />
+                                    <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                                    <path d="M6 12h2" />
+                                    <path d="M6 8h2" />
+                                </svg>
+                                <span>Detail</span>
+                            </a>
+                            <a href="/path/to/file-document" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>Unduh</span>
+                            </a>
+                        </header>
+                        <div class="other-details flex items-center gap-6 text-sm text-muted-foreground">
+                            <div class="upload-date flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M11 14h1v4" />
+                                    <path d="M16 2v4" />
+                                    <path d="M3 10h18" />
+                                    <path d="M8 2v4" />
+                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                </svg>
+                                <time datetime="2026-04-14">20 Februari 2026</time>
+                            </div>
+                            <div class="upload-date flex items-center gap-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>647 unduhan</span>
+>>>>>>> 195f051 (Membuat link detail dokumen hukum disection dokumen terbaru)
                             </div>
                         </div>
                     </div>
