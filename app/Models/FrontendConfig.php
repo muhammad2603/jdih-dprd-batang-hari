@@ -38,45 +38,15 @@ class FrontendConfig extends Model
     protected $afterDelete    = [];
 
     /**
-     * Mengambil path Logo
-     * 
-     * @return array
-     */
-    public function getLogo(): array
+     * Mengambil semua data konfigurasi frontend
+    */
+    public function getAllData(): array
     {
         return $this
-            ->select("content, link")
-            ->join("frontend_categories fecateg", "fecateg.id = feconf.category_id")
-            ->where("fecateg.category", "Logo")
-            ->first();
-    }
-    /**
-     * Mengambil data navigasi beserta link untuk header
-     * 
-     * @return array
-     */
-    public function getNavigationHeader(): array
-    {
-        return $this
-            ->select("content, link")
+            ->select("content, link, component, category, fnav.field_navigation")
             ->join("frontend_components fecomp", "fecomp.id = feconf.component_id")
             ->join("frontend_categories fecateg", "fecateg.id = feconf.category_id")
-            ->where("fecomp.component", "Header")
-            ->where("fecateg.category", "Navigasi")
-            ->findAll();
-    }
-    /**
-     * Mengambil identitas
-     * 
-     * @return array
-     */
-    public function getIdentity(): array
-    {
-        return $this
-            ->select("content")
-            ->join("frontend_categories fecateg", "fecateg.id = feconf.category_id")
-            ->where("fecateg.category", "Identitas")
-            ->orderBy("feconf.id", "ASC")
+            ->join("footer_navigation fnav", "fnav.id = feconf.is_unique_navigation", "LEFT")
             ->findAll();
     }
 }
