@@ -1,12 +1,21 @@
 <?php
-// __FIX__ navigasi footer seperti Tautan Cepat dan Layanan harus ditambah secara manual, jika ada data navigasi baru, harus ditambah dengan manual pula. ini akan sulit jika dimasa depan akan ada data baru yang ditambah
 $time = (new CodeIgniter\I18n\Time);
 ["Footer" => $footer, "Kontak" => $kontak, "Common" => $common] = $frontend_config;
+$unique_footer_nav = array_group_by($footer["Navigasi"], ["field_navigation"]);
+$footerNav = [];
+foreach ($unique_footer_nav as $group => $items) {
+    foreach ($items as $item) {
+        $footerNav[$group][] = [
+            'label' => $item['content'],
+            'url'   => $item['link'],
+        ];
+    }
+}
 ?>
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
         <div class="footer-contents grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
-            <div class="first-col-content">
+            <div class="footer-content-col">
                 <div class="footer-identities flex items-center gap-3 mb-6">
                     <figure class="footer-logo">
                         <img
@@ -30,22 +39,19 @@ $time = (new CodeIgniter\I18n\Time);
                     <?php endforeach ?>
                 </div>
             </div>
-            <div class="second-col-content fast-links">
-                <h3 class="font-semibold mb-6">Tautan Cepat</h3>
-                <nav class="space-y-3 flex flex-col text-sm text-white/70">
-                    <?php foreach ($footer["Tautan Cepat"] as $link): ?>
-                        <a href="<?= $link["link"] ?>" class="hover:text-accent transition-colors w-fit"><?= $link["content"] ?></a>
-                    <?php endforeach ?>
-                </nav>
-            </div>
-            <div class="third-col-content services">
-                <h3 class="font-semibold mb-6">Layanan</h3>
-                <nav class="space-y-3 flex flex-col text-sm text-white/70">
-                    <?php foreach ($footer["Layanan"] as $link): ?>
-                        <a href="<?= $link["link"] ?>" class="hover:text-accent transition-colors w-fit"><?= $link["content"] ?></a>
-                    <?php endforeach ?>
-                </nav>
-            </div>
+            <?php foreach ($footerNav as $title => $links): ?>
+                <div class="footer-content-col">
+                    <h3 class="font-semibold mb-6"><?= esc($title) ?></h3>
+                    <nav class="space-y-3 flex flex-col text-sm text-white/70">
+                        <?php foreach ($links as $link): ?>
+                            <a href="<?= esc($link['url']) ?>"
+                                class="hover:text-accent transition-colors w-fit">
+                                <?= esc($link['label']) ?>
+                            </a>
+                        <?php endforeach ?>
+                    </nav>
+                </div>
+            <?php endforeach ?>
             <div class="fourth-col-content contacs">
                 <h3 class="font-semibold mb-6">Kontak</h3>
                 <ul class="space-y-3 flex flex-col text-sm text-white/70">
