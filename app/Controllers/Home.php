@@ -30,6 +30,9 @@ class Home extends BaseController
             "frontend_config"   => array_group_by($get_all_data_feconfig, ["component", "category"]),
             "new_documents"     => $get_all_new_document,
         ];
+
+        // dd($get_all_new_document);
+
         return view('home', $page_data);
     }
 }
