@@ -61,7 +61,7 @@ class ProdukHukum extends Model
     /**
      * Mengambil beberapa data produk hukum
      * 
-     * @return array ["judul", "nomor", "tahun", "kategori", "total_unduhan", "slug", "tanggal_upload"]
+     * @return array ["judul", "nomor", "tahun", "kategori", "total_unduhan", "berkas", "slug", "tanggal_upload"]
      * 
      * // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
      */
@@ -74,11 +74,7 @@ class ProdukHukum extends Model
                 "tahun",
                 "doccateg.category AS kategori",
                 "ru.counts AS total_unduhan",
-                // "GROUP_CONCAT(
-                //     DISTINCT NULLIF(nama_berkas, '')
-                //     ORDER BY nama_berkas ASC
-                //     SEPARATOR ','
-                // ) AS berkas", // __COMMENT__ gunakan ini jika ingin menyertakan lampiran produk hukum
+                "nama_berkas AS berkas",
                 "slug",
                 "DATE_FORMAT(ph.created_at, '%Y-%m-%d') AS tanggal_upload"
             ])
