@@ -51,12 +51,80 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                     </svg>
                     <input type="text" placeholder="Cari berdasarkan judul, nomor, atau kata kunci..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
-                <button type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 cursor-pointer">
+                <button type="button" class="px-6 py-4 bg-muted text-default-foreground rounded-lg hover:bg-primary/90 hover:text-foreground transition-colors flex items-center gap-2 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                     </svg>
                     <span>Filter</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
+                        <path d="m6 9 6 6 6-6" />
+                    </svg>
                 </button>
+                <button type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors cursor-pointer">Cari</button>
+            </div>
+            <!-- TODO lakukan animasi pada filter-dropdown saat tombol filter dipencarian dokumen hukum diklik -->
+            <div class="filter-dropdown mb-6 pb-6 border-b border-primary-border">
+                <div class="filter-options grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="option">
+                        <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                <path d="M10 9H8" />
+                                <path d="M16 13H8" />
+                                <path d="M16 17H8" />
+                            </svg>
+                            <span>Jenis Dokumen</span>
+                        </span>
+                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
+                            <option value="Semua Jenis">Semua Jenis</option>
+                            <?php foreach ($doc_categs as $categ): ?>
+                                <option value="<?= $categ["category"] ?>"><?= $categ["category"] ?></option>
+                            <?php endforeach ?>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                                <path d="M11 14h1v4" />
+                                <path d="M16 2v4" />
+                                <path d="M3 10h18" />
+                                <path d="M8 2v4" />
+                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                            </svg>
+                            <span>Tahun</span>
+                        </span>
+                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
+                            <option value="Semua Tahun">Semua Tahun</option>
+                            <option value="2026">2026</option>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023">2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                        </select>
+                    </div>
+                    <div class="option">
+                        <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                                <path d="M3 3v5h5" />
+                                <path d="M12 7v5l4 2" />
+                            </svg>
+                            <span>Status Berlaku</span>
+                        </span>
+                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
+                            <option value="Semua Status">Semua Status</option>
+                            <option value="Berlaku">Berlaku</option>
+                            <option value="Dicabut">Dicabut</option>
+                            <option value="Penetapan">Penetapan</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="btn-reset-wrapper mt-4 flex justify-end">
+                    <button type="reset" class="px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer">Reset Filter</button>
+                </div>
             </div>
             <div class="fast-filters flex gap-3 flex-wrap items-center">
                 <span class="text-sm text-muted-foreground mr-2">Filter Cepat:</span>
@@ -146,7 +214,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
         </div>
     </div>
 </section>
-<section class="pencarian-dokumen py-20 bg-linear-to-b from-white to-muted/30">
+<section class="statistik py-20 bg-linear-to-b from-white to-muted/30">
     <div class="content max-w-7xl mx-auto px-6">
         <div id="cari-dokumen" class="top-content mb-12 text-center">
             <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $get_meta_home) ?></h2>
