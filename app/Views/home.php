@@ -2,6 +2,10 @@
 
 <?= $this->section('konten') ?>
 <?php
+
+use CodeIgniter\CodeIgniter;
+use CodeIgniter\I18n\Time;
+
 helper("array");
 $frontend_config = new App\Models\FrontendConfig;
 $docCategsModel = new App\Models\DocumentCategories;
@@ -209,69 +213,64 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
             </a>
         </div>
         <div class="documents-list space-y-4">
-            <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
-                <div class="content flex items-start gap-6">
-                    <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
-                            <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                            <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                            <path d="M10 9H8" />
-                            <path d="M16 13H8" />
-                            <path d="M16 17H8" />
-                        </svg>
-                    </div>
-                    <div class="document-details flex-1 min-w-0">
-                        <header class="top-detail flex items-end justify-between gap-4 mb-2">
-                            <div class="flex-1">
-                                <div class="sub-details flex items-center gap-3 mb-2">
-                                    <span class="document-category inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full">Peraturan Daerah</span>
-                                    <span class="number-document text-sm font-semibold text-foreground">Nomor 5 Tahun 2026</span>
+            <?php foreach ($new_documents as $doc): ?>
+                <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
+                    <div class="content flex items-start gap-6">
+                        <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
+                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                <path d="M10 9H8" />
+                                <path d="M16 13H8" />
+                                <path d="M16 17H8" />
+                            </svg>
+                        </div>
+                        <div class="document-details flex-1 min-w-0">
+                            <header class="top-detail flex items-end justify-between gap-4 mb-2">
+                                <div class="flex-1">
+                                    <div class="sub-details flex items-center gap-3 mb-2">
+                                        <span class="document-category inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full"><?= $doc["kategori"] ?></span>
+                                        <span class="number-document text-sm font-semibold text-default-foreground">Nomor <?= $doc["nomor"] ?> Tahun <?= $doc["tahun"] ?></span>
+                                    </div>
+                                    <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2"><?= $doc["judul"] ?></h3>
                                 </div>
-                                <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2">Tentang Rencana Pembangunan Jangka Menengah Daerah Kabupaten Batang Hari Tahun 2026-2031</h3>
-                            </div>
-                            <a href="/path/to/document-detail" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                    <path d="M12 7v14" />
-                                    <path d="M16 12h2" />
-                                    <path d="M16 8h2" />
-                                    <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-                                    <path d="M6 12h2" />
-                                    <path d="M6 8h2" />
-                                </svg>
-                                <span>Detail</span>
-                            </a>
-                            <a href="/path/to/file-document" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                    <path d="M12 15V3" />
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <path d="m7 10 5 5 5-5" />
-                                </svg>
-                                <span>Unduh</span>
-                            </a>
-                        </header>
-                        <div class="other-details flex items-center gap-6 text-sm text-muted-foreground">
-                            <div class="upload-date flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                    <path d="M11 14h1v4" />
-                                    <path d="M16 2v4" />
-                                    <path d="M3 10h18" />
-                                    <path d="M8 2v4" />
-                                    <rect x="3" y="4" width="18" height="18" rx="2" />
-                                </svg>
-                                <time datetime="2026-04-14">14 April 2026</time>
-                            </div>
-                            <div class="upload-date flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                    <path d="M12 15V3" />
-                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                    <path d="m7 10 5 5 5-5" />
-                                </svg>
-                                <span>238 unduhan</span>
+                                <a href="<?= base_url() . "produk-hukum/" . $doc["slug"] ?>" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <path d="M12 7v14" />
+                                        <path d="M16 12h2" />
+                                        <path d="M16 8h2" />
+                                        <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                                        <path d="M6 12h2" />
+                                        <path d="M6 8h2" />
+                                    </svg>
+                                    <span>Detail</span>
+                                </a>
+                            </header>
+                            <div class="other-details flex items-center gap-6 text-sm text-muted-foreground">
+                                <div class="upload-date flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <path d="M11 14h1v4" />
+                                        <path d="M16 2v4" />
+                                        <path d="M3 10h18" />
+                                        <path d="M8 2v4" />
+                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    </svg>
+                                    <!-- // __FIX__ Buat service khusus untuk Time agar lebih mudah dipakai berulang -->
+                                    <time datetime="<?= $doc["tanggal_upload"] ?>"><?= \CodeIgniter\I18n\Time::parse($doc["tanggal_upload"])->toLocalizedString("dd MMMM YYYY") ?></time>
+                                </div>
+                                <div class="upload-date flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <path d="M12 15V3" />
+                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                        <path d="m7 10 5 5 5-5" />
+                                    </svg>
+                                    <span><?= $doc["total_unduhan"] ?> unduhan</span>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </article>
+                </article>
+            <?php endforeach ?>
         </div>
     </div>
 </section>
