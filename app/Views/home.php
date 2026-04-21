@@ -3,10 +3,9 @@
 <?= $this->section('konten') ?>
 <?php
 helper("array");
-$frontend_config = new App\Models\FrontendConfig;
 $docCategsModel = new App\Models\DocumentCategories;
 $pagesMetaModel = new App\Models\PagesMeta;
-$timeServices = service("timeServices");;
+$timeServices = service("timeServices");
 $doc_categs = $docCategsModel->getDocumentCategories();
 $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
 ?>
@@ -261,15 +260,14 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
         </div>
     </div>
 </section>
-<section class="kategori-produk-hukum py-20 bg-white">
+<section class="dokumen-terbaru py-20 bg-white">
     <div class="content max-w-7xl mx-auto px-6">
         <div class="top-content flex items-end justify-between mb-12">
             <div class="title-section">
                 <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("dokumen_terbaru.title", $get_meta_home) ?></h2>
                 <p class="text-muted-foreground"><?= dot_array_search("dokumen_terbaru.sub_title", $get_meta_home) ?></p>
             </div>
-            <!-- __COMMENT__ Ubah link "/produk-hukum" dengan data yang terkait didatabase -->
-            <a href="/produk-hukum" class="hidden md:flex items-center gap-2 text-primary hover:gap-3 transition-all">
+            <a href="<?= dot_array_search("Header.Navigasi.1.link", $frontend_config) ?>" class="hidden md:flex items-center gap-2 text-primary hover:gap-3 transition-all">
                 <span>Lihat semua</span>
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
                     <path d="M5 12h14" />
