@@ -19,7 +19,11 @@ class ProdukHukum extends BaseController
 
     public function index()
     {
-        $get_all_data_feconfig = $this->frontend_config_model->getAllData();
+        $data_feconfig = $this->frontend_config_model->getAllData();
+        // TODO gunakan limit parameter di getProdukHukumHighlight saat ingin menerapkan pagination
+        $get_produk_hukum_highlight = $this->produk_hukum_model->getProdukHukumHighlight();
+        $page_title = "Produk Hukum";
+        $page_description = "Database lengkap produk hukum daerah Kabupaten Batang Hari yang dapat diakses dan diunduh oleh publik, mencakup peraturan daerah, peraturan bupati, keputusan, dan dokumen hukum lainnya secara transparan dan terstruktur.";
         $page_keywords = [
             "Produk Hukum Batang Hari",
             "JDIH Batang Hari",
@@ -33,17 +37,17 @@ class ProdukHukum extends BaseController
             "Informasi Hukum Publik",
             "Unduh Peraturan Daerah",
         ];
-        // TODO gunakan limit parameter di getProdukHukumHighlight saat ingin menerapkan pagination
-        $get_produk_hukum_highlight = $this->produk_hukum_model->getProdukHukumHighlight();
-        $page_data = [
-            "page_title"        => 'Produk Hukum',
-            "page_description"  => 'Database lengkap produk hukum daerah Kabupaten Batang Hari yang dapat diakses dan diunduh oleh publik, mencakup peraturan daerah, peraturan bupati, keputusan, dan dokumen hukum lainnya secara transparan dan terstruktur.',
-            "page_keywords"     => $page_keywords,
-            "page_author"       => 'DPRD Batang Hari',
-            "frontend_config"   => array_group_by($get_all_data_feconfig, ["component", "category"]),
-            "page_alias"        => 'Produk Hukum',
+        $other_meta = [
             "produk_hukum"      => $get_produk_hukum_highlight,
         ];
+        $page_data = create_page_meta(
+            $page_title,
+            $page_title,
+            $page_description,
+            $page_keywords,
+            $data_feconfig,
+            $other_meta
+        );
         return view("pages/produk_hukum", $page_data);
     }
 }
