@@ -3,6 +3,7 @@
 <?= $this->section("konten") ?>
 <?php
 $doc_categs = (new App\Models\DocumentCategories)->getDocumentCategories();
+$timeServices = service("timeServices");
 ?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
@@ -68,8 +69,7 @@ $doc_categs = (new App\Models\DocumentCategories)->getDocumentCategories();
                                 <path d="M8 2v4" />
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
                             </svg>
-                            <!-- __FIX__ buat service time sendiri agar lebih mudah dikontrol dan dipakai berulang -->
-                            <span>Ditetapkan: <time datetime="<?= $ph["tanggal_penetapan"] ?>"><?= (CodeIgniter\I18n\Time::parse($ph["tanggal_penetapan"]))->toLocalizedString("dd MMMM YYYY") ?></time></span>
+                            <span>Ditetapkan: <time datetime="<?= $ph["tanggal_penetapan"] ?>"><?= $timeServices->translateDateToLocalFormat($ph["tanggal_penetapan"]) ?></time></span>
                         </div>
                     </div>
                     <div class="flex gap-2 shrink-0">

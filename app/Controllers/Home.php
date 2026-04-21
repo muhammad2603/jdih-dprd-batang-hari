@@ -9,13 +9,11 @@ class Home extends BaseController
 {
     private $frontend_config;
     private $produk_hukum;
-
     public function __construct()
     {
         $this->frontend_config = new FrontendConfig;
         $this->produk_hukum = new ProdukHukum;
     }
-
     // __FIX__ page_alias dan frontend_config di array $page_data harus dipanggil disetiap halaman, perbaiki hal tersebut tanpa perlu membuat manual disetiap Controller-nya
     public function index(): string
     {
