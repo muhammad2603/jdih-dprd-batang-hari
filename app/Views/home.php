@@ -2,14 +2,11 @@
 
 <?= $this->section('konten') ?>
 <?php
-
-use CodeIgniter\CodeIgniter;
-use CodeIgniter\I18n\Time;
-
 helper("array");
 $frontend_config = new App\Models\FrontendConfig;
 $docCategsModel = new App\Models\DocumentCategories;
 $pagesMetaModel = new App\Models\PagesMeta;
+$timeServices = service("timeServices");;
 $doc_categs = $docCategsModel->getDocumentCategories();
 $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
 ?>
@@ -332,8 +329,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                         <path d="M8 2v4" />
                                         <rect x="3" y="4" width="18" height="18" rx="2" />
                                     </svg>
-                                    <!-- // __FIX__ Buat service khusus untuk Time agar lebih mudah dipakai berulang -->
-                                    <time datetime="<?= $doc["tanggal_upload"] ?>"><?= \CodeIgniter\I18n\Time::parse($doc["tanggal_upload"])->toLocalizedString("dd MMMM YYYY") ?></time>
+                                    <time datetime="<?= $doc["tanggal_upload"] ?>"><?= $timeServices->translateDateToLocalFormat($doc["tanggal_upload"]) ?></time>
                                 </div>
                                 <div class="upload-date flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">

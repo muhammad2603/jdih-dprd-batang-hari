@@ -4,6 +4,8 @@ namespace Config;
 
 use CodeIgniter\Config\BaseService;
 
+use App\Libraries\TimeServices as TimeServicesLib;
+
 /**
  * Services Configuration file.
  *
@@ -29,4 +31,12 @@ class Services extends BaseService
      *     return new \CodeIgniter\Example();
      * }
      */
+
+    public static function timeServices($getShared = true)
+    {
+        if ($getShared) {
+            return static::getSharedInstance('timeServices');
+        }
+        return new TimeServicesLib();
+    }
 }
