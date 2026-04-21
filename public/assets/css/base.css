@@ -246,9 +246,6 @@
   .top-18\.25 {
     top: calc(var(--spacing) * 18.25);
   }
-  .top-\[73px\] {
-    top: 73px;
-  }
   .left-0 {
     left: calc(var(--spacing) * 0);
   }
@@ -810,12 +807,6 @@
   .text-primary {
     color: var(--color-primary);
   }
-  .text-primary\/10 {
-    color: color-mix(in srgb, #8b1538 10%, transparent);
-    @supports (color: color-mix(in lab, red, red)) {
-      color: color-mix(in oklab, var(--color-primary) 10%, transparent);
-    }
-  }
   .text-white {
     color: var(--color-white);
   }
@@ -984,27 +975,10 @@
       }
     }
   }
-  .hover\:bg-muted {
-    &:hover {
-      @media (hover: hover) {
-        background-color: var(--color-muted);
-      }
-    }
-  }
   .hover\:bg-primary {
     &:hover {
       @media (hover: hover) {
         background-color: var(--color-primary);
-      }
-    }
-  }
-  .hover\:bg-primary\/0 {
-    &:hover {
-      @media (hover: hover) {
-        background-color: color-mix(in srgb, #8b1538 0%, transparent);
-        @supports (color: color-mix(in lab, red, red)) {
-          background-color: color-mix(in oklab, var(--color-primary) 0%, transparent);
-        }
       }
     }
   }
