@@ -202,12 +202,12 @@ class ContentSecurityPolicy extends BaseConfig
     /**
      * Nonce placeholder for style tags.
      */
-    public string $styleNonceTag = '{csp-style-nonce}';
+    public string $styleNonceTag = '{As4W6RrNPRgaH31VwD8XnxE1K5v12gU79YxY2agR72ts1oeeYwzOeKmTd7IQeY4P}';
 
     /**
      * Nonce placeholder for script tags.
      */
-    public string $scriptNonceTag = '{csp-script-nonce}';
+    public string $scriptNonceTag = '{iLRs6nGpoFigHz6HSoernFLISZPm3RDWAUdKZdRLM6wIjsjydtkc1yf6vrVBJxPc}';
 
     /**
      * Replace nonce tag automatically?
