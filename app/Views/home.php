@@ -12,7 +12,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
     <div class="jumbotron-image-view w-full h-full absolute top-0 left-0 -z-10">
         <img
-            src="https://images.unsplash.com/photo-1739854710879-977a54e585bc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRvbmVzaWFuJTIwZ292ZXJubWVudCUyMGJ1aWxkaW5nJTIwZm9ybWFsJTIwYXJjaGl0ZWN0dXJlfGVufDF8fHx8MTc3NTgyNzE2M3ww&ixlib=rb-4.1.0&q=80&w=1080"
+        src="<?= base_url() . 'assets/images/gedung-dprd.jpeg' ?>"
             alt="Gedung DPRD"
             class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-linear-to-r from-black/70 via-black/50 to-transparent"></div>
