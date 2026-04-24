@@ -64,6 +64,43 @@
             <div id="chartContainer" class="relative w-fit mx-auto">
                 <canvas id="chartDistributedByType" class="w-70! h-70!" {<?= $_ENV["CSP_STYLE_NONCE"] ?>}></canvas>
             </div>
+            <div class="mt-10 space-y-2">
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-primary rounded"></div>
+                        <span class="text-muted-foreground">Peraturan Daerah</span>
+                    </div>
+                    <span class="font-medium">145</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-accent rounded"></div>
+                        <span class="text-muted-foreground">Peraturan Bupati</span>
+                    </div>
+                    <span class="font-medium">287</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-accent-dark-gray rounded"></div>
+                        <span class="text-muted-foreground">Keputusan Bupati</span>
+                    </div>
+                    <span class="font-medium">198</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-accent-medium-dark-gray rounded"></div>
+                        <span class="text-muted-foreground">Keputusan DPRD</span>
+                    </div>
+                    <span class="font-medium">76</span>
+                </div>
+                <div class="flex items-center justify-between text-sm">
+                    <div class="flex items-center gap-2">
+                        <div class="w-4 h-4 bg-accent-light-gray rounded"></div>
+                        <span class="text-muted-foreground">Instruksi Bupati</span>
+                    </div>
+                    <span class="font-medium">42</span>
+                </div>
+            </div>
         </div>
         <div class="total-document-by-year bg-white border border-primary-border rounded-lg p-6">
             <h2 class="font-semibold mb-6 text-xl">Jumlah Dokumen per Tahun</h2>
@@ -72,18 +109,28 @@
             </div>
         </div>
     </div>
-    <div class="trend-months bg-white border border-primary-border rounded-lg p-6">
-        <h2 class="font-semibold mb-6 text-xl">Trend Bulanan (2026)</h2>
-        <div class="relative w-full! h-87.5!">
-            <canvas id="chartTrendMonths" {<?= $_ENV["CSP_STYLE_NONCE"] ?>}></canvas>
+    <div class="trend-months bg-white border border-primary-border rounded-lg p-8">
+        <h2 class="font-semibold mb-6 text-xl">Tren Bulanan (2026)</h2>
+        <div class="relative w-full! h-87.5! pb-6">
+            <canvas id="chartTrendMonths"></canvas>
+            <p class="mt-2 text-center text-accent">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline">
+                    <path d="M 3 12 L 15 12" />
+                    <circle cx="18" cy="12" r="3" />
+                </svg>
+                <span>Jumlah Dokumen</span>
+            </p>
         </div>
     </div>
 </div>
 <script src="<?= base_url() . 'assets/third-party/chart.js' ?>"></script>
 <script {<?= $_ENV["CSP_SCRIPT_NONCE"] ?>}>
+    // __FIX__ Refactoring kode ini
     const ctxChartDistributedByType = document.getElementById('chartDistributedByType');
     const ctxChartDocumentByYear = document.getElementById('chartDocumentByYear');
     const ctxTrendMonths = document.getElementById('chartTrendMonths');
+
+    let totalDataDatasets = null;
 
     const customHTMLLabels = {
         id: 'customHTMLLabels',
@@ -98,6 +145,11 @@
             const meta = chart.getDatasetMeta(0);
             if (!meta || !meta.data) return;
 
+            // @explain kondisi ini mencegah dua kali eksekusi yang dilakukan afterRender Chart JS
+            if (totalDataDatasets === null) {
+                totalDataDatasets = chart.data.datasets[0].data.reduce((acc, num) => num + acc, 0);
+            }
+
             meta.data.forEach((datapoint, index) => {
                 // 1. Hitung sudut tengah sektor (dalam radian)
                 const angle = (datapoint.startAngle + datapoint.endAngle) / 2;
@@ -111,11 +163,13 @@
                 const y = datapoint.y + Math.sin(angle) * JarakKeluar;
 
                 const label = document.createElement('div');
-                const labelName = chart.data.datasets[0].label[index];
+                // const labelName = chart.data.datasets[0].label[index];
+                const labelName = chart.data.labels[index];
                 const labelColor = chart.data.datasets[0].backgroundColor[index];
                 const data = chart.data.datasets[0].data[index];
+                const calculatePercent = ((data / totalDataDatasets) * 100).toFixed(2);
                 label.className = 'custom-label text-sm text-shadow-sm';
-                label.innerText = `${labelName}: ${data}%`;
+                label.innerText = `${labelName}: ${calculatePercent}%`;
 
                 // Ambil offset canvas agar posisi presisi
                 const canvasLeft = chart.canvas.offsetLeft;
@@ -127,14 +181,12 @@
 
                 Object.assign(label.style, {
                     position: 'absolute',
-                    // left: `${x + canvasLeft}px`,
                     left: `${modifyX}px`,
                     top: `${setY}px`,
                     transform: 'translate(-50%, -50%)', // Agar titik tengah teks pas di koordinat
-                    zIndex: '999',
+                    zIndex: '1',
                     pointerEvents: 'none',
                     whiteSpace: 'nowrap',
-                    // Tambahkan style font kamu di sini
                     fontWeight: 'semibold',
                     color: labelColor
                 });
@@ -149,8 +201,8 @@
         data: {
             labels: ["Peraturan Bupati", "Keputusan Bupati", "Instruksi Bupati", "Keputusan DPRD", "Peraturan Daerah"],
             datasets: [{
-                label: ["Peraturan Bupati", "Keputusan Bupati", "Instruksi Bupati", "Keputusan DPRD", "Peraturan Daerah"],
-                data: [38, 10, 6, 10, 19],
+                label: "Total Dokumen",
+                data: [287, 198, 42, 76, 145],
                 borderWidth: 1.5,
                 backgroundColor: [
                     "#C9A961",
@@ -191,7 +243,7 @@
         data: {
             labels: [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
             datasets: [{
-                label: 'Total:',
+                label: 'Total',
                 data: [68, 72, 85, 94, 108, 115, 98, 35],
                 backgroundColor: "#8b1538",
                 borderRadius: 8
@@ -201,8 +253,7 @@
             plugins: {
                 legend: {
                     display: false
-                },
-                datalabels: false
+                }
             },
             scales: {
                 x: {
@@ -249,15 +300,67 @@
     new Chart(ctxTrendMonths, {
         type: "line",
         data: {
-            labels: ["Januari", "Februari", "Maret", "April"],
+            labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
             datasets: [{
-                label: 'Total Dokumen:',
-                data: [68, 72, 85, 94],
+                label: 'Total Dokumen',
+                data: [8, 12, 15, 10, 18, 14, 16, 20, 13, 17, 19, 22],
                 fill: false,
-                borderColor: 'rgb(75, 192, 192)',
-                tension: 0.1,
+                borderColor: '#C9A961',
+                borderWidth: 3,
+                tension: 0,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                pointBackgroundColor: "#C9A961",
+                pointHoverBackgroundColor: "#C9A961",
+                pointBorderWidth: 2,
+                pointHoverBorderWidth: 2,
+                pointHoverBorderColor: "#FFF",
             }],
         },
+        options: {
+            plugins: {
+                legend: {
+                    display: false
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: '#E5E7EB',
+                        tickColor: "#6B7280"
+                    },
+                    border: {
+                        dash: [2.5, 2.5],
+                        color: "#6B7280",
+                    }
+                },
+                y: {
+                    grid: {
+                        color: '#E5E7EB',
+                        tickColor: "#6B7280"
+                    },
+                    border: {
+                        dash: [2.5, 2.5],
+                        color: "#6B7280",
+                    },
+                    beginAtZero: true,
+                    // max: 150,
+                    ticks: {
+                        stepSize: 6
+                    }
+                }
+            },
+            animations: {
+                tension: {
+                    duration: 1200,
+                    easing: 'easeInOutCubic',
+                    from: 0,
+                    to: 0.45,
+                    loop: false
+                }
+            },
+            maintainAspectRatio: false,
+        }
     })
 </script>
 <?= $this->endSection() ?>

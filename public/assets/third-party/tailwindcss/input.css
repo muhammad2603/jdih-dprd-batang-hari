@@ -8,6 +8,9 @@
     --color-foreground: #fff;
     --color-accent: #c9a961;
     --color-accent-foreground: #fff;
+    --color-accent-dark-gray: #6B7280;
+    --color-accent-medium-dark-gray: #9CA3AF;
+    --color-accent-light-gray: #D1D5DB;
     --color-muted: #ececf0;
     --color-muted-foreground: #717182;
     --color-input: transparent;
