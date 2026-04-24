@@ -6,7 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\FrontendConfig;
 
-class Statistics extends BaseController
+class About extends BaseController
 {
     private $fe_config_model;
     public function __construct()
@@ -15,12 +15,13 @@ class Statistics extends BaseController
     }
     public function index()
     {
-        // TODO Ubah page description yang sesuai
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "Statistik";
+        $page_title = "Tentang";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
-            "Statistik"
+            "Tentang JDIH DPRD Batang Hari",
+            "Kabupaten Batang Hari",
+            "DPRD Batang Hari"
         ];
         $other_meta = [];
         $page_data = create_page_meta(
@@ -31,6 +32,6 @@ class Statistics extends BaseController
             $data_feconfig,
             $other_meta
         );
-        return view("pages/statistics", $page_data);
+        return view('pages/about', $page_data);
     }
 }

@@ -12,6 +12,7 @@ foreach ($unique_footer_nav as $group => $items) {
     }
 }
 ?>
+<!-- TODO Buat credits untuk penggunaan library freeware -->
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
         <div class="footer-contents grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
