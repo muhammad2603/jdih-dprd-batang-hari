@@ -4,13 +4,12 @@
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
             <h1 class="text-4xl font-bold mb-4 leading-12">Kebijakan Privasi<br>JDIH DPRD Kabupaten Batang Hari</h1>
-            <p class="text-lg text-white/80 max-w-2xl">Isi Jika Bisa</p>
+            <p class="text-lg text-white/80 max-w-2xl">JDIH DPRD Kabupaten Batang Hari berkomitmen untuk melindungi dan menjaga kerahasiaan data pribadi setiap pengguna layanan. Kebijakan Privasi ini menjelaskan bagaimana informasi dikumpulkan, digunakan, dan dilindungi dalam penggunaan website resmi JDIH DPRD Kabupaten Batang Hari.</p>
         </div>
     </div>
 </div>
 <div class="contents-wrapper max-w-6xl mx-auto px-6 py-12 leading-7">
-    <p>JDIH DPRD Kabupaten Batang Hari berkomitmen untuk melindungi dan menjaga kerahasiaan data pribadi setiap pengguna layanan. Kebijakan Privasi ini menjelaskan bagaimana informasi dikumpulkan, digunakan, dan dilindungi dalam penggunaan website resmi JDIH DPRD Kabupaten Batang Hari.</p>
-    <div class="mt-8">
+    <div>
         <h2 class="text-default-foreground font-semibold">Informasi yang dikumpulkan</h2>
         <p>Kami dapat mengumpulkan beberapa jenis informasi sebagai berikut:</p>
         <h3 class="text-default-foreground font-semibold">a. Informasi yang Diberikan Secara Langsung</h3>
