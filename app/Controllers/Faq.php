@@ -16,7 +16,7 @@ class Faq extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "none";
+        $page_title = "FAQ";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
             "Statistik"
