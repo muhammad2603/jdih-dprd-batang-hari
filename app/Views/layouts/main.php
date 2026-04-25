@@ -26,11 +26,8 @@
     <meta name="twitter:description" content="<?= $page_description ?>">
     <!-- __COMMENT__ og:image harus memiliki fallback untuk gambar Open Graph saat dishare ke-media sosial -->
     <meta name="twitter:image" content="">
-
-    <link rel="stylesheet" href="/assets/css/base.css" />
-    <!-- TODO buat preconnect dan dns-prefetch jika menggunakan asset dari domain lain, contohnya font google -->
-    <!-- <link rel="preconnect" content="https://fonts.googleapis.com" -->
-    <!-- <link rel="dns-prefetch" content="//fonts.googleapis.com" -->
+    <link rel="stylesheet" href="<?= base_url() . "/assets/css/base.css" ?>" />
+    <link rel="stylesheet" href="<?= base_url() . "/assets/css/fonts.css" ?>" />
     <title><?= $page_title ?></title>
 </head>
 
