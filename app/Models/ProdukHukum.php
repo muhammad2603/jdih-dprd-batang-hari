@@ -96,4 +96,42 @@ class ProdukHukum extends Model
             "total_data"    => $data->countAllResults(),
         ];
     }
+
+    public function getProdukHukumDetails(int|string $key, string|null $category = null): array|null
+    {
+        $builder = $this->select([
+            "ph.title AS judul",
+            "abstrak",
+            "catatan",
+            "nomor",
+            "tahun",
+            "status",
+            "GROUP_CONCAT(
+                CONCAT(lph.judul_berkas, ':', lph.nama_berkas)
+                ORDER BY lph.id DESC
+                SEPARATOR ', '
+            ) AS berkas",
+            "counts AS total_unduhan",
+            "ph.slug"
+        ])
+            ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
+            ->join("document_status docstat", "docstat.id = ph.status_id")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("riwayat_unduhan ru", "ru.ph_id = ph.id");
+
+        if (!is_null($category)) {
+            $builder
+                ->select("category AS kategori")
+                ->join("document_categories doccateg", "doccateg.id = ph.category_id")
+                ->where("doccateg.category", $category);
+        }
+
+        if (is_int($key)) {
+            $builder->where("id", $key);
+        } else if (is_string($key)) {
+            $builder->where("slug", $key);
+        }
+
+        return $builder->first();
+    }
 }
