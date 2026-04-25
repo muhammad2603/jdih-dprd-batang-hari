@@ -16,3 +16,4 @@ $routes->get('/layanan/peraturan-bupati', 'PencarianPeraturanBupati::index');
 $routes->get('/layanan/keputusan-dprd', 'PencarianKeputusanDPRD::index');
 $routes->get('/layanan/bantuan', 'LayananBantuan::index');
 $routes->get('/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
+$routes->get('/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
