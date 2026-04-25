@@ -73,7 +73,7 @@ $timeServices = service("timeServices");
                         </div>
                     </div>
                     <div class="flex gap-2 shrink-0">
-                        <a href="<?= base_url() . "produk-hukum/" . $ph["slug"] ?>" class="flex items-center gap-2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                        <a href="<?= base_url() . "produk-hukum/" . url_title($ph["kategori"], "-", true) . "/" . $ph["slug"] ?>" class="flex items-center gap-2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                 <path d="M12 7v14" />
                                 <path d="M16 12h2" />
