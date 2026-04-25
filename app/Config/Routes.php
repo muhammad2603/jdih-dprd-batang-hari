@@ -13,3 +13,4 @@ $routes->get('/faq', 'Faq::index');
 $routes->get('/layanan/pencarian-dokumen', 'PencarianDokumen::index');
 $routes->get('/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
 $routes->get('/layanan/peraturan-bupati', 'PencarianPeraturanBupati::index');
+$routes->get('/layanan/keputusan-dprd', 'PencarianKeputusanDPRD::index');
