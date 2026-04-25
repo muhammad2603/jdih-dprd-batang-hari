@@ -7,6 +7,8 @@ use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\ProdukHukum;
 use App\Models\FrontendConfig;
 
+helper('string');
+
 class ProdukHukumDetails extends BaseController
 {
     private $fe_config_model;
@@ -17,18 +19,13 @@ class ProdukHukumDetails extends BaseController
     public function index(...$segments)
     {
         [$category, $slug] = $segments;
-        // TODO Buat helper untuk menghapus strip pada kategori sekaligus mengubah huruf disetiap kata menjadi kapital
-        $remove_strip_category = str_replace("-", " ", $category);
-        $setCapitalFirstWord = ucwords($remove_strip_category, " ");
-
+        $category = uri_title_to_words($category);
         $allowed_categories = [
             "Peraturan Bupati"
         ];
-        if (!in_array($setCapitalFirstWord, $allowed_categories))
+        if (!in_array($category, $allowed_categories))
             return $this->response->setStatusCode(400)->setJSON(["status" => 400, "message" => "Kategori produk hukum tidak terdaftar atau tidak diizinkan!"]);
-
-        $produk_hukum = (new ProdukHukum)->getProdukHukumDetails($slug, $setCapitalFirstWord);
-
+        $produk_hukum = (new ProdukHukum)->getProdukHukumDetails($slug, $category);
         $data_feconfig = $this->fe_config_model->getAllData();
         $page_title = "[Judul Dokumen] | Produk Hukum";
         $page_alias = "Produk Hukum";
