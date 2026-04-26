@@ -161,7 +161,11 @@ class ProdukHukum extends Model
         }
         return $builder->first();
     }
-
+    /**
+     * Mengambil klasifikasi produk hukum
+     * @param int $id ID produk hukum
+     * @return array ["klasifikasi_bidang_hukum", "klasifikasi_subjek"]
+     */
     public function getClassifyProdukHukum(int $id): array
     {
         $klasifikasi_bidang_hukum = $this
