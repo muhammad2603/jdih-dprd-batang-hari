@@ -205,64 +205,36 @@ $document_path = FCPATH . $pub_document_path;
                 <div class="change-histories relative">
                     <div class="timeline absolute left-6 top-0 bottom-0 w-0.5 bg-primary-border"></div>
                     <div class="space-y-6">
-                        <div class="relative pl-16">
-                            <div class="current-change-dot absolute left-3 top-0 w-6 h-6 rounded-full border-2 flex items-center justify-center bg-green-100 border-green-300">
-                                <div class="dot w-2 h-2 rounded-full bg-current"></div>
-                            </div>
-                            <div class="space-y-6">
-                                <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
-                                    <div class="flex items-start justify-between gap-4 mb-2">
-                                        <div class="flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-green-600">
-                                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                                <path d="m9 15 2 2 4-4" />
-                                            </svg>
-                                            <span class="font-semibold text-default-foreground">Penetapan</span>
+                        <div id="changeHistoryWrapper" class="relative pl-16">
+                            <div id="contentHistoryWrapper" class="space-y-6">
+                                <?php foreach ($histories_change as $history): ?>
+                                    <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
+                                        <div class="flex items-start justify-between gap-4 mb-2">
+                                            <div class="flex items-center gap-2">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-green-600">
+                                                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                                    <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                                    <path d="m9 15 2 2 4-4" />
+                                                </svg>
+                                                <span class="font-semibold text-default-foreground"><?= esc($history["change_type"]) ?></span>
+                                            </div>
+                                            <div class="date-change flex gap-2 text-sm text-muted-foreground">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                                    <path d="M11 14h1v4" />
+                                                    <path d="M16 2v4" />
+                                                    <path d="M3 10h18" />
+                                                    <path d="M8 2v4" />
+                                                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                                                </svg>
+                                                <time datetime="<?= esc($history["changed_at"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($history["changed_at"])) ?></time>
+                                            </div>
                                         </div>
-                                        <div class="date-change flex gap-2 text-sm text-muted-foreground">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                                <path d="M11 14h1v4" />
-                                                <path d="M16 2v4" />
-                                                <path d="M3 10h18" />
-                                                <path d="M8 2v4" />
-                                                <rect x="3" y="4" width="18" height="18" rx="2" />
-                                            </svg>
-                                            <time datetime="2021-03-15">15 Maret 2021</time>
-                                        </div>
-                                    </div>
-                                    <p class="text-default-foreground mb-2">Peraturan Daerah ditetapkan dan diundangkan dalam Lembaran Daerah Kabupaten Batang Hari</p>
-                                    <div class="flex items-center gap-2 text-sm">
-                                        <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium">Perda No. 3 Tahun 2021</p>
-                                    </div>
-                                </div>
-                                <!-- __FIX__ Histori dibawah ini bukan pembaruan terakhir, jadi berikan dot-nya juga tanpa lingkaran hijau -->
-                                <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
-                                    <div class="flex items-start justify-between gap-4 mb-2">
-                                        <div class="flex items-center gap-2">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-green-600">
-                                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                                <path d="m9 15 2 2 4-4" />
-                                            </svg>
-                                            <span class="font-semibold text-default-foreground">Penetapan</span>
-                                        </div>
-                                        <div class="date-change flex gap-2 text-sm text-muted-foreground">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                                <path d="M11 14h1v4" />
-                                                <path d="M16 2v4" />
-                                                <path d="M3 10h18" />
-                                                <path d="M8 2v4" />
-                                                <rect x="3" y="4" width="18" height="18" rx="2" />
-                                            </svg>
-                                            <time datetime="2021-03-15">15 Maret 2021</time>
+                                        <p class="text-default-foreground mb-2"><?= esc($history["comment"]) ?></p>
+                                        <div class="flex items-center gap-2 text-sm">
+                                            <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></p>
                                         </div>
                                     </div>
-                                    <p class="text-default-foreground mb-2">Peraturan Daerah ditetapkan dan diundangkan dalam Lembaran Daerah Kabupaten Batang Hari</p>
-                                    <div class="flex items-center gap-2 text-sm">
-                                        <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium">Perda No. 3 Tahun 2021</p>
-                                    </div>
-                                </div>
+                                <?php endforeach ?>
                             </div>
                         </div>
                     </div>
@@ -410,4 +382,5 @@ $document_path = FCPATH . $pub_document_path;
         </div>
     </div>
 </div>
+<script src="<?= base_url() . "assets/js/history-ui.js" ?>"></script>
 <?= $this->endSection() ?>

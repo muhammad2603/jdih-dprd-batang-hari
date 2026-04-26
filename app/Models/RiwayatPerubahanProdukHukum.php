@@ -49,7 +49,8 @@ class RiwayatPerubahanProdukHukum extends Model
         return $this
             ->select([
                 "change_type",
-                "comment"
+                "comment",
+                "changed_at"
             ])
             ->where("ph_id", $ph_id)
             ->orderBy("changed_at", "DESC")

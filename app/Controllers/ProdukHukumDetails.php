@@ -4,8 +4,6 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
-use App\Models\ProdukHukum;
-use App\Models\FrontendConfig;
 
 helper('string');
 
@@ -13,10 +11,12 @@ class ProdukHukumDetails extends BaseController
 {
     private $fe_config_model;
     private $ph_model;
+    private $riwayat_perubahan_ph_model;
     public function __construct()
     {
-        $this->fe_config_model  = new FrontendConfig;
-        $this->ph_model         = new ProdukHukum;
+        $this->fe_config_model              = model("FrontendConfig");
+        $this->ph_model                     = model("ProdukHukum");
+        $this->riwayat_perubahan_ph_model   = model("RiwayatPerubahanProdukHukum");
     }
     public function index(...$segments)
     {
@@ -34,9 +34,12 @@ class ProdukHukumDetails extends BaseController
             "Statistik"
         ];
         $produk_hukum = $this->ph_model->getProdukHukumDetails($slug, $category);
+        $ph_id = intval($produk_hukum["id"]);
+        $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
         $page_title = $produk_hukum["judul"] . " | Produk Hukum";
         $other_meta = [
-            "produk_hukum" => $produk_hukum
+            "produk_hukum" => $produk_hukum,
+            "histories_change" => $histories_change
         ];
         $page_data = create_page_meta(
             $page_title,
