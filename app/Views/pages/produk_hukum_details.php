@@ -4,10 +4,9 @@
 helper("filesystem");
 helper("number");
 $timeServices = service("timeServices");
-// __COMMENT__ Karena ini manipulasi string, masukkan ke-dalam string_helper
-$attachments_to_array = array_map(function ($item) {
-    return explode(":", $item);
-}, explode(",", $produk_hukum["berkas"]));
+$split_attachments = explode(",", $produk_hukum["berkas"]);
+unset($produk_hukum["berkas"]);
+$attachments_to_array = split_string_on_array(":", $split_attachments);
 $pub_document_path = "assets/dokumen-hukum/";
 $document_path = FCPATH . $pub_document_path;
 ?>
