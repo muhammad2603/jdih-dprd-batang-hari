@@ -85,8 +85,7 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <path d="m7 10 5 5 5-5" />
                 </svg>
-                <!-- TODO Buat helper untuk konversi dari hitungan total, misalnya dari 1689 menjadi 1.689 -->
-                <span><?= esc($produk_hukum["total_unduhan"]) ?> unduhan</span>
+                <span><?= str_number_to_humanize($produk_hukum["total_unduhan"]) ?> unduhan</span>
             </div>
         </div>
     </div>
