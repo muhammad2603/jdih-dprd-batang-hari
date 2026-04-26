@@ -178,7 +178,7 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                                 </svg>
                                 <div>
                                     <p class="font-medium text-default-foreground"><?= esc($title) ?></p>
-                                    <p class="text-sm text-muted-foreground"><?= str_replace(',', '.', number_to_size($file_size["size"])) ?></p>
+                                    <p class="text-sm text-muted-foreground"><?= number_to_size($file_size["size"], 1, "en_US") ?></p>
                                 </div>
                             </div>
                             <a href="<?= base_url() . $pub_document_path . esc($file_name) ?>" class="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
