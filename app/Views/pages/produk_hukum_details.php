@@ -376,9 +376,12 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                         <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["jumlah_halaman"]) ?> halaman</span>
                     </div>
                     <div>
-                        <!-- TODO Tanggal terakhir diubah belum diambil dari database. -->
+                        <span class="block text-muted-foreground mb-2">Tanggal upload</span>
+                        <span class="block font-medium text-default-foreground"><time datetime="2021-03-15"><?= $timeServices->translateDateToLocalFormat(date("Y-m-d", strtotime($produk_hukum["created_at"]))) ?></time></span>
+                    </div>
+                    <div>
                         <span class="block text-muted-foreground mb-2">Terakhir diubah</span>
-                        <span class="block font-medium text-default-foreground"><time datetime="2021-03-15">15 Maret 2021</time></span>
+                        <span class="block font-medium text-default-foreground"><time datetime="2021-03-15"><?= !is_null($produk_hukum["updated_at"]) ? date("Y-m-d", strtotime($produk_hukum["updated_at"])) : "Belum ada perubahan" ?></time></span>
                     </div>
                 </div>
             </div>

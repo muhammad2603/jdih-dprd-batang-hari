@@ -137,7 +137,9 @@ class ProdukHukum extends Model
                 SEPARATOR ','
             ) AS berkas",
             "counts AS total_unduhan",
-            "jumlah_halaman"
+            "jumlah_halaman",
+            "ph.created_at",
+            "ph.updated_at"
         ])
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
