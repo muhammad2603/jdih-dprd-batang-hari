@@ -377,11 +377,17 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Tanggal upload</span>
-                        <span class="block font-medium text-default-foreground"><time datetime="2021-03-15"><?= $timeServices->translateDateToLocalFormat(date("Y-m-d", strtotime($produk_hukum["created_at"]))) ?></time></span>
+                        <span class="block font-medium text-default-foreground"><time datetime="<?= $timeServices->translateDateToLocalFormat($produk_hukum["created_at"], "y-MM-d") ?>"><?= $timeServices->translateDateToLocalFormat($produk_hukum["created_at"]) ?></time></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Terakhir diubah</span>
-                        <span class="block font-medium text-default-foreground"><time datetime="2021-03-15"><?= !is_null($produk_hukum["updated_at"]) ? date("Y-m-d", strtotime($produk_hukum["updated_at"])) : "Belum ada perubahan" ?></time></span>
+                        <span class="block font-medium text-default-foreground">
+                            <?php if (!is_null($produk_hukum["updated_at"])): ?>
+                                <time datetime="<?= $timeServices->translateDateToLocalFormat($produk_hukum["updated_at"], "y-MM-d") ?>"><?= $timeServices->translateDateToLocalFormat($produk_hukum["updated_at"]) ?></time>
+                            <?php else: ?>
+                                <span>Belum ada perubahan</span>
+                            <?php endif ?>
+                        </span>
                     </div>
                 </div>
             </div>

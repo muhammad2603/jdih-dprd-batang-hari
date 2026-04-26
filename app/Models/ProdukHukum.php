@@ -12,6 +12,7 @@ class ProdukHukum extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
+    // __FIX__ Jika ada perubahan dimeta data, update juga kolom updated_at ditable produk_hukum
     protected $allowedFields    = [
         "id",
         "title",
