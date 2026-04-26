@@ -96,8 +96,13 @@ class ProdukHukum extends Model
             "total_data"    => $data->countAllResults(),
         ];
     }
-
-    public function getProdukHukumDetails(int|string $key, string|null $category = null): array|null
+    /**
+     * Mengambil detail produk hukum
+     * @param int|string $key field id atau slug produk hukum
+     * @param string|null $category kategori produk hukum yang ingin dicari. Default null
+     * @return array
+     */
+    public function getProdukHukumDetails(int|string $key, string|null $category = null): array
     {
         $builder = $this->select([
             "ph.id",
@@ -140,7 +145,6 @@ class ProdukHukum extends Model
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
             ->join("riwayat_unduhan ru", "ru.ph_id = ph.id");
-
         if (!is_null($category)) {
             $builder
                 ->select([
@@ -150,13 +154,34 @@ class ProdukHukum extends Model
                 ->join("document_categories doccateg", "doccateg.id = ph.category_id")
                 ->where("doccateg.category", $category);
         }
-
         if (is_int($key)) {
             $builder->where("id", $key);
         } else if (is_string($key)) {
             $builder->where("slug", $key);
         }
-
         return $builder->first();
+    }
+
+    public function getClassifyProdukHukum(int $id): array
+    {
+        $klasifikasi_bidang_hukum = $this
+            ->select("kat_bh.kategori AS bidang_hukum")
+            ->join("klasifikasi_bidang_hukum kbh", "kbh.ph_id = ph.id")
+            ->join("kategori_bidang_hukum kat_bh", "kat_bh.id = kbh.bidang_hukum_id")
+            ->where("ph.id", $id)
+            ->findAll();
+        $klasifikasi_subjek = $this
+            ->select("GROUP_CONCAT(
+                    kat_sub.subjek
+                    SEPARATOR ', '
+                ) AS subjek")
+            ->join("klasifikasi_subjek ks", "ks.ph_id = ph.id")
+            ->join("kategori_subjek kat_sub", "kat_sub.id = ks.subjek_id")
+            ->where("ph.id", $id)
+            ->findAll();
+        return [
+            "klasifikasi_bidang_hukum" => $klasifikasi_bidang_hukum,
+            "klasifikasi_subjek" => $klasifikasi_subjek
+        ];
     }
 }

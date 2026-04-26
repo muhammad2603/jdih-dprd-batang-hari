@@ -9,6 +9,8 @@ unset($produk_hukum["berkas"]);
 $attachments_to_array = split_string_on_array(":", $split_attachments);
 $pub_document_path = "assets/dokumen-hukum/";
 $document_path = FCPATH . $pub_document_path;
+$bidang_hukum = dot_array_search("klasifikasi_bidang_hukum.*.bidang_hukum", $klasifikasi);
+$subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
 ?>
 <div class="jumbotron bg-primary text-white py-8">
     <div class="max-w-7xl mx-auto px-6">
@@ -191,7 +193,6 @@ $document_path = FCPATH . $pub_document_path;
                     <?php endforeach ?>
                 </div>
             </div>
-            <!-- __COMMENT__ Riwayat Perubahan Produk Hukum belum dibuat logikanya. -->
             <div class="document-change-histories bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-6 flex gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -215,6 +216,10 @@ $document_path = FCPATH . $pub_document_path;
                                                     <path d="M14 2v5a1 1 0 0 0 1 1h5" />
                                                     <path d="m9 15 2 2 4-4" />
                                                 </svg>
+                                                <!-- __FIX__ Change type ini adalah perubahan status (jika berubah),
+                                                    saat ini statusnya bukan status dokumen (berlaku, dicabut, dsb.),
+                                                    melainkan status perubahan, perbaiki ini.
+                                                -->
                                                 <span class="font-semibold text-default-foreground"><?= esc($history["change_type"]) ?></span>
                                             </div>
                                             <div class="date-change flex gap-2 text-sm text-muted-foreground">
@@ -230,6 +235,7 @@ $document_path = FCPATH . $pub_document_path;
                                         </div>
                                         <p class="text-default-foreground mb-2"><?= esc($history["comment"]) ?></p>
                                         <div class="flex items-center gap-2 text-sm">
+                                            <!-- __COMMENT__ Nomor dan tahun produk hukum bisa berubah, jadi, lebih baik simpan nomor atau tahun produk hukum sebelum dirubah di Database -->
                                             <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></p>
                                         </div>
                                     </div>
@@ -319,7 +325,6 @@ $document_path = FCPATH . $pub_document_path;
                     </div>
                 </div>
             </div>
-            <!-- __COMMENT__ Klasifikasi belum dibuat logikanya. Ini berkaitan dengan Section Dokumen Terkait -->
             <div class="classifies bg-white border border-primary-border rounded-lg p-6">
                 <h3 class="font-bold mb-4 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -332,14 +337,14 @@ $document_path = FCPATH . $pub_document_path;
                     <div>
                         <p class="text-muted-foreground mb-2">Bidang Hukum</p>
                         <div class="flex flex-wrap gap-2">
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">Pemerintahan Daerah</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">Anggaran APBD</span>
-                            <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium">Perencanaan Pembangunan</span>
+                            <?php foreach ($bidang_hukum as $kategori): ?>
+                                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"><?= esc($kategori) ?></span>
+                            <?php endforeach ?>
                         </div>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Subjek</span>
-                        <span class="block font-medium text-default-foreground">RPJMD, Perencanaan Pembangunan Daerah</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($subjek) ?></span>
                     </div>
                 </div>
             </div>

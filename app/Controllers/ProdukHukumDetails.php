@@ -35,11 +35,13 @@ class ProdukHukumDetails extends BaseController
         ];
         $produk_hukum = $this->ph_model->getProdukHukumDetails($slug, $category);
         $ph_id = intval($produk_hukum["id"]);
+        $classify_produk_hukum = $this->ph_model->getClassifyProdukHukum($ph_id);
         $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
         $page_title = $produk_hukum["judul"] . " | Produk Hukum";
         $other_meta = [
-            "produk_hukum" => $produk_hukum,
-            "histories_change" => $histories_change
+            "produk_hukum"      => $produk_hukum,
+            "histories_change"  => $histories_change,
+            "klasifikasi"       => $classify_produk_hukum,
         ];
         $page_data = create_page_meta(
             $page_title,
