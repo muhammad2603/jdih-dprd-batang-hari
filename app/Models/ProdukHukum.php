@@ -105,18 +105,40 @@ class ProdukHukum extends Model
             "catatan",
             "nomor",
             "tahun",
+            "nomor_tld",
+            "tahun_tld",
             "status",
+            "sumber",
+            "(
+                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pembuat_peraturan
+            ) AS pejabat_pembuat_peraturan",
+            "(
+                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.penandatanganan
+            ) AS pejabat_penandatanganan",
+            "(
+                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pejabat_penetap
+            ) AS pejabat_penetap",
+            "tanggal_penetapan",
+            "tanggal_pengundangan",
+            "tanggal_berlaku",
+            "lokasi AS tempat_penetapan",
+            "(
+                SELECT lokasi FROM lokasi_produk_hukum sub_lph WHERE sub_lph.id = mph.lokasi_terbit
+            ) AS lokasi_terbit",
             "GROUP_CONCAT(
                 CONCAT(lph.judul_berkas, ':', lph.nama_berkas)
                 ORDER BY lph.id DESC
-                SEPARATOR ', '
+                SEPARATOR ','
             ) AS berkas",
             "counts AS total_unduhan",
-            "ph.slug"
+            "jumlah_halaman"
         ])
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
+            ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
+            ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("riwayat_perubahan_produk_hukum rppu", "rppu.ph_id = ph.id", "LEFT")
             ->join("riwayat_unduhan ru", "ru.ph_id = ph.id");
 
         if (!is_null($category)) {

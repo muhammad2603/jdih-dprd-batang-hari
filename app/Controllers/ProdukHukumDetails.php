@@ -12,9 +12,11 @@ helper('string');
 class ProdukHukumDetails extends BaseController
 {
     private $fe_config_model;
+    private $ph_model;
     public function __construct()
     {
-        $this->fe_config_model = new FrontendConfig;
+        $this->fe_config_model  = new FrontendConfig;
+        $this->ph_model         = new ProdukHukum;
     }
     public function index(...$segments)
     {
@@ -25,15 +27,17 @@ class ProdukHukumDetails extends BaseController
         ];
         if (!in_array($category, $allowed_categories))
             return $this->response->setStatusCode(400)->setJSON(["status" => 400, "message" => "Kategori produk hukum tidak terdaftar atau tidak diizinkan!"]);
-        $produk_hukum = (new ProdukHukum)->getProdukHukumDetails($slug, $category);
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "[Judul Dokumen] | Produk Hukum";
         $page_alias = "Produk Hukum";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
             "Statistik"
         ];
-        $other_meta = [];
+        $produk_hukum = $this->ph_model->getProdukHukumDetails($slug, $category);
+        $page_title = $produk_hukum["judul"] . " | Produk Hukum";
+        $other_meta = [
+            "produk_hukum" => $produk_hukum
+        ];
         $page_data = create_page_meta(
             $page_title,
             $page_alias,
@@ -43,11 +47,5 @@ class ProdukHukumDetails extends BaseController
             $other_meta
         );
         return view('pages/produk_hukum_details', $page_data);
-
-        dd([
-            "kategori"  => $category,
-            "slug"      => $slug,
-            "result"    => $produk_hukum
-        ]);
     }
 }

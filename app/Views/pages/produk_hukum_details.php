@@ -1,5 +1,16 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
+<?php
+helper("filesystem");
+helper("number");
+$timeServices = service("timeServices");
+// __COMMENT__ Karena ini manipulasi string, masukkan ke-dalam string_helper
+$attachments_to_array = array_map(function ($item) {
+    return explode(":", $item);
+}, explode(",", $produk_hukum["berkas"]));
+$pub_document_path = "assets/dokumen-hukum/";
+$document_path = FCPATH . $pub_document_path;
+?>
 <div class="jumbotron bg-primary text-white py-8">
     <div class="max-w-7xl mx-auto px-6">
         <a href="<?= previous_url() ?>" class="flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors">
@@ -21,17 +32,18 @@
             </div>
             <div class="document-meta flex-1">
                 <div class="header-document flex items-center gap-3 mb-3">
-                    <span class="px-3 py-1 bg-white/20 text-white text-sm font-medium rounded-full">Peraturan Daerah</span>
-                    <span class="font-semibold">Nomor 3 Tahun 2021</span>
+                    <span class="px-3 py-1 bg-white/20 text-white text-sm font-medium rounded-full"><?= esc($produk_hukum["kategori"]) ?></span>
+                    <span class="font-semibold">Nomor <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></span>
                     <span class="px-3 py-1 rounded-full text-sm font-medium border flex items-center gap-2 bg-green-100 text-green-700 border-green-200">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                             <circle cx="12" cy="12" r="10" />
                             <path d="m9 12 2 2 4-4" />
                         </svg>
-                        <span>Berlaku</span>
+                        <!-- __FIX__ Setiap status memiliki warna aksen tersendiri, jadi sesuaikan warna berdasarkan statusnya. -->
+                        <span><?= esc($produk_hukum["status"]) ?></span>
                     </span>
                 </div>
-                <h1 class="text-3xl font-bold mb-2">Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten Batang Hari Tahun 2021-2026</h1>
+                <h1 class="text-3xl font-bold mb-2"><?= esc($produk_hukum["judul"]) ?></h1>
             </div>
         </div>
     </div>
@@ -39,6 +51,7 @@
 <div class="bg-white border-b border-primary-border sticky top-18.25 z-40">
     <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center gap-3">
+            <!-- __COMMENT__ Unduhan masih belum diketahui akan digunakan atau tidak. -->
             <a href="#" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                     <path d="M12 15V3" />
@@ -71,7 +84,8 @@
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <path d="m7 10 5 5 5-5" />
                 </svg>
-                <span>1.247 unduhan</span>
+                <!-- TODO Buat helper untuk konversi dari hitungan total, misalnya dari 1689 menjadi 1.689 -->
+                <span><?= esc($produk_hukum["total_unduhan"]) ?> unduhan</span>
             </div>
         </div>
     </div>
@@ -87,7 +101,7 @@
                     </svg>
                     <span>Abstrak</span>
                 </h2>
-                <p class="text-default-foreground leading-relaxed">Peraturan Daerah ini mengatur tentang Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten Batang Hari periode tahun 2021-2026. RPJMD merupakan penjabaran dari visi, misi, dan program Bupati yang penyusunannya berpedoman pada Rencana Pembangunan Jangka Panjang Daerah (RPJPD) dengan memperhatikan Rencana Pembangunan Jangka Menengah Nasional (RPJMN). RPJMD memuat arah kebijakan keuangan daerah, strategi pembangunan daerah, kebijakan umum, dan program Satuan Kerja Perangkat Daerah, lintas Satuan Kerja Perangkat Daerah, dan program kewilayahan disertai dengan rencana-rencana kerja dalam kerangka regulasi dan kerangka pendanaan yang bersifat indikatif.</p>
+                <p class="text-default-foreground leading-relaxed"><?= esc($produk_hukum["abstrak"]) ?></p>
             </div>
             <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex gap-2">
@@ -98,8 +112,9 @@
                     </svg>
                     <span>Catatan</span>
                 </h2>
-                <p class="text-default-foreground">Peraturan Daerah ini dilengkapi dengan Lampiran yang merupakan bagian tidak terpisahkan dari Peraturan Daerah ini.</p>
+                <p class="text-default-foreground"><?= esc($produk_hukum["catatan"]) ?></p>
             </div>
+            <!-- __COMMENT__ Dokumen terkait belum dibuat logikanya. -->
             <div class="references-document bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -149,31 +164,35 @@
                     <span>Lampiran</span>
                 </h2>
                 <div class="files space-y-2">
-                    <div class="file flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
-                        <div class="file-details flex items-center gap-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
-                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                <path d="M10 9H8" />
-                                <path d="M16 13H8" />
-                                <path d="M16 17H8" />
-                            </svg>
-                            <div>
-                                <p class="font-medium text-default-foreground">Lampiran RPJMD 2021-2026.pdf</p>
-                                <p class="text-sm text-muted-foreground">2.56 MB</p>
+                    <?php foreach ($attachments_to_array as [$title, $file_name]): ?>
+                        <?php $file_size = get_file_info($document_path . $file_name, ["size"]) ?>
+                        <div class="file flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                            <div class="file-details flex items-center gap-3">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
+                                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                    <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                    <path d="M10 9H8" />
+                                    <path d="M16 13H8" />
+                                    <path d="M16 17H8" />
+                                </svg>
+                                <div>
+                                    <p class="font-medium text-default-foreground"><?= esc($title) ?></p>
+                                    <p class="text-sm text-muted-foreground"><?= str_replace(',', '.', number_to_size($file_size["size"])) ?></p>
+                                </div>
                             </div>
+                            <a href="<?= base_url() . $pub_document_path . esc($file_name) ?>" class="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                    <path d="M12 15V3" />
+                                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                                    <path d="m7 10 5 5 5-5" />
+                                </svg>
+                                <span>Unduh</span>
+                            </a>
                         </div>
-                        <a href="#" class="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                <path d="M12 15V3" />
-                                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                <path d="m7 10 5 5 5-5" />
-                            </svg>
-                            <span>Unduh</span>
-                        </a>
-                    </div>
+                    <?php endforeach ?>
                 </div>
             </div>
+            <!-- __COMMENT__ Riwayat Perubahan Produk Hukum belum dibuat logikanya. -->
             <div class="document-change-histories bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-6 flex gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -256,11 +275,11 @@
                 <div class="space-y-4 text-sm">
                     <div>
                         <span class="block text-muted-foreground mb-1">Jenis Peraturan</span>
-                        <span class="block font-medium text-default-foreground">Peraturan Daerah</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["kategori"]) ?></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-1">Nomor/Tahun</span>
-                        <span class="block font-medium text-default-foreground">3 / 2021</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["nomor"]) ?> / <?= esc($produk_hukum["tahun"]) ?></span>
                     </div>
                     <div class="pt-4 border-t border-primary-border">
                         <span class="block text-muted-foreground mb-1">Tanggal Penetapan</span>
@@ -272,7 +291,7 @@
                                 <path d="M8 2v4" />
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
                             </svg>
-                            <time datetime="2021-03-15">15 Maret 2021</time>
+                            <time datetime="<?= esc($produk_hukum["tanggal_penetapan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($produk_hukum["tanggal_penetapan"])) ?></time>
                         </span>
                     </div>
                     <div>
@@ -285,7 +304,7 @@
                                 <path d="M8 2v4" />
                                 <rect x="3" y="4" width="18" height="18" rx="2" />
                             </svg>
-                            <time datetime="2021-03-15">15 Maret 2021</time>
+                            <time datetime="<?= esc($produk_hukum["tanggal_pengundangan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($produk_hukum["tanggal_pengundangan"])) ?></time>
                         </span>
                     </div>
                     <div>
@@ -298,7 +317,7 @@
                                 <path d="M3 10h18" />
                                 <path d="m16 20 2 2 4-4" />
                             </svg>
-                            <time datetime="2021-03-15">15 Maret 2021</time>
+                            <time datetime="<?= esc($produk_hukum["tanggal_berlaku"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($produk_hukum["tanggal_berlaku"])) ?></time>
                         </span>
                     </div>
                 </div>
@@ -317,18 +336,19 @@
                 <div class="space-y-4 text-sm">
                     <div>
                         <span class="block text-muted-foreground mb-1">Tempat Penetapan</span>
-                        <span class="block font-medium text-default-foreground">Muara Bulian</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["tempat_penetapan"]) ?></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-1">Sumber</span>
-                        <span class="block font-medium text-default-foreground">Lembaran Daerah Kabupaten Batang Hari</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["sumber"]) ?></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-1">Nomor/Tahun TLD</span>
-                        <span class="block font-medium text-default-foreground">3 / 2021</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["nomor_tld"]) ?> / <?= esc($produk_hukum["tahun_tld"]) ?></span>
                     </div>
                 </div>
             </div>
+            <!-- __COMMENT__ Klasifikasi belum dibuat logikanya. Ini berkaitan dengan Section Dokumen Terkait -->
             <div class="classifies bg-white border border-primary-border rounded-lg p-6">
                 <h3 class="font-bold mb-4 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -357,15 +377,15 @@
                 <div class="space-y-4 text-sm">
                     <div>
                         <span class="block text-muted-foreground mb-2">Pembuat Peraturan</span>
-                        <span class="block font-medium text-default-foreground">DPRD Kabupaten Batang Hari</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["pejabat_pembuat_peraturan"]) ?></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Penandatanganan</span>
-                        <span class="block font-medium text-default-foreground">Bupati Batang Hari</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["pejabat_penandatanganan"]) ?></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Pejabat Penetap</span>
-                        <span class="block font-medium text-default-foreground">Bupati Batang Hari</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["pejabat_penetap"]) ?></span>
                     </div>
                 </div>
             </div>
@@ -374,13 +394,14 @@
                 <div class="space-y-4 text-sm">
                     <div>
                         <span class="block text-muted-foreground mb-2">Lokasi</span>
-                        <span class="block font-medium text-default-foreground">Kabupaten Batang Hari</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["lokasi_terbit"]) ?></span>
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Jumlah Halaman</span>
-                        <span class="block font-medium text-default-foreground">185 halaman</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["jumlah_halaman"]) ?> halaman</span>
                     </div>
                     <div>
+                        <!-- TODO Tanggal terakhir diubah belum diambil dari database. -->
                         <span class="block text-muted-foreground mb-2">Terakhir diubah</span>
                         <span class="block font-medium text-default-foreground"><time datetime="2021-03-15">15 Maret 2021</time></span>
                     </div>
