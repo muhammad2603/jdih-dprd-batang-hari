@@ -13,3 +13,16 @@ if (!function_exists('uri_title_to_words')) {
         return ucwords(str_replace("-", " ", $uri), " ");
     }
 }
+
+if (!function_exists('split_string_on_array')) {
+    /**
+     * Split string didalam array menjadi array
+     * @param string $separator
+     * @param array $array sumber array
+     * @return array menghasilkan array baru
+     */
+    function split_string_on_array(string $separator, array $array): array
+    {
+        return array_map(fn($item) => explode($separator, $item), $array);
+    }
+}
