@@ -100,6 +100,7 @@ class ProdukHukum extends Model
     public function getProdukHukumDetails(int|string $key, string|null $category = null): array|null
     {
         $builder = $this->select([
+            "ph.id",
             "ph.title AS judul",
             "abstrak",
             "catatan",
@@ -138,12 +139,14 @@ class ProdukHukum extends Model
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
-            ->join("riwayat_perubahan_produk_hukum rppu", "rppu.ph_id = ph.id", "LEFT")
             ->join("riwayat_unduhan ru", "ru.ph_id = ph.id");
 
         if (!is_null($category)) {
             $builder
-                ->select("category AS kategori")
+                ->select([
+                    "category AS kategori",
+                    "category_synonym AS singkatan_kategori"
+                ])
                 ->join("document_categories doccateg", "doccateg.id = ph.category_id")
                 ->where("doccateg.category", $category);
         }
