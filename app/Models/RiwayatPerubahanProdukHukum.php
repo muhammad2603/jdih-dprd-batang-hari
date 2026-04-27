@@ -6,7 +6,7 @@ use CodeIgniter\Model;
 
 class RiwayatPerubahanProdukHukum extends Model
 {
-    protected $table            = 'riwayat_perubahan_produk_hukum';
+    protected $table            = 'riwayat_perubahan_produk_hukum rpph';
     protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
     protected $returnType       = 'array';
@@ -48,10 +48,12 @@ class RiwayatPerubahanProdukHukum extends Model
     {
         return $this
             ->select([
-                "change_type",
                 "comment",
+                "change_type",
+                "docstat.sinonim AS status",
                 "changed_at"
             ])
+            ->join("document_status docstat", "docstat.id = rpph.status_changed")
             ->where("ph_id", $ph_id)
             ->orderBy("changed_at", "DESC")
             ->findAll();
