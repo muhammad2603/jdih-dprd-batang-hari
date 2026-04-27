@@ -37,11 +37,31 @@ class ProdukHukumDetails extends BaseController
         $ph_id = intval($produk_hukum["id"]);
         $classify_produk_hukum = $this->ph_model->getClassifyProdukHukum($ph_id);
         $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
+        $builder = db_connect()->table("related_document rd");
+        $getRelatedProdukHukum = $builder
+            ->select([
+                "ph.title AS judul",
+                "ph.nomor",
+                "ph.tahun",
+                "(
+                    CASE
+                        WHEN doc_categ.category_synonym IS NULL THEN doc_categ.category
+                        ELSE doc_categ.category_synonym
+                    END
+                ) AS kategori",
+                "status AS ref_status"
+            ])
+            ->join("produk_hukum ph", "ph.id = rd.related_ph_id")
+            ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
+            ->join("document_status docstat", "docstat.id = rd.related_status")
+            ->where("rd.ph_id", $ph_id)
+            ->get()->getResultArray();
         $page_title = $produk_hukum["judul"] . " | Produk Hukum";
         $other_meta = [
             "produk_hukum"      => $produk_hukum,
             "histories_change"  => $histories_change,
             "klasifikasi"       => $classify_produk_hukum,
+            "related_documents" => $getRelatedProdukHukum
         ];
         $page_data = create_page_meta(
             $page_title,
