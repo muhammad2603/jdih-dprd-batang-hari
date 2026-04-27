@@ -49,18 +49,17 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
         </div>
     </div>
 </div>
-<div class="bg-white border-b border-primary-border sticky top-18.25 z-40">
+<div id="stickyTop" class="bg-white border-b border-primary-border sticky top-18.25 z-40">
     <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center gap-3">
-            <!-- __COMMENT__ Unduhan masih belum diketahui akan digunakan atau tidak. -->
-            <a href="#" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2">
+            <button type="button" id="btnDownloads" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                     <path d="M12 15V3" />
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                     <path d="m7 10 5 5 5-5" />
                 </svg>
                 <span>Unduh PDF</span>
-            </a>
+            </button>
             <button type="button" id="btnPrint" class="px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                     <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
@@ -114,7 +113,6 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                 </h2>
                 <p class="text-default-foreground"><?= esc($produk_hukum["catatan"]) ?></p>
             </div>
-            <!-- __COMMENT__ Dokumen terkait belum dibuat logikanya. -->
             <div class="references-document bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -125,36 +123,20 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                     <span>Dokument Terkait</span>
                 </h2>
                 <div class="documents space-y-3">
-                    <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                        <div class="flex-1">
-                            <header class="flex items-center gap-2 mb-1">
-                                <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium">Melaksanakan</span>
-                                <span class="text-sm font-semibold text-default-foreground">UU No. 25 Tahun 2004</span>
-                            </header>
-                            <p class="text-sm text-default-foreground">Sistem Perencanaan Pembangunan Nasional</p>
-                        </div>
-                    </article>
-                    <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                        <div class="flex-1">
-                            <header class="flex items-center gap-2 mb-1">
-                                <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium">Melaksanakan</span>
-                                <span class="text-sm font-semibold text-default-foreground">UU No. 23 Tahun 2014</span>
-                            </header>
-                            <p class="text-sm text-default-foreground">Pemerintahan Daerah</p>
-                        </div>
-                    </article>
-                    <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                        <div class="flex-1">
-                            <header class="flex items-center gap-2 mb-1">
-                                <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium">Melaksanakan</span>
-                                <span class="text-sm font-semibold text-default-foreground">PP No. 8 Tahun 2008</span>
-                            </header>
-                            <p class="text-sm text-default-foreground">Tahapan, Tata Cara Penyusunan, Pengendalian dan Evaluasi Pelaksanaan Rencana Pembangunan Daerah</p>
-                        </div>
-                    </article>
+                    <?php foreach ($related_documents as $rd): ?>
+                        <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
+                            <div class="flex-1">
+                                <header class="flex items-center gap-2 mb-1">
+                                    <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) ?></span>
+                                    <span class="text-sm font-semibold text-default-foreground"><?= esc($rd["kategori"]) ?> No. <?= esc($rd["nomor"]) ?> Tahun <?= esc($rd["tahun"]) ?></span>
+                                </header>
+                                <p class="text-sm text-default-foreground"><?= esc($rd["judul"]) ?></p>
+                            </div>
+                        </article>
+                    <?php endforeach ?>
                 </div>
             </div>
-            <div class="attachments bg-white border border-primary-border rounded-lg p-6">
+            <div id="lampiran" class="attachments bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
                         <path d="M12 15V3" />
@@ -215,11 +197,7 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                                                     <path d="M14 2v5a1 1 0 0 0 1 1h5" />
                                                     <path d="m9 15 2 2 4-4" />
                                                 </svg>
-                                                <!-- __FIX__ Change type ini adalah perubahan status (jika berubah),
-                                                    saat ini statusnya bukan status dokumen (berlaku, dicabut, dsb.),
-                                                    melainkan status perubahan, perbaiki ini.
-                                                -->
-                                                <span class="font-semibold text-default-foreground"><?= esc($history["change_type"]) ?></span>
+                                                <span class="font-semibold text-default-foreground"><?= esc($history["status"]) ?></span>
                                             </div>
                                             <div class="date-change flex gap-2 text-sm text-muted-foreground">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
@@ -394,5 +372,6 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
         </div>
     </div>
 </div>
+<script src="<?= base_url() . "assets/js/produk-hukum-details-page.js" ?>"></script>
 <script src="<?= base_url() . "assets/js/history-ui.js" ?>"></script>
 <?= $this->endSection() ?>
