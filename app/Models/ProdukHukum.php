@@ -172,7 +172,9 @@ class ProdukHukum extends Model
     public function getClassifyProdukHukum(int $id): array
     {
         $klasifikasi_bidang_hukum = $this
-            ->select("kat_bh.kategori AS bidang_hukum")
+            ->select([
+                "kat_bh.kategori AS bidang_hukum"
+            ])
             ->join("klasifikasi_bidang_hukum kbh", "kbh.ph_id = ph.id")
             ->join("kategori_bidang_hukum kat_bh", "kat_bh.id = kbh.bidang_hukum_id")
             ->where("ph.id", $id)
@@ -188,7 +190,7 @@ class ProdukHukum extends Model
             ->findAll();
         return [
             "klasifikasi_bidang_hukum" => $klasifikasi_bidang_hukum,
-            "klasifikasi_subjek" => $klasifikasi_subjek
+            "klasifikasi_subjek" => $klasifikasi_subjek,
         ];
     }
 }
