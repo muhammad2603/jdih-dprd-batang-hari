@@ -22,11 +22,6 @@ class ProdukHukumDetails extends BaseController
     {
         [$category, $slug] = $segments;
         $category = uri_title_to_words($category);
-        $allowed_categories = [
-            "Peraturan Bupati"
-        ];
-        if (!in_array($category, $allowed_categories))
-            return $this->response->setStatusCode(400)->setJSON(["status" => 400, "message" => "Kategori produk hukum tidak terdaftar atau tidak diizinkan!"]);
         $data_feconfig = $this->fe_config_model->getAllData();
         $page_alias = "Produk Hukum";
         $page_description = "Deskripsi halaman";
