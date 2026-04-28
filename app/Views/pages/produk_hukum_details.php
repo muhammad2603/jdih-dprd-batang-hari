@@ -120,7 +120,7 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                         <path d="M10 14 21 3" />
                         <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                     </svg>
-                    <span>Dokument Terkait</span>
+                    <span>Dokumen Terkait</span>
                 </h2>
                 <div class="documents space-y-3">
                     <?php foreach ($related_documents as $rd): ?>
@@ -145,7 +145,7 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                     </svg>
                     <span>Lampiran</span>
                 </h2>
-                <div class="files space-y-2">
+                <div class="files space-y-4">
                     <?php foreach ($attachments_to_array as [$title, $file_name]): ?>
                         <?php $file_size = get_file_info($document_path . $file_name, ["size"]) ?>
                         <div class="file flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
