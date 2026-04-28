@@ -46,16 +46,29 @@ class RiwayatPerubahanProdukHukum extends Model
 
     public function getHistoriesChange(int $ph_id): array
     {
+        $selected_fields = [
+            "change_type",
+            "doc_categ.category_synonym AS kategori",
+            "(
+                CASE
+                    WHEN docstat.sinonim IS NULL THEN docstat.status
+                    ELSE docstat.sinonim
+                END
+            ) AS status",
+            "rdp.nomor",
+            "rdp.tahun",
+            "rdp.comment",
+            "changed_at"
+        ];
         return $this
-            ->select([
-                "comment",
-                "change_type",
-                "docstat.sinonim AS status",
-                "changed_at"
-            ])
-            ->join("document_status docstat", "docstat.id = rpph.status_changed")
-            ->where("ph_id", $ph_id)
-            ->orderBy("changed_at", "DESC")
+            ->select($selected_fields)
+            ->join("produk_hukum ph", "ph.id = $ph_id")
+            ->join("riwayat_detail_perubahan rdp", "rdp.id = rpph.rdp_id")
+            ->join("document_categories doc_categ", "doc_categ.id = rdp.category_id", "LEFT")
+            ->join("document_status docstat", "docstat.id = rdp.status_id", "LEFT")
+            ->where("rpph.ph_id", $ph_id)
+            ->orderBy("rdp.changed_at", "DESC")
+            ->orderBy("rdp.id", "DESC")
             ->findAll();
     }
 }

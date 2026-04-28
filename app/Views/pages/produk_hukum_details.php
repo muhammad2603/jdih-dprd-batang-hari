@@ -192,12 +192,13 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                                     <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
                                         <div class="flex items-start justify-between gap-4 mb-2">
                                             <div class="flex items-center gap-2">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-green-600">
-                                                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-purple-600">
+                                                    <path d="M16 22h2a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v2.85" />
                                                     <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                                    <path d="m9 15 2 2 4-4" />
+                                                    <path d="M8 14v2.2l1.6 1" />
+                                                    <circle cx="8" cy="16" r="6" />
                                                 </svg>
-                                                <span class="font-semibold text-default-foreground"><?= esc($history["status"]) ?></span>
+                                                <span class="font-semibold text-default-foreground"><?= !is_null($history["status"]) ? esc($history["status"]) : esc($history["change_type"]) ?></span>
                                             </div>
                                             <div class="date-change flex gap-2 text-sm text-muted-foreground">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
@@ -212,8 +213,7 @@ $subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
                                         </div>
                                         <p class="text-default-foreground mb-2"><?= esc($history["comment"]) ?></p>
                                         <div class="flex items-center gap-2 text-sm">
-                                            <!-- __COMMENT__ Nomor dan tahun produk hukum bisa berubah, jadi, lebih baik simpan nomor atau tahun produk hukum sebelum dirubah di Database -->
-                                            <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></p>
+                                            <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($history["kategori"]) ?? esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($history["nomor"]) ?? esc($produk_hukum["nomor"]) ?> Tahun <?= esc($history["tahun"]) ?? esc($produk_hukum["tahun"]) ?></p>
                                         </div>
                                     </div>
                                 <?php endforeach ?>
