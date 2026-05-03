@@ -1,24 +1,25 @@
-// const openPrintDropdown = (element, stateDropdown) => {
-//     element.classList.remove("-translate-y-8")
-//     element.classList.remove("opacity-0")
-//     if (stateDropdown) {
-//         setTimeout(() => element.classList.remove("pointer-events-none"), 300)
-//         return;
-//     }
-//     element.classList.remove("pointer-events-none")
-// }
-// const closePrintDropdown = element => {
-//     element.classList.add("-translate-y-8")
-//     element.classList.add("opacity-0")
-//     element.classList.add("pointer-events-none")
-// }
-
 class ShowDropdownByButton {
     constructor({ targetDropdownId }) {
         this.dropdownId = targetDropdownId;
+        this.stateDropdown = false;
+    }
+
+    updateStateDropdown(state = null) {
+        return this.stateDropdown = state === null ? !this.stateDropdown : state;
+    }
+
+    checkClosestTarget(eventTarget, buttonId, dropdownId) {
+        return {
+            isTargetButton: eventTarget.closest(`#${buttonId}`),
+            isTargetDropdown: eventTarget.closest(`#${dropdownId}`),
+            get isNotTargetsClicked() {
+                return this.isTargetButton === null && this.isTargetDropdown === null
+            }
+        }
     }
 
     openDropdown(stateDropdown) {
+        this.updateStateDropdown(true)
         this.dropdownId.classList.remove("-translate-y-8")
         this.dropdownId.classList.remove("opacity-0")
         if (stateDropdown) {
@@ -29,12 +30,12 @@ class ShowDropdownByButton {
     }
 
     closeDropdown(stateDropdown) {
+        this.updateStateDropdown(false)
         this.dropdownId.classList.add("-translate-y-8")
         this.dropdownId.classList.add("opacity-0")
         this.dropdownId.classList.add("pointer-events-none")
     }
 }
-
 document.addEventListener("DOMContentLoaded", function () {
     const btnDownloads = document.getElementById("btnDownloads");
     const gap = 18;
@@ -61,47 +62,42 @@ document.addEventListener("DOMContentLoaded", function () {
     const shareDropdown = document.getElementById("shareDropdown");
     let isShareDropdownOpen = false;
 
+    const showDropdownPrint = new ShowDropdownByButton({ targetDropdownId: printDropdown });
+    const showDropdownShare = new ShowDropdownByButton({ targetDropdownId: shareDropdown });
+
     window.addEventListener("click", e => {
-        const showDropdownPrint = new ShowDropdownByButton({ targetDropdownId: printDropdown });
-        const showDropdownShare = new ShowDropdownByButton({ targetDropdownId: shareDropdown });
-
-        // TODO Lakukan refactoring dari kode yang memiliki duplikasi 
-        // #1
-        const isTargetBtnPrintDropdown = e.target.closest("#btnPrintDropdown");
-        const isTargetPrintDropdown = e.target.closest("#printDropdown");
-        const isPrintNotTargeted = isTargetBtnPrintDropdown === null && isTargetPrintDropdown === null;
-        // DUPLICATE TO #1
-        const isTargetBtnShareDropdown = e.target.closest("#btnShareDropdown");
-        const isTargetShareDropdown = e.target.closest("#shareDropdown");
-        const isShareNotTargeted = isTargetBtnShareDropdown === null && isTargetShareDropdown === null;
+        const eventTarget = e.target;
+        const {
+            isTargetButton: isTargetBtnPrintDropdown,
+            isTargetDropdown: isTargetPrintDropdown,
+            isNotTargetsClicked: isPrintNotTargeted
+        } = showDropdownPrint.checkClosestTarget(eventTarget, "btnPrintDropdown", "printDropdown")
+        const {
+            isTargetButton: isTargetBtnShareDropdown,
+            isTargetDropdown: isTargetShareDropdown,
+            isNotTargetsClicked: isShareNotTargeted
+        } = showDropdownShare.checkClosestTarget(eventTarget, "btnShareDropdown", "shareDropdown")
 
         // #3
-        // Jika tombol atau dropdown dari print dan share yang tidak menjadi target
         if (isPrintNotTargeted && isShareNotTargeted) {
-            // Tutup semua dropdown-nya dan perbarui state-nya
-            isPrintDropdownOpen = false;
-            showDropdownPrint.closeDropdown(isPrintDropdownOpen)
-            isShareDropdownOpen = false;
-            showDropdownShare.closeDropdown(isShareDropdownOpen)
+            showDropdownPrint.closeDropdown()
+            showDropdownShare.closeDropdown()
         }
+
         // #3
-        // Jika yang menjadi target adalah dropdown print dan share
         if (isTargetPrintDropdown || isTargetShareDropdown) {
-            // jangan lakukan aksi dibawah
             return;
         }
 
         // #4
         // Jika yang menjadi target adalah tombol print dan state dropdown print-nya false (masih tertutup)
-        if (isTargetBtnPrintDropdown && isPrintDropdownOpen === false) {
+        if (isTargetBtnPrintDropdown && showDropdownPrint.stateDropdown === false) {
             // Buka dropdown-nya
-            isPrintDropdownOpen = true;
-            showDropdownPrint.openDropdown(isPrintDropdownOpen)
+            showDropdownPrint.openDropdown()
             // #4_1
             // Jika state dropdown share masih atau sedang terbuka
-            if (isShareDropdownOpen) {
+            if (showDropdownShare.stateDropdown === true) {
                 // Tutup dropdown-nya
-                isShareDropdownOpen = false;
                 showDropdownShare.closeDropdown()
             }
             // Hentikan eksekusi
@@ -110,31 +106,26 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // #5
         // Jika yang menjadi target adalah tombol print dan state dropdown print-nya true (masih terbuka)
-        if (isTargetBtnPrintDropdown && isPrintDropdownOpen === true) {
+        if (isTargetBtnPrintDropdown && showDropdownPrint.stateDropdown === true) {
             // Tutup dropdown-nya
-            isPrintDropdownOpen = false;
             showDropdownPrint.closeDropdown()
             // Hentikan eksekusi
             return;
         }
 
         // DUPLICATE TO #4
-        if (isTargetBtnShareDropdown && isShareDropdownOpen === false) {
-            isShareDropdownOpen = true;
-            showDropdownShare.openDropdown(isShareDropdownOpen)
+        if (isTargetBtnShareDropdown && showDropdownShare.stateDropdown === false) {
+            showDropdownShare.openDropdown()
             // DUPLICATE TO #4_1
-            if (isPrintDropdownOpen) {
-                isPrintDropdownOpen = false;
+            if (showDropdownPrint.stateDropdown === true) {
                 showDropdownPrint.closeDropdown()
             }
             return;
         }
 
         // DUPLICATE TO #5
-        if (isTargetBtnShareDropdown && isShareDropdownOpen === true) {
-            isShareDropdownOpen = false;
+        if (isTargetBtnShareDropdown && showDropdownShare.stateDropdown === true) {
             showDropdownShare.closeDropdown()
-            return;
         }
     })
 })
