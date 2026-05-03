@@ -12,7 +12,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
     <div class="jumbotron-image-view w-full h-full absolute top-0 left-0 -z-10">
         <img
-        src="<?= base_url() . 'assets/images/gedung-dprd.jpeg' ?>"
+            src="<?= base_url() . 'assets/images/gedung-dprd.jpeg' ?>"
             alt="Gedung DPRD"
             class="w-full h-full object-cover" />
         <div class="absolute inset-0 bg-linear-to-r from-black/70 via-black/50 to-transparent"></div>
@@ -277,6 +277,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
         </div>
         <div class="documents-list space-y-4">
             <?php foreach ($new_documents as $doc): ?>
+                <?php $uri_path = urldecode("produk-hukum/" . url_title(esc($doc["kategori"]), "-", true) . "/" . esc($doc["slug"])) ?>
                 <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
                     <div class="content flex items-start gap-6">
                         <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
@@ -292,12 +293,12 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                             <header class="top-detail flex items-end justify-between gap-4 mb-2">
                                 <div class="flex-1">
                                     <div class="sub-details flex items-center gap-3 mb-2">
-                                        <span class="document-category inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full"><?= $doc["kategori"] ?></span>
-                                        <span class="number-document text-sm font-semibold text-default-foreground">Nomor <?= $doc["nomor"] ?> Tahun <?= $doc["tahun"] ?></span>
+                                        <span class="document-category inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full"><?= esc($doc["kategori"]) ?></span>
+                                        <span class="number-document text-sm font-semibold text-default-foreground">Nomor <?= esc($doc["nomor"]) ?> Tahun <?= esc($doc["tahun"]) ?></span>
                                     </div>
-                                    <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2"><?= $doc["judul"] ?></h3>
+                                    <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2"><?= esc($doc["judul"]) ?></h3>
                                 </div>
-                                <a href="<?= base_url() . "produk-hukum/" . $doc["slug"] ?>" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
+                                <a href="<?= base_url() . $uri_path ?>" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                                         <path d="M12 7v14" />
                                         <path d="M16 12h2" />
@@ -308,14 +309,14 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                     </svg>
                                     <span>Detail</span>
                                 </a>
-                                <a href="<?= base_url() . "assets/dokumen-hukum/" . $doc["berkas"] ?>" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0" download>
+                                <a href="<?= base_url() . "assets/dokumen-hukum/" . esc($doc["berkas"]) ?>" class="download px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0" download>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                         <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
                                         <path d="M14 2v5a1 1 0 0 0 1 1h5" />
                                         <path d="M12 18v-6" />
                                         <path d="m9 15 3 3 3-3" />
                                     </svg>
-                                    <span>PDF</span>
+                                    <span>Unduh PDF</span>
                                 </a>
                             </header>
                             <div class="other-details flex items-center gap-6 text-sm text-muted-foreground">
@@ -327,7 +328,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                         <path d="M8 2v4" />
                                         <rect x="3" y="4" width="18" height="18" rx="2" />
                                     </svg>
-                                    <time datetime="<?= $doc["tanggal_upload"] ?>"><?= $timeServices->translateDateToLocalFormat($doc["tanggal_upload"]) ?></time>
+                                    <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time>
                                 </div>
                                 <div class="upload-date flex items-center gap-2">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
@@ -335,7 +336,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                                         <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
                                         <path d="m7 10 5 5 5-5" />
                                     </svg>
-                                    <span><?= $doc["total_unduhan"] ?> unduhan</span>
+                                    <span><?= esc($doc["total_unduhan"]) ?> unduhan</span>
                                 </div>
                             </div>
                         </div>
