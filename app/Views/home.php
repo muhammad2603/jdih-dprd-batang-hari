@@ -139,21 +139,23 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
             <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $get_meta_home) ?></p>
         </div>
         <div class="produk-hukum-categories-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <button type="button" class="group bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
-                <div class="icon-category bg-primary w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
-                        <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
-                        <path d="m16 16 6-6" />
-                        <path d="m21.5 10.5-8-8" />
-                        <path d="m8 8 6-6" />
-                        <path d="m8.5 7.5 8 8" />
-                    </svg>
-                </div>
-                <h3 class="category-name text-xl font-semibold mb-2 group-hover:text-primary transition-colors">Peraturan Daerah</h3>
-                <p class="total-document text-3xl font-bold text-primary mb-2">156</p>
-                <p class="text-sm text-muted-foreground">Dokumen tersedia</p>
-            </button>
-            <button type="button" class="group bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
+            <?php foreach ($total_produk_hukum as $total): ?>
+                <button type="button" class="group bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
+                    <div class="icon-category bg-primary w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
+                            <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
+                            <path d="m16 16 6-6" />
+                            <path d="m21.5 10.5-8-8" />
+                            <path d="m8 8 6-6" />
+                            <path d="m8.5 7.5 8 8" />
+                        </svg>
+                    </div>
+                    <h3 class="category-name text-xl font-semibold mb-2 group-hover:text-primary transition-colors"><?= esc($total["kategori"]) ?></h3>
+                    <p class="total-document text-3xl font-bold text-primary mb-2"><?= esc($total["total_dokumen"]) ?></p>
+                    <p class="text-sm text-muted-foreground">Dokumen tersedia</p>
+                </button>
+            <?php endforeach ?>
+            <!-- <button type="button" class="group bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
                 <div class="icon-category bg-accent w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
                         <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
@@ -206,7 +208,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                 <h3 class="category-name text-xl font-semibold mb-2 group-hover:text-primary transition-colors">Produk Hukum Lain</h3>
                 <p class="total-document text-3xl font-bold text-primary mb-2">344</p>
                 <p class="text-sm text-muted-foreground">Dokumen tersedia</p>
-            </button>
+            </button> -->
         </div>
     </div>
 </section>
