@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             cloneDot.classList.add("bg-green-100", "border-green-300")
         } else {
             calcPosWithGap = offsetTopEl + gapPosFromTop;
-            cloneDot.classList.add("bg-gray-100", "border-gray-300")
+            cloneDot.classList.add("bg-gray-100", "border-gray-300", "opacity-70")
         }
         cloneDot.style.top = `${calcPosWithGap}px`;
         dotsFragment.appendChild(cloneDot)
