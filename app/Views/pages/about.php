@@ -1,22 +1,26 @@
 <?= $this->extend('layouts/main') ?>
 
 <?= $this->section('konten') ?>
-<!-- TODO Masukkan data halaman ini ke Database agar mudah dirubah tanpa menyentuh kode -->
+<?php
+$about_us_description = dot_array_search("about_us_section.description", $page_meta);
+$misi_lists = dot_array_search("misi_section.description", $page_meta);
+$contacts = $frontend_config["Kontak"];
+?>
 <section class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
-            <h1 class="text-4xl font-bold mb-4">Tentang</h1>
-            <p class="text-lg text-white/80 max-w-2xl">Jaringan Dokumentasi dan Informasi Hukum Dewan Perwakilan Rakyat Daerah Kabupaten Batang Hari</p>
+            <h1 class="text-4xl font-bold mb-4"><?= esc(dot_array_search("jumbotron.title", $page_meta)) ?></h1>
+            <p class="text-lg text-white/80 max-w-2xl"><?= esc(dot_array_search("jumbotron.description", $page_meta)) ?></p>
         </div>
     </div>
 </section>
 <section class="contents-container max-w-7xl mx-auto px-6 py-12">
     <div class="about-us bg-white border border-primary-border rounded-lg p-8 mb-8">
-        <h2 class="text-2xl font-semibold mb-4">Tentang Kami</h2>
+        <h2 class="text-2xl font-semibold mb-4"><?= esc(dot_array_search("about_us_section.title", $page_meta)) ?></h2>
         <div class="paragraphs prose max-w-none text-muted-foreground space-y-4">
-            <p>Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Hari adalah sistem pengelolaan dokumen dan informasi hukum yang terintegrasi untuk memudahkan akses masyarakat terhadap produk hukum daerah.</p>
-            <p>JDIH DPRD Kabupaten Batang Hari dibentuk berdasarkan Peraturan Presiden Nomor 33 Tahun 2012 tentang Jaringan Dokumentasi dan Informasi Hukum Nasional dan Peraturan Menteri Dalam Negeri Nomor 2 Tahun 2014 tentang Pembangunan Jaringan Dokumentasi dan Informasi Hukum Daerah.</p>
-            <p>Melalui portal ini, masyarakat dapat mengakses berbagai produk hukum daerah seperti Peraturan Daerah, Peraturan Bupati, Keputusan Bupati, Keputusan DPRD, dan berbagai dokumen hukum lainnya secara mudah dan transparan.</p>
+            <?php foreach ($about_us_description as $description): ?>
+                <p><?= esc($description) ?></p>
+            <?php endforeach ?>
         </div>
     </div>
     <div class="visi-misi grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
@@ -28,9 +32,9 @@
                         <circle cx="12" cy="12" r="3" />
                     </svg>
                 </div>
-                <h2 class="text-2xl font-semibold">Visi</h2>
+                <h2 class="text-2xl font-semibold"><?= esc(dot_array_search("visi_section.title", $page_meta)) ?></h2>
             </div>
-            <p class="text-muted-foreground leading-relaxed">Menjadi pusat informasi hukum daerah yang terpercaya, akuntabel, dan mudah diakses oleh seluruh masyarakat Kabupaten Batang Hari dalam rangka mewujudkan transparansi dan kepastian hukum.</p>
+            <p class="text-muted-foreground leading-relaxed"><?= esc(dot_array_search("visi_section.description", $page_meta)) ?></p>
         </div>
         <div class="misi bg-white border border-primary-border rounded-lg p-8">
             <div class="top flex items-center gap-3 mb-6">
@@ -41,30 +45,20 @@
                         <circle cx="12" cy="12" r="2" />
                     </svg>
                 </div>
-                <h2 class="text-2xl font-semibold">Misi</h2>
+                <h2 class="text-2xl font-semibold"><?= esc(dot_array_search("misi_section.title", $page_meta)) ?></h2>
             </div>
             <ul class="text-muted-foreground space-y-3">
-                <li class="flex gap-2">
-                    <span class="text-primary font-bold">•</span>
-                    <span>Mengelola dan mendokumentasikan produk hukum daerah secara sistematis</span>
-                </li>
-                <li class="flex gap-2">
-                    <span class="text-primary font-bold">•</span>
-                    <span>Menyediakan akses informasi hukum yang cepat dan mudah</span>
-                </li>
-                <li class="flex gap-2">
-                    <span class="text-primary font-bold">•</span>
-                    <span>Meningkatkan pelayanan informasi hukum kepada masyarakat</span>
-                </li>
-                <li class="flex gap-2">
-                    <span class="text-primary font-bold">•</span>
-                    <span>Membangun database hukum yang akurat dan terkini</span>
-                </li>
+                <?php foreach ($misi_lists as $misi): ?>
+                    <li class="flex gap-2">
+                        <span class="text-primary font-bold">•</span>
+                        <span><?= esc($misi) ?></span>
+                    </li>
+                <?php endforeach ?>
             </ul>
         </div>
     </div>
     <div class="values-us mb-8">
-        <h2 class="text-2xl font-semibold mb-6">Nilai-Nilai Kami</h2>
+        <h2 class="text-2xl font-semibold mb-6"><?= esc(dot_array_search("values_us_section.title", $page_meta)) ?></h2>
         <div class="values grid grid-cols-1 md:grid-cols-3 gap-6">
             <div class="integrity bg-white border border-primary-border rounded-lg p-6">
                 <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -73,7 +67,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold mb-2">Integritas</h3>
-                <p class="text-sm text-muted-foreground">Mengelola informasi hukum dengan penuh tanggung jawab dan kejujuran</p>
+                <p class="text-sm text-muted-foreground"><?= esc(dot_array_search("values_us_section.lists.integritas.description", $page_meta)) ?></p>
             </div>
             <div class="service bg-white border border-primary-border rounded-lg p-6">
                 <div class="icon w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
@@ -84,7 +78,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold mb-2">Pelayanan</h3>
-                <p class="text-sm text-muted-foreground">Memberikan pelayanan terbaik kepada masyarakat dengan ramah dan profesional</p>
+                <p class="text-sm text-muted-foreground"><?= esc(dot_array_search("values_us_section.lists.pelayanan.description", $page_meta)) ?></p>
             </div>
             <div class="transparency bg-white border border-primary-border rounded-lg p-6">
                 <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -94,7 +88,7 @@
                     </svg>
                 </div>
                 <h3 class="font-semibold mb-2">Transparansi</h3>
-                <p class="text-sm text-muted-foreground">Menyediakan informasi hukum yang terbuka dan dapat diakses oleh publik</p>
+                <p class="text-sm text-muted-foreground"><?= esc(dot_array_search("values_us_section.lists.transparansi.description", $page_meta)) ?></p>
             </div>
         </div>
     </div>
@@ -104,28 +98,20 @@
         <div class="contacts grid grid-cols-1 md:grid-cols-3 gap-8">
             <div class="address">
                 <h3 class="font-semibold mb-2">Alamat</h3>
-                <p class="text-white/80 text-sm">
-                    Jln. ABC No. 1
-                    <br>
-                    Mekarsari, Jakarta
-                    <br>
-                    33333
-                </p>
+                <p class="text-white/80 text-sm"><?= esc($contacts["Lokasi"][0]["content"]) ?></p>
             </div>
             <div class="contact">
                 <h3 class="font-semibold mb-2">Kontak</h3>
                 <p class="text-white/80 text-sm">
-                    <span>Telepon: (1234) 56789</span>
+                    <span>Fax: <?= esc($contacts["Fax"][0]["content"]) ?></span>
                     <br>
-                    <span>Fax: (1234) 56789</span>
-                    <br>
-                    <span>Email: setwan@batangharikab.go.id</span>
+                    <span>Email: <?= esc($contacts["Mail"][0]["content"]) ?></span>
                 </p>
             </div>
             <div class="operational-hours">
                 <h3 class="font-semibold mb-2">Jam Operasional</h3>
                 <p class="text-white/80 text-sm">
-                    <span>Senin - Jum'at</span>
+                    <span>Senin - Kamis</span>
                     <br>
                     <span>08:00 - 16:00 WIB</span>
                     <br>
