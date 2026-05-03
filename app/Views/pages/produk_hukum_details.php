@@ -99,7 +99,7 @@ $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
                     <span>Bagikan</span>
                 </button>
                 <div id="shareDropdown" class="shares-dropdown absolute left-0 mbs-2 w-[130%] p-4 bg-white border border-primary-border z-20 space-y-2 rounded-sm shadow-lg transition duration-200 ease-in pointer-events-none -translate-y-8 opacity-0">
-                    <button type="button" class="share-btn p-1 w-full text-sm text-left flex gap-3 group cursor-pointer focus:outline-none" tabindex="-1">
+                    <button type="button" id="btnCopyLink" class="copy-btn p-1 w-full text-sm text-left flex gap-3 group cursor-pointer focus:outline-none" tabindex="-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
                             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
                             <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />

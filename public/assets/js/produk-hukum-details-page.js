@@ -5,10 +5,28 @@ function openDropdownAndCloseOther(classForDropdownToOpen, classForDropdownToClo
         classForDropdownToClose.closeDropdown()
     }
 }
+/**
+ * Async Function: Untuk menyalin teks ke-clipboard
+ * @param {string} text - Teks yang akan disalin
+ * @returns {boolean}
+ */
+async function copyText(text) {
+    try {
+        await navigator.clipboard.writeText(text)
+        alert("Link berhasil disalin.")
+        return true;
+    } catch (error) {
+        alert("Error: Gagal menyalin link.")
+        return false;
+    }
+}
 document.addEventListener("DOMContentLoaded", function () {
     const showDropdownPrint = new ShowDropdownByButton({ targetButtonId: "btnPrintDropdown", targetDropdownId: "printDropdown" });
     const showDropdownShare = new ShowDropdownByButton({ targetButtonId: "btnShareDropdown", targetDropdownId: "shareDropdown" });
     const btnDownloads = document.getElementById("btnDownloads");
+    const btnCopyLink = document.getElementById("btnCopyLink");
+    const getLink = window.location.href;
+    btnCopyLink.addEventListener("click", () => copyText(getLink))
     const gap = 18;
     btnDownloads.addEventListener("click", function () {
         const heightHeaderNav = document.getElementById("headerNav").getBoundingClientRect().height;
