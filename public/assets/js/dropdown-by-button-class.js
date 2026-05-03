@@ -1,34 +1,49 @@
-export class ShowDropdownByButton {
-    constructor({ targetDropdownId }) {
-        this.dropdownId = targetDropdownId;
-        this.stateDropdown = false;
+/**
+ * Function: Membuka dropdown
+ * @param {boolean} state - Digunakan untuk menghapus class pointer-events-none dengan timeout jika ingin membuka dropdown.  
+ * @param {HTMLElement} dropdownElement - Element dropdown yang ingin dibuka
+ * @return {void}
+ */
+function setDropdownToShowed(state, dropdownElement) {
+    dropdownElement.classList.remove("-translate-y-8")
+    dropdownElement.classList.remove("opacity-0")
+    if (state) {
+        setTimeout(() => dropdownElement.classList.remove("pointer-events-none"), 300)
     }
-
-    checkClosestTarget(eventTarget, buttonId, dropdownId) {
+}
+/**
+ * Function: Menutup Dropdown
+ * @param {HTMLElement} dropdownElement - Element dropdown yang ingin ditutup
+ * @return {void}
+ */
+function setDropdownToClosed(dropdownElement) {
+    dropdownElement.classList.add("-translate-y-8")
+    dropdownElement.classList.add("opacity-0")
+    dropdownElement.classList.add("pointer-events-none")
+}
+export class ShowDropdownByButton {
+    constructor({ targetButtonId, targetDropdownId }) {
+        this.stateDropdown = false;
+        this.buttonId = targetButtonId;
+        this.buttonEl = document.getElementById(targetButtonId);
+        this.dropdownId = targetDropdownId;
+        this.dropdownEl = document.getElementById(targetDropdownId);
+    }
+    checkClosestTarget(eventTarget) {
         return {
-            isTargetButton: eventTarget.closest(`#${buttonId}`),
-            isTargetDropdown: eventTarget.closest(`#${dropdownId}`),
+            isTargetButton: eventTarget.closest(`#${this.buttonId}`),
+            isTargetDropdown: eventTarget.closest(`#${this.dropdownId}`),
             get isNotTargetsClicked() {
                 return this.isTargetButton === null && this.isTargetDropdown === null
             }
         }
     }
-
-    openDropdown(stateDropdown) {
+    openDropdown() {
         this.stateDropdown = true;
-        this.dropdownId.classList.remove("-translate-y-8")
-        this.dropdownId.classList.remove("opacity-0")
-        if (stateDropdown) {
-            setTimeout(() => this.dropdownId.classList.remove("pointer-events-none"), 300)
-            return;
-        }
-        this.dropdownId.classList.remove("pointer-events-none")
+        setDropdownToShowed(this.stateDropdown, this.dropdownEl)
     }
-
-    closeDropdown(stateDropdown) {
+    closeDropdown() {
         this.stateDropdown = false;
-        this.dropdownId.classList.add("-translate-y-8")
-        this.dropdownId.classList.add("opacity-0")
-        this.dropdownId.classList.add("pointer-events-none")
+        setDropdownToClosed(this.dropdownEl)
     }
 }
