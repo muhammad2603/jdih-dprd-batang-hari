@@ -1,41 +1,4 @@
-class ShowDropdownByButton {
-    constructor({ targetDropdownId }) {
-        this.dropdownId = targetDropdownId;
-        this.stateDropdown = false;
-    }
-
-    updateStateDropdown(state = null) {
-        return this.stateDropdown = state === null ? !this.stateDropdown : state;
-    }
-
-    checkClosestTarget(eventTarget, buttonId, dropdownId) {
-        return {
-            isTargetButton: eventTarget.closest(`#${buttonId}`),
-            isTargetDropdown: eventTarget.closest(`#${dropdownId}`),
-            get isNotTargetsClicked() {
-                return this.isTargetButton === null && this.isTargetDropdown === null
-            }
-        }
-    }
-
-    openDropdown(stateDropdown) {
-        this.updateStateDropdown(true)
-        this.dropdownId.classList.remove("-translate-y-8")
-        this.dropdownId.classList.remove("opacity-0")
-        if (stateDropdown) {
-            setTimeout(() => this.dropdownId.classList.remove("pointer-events-none"), 300)
-            return;
-        }
-        this.dropdownId.classList.remove("pointer-events-none")
-    }
-
-    closeDropdown(stateDropdown) {
-        this.updateStateDropdown(false)
-        this.dropdownId.classList.add("-translate-y-8")
-        this.dropdownId.classList.add("opacity-0")
-        this.dropdownId.classList.add("pointer-events-none")
-    }
-}
+import { ShowDropdownByButton } from "./dropdown-by-button-class.js";
 document.addEventListener("DOMContentLoaded", function () {
     const btnDownloads = document.getElementById("btnDownloads");
     const gap = 18;
@@ -54,13 +17,6 @@ document.addEventListener("DOMContentLoaded", function () {
             iframedDocument.contentWindow.print();
         })
     })
-    const btnPrintDropdown = document.getElementById("btnPrintDropdown");
-    const printDropdown = document.getElementById("printDropdown");
-    let isPrintDropdownOpen = false;
-
-    const btnShareDropdown = document.getElementById("btnShareDropdown");
-    const shareDropdown = document.getElementById("shareDropdown");
-    let isShareDropdownOpen = false;
 
     const showDropdownPrint = new ShowDropdownByButton({ targetDropdownId: printDropdown });
     const showDropdownShare = new ShowDropdownByButton({ targetDropdownId: shareDropdown });
@@ -109,8 +65,6 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isTargetBtnPrintDropdown && showDropdownPrint.stateDropdown === true) {
             // Tutup dropdown-nya
             showDropdownPrint.closeDropdown()
-            // Hentikan eksekusi
-            return;
         }
 
         // DUPLICATE TO #4
