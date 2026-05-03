@@ -22,11 +22,6 @@ class ProdukHukumDetails extends BaseController
     {
         [$category, $slug] = $segments;
         $category = uri_title_to_words($category);
-        $allowed_categories = [
-            "Peraturan Bupati"
-        ];
-        if (!in_array($category, $allowed_categories))
-            return $this->response->setStatusCode(400)->setJSON(["status" => 400, "message" => "Kategori produk hukum tidak terdaftar atau tidak diizinkan!"]);
         $data_feconfig = $this->fe_config_model->getAllData();
         $page_alias = "Produk Hukum";
         $page_description = "Deskripsi halaman";
@@ -37,6 +32,7 @@ class ProdukHukumDetails extends BaseController
         $ph_id = intval($produk_hukum["id"]);
         $classify_produk_hukum = $this->ph_model->getClassifyProdukHukum($ph_id);
         $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
+<<<<<<< HEAD
         $builder = db_connect()->table("related_document rd");
         $getRelatedProdukHukum = $builder
             ->select([
@@ -56,12 +52,19 @@ class ProdukHukumDetails extends BaseController
             ->join("document_status docstat", "docstat.id = rd.related_status")
             ->where("rd.ph_id", $ph_id)
             ->get()->getResultArray();
+=======
+        $relatedDocuments = $this->ph_model->getRelatedDocuments($ph_id);
+>>>>>>> main
         $page_title = $produk_hukum["judul"] . " | Produk Hukum";
         $other_meta = [
             "produk_hukum"      => $produk_hukum,
             "histories_change"  => $histories_change,
             "klasifikasi"       => $classify_produk_hukum,
+<<<<<<< HEAD
             "related_documents" => $getRelatedProdukHukum
+=======
+            "related_documents" => $relatedDocuments
+>>>>>>> main
         ];
         $page_data = create_page_meta(
             $page_title,

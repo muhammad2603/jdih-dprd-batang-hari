@@ -193,4 +193,26 @@ class ProdukHukum extends Model
             "klasifikasi_subjek" => $klasifikasi_subjek,
         ];
     }
+
+    public function getRelatedDocuments(int $ph_id): array
+    {
+        return $this
+            ->select([
+                "ph.title AS judul",
+                "ph.nomor",
+                "ph.tahun",
+                "(
+                    CASE
+                        WHEN doc_categ.category_synonym IS NULL THEN doc_categ.category
+                        ELSE doc_categ.category_synonym
+                    END
+                ) AS kategori",
+                "status AS ref_status"
+            ])
+            ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
+            ->join("related_document rd", "rd.related_ph_id = ph.id")
+            ->join("document_status docstat", "docstat.id = rd.related_status")
+            ->where("rd.ph_id", $ph_id)
+            ->findAll();
+    }
 }

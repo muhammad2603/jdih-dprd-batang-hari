@@ -2,7 +2,7 @@
 ["Header" => $header, "Common" => $common] = $frontend_config;
 ?>
 <!-- __COMMENT__ Selalu pantau tinggi header agar tidak merusak jumbotron diberanda -->
-<header class="h-20 bg-default text-default-foreground sticky top-0 left-0 shadow-sm z-50">
+<header id="headerNav" class="h-20 bg-default text-default-foreground sticky top-0 left-0 shadow-sm z-50">
     <div class="max-w-7xl mx-auto py-4 px-6 flex justify-between">
         <a href="<?= base_url() ?>" class="flex gap-3" tabindex="-1">
             <figure>

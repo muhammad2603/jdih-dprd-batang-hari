@@ -1,5 +1,9 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
+<?php
+$kontak = $frontend_config["Kontak"];
+$faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
+?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
@@ -11,9 +15,9 @@
                         <path d="M12 17h.01" />
                     </svg>
                 </span>
-                <h1 class="text-4xl font-bold">Pusat Bantuan</h1>
+                <h1 class="text-4xl font-bold"><?= esc(dot_array_search("jumbotron.title", $pages_meta)) ?></h1>
             </div>
-            <p class="text-lg text-white/80 max-w-2xl">Kami siap membantu Anda dalam mengakses informasi hukum daerah. Hubungi kami melalui berbagai saluran yang tersedia.</p>
+            <p class="text-lg text-white/80 max-w-2xl"><?= esc(dot_array_search("jumbotron.description", $pages_meta)) ?></p>
         </div>
     </div>
 </div>
@@ -27,7 +31,7 @@
             </div>
             <h3 class="font-semibold mb-2">Telepon</h3>
             <p class="text-sm text-muted-foreground mb-3">Hubungi kami melalui telepon</p>
-            <a href="tel:074321016" class="text-primary hover:text-primary/80 transition-colors">(0743) 21016</a>
+            <a href="tel:074321016" class="text-primary hover:text-primary/80 transition-colors"><?= esc($kontak["Fax"][0]["content"]) ?></a>
         </div>
         <div class="email bg-white border border-primary-border rounded-lg p-6">
             <div class="icon w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
@@ -38,7 +42,7 @@
             </div>
             <h3 class="font-semibold mb-2">Email</h3>
             <p class="text-sm text-muted-foreground mb-3">Kirim pesan ke-Email kami</p>
-            <a href="https://mail.google.com/mail?view=cm&to=setwan@batangharikab.go.id" target="_blank" class="text-primary hover:text-primary/80 transition-colors">setwan@batangharikab.go.id</a>
+            <a href="https://mail.google.com/mail?view=cm&to=setwan@batangharikab.go.id" target="_blank" class="text-primary hover:text-primary/80 transition-colors"><?= esc($kontak["Mail"][0]["content"]) ?></a>
         </div>
         <div class="location bg-white border border-primary-border rounded-lg p-6">
             <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
@@ -48,7 +52,7 @@
                 </svg>
             </div>
             <h3 class="font-semibold mb-2">Lokasi</h3>
-            <p class="text-sm text-muted-foreground mb-3">Jl ABC No. 1 RT. 001 RW. 016, Mekarsari, Jakarta, 33333.</p>
+            <p class="text-sm text-muted-foreground mb-3"><?= esc($kontak["Lokasi"][0]["content"]) ?></p>
         </div>
     </div>
     <div class="operational-hours bg-accent/10 border border-accent/20 rounded-lg p-6 mb-12">
@@ -62,8 +66,9 @@
             <div class="operational-details">
                 <h3 class="font-semibold mb-2">Jam Operasional</h3>
                 <div class="text-sm text-muted-foreground space-y-1">
-                    <span class="block">Senin - Jumat: 08:00 - 16:00 WIB</span>
-                    <span class="block">Sabtu - Minggu: Libur</span>
+                    <span class="block">Senin - Kamis: 08:00 - 16:00 WIB</span>
+                    <span class="block">Jum'at: Work From Home (WFH)</span>
+                    <span class="block">Sabtu dan Minggu: Libur</span>
                     <span class="italic block">*Tidak melayani pada hari libur nasional</span>
                 </div>
             </div>
@@ -129,7 +134,7 @@
                     <div class="topic-details">
                         <h3 class="font-semibold mb-2">Pertanyaan Umum (FAQ)</h3>
                         <p class="text-sm text-muted-foreground mb-3">Temukan jawaban atas pertanyaan yang sering diajukan tentang JDIH.</p>
-                        <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">Lihat FAQ →</a>
+                        <a href="<?= esc($faq_link) ?>" class="text-sm text-primary hover:text-primary/80 transition-colors">Lihat FAQ →</a>
                     </div>
                 </div>
             </div>
