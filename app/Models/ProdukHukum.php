@@ -12,6 +12,7 @@ class ProdukHukum extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
+    // __FIX__ Jika ada perubahan dimeta data, update juga kolom updated_at ditable produk_hukum
     protected $allowedFields    = [
         "id",
         "title",
@@ -95,5 +96,121 @@ class ProdukHukum extends Model
             "results"       => $data->findAll($limit),
             "total_data"    => $data->countAllResults(),
         ];
+    }
+    /**
+     * Mengambil detail produk hukum
+     * @param int|string $key field id atau slug produk hukum
+     * @param string|null $category kategori produk hukum yang ingin dicari. Default null
+     * @return array
+     */
+    public function getProdukHukumDetails(int|string $key, string|null $category = null): array
+    {
+        $builder = $this->select([
+            "ph.id",
+            "ph.title AS judul",
+            "abstrak",
+            "catatan",
+            "nomor",
+            "tahun",
+            "nomor_tld",
+            "tahun_tld",
+            "status",
+            "sumber",
+            "(
+                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pembuat_peraturan
+            ) AS pejabat_pembuat_peraturan",
+            "(
+                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.penandatanganan
+            ) AS pejabat_penandatanganan",
+            "(
+                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pejabat_penetap
+            ) AS pejabat_penetap",
+            "tanggal_penetapan",
+            "tanggal_pengundangan",
+            "tanggal_berlaku",
+            "lokasi AS tempat_penetapan",
+            "(
+                SELECT lokasi FROM lokasi_produk_hukum sub_lph WHERE sub_lph.id = mph.lokasi_terbit
+            ) AS lokasi_terbit",
+            "GROUP_CONCAT(
+                CONCAT(lph.judul_berkas, ':', lph.nama_berkas)
+                ORDER BY lph.id DESC
+                SEPARATOR ','
+            ) AS berkas",
+            "counts AS total_unduhan",
+            "jumlah_halaman",
+            "ph.created_at",
+            "ph.updated_at"
+        ])
+            ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
+            ->join("document_status docstat", "docstat.id = ph.status_id")
+            ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
+            ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("riwayat_unduhan ru", "ru.ph_id = ph.id");
+        if (!is_null($category)) {
+            $builder
+                ->select([
+                    "category AS kategori",
+                    "category_synonym AS singkatan_kategori"
+                ])
+                ->join("document_categories doccateg", "doccateg.id = ph.category_id")
+                ->where("doccateg.category", $category);
+        }
+        if (is_int($key)) {
+            $builder->where("id", $key);
+        } else if (is_string($key)) {
+            $builder->where("slug", $key);
+        }
+        return $builder->first();
+    }
+    /**
+     * Mengambil klasifikasi produk hukum
+     * @param int $id ID produk hukum
+     * @return array ["klasifikasi_bidang_hukum", "klasifikasi_subjek"]
+     */
+    public function getClassifyProdukHukum(int $id): array
+    {
+        $klasifikasi_bidang_hukum = $this
+            ->select("kat_bh.kategori AS bidang_hukum")
+            ->join("klasifikasi_bidang_hukum kbh", "kbh.ph_id = ph.id")
+            ->join("kategori_bidang_hukum kat_bh", "kat_bh.id = kbh.bidang_hukum_id")
+            ->where("ph.id", $id)
+            ->findAll();
+        $klasifikasi_subjek = $this
+            ->select("GROUP_CONCAT(
+                    kat_sub.subjek
+                    SEPARATOR ', '
+                ) AS subjek")
+            ->join("klasifikasi_subjek ks", "ks.ph_id = ph.id")
+            ->join("kategori_subjek kat_sub", "kat_sub.id = ks.subjek_id")
+            ->where("ph.id", $id)
+            ->findAll();
+        return [
+            "klasifikasi_bidang_hukum" => $klasifikasi_bidang_hukum,
+            "klasifikasi_subjek" => $klasifikasi_subjek
+        ];
+    }
+
+    public function getRelatedDocuments(int $ph_id): array
+    {
+        return $this
+            ->select([
+                "ph.title AS judul",
+                "ph.nomor",
+                "ph.tahun",
+                "(
+                    CASE
+                        WHEN doc_categ.category_synonym IS NULL THEN doc_categ.category
+                        ELSE doc_categ.category_synonym
+                    END
+                ) AS kategori",
+                "status AS ref_status"
+            ])
+            ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
+            ->join("related_document rd", "rd.related_ph_id = ph.id")
+            ->join("document_status docstat", "docstat.id = rd.related_status")
+            ->where("rd.ph_id", $ph_id)
+            ->findAll();
     }
 }
