@@ -58,25 +58,6 @@ $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
 <div id="stickyTop" class="bg-white border-b border-primary-border sticky top-18.25 z-40">
     <div class="max-w-7xl mx-auto px-6 py-4">
         <div class="flex items-center gap-3">
-<<<<<<< HEAD
-            <button type="button" id="btnPrint" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
-                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
-                    <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
-                    <rect x="6" y="14" width="12" height="8" rx="1" />
-                </svg>
-                <span>Cetak</span>
-            </button>
-            <button type="button" id="share" class="px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
-                    <circle cx="18" cy="5" r="3" />
-                    <circle cx="6" cy="12" r="3" />
-                    <circle cx="18" cy="19" r="3" />
-                    <line x1="8.59" x2="15.42" y1="13.51" y2="17.49" />
-                    <line x1="15.41" x2="8.59" y1="6.51" y2="10.49" />
-                </svg>
-                <span>Bagikan</span>
-=======
             <button type="button" id="btnDownloads" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 cursor-pointer focus:outline-none focus:bg-primary/90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                     <path d="M12 15V3" />
@@ -84,7 +65,6 @@ $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
                     <path d="m7 10 5 5 5-5" />
                 </svg>
                 <span>Unduh PDF</span>
->>>>>>> main
             </button>
             <div class="print-pdf-wrapper relative w-max">
                 <button type="button" id="btnPrintDropdown" class="px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer focus:bg-muted focus:outline-none">
