@@ -193,7 +193,11 @@ class ProdukHukum extends Model
             "klasifikasi_subjek" => $klasifikasi_subjek,
         ];
     }
-
+    /**
+     * Mengambil dokumen terkait
+     * @param int $ph_id ID Produk Hukum
+     * @return array
+     */
     public function getRelatedDocuments(int $ph_id): array
     {
         return $this
@@ -214,5 +218,30 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = rd.related_status")
             ->where("rd.ph_id", $ph_id)
             ->findAll();
+    }
+    /**
+     * Mengambil total dokumen hukum berdasarkan kategori-nya
+     * @return array
+     */
+    public function getTotalDocumentByCategory(): array
+    {
+        return $this
+            ->select([
+                "doc_categ.category AS kategori",
+                "COUNT(*) AS total_dokumen"
+            ])
+            ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
+            ->groupBy("ph.category_id")
+            ->findAll();
+    }
+    /**
+     * Mengambil total produk hukum yang tersedia
+     * @return array ["total" => int]
+     */
+    public function getTotalDocument(): array
+    {
+        return $this
+            ->select("COUNT(*) AS total")
+            ->findAll()[0];
     }
 }

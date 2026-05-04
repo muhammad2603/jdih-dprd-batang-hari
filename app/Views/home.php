@@ -2,12 +2,13 @@
 
 <?= $this->section('konten') ?>
 <?php
-helper("array");
+helper("string");
 $docCategsModel = new App\Models\DocumentCategories;
 $pagesMetaModel = new App\Models\PagesMeta;
 $timeServices = service("timeServices");
 $doc_categs = $docCategsModel->getDocumentCategories();
 $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
+$total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
 ?>
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
     <div class="jumbotron-image-view w-full h-full absolute top-0 left-0 -z-10">
@@ -139,7 +140,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
             <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $get_meta_home) ?></p>
         </div>
         <div class="produk-hukum-categories-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php foreach ($total_produk_hukum as $total): ?>
+            <?php foreach ($total_produk_hukum_by_category as $total): ?>
                 <button type="button" class="group bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
                     <div class="icon-category bg-primary w-14 h-14 rounded-lg flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
@@ -243,7 +244,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                     </div>
                     <span class="text-sm text-green-600 font-medium">+8.2%</span>
                 </div>
-                <span class="counts text-4xl font-bold text-default-foreground mb-2 block">3,456</span>
+                <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= number_format($total_unduhan) ?></span>
                 <span class="statistic-text text-sm text-muted-foreground block">Unduhan Bulan Ini</span>
             </div>
             <div class="statistic bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
@@ -256,7 +257,7 @@ $get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
                     </div>
                     <span class="text-sm text-green-600 font-medium">+5.42%</span>
                 </div>
-                <span class="counts text-4xl font-bold text-default-foreground mb-2 block">987</span>
+                <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= $total_produk_hukum ?></span>
                 <span class="statistic-text text-sm text-muted-foreground block">Total Dokumen</span>
             </div>
         </div>
