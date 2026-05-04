@@ -48,7 +48,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                     </svg>
                     <input type="text" placeholder="Cari berdasarkan judul, nomor, atau kata kunci..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
-                <button type="button" class="px-6 py-4 bg-muted text-default-foreground rounded-lg hover:bg-primary/90 hover:text-foreground transition-colors flex items-center gap-2 cursor-pointer">
+                <button type="button" id="filterSearchDocument" class="px-6 py-4 bg-muted text-default-foreground rounded-lg hover:bg-primary/90 hover:text-foreground transition-colors flex items-center gap-2 cursor-pointer">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
                     </svg>
@@ -59,8 +59,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                 </button>
                 <button type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors cursor-pointer">Cari</button>
             </div>
-            <!-- TODO lakukan animasi pada filter-dropdown saat tombol filter dipencarian dokumen hukum diklik -->
-            <div class="filter-dropdown mb-6 pb-6 border-b border-primary-border">
+            <div id="filterDropdown" class="filter-dropdown mb-6 px-1.5 h-0 border-b border-primary-border transition-[height] duration-350 ease-in overflow-hidden">
                 <div class="filter-options grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="option">
                         <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
@@ -73,8 +72,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             </svg>
                             <span>Jenis Dokumen</span>
                         </span>
-                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                            <option value="Semua Jenis">Semua Jenis</option>
+                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="jenisDokumen">
+                            <option value="off">Pilih Jenis Dokumen</option>
                             <?php foreach ($doc_categs as $categ): ?>
                                 <option value="<?= $categ["category"] ?>"><?= $categ["category"] ?></option>
                             <?php endforeach ?>
@@ -91,8 +90,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             </svg>
                             <span>Tahun</span>
                         </span>
-                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                            <option value="Semua Tahun">Semua Tahun</option>
+                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="tahun">
+                            <option value="off">Pilih Tahun Dokumen</option>
                             <option value="2026">2026</option>
                             <option value="2025">2025</option>
                             <option value="2024">2024</option>
@@ -111,23 +110,24 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             </svg>
                             <span>Status Berlaku</span>
                         </span>
-                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                            <option value="Semua Status">Semua Status</option>
+                        <select class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="statusBerlaku">
+                            <option value="off">Pilih Status Dokumen</option>
                             <option value="Berlaku">Berlaku</option>
                             <option value="Dicabut">Dicabut</option>
                             <option value="Penetapan">Penetapan</option>
                         </select>
                     </div>
                 </div>
+                <p class="mt-4 text-accent text-sm text-center"><span class="align-top mr-0.5">*</span>Filter cepat akan diabaikan jika menggunakan filter ini.</p>
                 <div class="btn-reset-wrapper mt-4 flex justify-end">
-                    <button type="reset" class="px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer">Reset Filter</button>
+                    <button type="reset" id="resetFilter" class="px-4 py-2 text-sm text-muted-foreground hover:text-primary transition-colors cursor-pointer">Reset Filter</button>
                 </div>
             </div>
-            <div class="fast-filters flex gap-3 flex-wrap items-center">
+            <div id="fastFilter" class="fast-filters flex gap-3 flex-wrap items-center">
                 <span class="text-sm text-muted-foreground mr-2">Filter Cepat:</span>
-                <button type="button" class="px-4 py-2 text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white">Semua</button>
+                <button type="button" class="active px-4 py-2 text-sm bg-primary text-white rounded-full transition-colors cursor-pointer disabled:opacity-60 disabled:pointer-events-none" data-filter="all">Semua</button>
                 <?php foreach ($doc_categs as $categ): ?>
-                    <button type="button" class="px-4 py-2 text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white"><?= $categ["category"] ?></button>
+                    <button type="button" class="px-4 py-2 text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none" data-filter="<?= url_title(esc($categ["category"]), '-', true) ?>"><?= esc($categ["category"]) ?></button>
                 <?php endforeach ?>
             </div>
         </div>
@@ -349,4 +349,5 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
         </div>
     </div>
 </section>
+<script type="module" src="/assets/js/produk-hukum-page.js"></script>
 <?= $this->endSection() ?>
