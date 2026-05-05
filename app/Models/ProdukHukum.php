@@ -167,18 +167,19 @@ class ProdukHukum extends Model
     /**
      * Mengambil klasifikasi produk hukum
      * @param int $id ID produk hukum
-     * @return array ["klasifikasi_bidang_hukum", "klasifikasi_subjek"]
+     * @return array ["bidang_hukum", "subjek"]
      */
     public function getClassifyProdukHukum(int $id): array
     {
         $klasifikasi_bidang_hukum = $this
-            ->select([
-                "kat_bh.kategori AS bidang_hukum"
-            ])
+            ->select("GROUP_CONCAT(
+                    kat_bh.kategori
+                    SEPARATOR ', '
+                ) AS bidang_hukum")
             ->join("klasifikasi_bidang_hukum kbh", "kbh.ph_id = ph.id")
             ->join("kategori_bidang_hukum kat_bh", "kat_bh.id = kbh.bidang_hukum_id")
             ->where("ph.id", $id)
-            ->findAll();
+            ->first()["bidang_hukum"];
         $klasifikasi_subjek = $this
             ->select("GROUP_CONCAT(
                     kat_sub.subjek
@@ -187,10 +188,10 @@ class ProdukHukum extends Model
             ->join("klasifikasi_subjek ks", "ks.ph_id = ph.id")
             ->join("kategori_subjek kat_sub", "kat_sub.id = ks.subjek_id")
             ->where("ph.id", $id)
-            ->findAll();
+            ->first()["subjek"];
         return [
-            "klasifikasi_bidang_hukum" => $klasifikasi_bidang_hukum,
-            "klasifikasi_subjek" => $klasifikasi_subjek,
+            "bidang_hukum" => $klasifikasi_bidang_hukum,
+            "subjek" => $klasifikasi_subjek,
         ];
     }
     /**
