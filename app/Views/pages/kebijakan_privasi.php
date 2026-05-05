@@ -12,21 +12,27 @@
     <div>
         <h2 class="text-default-foreground font-semibold">Informasi yang dikumpulkan</h2>
         <p>Kami dapat mengumpulkan beberapa jenis informasi sebagai berikut:</p>
-        <h3 class="text-default-foreground font-semibold">a. Informasi yang Diberikan Secara Langsung</h3>
+        <h3 class="mt-2 text-default-foreground font-semibold">a. Informasi yang Diberikan Secara Langsung</h3>
         <p>Melalui Formulir Bantuan, pengguna dapat memberikan data:</p>
         <ul class="list-disc mx-6">
             <li>Nama Lengkap</li>
             <li>Alamat Email</li>
             <li>Nomor Telepon</li>
         </ul>
-        <h3 class="text-default-foreground font-semibold">b. Data Penggunaan (Usage Data)</h3>
+        <h3 class="mt-2 text-default-foreground font-semibold">b. Data Penggunaan (Usage Data)</h3>
         <p>Kami mengumpulkan informasi terkait aktivitas pengguna di dalam website, termasuk:</p>
         <ul class="list-disc mx-6">
-            <li>Jumlah kunjungan pengguna (statistik pengunjung)</li>
-            <li>Aktivitas pengunduhan dokumen hukum</li>
+            <li>Alamat protokol internet (ip address): digunakan untuk menghitung jumlah pengunjung unik (unique visitors) dan mencegah penghitungan ganda dalam statistik kunjungan.</li>
+            <li>Jumlah dan waktu kunjungan: untuk menganalisis lalu lintas pengguna (traffic analysis).</li>
+            <li>Aktivitas pengunduhan dokumen: hukum untuk mengetahui dokumen mana yang paling banyak diakses.</li>
         </ul>
-        <p>Data ini digunakan dalam bentuk agregat untuk keperluan analisis dan peningkatan layanan.</p>
-        <h3 class="text-default-foreground font-semibold">c. Cookies</h3>
+        <p>Data IP Address tidak digunakan untuk mengidentifikasi individu secara pribadi. Data ini disimpan sementara dalam bentuk terenkripsi atau teranonimkan, dan hanya digunakan dalam bentuk agregat untuk keperluan:</p>
+        <ul class="list-disc mx-6">
+            <li>Statistik pengunjung harian, bulanan, dan tahunan</li>
+            <li>Deteksi aktivitas tidak wajar (seperti akses otomatis berlebihan)</li>
+            <li>Peningkatan keamanan dan performa layanan</li>
+        </ul>
+        <h3 class="mt-2 text-default-foreground font-semibold">c. Cookies</h3>
         <p>Website ini menggunakan cookies dalam lingkup terbatas untuk:</p>
         <ul class="list-disc mx-6">
             <li>Menyimpan preferensi pengguna</li>
