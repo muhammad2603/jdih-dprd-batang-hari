@@ -32,6 +32,7 @@
             <li>Deteksi aktivitas tidak wajar (seperti akses otomatis berlebihan)</li>
             <li>Peningkatan keamanan dan performa layanan</li>
         </ul>
+        <p class="font-semibold text-accent">Catatan: IP Address yang dikumpulkan tidak akan pernah dijual, disewakan, atau dibagikan kepada pihak ketiga untuk keperluan pemasaran. Data hanya digunakan untuk keperluan operasional dan peningkatan kualitas layanan JDIH DPRD Kabupaten Batang Hari.</p>
         <h3 class="mt-2 text-default-foreground font-semibold">c. Cookies</h3>
         <p>Website ini menggunakan cookies dalam lingkup terbatas untuk:</p>
         <ul class="list-disc mx-6">
