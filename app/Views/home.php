@@ -229,7 +229,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         </svg>
                     </div>
                 </div>
-                <span class="counts text-4xl font-bold text-default-foreground mb-2 block">12,450</span>
+                <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= $total_pengunjung ?></span>
                 <span class="statistic-text text-sm text-muted-foreground block">Total Pengunjung</span>
             </div>
             <div class="statistic bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
