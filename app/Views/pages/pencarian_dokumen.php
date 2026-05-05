@@ -14,7 +14,7 @@
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <input type="text" placeholder="Masukkan kata kunci, nomor peraturan, atau judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            <input id="searchDocument" type="text" placeholder="Masukkan kata kunci, nomor peraturan, atau judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
         </div>
         <div class="btn-filter-options flex items-center justify-between mb-6">
             <button type="button" class="flex items-center gap-2 text-sm text-primary hover:text-primary/80 transition-colors cursor-pointer">

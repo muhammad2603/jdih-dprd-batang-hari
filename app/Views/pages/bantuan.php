@@ -147,21 +147,21 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
             <div class="first-col grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="input-nama-lengkap">
                     <label for="namaLengkap" class="block text-sm font-medium mb-2">Nama Lengkap</label>
-                    <input type="text" name="nama_lengkap" id="namaLengkap" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="Masukkan Nama Lengkap..." autocomplete="name" />
+                    <input type="text" id="namaLengkap" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="Masukkan Nama Lengkap..." autocomplete="name" />
                 </div>
                 <div class="input-email-address">
                     <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                    <input type="email" name="email" id="email" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="nama_email@gmail.com" autocomplete="email" />
+                    <input type="email" id="email" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="nama_email@gmail.com" autocomplete="email" />
                 </div>
             </div>
             <div class="second-col grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="input-nama-lengkap">
                     <label for="noTelp" class="block text-sm font-medium mb-2">Nomor Telepon</label>
-                    <input type="tel" name="nomor_telepon" id="noTelp" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="08XXXXXXXXXX" autocomplete="tel" />
+                    <input type="tel" id="noTelp" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="08XXXXXXXXXX" autocomplete="tel" />
                 </div>
                 <div class="input-email-address">
                     <label for="subjek" class="block text-sm font-medium mb-2">Subjek</label>
-                    <select name="subjek" id="subjek" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
+                    <select id="subjek" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
                         <option value="#">Pilih Subjek</option>
                         <option value="pencarian">Bantuan Pencarian Dokumen</option>
                         <option value="teknis">Masalah Teknis</option>
@@ -172,7 +172,7 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
             </div>
             <div class="message">
                 <label for="message" class="block text-sm font-medium mb-2">Pesan</label>
-                <textarea name="message" rows="6" id="message" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none resize-none" placeholder="Tuliskan pesan Anda..."></textarea>
+                <textarea rows="6" id="message" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none resize-none" placeholder="Tuliskan pesan Anda..."></textarea>
             </div>
             <button type="submit" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium">Kirim Pesan</button>
         </form>
