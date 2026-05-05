@@ -364,7 +364,7 @@ $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
                     </div>
                     <div>
                         <span class="block text-muted-foreground mb-2">Subjek</span>
-                        <span class="block font-medium text-default-foreground"><?= esc($subjek) ?></span>
+                        <span class="block font-medium text-default-foreground"><?= esc($subjek) ?? "Tidak memiliki subjek" ?></span>
                     </div>
                 </div>
             </div>
