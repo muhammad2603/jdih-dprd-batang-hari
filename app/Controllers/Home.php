@@ -26,11 +26,6 @@ class Home extends BaseController
             "new_documents"                     => $get_all_new_document,
             "total_produk_hukum"                => $this->produk_hukum->getTotalDocument()["total"],
             "total_produk_hukum_by_category"    => $this->produk_hukum->getTotalDocumentByCategory(),
-            "new_documents"                     => $get_all_new_document,
-            "total_produk_hukum"                => $total_document_by_category,
-            "new_documents"                     => $get_all_new_document,
-            "total_produk_hukum"                => $this->produk_hukum->getTotalDocument()["total"],
-            "total_produk_hukum_by_category"    => $this->produk_hukum->getTotalDocumentByCategory(),
             "total_pengunjung"                  => model("Pengunjung")->totalVisitor(),
         ];
         $page_data = create_page_meta(
