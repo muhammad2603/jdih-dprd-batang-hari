@@ -245,4 +245,28 @@ class ProdukHukum extends Model
             ->select("COUNT(*) AS total")
             ->findAll()[0];
     }
+    /**
+     * Mengambil total dokumen berdasarkan bulan
+     * @param string $target_month bulan pembuatan dokumen yang dicari
+     * @return int
+     */
+    public function getTotalDocumentByMonth(string $target_month): int
+    {
+        return $this
+            ->select()
+            ->where("MONTH(created_at) =", $target_month)
+            ->countAllResults();
+    }
+    /**
+     * Mengambil total dokumen berdasarkan tahun
+     * @param string $target_year tahun pembuatan dokumen yang dicari
+     * @return int
+     */
+    public function getTotalDocumentByYear(string $target_year): int
+    {
+        return $this
+            ->select()
+            ->where("YEAR(created_at) =", $target_year)
+            ->countAllResults();
+    }
 }
