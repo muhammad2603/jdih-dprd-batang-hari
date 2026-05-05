@@ -228,7 +228,6 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             <circle cx="12" cy="12" r="3" />
                         </svg>
                     </div>
-                    <span class="text-sm text-green-600 font-medium">+12.5%</span>
                 </div>
                 <span class="counts text-4xl font-bold text-default-foreground mb-2 block">12,450</span>
                 <span class="statistic-text text-sm text-muted-foreground block">Total Pengunjung</span>
@@ -242,10 +241,9 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             <path d="m7 10 5 5 5-5" />
                         </svg>
                     </div>
-                    <span class="text-sm text-green-600 font-medium">+8.2%</span>
                 </div>
                 <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= number_format($total_unduhan) ?></span>
-                <span class="statistic-text text-sm text-muted-foreground block">Unduhan Bulan Ini</span>
+                <span class="statistic-text text-sm text-muted-foreground block">Total Unduhan</span>
             </div>
             <div class="statistic bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
@@ -255,7 +253,6 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             <path d="m22 7-8.5 8.5-5-5L2 17" />
                         </svg>
                     </div>
-                    <span class="text-sm text-green-600 font-medium">+5.42%</span>
                 </div>
                 <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= $total_produk_hukum ?></span>
                 <span class="statistic-text text-sm text-muted-foreground block">Total Dokumen</span>
