@@ -9,8 +9,6 @@ unset($produk_hukum["berkas"]);
 $attachments_to_array = split_string_on_array(":", $split_attachments);
 $pub_document_path = "assets/dokumen-hukum/";
 $document_path = FCPATH . $pub_document_path;
-$bidang_hukum = dot_array_search("klasifikasi_bidang_hukum.*.bidang_hukum", $klasifikasi);
-$subjek = dot_array_search("klasifikasi_subjek.*.subjek", $klasifikasi);
 $shareWhatsAppText = "Dokumen Hukum:\n";
 $shareWhatsAppText .= "Judul: " . esc($produk_hukum["judul"]) . "\n";
 $shareWhatsAppText .= "Jenis Peraturan: " . esc($produk_hukum["kategori"]) . "\n";

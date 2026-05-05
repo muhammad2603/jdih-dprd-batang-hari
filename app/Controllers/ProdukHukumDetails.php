@@ -37,7 +37,8 @@ class ProdukHukumDetails extends BaseController
         $other_meta = [
             "produk_hukum"      => $produk_hukum,
             "histories_change"  => $histories_change,
-            "klasifikasi"       => $classify_produk_hukum,
+            "bidang_hukum"      => explode(", ", $classify_produk_hukum["bidang_hukum"]),
+            "subjek"            => $classify_produk_hukum["subjek"],
             "related_documents" => $relatedDocuments
         ];
         $page_data = create_page_meta(
