@@ -47,24 +47,15 @@ class Pengunjung extends Model
     public function updateCount(string $ip_address)
     {
         $db = $this->db;
-        $is_ip_exist = $this->select("*")->where("ip_address", $ip_address)->first();
-
-        if (is_null($is_ip_exist)) {
-            $db->transBegin();
-            $this->insert(["ip_address" => $ip_address]);
-            if ($db->transStatus() === false) {
-                $db->transRollback();
-                return false;
-            }
-            $db->transCommit();
-            return true;
-        }
-
         $db->transBegin();
-        $updateCounter = $this
+        $is_ip_exist = $this->where("ip_address", $ip_address)->first();
+        if (is_null($is_ip_exist)) {
+            $this->insert(["ip_address" => $ip_address]);
+        }
+        $this
+            ->where("ip_address", $ip_address)
             ->set("count", "count+1", false)
-            ->where("ip_address", $ip_address);
-        $updateCounter->update();
+            ->update();
         if ($db->transStatus() === false) {
             $db->transRollback();
             return false;
