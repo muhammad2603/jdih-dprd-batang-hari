@@ -34,8 +34,15 @@ class Home extends BaseController
         $page_description = "Website resmi JDIH DPRD Kabupaten Batang Hari untuk publikasi dokumen hukum daerah.";
         $page_keywords = ['JDIH', 'DPRD Batang Hari', 'Layanan DPRD Batang Hari', 'Informasi Dokumen Hukum'];
         $other_meta = [
+<<<<<<< Updated upstream
             "new_documents"         => $get_all_new_document,
             "total_produk_hukum"    => $total_document_by_category,
+=======
+            "new_documents"                     => $get_all_new_document,
+            "total_produk_hukum"                => $this->produk_hukum->getTotalDocument()["total"],
+            "total_produk_hukum_by_category"    => $this->produk_hukum->getTotalDocumentByCategory(),
+            "total_pengunjung"                  => model("Pengunjung")->totalVisitor(),
+>>>>>>> Stashed changes
         ];
         $page_data = create_page_meta(
             $page_title,
