@@ -44,6 +44,15 @@ class Pengunjung extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
     /**
+     * Mengambil total kunjungan
+     * @return int
+     */
+    public function totalVisitor(): int
+    {
+        return (int) $this->select("SUM(count) AS total_pengunjung")
+            ->first()["total_pengunjung"] ?? 0;
+    }
+    /**
      * Melakukan update data counter pengunjung
      * @param string $ip_address ip address pengguna
      * @return bool
