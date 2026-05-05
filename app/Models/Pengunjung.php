@@ -43,19 +43,23 @@ class Pengunjung extends Model
     protected $afterFind      = [];
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
-
-    public function updateCount(string $ip_address)
+    /**
+     * Melakukan update data counter pengunjung
+     * @param string $ip_address ip address pengguna
+     * @return bool
+     */
+    public function updateCount(string $ip_address): bool
     {
         $db = $this->db;
         $db->transBegin();
-        $is_ip_exist = $this->where("ip_address", $ip_address)->first();
-        if (is_null($is_ip_exist)) {
+        $is_ip_exist = $this->where("ip_address", $ip_address)->first() ?? false;
+        if (! $is_ip_exist) {
             $this->insert(["ip_address" => $ip_address]);
+        } else {
+            $this->where("ip_address", $ip_address)
+                ->set("count", "count+1", false)
+                ->update();
         }
-        $this
-            ->where("ip_address", $ip_address)
-            ->set("count", "count+1", false)
-            ->update();
         if ($db->transStatus() === false) {
             $db->transRollback();
             return false;
