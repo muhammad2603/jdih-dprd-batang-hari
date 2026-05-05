@@ -1,5 +1,8 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
+<?php
+// dd($total_pengunjung);
+?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
@@ -20,7 +23,7 @@
                     <path d="M16 17H8" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-primary mb-1">748</span>
+            <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= $total_produk_hukum ?></span>
             <span class="text-sm text-muted-foreground">Total Dokumen</span>
         </div>
         <div class="total-document-current-year bg-white border border-primary-border rounded-lg p-6">
@@ -30,7 +33,7 @@
                     <path d="m22 7-8.5 8.5-5-5L2 17" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-accent mb-1">35</span>
+            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= $total_produk_hukum_current_year ?></span>
             <span class="text-sm text-muted-foreground">Dokumen Di Tahun 2026</span>
         </div>
         <div class="total-document-current-month bg-white border border-primary-border rounded-lg p-6">
@@ -42,7 +45,7 @@
                     <path d="M3 10h18" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-primary mb-1">22</span>
+            <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= $total_produk_hukum_current_month ?></span>
             <span class="text-sm text-muted-foreground">Dokumen Di Bulan Ini</span>
         </div>
         <div class="total-download bg-white border border-primary-border rounded-lg p-6">
@@ -53,7 +56,7 @@
                     <path d="m7 10 5 5 5-5" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-accent mb-1">3247</span>
+            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= $total_unduhan ?></span>
             <span class="text-sm text-muted-foreground">Total Unduhan</span>
         </div>
     </div>

@@ -5,24 +5,33 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\FrontendConfig;
+use App\Models\ProdukHukum;
 
 class Statistics extends BaseController
 {
     private $fe_config_model;
+    private $produk_hukum_model;
     public function __construct()
     {
-        $this->fe_config_model  = new FrontendConfig;
+        $this->fe_config_model      = new FrontendConfig;
+        $this->produk_hukum_model   = new ProdukHukum();
     }
     public function index()
     {
         // TODO Ubah page description yang sesuai
         $data_feconfig = $this->fe_config_model->getAllData();
+        $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
         $page_title = "Statistik";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
             "Statistik"
         ];
-        $other_meta = [];
+        $other_meta = [
+            "total_produk_hukum"                => $this->produk_hukum_model->getTotalDocument()["total"],
+            "total_produk_hukum_current_month"  => $this->produk_hukum_model->getTotalDocumentByMonth(date("m", time())),
+            "total_produk_hukum_current_year"   => $this->produk_hukum_model->getTotalDocumentByYear(date("Y", time())),
+            "total_unduhan"                     => $total_unduhan,
+        ];
         $page_data = create_page_meta(
             $page_title,
             $page_title,
