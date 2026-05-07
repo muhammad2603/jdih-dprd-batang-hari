@@ -10,26 +10,35 @@ document.addEventListener("DOMContentLoaded", function () {
         containerElementId: 'chartContainer',
         customLabelClass: '.custom-label'
     });
+    const getCategoriesWithTotal = document.getElementById("distributedByCategories").value;
+    const splitCategories = getCategoriesWithTotal.split(",");
+    const categoriesArray = [];
+    const totalArray = [];
+    splitCategories.forEach(item => {
+        const [category, total] = item.split(":");
+        categoriesArray.push(category)
+        totalArray.push(parseInt(total))
+    })
     const dataChartPie = {
-        labels: ["Peraturan Bupati", "Keputusan Bupati", "Instruksi Bupati", "Keputusan DPRD", "Peraturan Daerah"],
+        labels: categoriesArray,
         datasets: [{
             label: "Total Dokumen",
-            data: [287, 198, 42, 76, 145],
+            data: totalArray,
             borderWidth: 1.5,
             backgroundColor: [
-                "#C9A961",
+                "#8b1538",
+                "#c9a961",
                 "#6B7280",
-                "#D1D5DB",
                 "#9CA3AF",
-                "#8B1538"
+                "#D1D5DB"
             ],
             hoverOffset: 0,
             hoverBackgroundColor: [
-                "#C9A961",
+                "#8b1538",
+                "#c9a961",
                 "#6B7280",
-                "#D1D5DB",
                 "#9CA3AF",
-                "#8B1538"
+                "#D1D5DB"
             ]
         }]
     };
@@ -55,11 +64,23 @@ document.addEventListener("DOMContentLoaded", function () {
         plugins: [customHTMLLabels]
     });
     chartPieInit.create();
+    const getYearAndTotalDoc = document.getElementById("yearProdukHukumUploadRange").value;
+    const splitYear = getYearAndTotalDoc.split(",");
+    const yearArray = [];
+    const dataTotalArray = [];
+    splitYear.forEach(item => {
+        const [year, total] = item.split(":");
+        yearArray.push(parseInt(year))
+        dataTotalArray.push(parseInt(total))
+    });
+    const getMaxTotal = Math.max(...dataTotalArray);
+    const paddingMax = 20;
+    const calcMaxBarChart = (getMaxTotal - (getMaxTotal % paddingMax)) + paddingMax;
     const chartBarData = {
-        labels: [2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026],
+        labels: yearArray,
         datasets: [{
             label: 'Total',
-            data: [68, 72, 85, 94, 108, 115, 98, 35],
+            data: dataTotalArray,
             backgroundColor: "#8b1538",
             borderRadius: 8
         }],
@@ -91,9 +112,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     color: "#6B7280",
                 },
                 beginAtZero: true,
-                max: 150,
+                max: calcMaxBarChart,
                 ticks: {
-                    stepSize: 30
+                    stepSize: paddingMax / 4
                 }
             }
         },
@@ -117,11 +138,22 @@ document.addEventListener("DOMContentLoaded", function () {
         options: chartBarOptions
     });
     chartBarInit.create();
+
+    const getMonthsTrend = document.getElementById("monthsTrend").value;
+    const splitMonths = getMonthsTrend.split(", ");
+    const months = [];
+    const totals = [];
+    splitMonths.forEach(item => {
+        const [month, total] = item.split(":");
+        months.push(month)
+        totals.push(parseInt(total))
+    });
+
     const chartLineData = {
-        labels: ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"],
+        labels: months,
         datasets: [{
             label: 'Total Dokumen',
-            data: [8, 12, 15, 10, 18, 14, 16, 20, 13, 17, 19, 22],
+            data: totals,
             fill: false,
             borderColor: '#C9A961',
             borderWidth: 3,
