@@ -3,11 +3,11 @@ import {
     ChartInit
 } from './chart-js-helpers.js';
 function createDataChartFromInputElement(inputId, separator, separatorKeyValue = ":") {
-    const getYearAndTotalDoc = document.getElementById(inputId).value;
-    const splitYear = getYearAndTotalDoc.split(separator);
+    const valueInput = document.getElementById(inputId).value;
+    const splitValueInput = valueInput.split(separator);
     const key = [];
     const value = [];
-    splitYear.forEach(item => {
+    splitValueInput.forEach(item => {
         let [keyItem, valueItem] = item.split(separatorKeyValue);
         keyItem = !isNaN(parseInt(keyItem)) ? parseInt(keyItem) : keyItem;
         valueItem = !isNaN(parseInt(valueItem)) ? parseInt(valueItem) : valueItem;
@@ -18,6 +18,12 @@ function createDataChartFromInputElement(inputId, separator, separatorKeyValue =
         key,
         value
     ];
+}
+
+function setTrend(item, arrayRef, arrayFilled) {
+    const [month, total] = item.split(":");
+    const indexMonth = arrayRef.indexOf(month);
+    arrayFilled[indexMonth] = parseInt(total);
 }
 
 function createNewArray(length, fill) {
@@ -143,8 +149,6 @@ document.addEventListener("DOMContentLoaded", function () {
         options: chartBarOptions
     });
     chartBarInit.create();
-    const getMonthsTrend = document.getElementById("monthsTrend").value;
-    const splitMonths = getMonthsTrend.split(", ");
     const fullMonth = [
         "Januari",
         "Februari",
@@ -159,12 +163,10 @@ document.addEventListener("DOMContentLoaded", function () {
         "November",
         "Desember"
     ];
+    const getMonthsTrend = document.getElementById("monthsTrend").value;
+    const splitMonths = getMonthsTrend.split(", ");
     const totalsTrend = createNewArray(fullMonth.length, 0);
-    splitMonths.forEach(item => {
-        const [month, total] = item.split(":");
-        const indexMonth = fullMonth.indexOf(month);
-        totalsTrend[indexMonth] = parseInt(total);
-    })
+    splitMonths.forEach(item => setTrend(item, fullMonth, totalsTrend))
     const maxTotalTrend = Math.max(...totalsTrend)
     const yMaxLineChart = maxTotalTrend < 10 ? 10 : maxTotalTrend + 10;
     const stepTicksLineChart = yMaxLineChart === 10 ? 2 : Math.floor(yMaxLineChart / 3);
