@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use Config\Database;
 use App\Models\FrontendConfig;
 use App\Models\ProdukHukum;
 
@@ -18,6 +19,7 @@ class Statistics extends BaseController
     }
     public function index()
     {
+        (Database::connect())->query("SET lc_time_names = 'id_ID'");
         // TODO Ubah page description yang sesuai
         $data_feconfig = $this->fe_config_model->getAllData();
         $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
@@ -27,10 +29,13 @@ class Statistics extends BaseController
             "Statistik"
         ];
         $other_meta = [
-            "total_produk_hukum"                => $this->produk_hukum_model->getTotalDocument()["total"],
-            "total_produk_hukum_current_month"  => $this->produk_hukum_model->getTotalDocumentByMonth(date("m", time())),
-            "total_produk_hukum_current_year"   => $this->produk_hukum_model->getTotalDocumentByYear(date("Y", time())),
-            "total_unduhan"                     => $total_unduhan,
+            "total_produk_hukum"                            => $this->produk_hukum_model->getTotalDocument()["total"],
+            "total_produk_hukum_current_month"              => $this->produk_hukum_model->getTotalDocumentByMonth(date("m", time())),
+            "total_produk_hukum_current_year"               => $this->produk_hukum_model->getTotalDocumentByYear(date("Y", time())),
+            "total_unduhan"                                 => $total_unduhan,
+            "total_doc_by_year"                             => $this->produk_hukum_model->getTotalDocumentPerYears()["result"],
+            "total_doc_by_categories"                       => $this->produk_hukum_model->getTotalDocByCategories()["result"],
+            "total_doc_by_months_on_current_year"           => $this->produk_hukum_model->getTotalDocPerMonths()["result"],
         ];
         $page_data = create_page_meta(
             $page_title,
