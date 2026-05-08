@@ -11,21 +11,17 @@ const setCustomHtmlLabels = (config) => {
         afterRender: (chart) => {
             const container = document.getElementById(containerElementId);
             if (!container) return;
-            // Hapus label lama
             const oldLabels = container.querySelectorAll(customLabelClass);
             oldLabels.forEach(l => l.remove());
             const meta = chart.getDatasetMeta(0);
             if (!meta || !meta.data) return;
-            // @explain kondisi ini mencegah dua kali eksekusi yang dilakukan afterRender Chart JS
             if (totalDataDatasets === null) {
-                totalDataDatasets = chart.data.datasets[0].data.reduce((acc, num) => num + acc, 0);
+                totalDataDatasets = chart.data.datasets[0].data.reduce((acc, num) => acc + num, 0);
             }
+            // TODO pecah beberapa kode menjadi sebuah modul
             meta.data.forEach((datapoint, index) => {
-                // 1. Hitung sudut tengah sektor (dalam radian)
                 const angle = (datapoint.startAngle + datapoint.endAngle) / 2;
-                // 2. Tentukan seberapa jauh label ingin digeser ke luar
                 const JarakKeluar = datapoint.outerRadius + 40;
-                // 3. Hitung koordinat X dan Y baru menggunakan Sin & Cos
                 const x = datapoint.x + Math.cos(angle) * JarakKeluar;
                 const y = datapoint.y + Math.sin(angle) * JarakKeluar;
                 const label = document.createElement('div');
@@ -35,7 +31,6 @@ const setCustomHtmlLabels = (config) => {
                 const calculatePercent = ((data / totalDataDatasets) * 100).toFixed(2);
                 label.className = 'custom-label text-sm text-shadow-sm';
                 label.innerText = `${labelName}: ${calculatePercent}%`;
-                // Ambil offset canvas agar posisi presisi
                 const canvasLeft = chart.canvas.offsetLeft;
                 const canvasTop = chart.canvas.offsetTop;
                 const setX = x + canvasLeft;
@@ -45,7 +40,7 @@ const setCustomHtmlLabels = (config) => {
                     position: 'absolute',
                     left: `${modifyX}px`,
                     top: `${setY}px`,
-                    transform: 'translate(-50%, -50%)', // Agar titik tengah teks pas di koordinat
+                    transform: 'translate(-50%, -50%)',
                     zIndex: '1',
                     pointerEvents: 'none',
                     whiteSpace: 'nowrap',
