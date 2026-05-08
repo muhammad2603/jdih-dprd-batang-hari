@@ -41,10 +41,10 @@ $timeServices = service("timeServices");
 </div>
 <div class="dokumen-produk-hukum max-w-7xl mx-auto px-6 py-12">
     <div class="flex items-center justify-between mb-6 text-muted-foreground">
-        <p>Menampilkan <?= count($produk_hukum["results"]) ?> dari <?= $produk_hukum["total_data"] ?> dokumen yang ditemukan</p>
+        <p>Menampilkan <?= $data_index ?> dari <?= $total_produk_hukum ?> dokumen yang tersedia</p>
     </div>
     <div class="list-dokumen space-y-4">
-        <?php foreach ($produk_hukum["results"] as $ph): ?>
+        <?php foreach ($paginate as $ph): ?>
             <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg hover:border-primary/30 transition-all group">
                 <div class="konten-dokumen flex items-start justify-between gap-4">
                     <div class="flex-1">
@@ -97,6 +97,9 @@ $timeServices = service("timeServices");
                 </div>
             </div>
         <?php endforeach ?>
+        <?php if($total_produk_hukum > $data_per_page): ?>
+            <?= $pager_links ?>
+        <?php endif ?>
     </div>
 </div>
 <?= $this->endSection() ?>
