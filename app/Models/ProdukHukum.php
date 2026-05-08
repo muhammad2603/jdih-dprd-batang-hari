@@ -62,17 +62,12 @@ class ProdukHukum extends Model
 
     /**
      * Mengambil beberapa data produk hukum
-     * 
-     * @param int|null $limit [opsional] total data yang ingin diambil
-     * 
-     * @return array ["judul", "nomor", "tahun", "status", "kategori", "tanggal_penetapan" "total_unduhan", "berkas", "slug", "total_data", "tanggal_upload"]
-     * 
      * // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
      * ^^^^^^^^^^ jika bisa, ambil field yang wajib dan pisahkan field yang opsional dan bisa dipilih secara manual, agar field lebih spesifik (yang diinginkan) saat dibutuhkan
      */
-    public function getProdukHukumHighlight(int|null $limit = null): array
+    public function getProdukHukumHighlight(int $perPage, int $offset): array
     {
-        $data = $this
+        return $this
             ->select([
                 "title AS judul",
                 "nomor",
@@ -92,11 +87,24 @@ class ProdukHukum extends Model
             ->join("riwayat_unduhan ru", "ru.ph_id = ph.id")
             ->groupBy("ph.id")
             ->orderBy("ph.created_at", "DESC")
-            ->orderBy("ph.id", "DESC");
-        return [
-            "results"       => $data->findAll($limit),
-            "total_data"    => $data->countAllResults(),
-        ];
+            ->orderBy("ph.id", "DESC")
+            ->findAll($perPage, $offset);
+    }
+    /**
+     * Mengambil total data produk hukum highlight
+     * @return int
+     */
+    public function getTotalProdukHukumHighlight(): int
+    {
+        return $this
+            ->select("ph.id")
+            ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
+            ->join("document_status docstat", "docstat.id = ph.status_id")
+            ->join("document_categories doccateg", "doccateg.id = ph.category_id")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("riwayat_unduhan ru", "ru.ph_id = ph.id")
+            ->groupBy("ph.id")
+            ->countAllResults();
     }
     /**
      * Mengambil detail produk hukum
