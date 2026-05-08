@@ -1,58 +1,8 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
 <?php
-
-use Config\Database; ?>
-<?php
-
-use CodeIgniter\I18n\Time;
-
 helper("string");
-$db = Database::connect();
-// Atur variable lc_time_names menjadi ID untuk format Indonesia
-$db->query("SET lc_time_names = 'id_ID'");
-// Pindahkan Query dibawah ke Model-nya
-$sql_total_doc_by_year = "
-SELECT
-    GROUP_CONCAT(tahun, ':', total) AS result
-FROM (
-    SELECT
-        YEAR(ph.created_at) AS tahun,
-        COUNT(*) AS total
-    FROM produk_hukum ph
-    GROUP BY YEAR(ph.created_at)
-) AS subquery
-";
-$total_doc_by_year = $db->query(trim($sql_total_doc_by_year))->getResultArray()[0]["result"];
-
-$subquery = db_connect()->table("produk_hukum ph")
-    ->select([
-        "doc_categ.category AS kategori",
-        "COUNT(ph.category_id) AS total"
-    ])
-    ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
-    ->groupBy("ph.category_id");
-$total_doc_by_categories = db_connect()->newQuery()
-    ->select("GROUP_CONCAT(sub.kategori, ':', sub.total) AS result")
-    ->fromSubquery($subquery, "sub")
-    ->limit(5)
-    ->get()->getResultArray()[0]["result"];
-
-$current_year = Time::now()->getYear();
-$builder = db_connect()->table("produk_hukum ph");
-$sq_doc_by_month_on_current_year = $builder
-    ->select([
-        "MONTHNAME(created_at) AS bulan",
-        "COUNT(*) AS total"
-    ])
-    ->where("YEAR(created_at)", $current_year)
-    ->groupBy("MONTH(created_at)");
-$get_doc_by_month_on_current_year = db_connect()
-    ->newQuery()
-    ->select("GROUP_CONCAT(CONCAT(bulan, ':', total) ORDER BY bulan SEPARATOR ',') AS results")
-    ->fromSubquery($sq_doc_by_month_on_current_year, "sq")
-    ->get()->getResultArray()[0]["results"];
-// *******************
+$current_year = \CodeIgniter\I18n\Time::now()->getYear();
 $total_doc_by_categs_to_array = split_string_on_array(":", explode(",", $total_doc_by_categories));
 $categories_color = [
     "bg-primary",
@@ -162,5 +112,5 @@ $categories_color = [
 <script type="module" src="<?= base_url() . 'assets/js/statistics-page.js' ?>"></script>
 <input type="hidden" id="distributedByCategories" value="<?= $total_doc_by_categories ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
 <input type="hidden" id="yearProdukHukumUploadRange" value="<?= $total_doc_by_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
-<input type="hidden" id="monthsTrend" value="<?= $get_doc_by_month_on_current_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
+<input type="hidden" id="monthsTrend" value="<?= $total_doc_by_months_on_current_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
 <?= $this->endSection() ?>
