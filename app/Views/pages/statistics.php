@@ -1,7 +1,66 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
 <?php
-// dd($total_pengunjung);
+
+use Config\Database; ?>
+<?php
+
+use CodeIgniter\I18n\Time;
+
+helper("string");
+$db = Database::connect();
+// Atur variable lc_time_names menjadi ID untuk format Indonesia
+$db->query("SET lc_time_names = 'id_ID'");
+// Pindahkan Query dibawah ke Model-nya
+$sql_total_doc_by_year = "
+SELECT
+    GROUP_CONCAT(tahun, ':', total) AS result
+FROM (
+    SELECT
+        YEAR(ph.created_at) AS tahun,
+        COUNT(*) AS total
+    FROM produk_hukum ph
+    GROUP BY YEAR(ph.created_at)
+) AS subquery
+";
+$total_doc_by_year = $db->query(trim($sql_total_doc_by_year))->getResultArray()[0]["result"];
+
+$subquery = db_connect()->table("produk_hukum ph")
+    ->select([
+        "doc_categ.category AS kategori",
+        "COUNT(ph.category_id) AS total"
+    ])
+    ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
+    ->groupBy("ph.category_id");
+$total_doc_by_categories = db_connect()->newQuery()
+    ->select("GROUP_CONCAT(sub.kategori, ':', sub.total) AS result")
+    ->fromSubquery($subquery, "sub")
+    ->limit(5)
+    ->get()->getResultArray()[0]["result"];
+
+$current_year = Time::now()->getYear();
+$builder = db_connect()->table("produk_hukum ph");
+$sq_doc_by_month_on_current_year = $builder
+    ->select([
+        "MONTHNAME(created_at) AS bulan",
+        "COUNT(*) AS total"
+    ])
+    ->where("YEAR(created_at)", $current_year)
+    ->groupBy("MONTH(created_at)");
+$get_doc_by_month_on_current_year = db_connect()
+    ->newQuery()
+    ->select("GROUP_CONCAT(CONCAT(bulan, ':', total) ORDER BY bulan SEPARATOR ',') AS results")
+    ->fromSubquery($sq_doc_by_month_on_current_year, "sq")
+    ->get()->getResultArray()[0]["results"];
+// *******************
+$total_doc_by_categs_to_array = split_string_on_array(":", explode(",", $total_doc_by_categories));
+$categories_color = [
+    "bg-primary",
+    "bg-accent",
+    "bg-accent-dark-gray",
+    "bg-accent-medium-dark-gray",
+    "bg-accent-light-dark-gray"
+];
 ?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
@@ -23,7 +82,7 @@
                     <path d="M16 17H8" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= $total_produk_hukum ?></span>
+            <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= number_format($total_produk_hukum) ?></span>
             <span class="text-sm text-muted-foreground">Total Dokumen</span>
         </div>
         <div class="total-document-current-year bg-white border border-primary-border rounded-lg p-6">
@@ -33,7 +92,7 @@
                     <path d="m22 7-8.5 8.5-5-5L2 17" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= $total_produk_hukum_current_year ?></span>
+            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= number_format($total_produk_hukum_current_year) ?></span>
             <span class="text-sm text-muted-foreground">Dokumen Di Tahun 2026</span>
         </div>
         <div class="total-document-current-month bg-white border border-primary-border rounded-lg p-6">
@@ -45,7 +104,7 @@
                     <path d="M3 10h18" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= $total_produk_hukum_current_month ?></span>
+            <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= number_format($total_produk_hukum_current_month) ?></span>
             <span class="text-sm text-muted-foreground">Dokumen Di Bulan Ini</span>
         </div>
         <div class="total-download bg-white border border-primary-border rounded-lg p-6">
@@ -56,7 +115,7 @@
                     <path d="m7 10 5 5 5-5" />
                 </svg>
             </span>
-            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= $total_unduhan ?></span>
+            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= number_format($total_unduhan) ?></span>
             <span class="text-sm text-muted-foreground">Total Unduhan</span>
         </div>
     </div>
@@ -67,41 +126,15 @@
                 <canvas id="chartDistributedByType" class="w-70! h-70!" {<?= $_ENV["CSP_STYLE_NONCE"] ?>}></canvas>
             </div>
             <div class="mt-10 space-y-2">
-                <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-primary rounded"></div>
-                        <span class="text-muted-foreground">Peraturan Daerah</span>
+                <?php foreach ($total_doc_by_categs_to_array as $key => [$category, $total]): ?>
+                    <div class="flex items-center justify-between text-sm">
+                        <div class="flex items-center gap-2">
+                            <div class="w-4 h-4 <?= $categories_color[$key] ?> rounded"></div>
+                            <span class="text-muted-foreground"><?= esc($category) ?></span>
+                        </div>
+                        <span class="font-medium"><?= esc($total) ?></span>
                     </div>
-                    <span class="font-medium">145</span>
-                </div>
-                <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-accent rounded"></div>
-                        <span class="text-muted-foreground">Peraturan Bupati</span>
-                    </div>
-                    <span class="font-medium">287</span>
-                </div>
-                <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-accent-dark-gray rounded"></div>
-                        <span class="text-muted-foreground">Keputusan Bupati</span>
-                    </div>
-                    <span class="font-medium">198</span>
-                </div>
-                <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-accent-medium-dark-gray rounded"></div>
-                        <span class="text-muted-foreground">Keputusan DPRD</span>
-                    </div>
-                    <span class="font-medium">76</span>
-                </div>
-                <div class="flex items-center justify-between text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-accent-light-gray rounded"></div>
-                        <span class="text-muted-foreground">Instruksi Bupati</span>
-                    </div>
-                    <span class="font-medium">42</span>
-                </div>
+                <?php endforeach ?>
             </div>
         </div>
         <div class="total-document-by-year bg-white border border-primary-border rounded-lg p-6">
@@ -112,7 +145,7 @@
         </div>
     </div>
     <div class="trend-months bg-white border border-primary-border rounded-lg p-8">
-        <h2 class="font-semibold mb-6 text-xl">Tren Bulanan (2026)</h2>
+        <h2 class="font-semibold mb-6 text-xl">Tren Bulanan (<?= $current_year ?>)</h2>
         <div class="relative w-full! h-87.5! pb-6">
             <canvas id="chartTrendMonths"></canvas>
             <p class="mt-2 text-center text-accent">
@@ -127,4 +160,7 @@
 </div>
 <script src="<?= base_url() . 'assets/third-party/chartjs/chart.js' ?>"></script>
 <script type="module" src="<?= base_url() . 'assets/js/statistics-page.js' ?>"></script>
+<input type="hidden" id="distributedByCategories" value="<?= $total_doc_by_categories ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
+<input type="hidden" id="yearProdukHukumUploadRange" value="<?= $total_doc_by_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
+<input type="hidden" id="monthsTrend" value="<?= $get_doc_by_month_on_current_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
 <?= $this->endSection() ?>
