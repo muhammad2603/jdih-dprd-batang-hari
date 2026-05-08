@@ -19,9 +19,17 @@ class ProdukHukum extends BaseController
 
     public function index()
     {
+        // TODO buat helper atau library untuk membuat pagination otomatis
+        $pager = service("pager");
+        $get_page = $this->request->getVar('page');
+        $current_page = is_numeric($get_page) ? (int) $get_page : 1;
+        $data_per_page = 10;
+        $data_offset = ($current_page - 1) * $data_per_page;
+        $produk_hukum = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset);
+        $total_produk_hukum = $this->produk_hukum_model->getTotalProdukHukumHighlight();
+        $mk_pager = $pager->makeLinks($current_page, $data_per_page, $total_produk_hukum, "modern", 0);
+        $data_index = (($data_offset + 1) !== $total_produk_hukum) && ($total_produk_hukum > $data_per_page) ? ($data_offset + 1) . " - " . ($current_page * $data_per_page) : $total_produk_hukum;
         $data_feconfig = $this->frontend_config_model->getAllData();
-        // TODO gunakan limit parameter di getProdukHukumHighlight saat ingin menerapkan pagination
-        $get_produk_hukum_highlight = $this->produk_hukum_model->getProdukHukumHighlight();
         $page_title = "Produk Hukum";
         $page_description = "Database lengkap produk hukum daerah Kabupaten Batang Hari yang dapat diakses dan diunduh oleh publik, mencakup peraturan daerah, peraturan bupati, keputusan, dan dokumen hukum lainnya secara transparan dan terstruktur.";
         $page_keywords = [
@@ -38,7 +46,12 @@ class ProdukHukum extends BaseController
             "Unduh Peraturan Daerah",
         ];
         $other_meta = [
-            "produk_hukum"      => $get_produk_hukum_highlight,
+            "paginate" => $produk_hukum,
+            "pager_links" => $mk_pager,
+            "current_page" => $current_page,
+            "data_per_page" => $data_per_page,
+            "data_index" => $data_index,
+            "total_produk_hukum" => $total_produk_hukum,
         ];
         $page_data = create_page_meta(
             $page_title,
