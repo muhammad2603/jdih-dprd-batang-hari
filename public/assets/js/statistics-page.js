@@ -2,6 +2,27 @@ import {
     setCustomHtmlLabels,
     ChartInit
 } from './chart-js-helpers.js';
+function createDataChartFromInputElement(inputId, separator, separatorKeyValue = ":") {
+    const getYearAndTotalDoc = document.getElementById(inputId).value;
+    const splitYear = getYearAndTotalDoc.split(separator);
+    const key = [];
+    const value = [];
+    splitYear.forEach(item => {
+        let [keyItem, valueItem] = item.split(separatorKeyValue);
+        keyItem = !isNaN(parseInt(keyItem)) ? parseInt(keyItem) : keyItem;
+        valueItem = !isNaN(parseInt(valueItem)) ? parseInt(valueItem) : valueItem;
+        key.push(keyItem)
+        value.push(valueItem)
+    })
+    return [
+        key,
+        value
+    ];
+}
+
+function createNewArray(length, fill) {
+    return Array.from({ length: length }).fill(fill);
+}
 document.addEventListener("DOMContentLoaded", function () {
     const ctxChartDistributedByType = document.getElementById('chartDistributedByType');
     const ctxChartDocumentByYear = document.getElementById('chartDocumentByYear');
@@ -10,15 +31,7 @@ document.addEventListener("DOMContentLoaded", function () {
         containerElementId: 'chartContainer',
         customLabelClass: '.custom-label'
     });
-    const getCategoriesWithTotal = document.getElementById("distributedByCategories").value;
-    const splitCategories = getCategoriesWithTotal.split(",");
-    const categoriesArray = [];
-    const totalArray = [];
-    splitCategories.forEach(item => {
-        const [category, total] = item.split(":");
-        categoriesArray.push(category)
-        totalArray.push(parseInt(total))
-    })
+    const [categoriesArray, totalArray] = createDataChartFromInputElement("distributedByCategories", ",");
     const dataChartPie = {
         labels: categoriesArray,
         datasets: [{
@@ -64,15 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         plugins: [customHTMLLabels]
     });
     chartPieInit.create();
-    const getYearAndTotalDoc = document.getElementById("yearProdukHukumUploadRange").value;
-    const splitYear = getYearAndTotalDoc.split(",");
-    const yearArray = [];
-    const dataTotalArray = [];
-    splitYear.forEach(item => {
-        const [year, total] = item.split(":");
-        yearArray.push(parseInt(year))
-        dataTotalArray.push(parseInt(total))
-    });
+    const [yearArray, dataTotalArray] = createDataChartFromInputElement("yearProdukHukumUploadRange", ",");
     const getMaxTotal = Math.max(...dataTotalArray);
     const paddingMax = 20;
     const calcMaxBarChart = (getMaxTotal - (getMaxTotal % paddingMax)) + paddingMax;
@@ -154,7 +159,7 @@ document.addEventListener("DOMContentLoaded", function () {
         "November",
         "Desember"
     ];
-    const totalsTrend = Array.from({ length: 12 }).fill(0);
+    const totalsTrend = createNewArray(fullMonth.length, 0);
     splitMonths.forEach(item => {
         const [month, total] = item.split(":");
         const indexMonth = fullMonth.indexOf(month);
