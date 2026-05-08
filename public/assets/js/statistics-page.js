@@ -2,6 +2,9 @@ import {
     setCustomHtmlLabels,
     ChartInit
 } from './chart-js-helpers.js';
+function createNewArray(length, fill) {
+    return Array.from({ length: length }).fill(fill);
+}
 function createDataChartFromInputElement(inputId, separator, separatorKeyValue = ":") {
     const valueInput = document.getElementById(inputId).value;
     const splitValueInput = valueInput.split(separator);
@@ -19,15 +22,10 @@ function createDataChartFromInputElement(inputId, separator, separatorKeyValue =
         value
     ];
 }
-
 function setTrend(item, arrayRef, arrayFilled) {
     const [month, total] = item.split(":");
     const indexMonth = arrayRef.indexOf(month);
     arrayFilled[indexMonth] = parseInt(total);
-}
-
-function createNewArray(length, fill) {
-    return Array.from({ length: length }).fill(fill);
 }
 document.addEventListener("DOMContentLoaded", function () {
     const ctxChartDistributedByType = document.getElementById('chartDistributedByType');
