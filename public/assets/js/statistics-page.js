@@ -138,22 +138,36 @@ document.addEventListener("DOMContentLoaded", function () {
         options: chartBarOptions
     });
     chartBarInit.create();
-
     const getMonthsTrend = document.getElementById("monthsTrend").value;
     const splitMonths = getMonthsTrend.split(", ");
-    const months = [];
-    const totals = [];
+    const fullMonth = [
+        "Januari",
+        "Februari",
+        "Maret",
+        "April",
+        "Mei",
+        "Juni",
+        "Juli",
+        "Agustus",
+        "September",
+        "Oktober",
+        "November",
+        "Desember"
+    ];
+    const totalsTrend = Array.from({ length: 12 }).fill(0);
     splitMonths.forEach(item => {
         const [month, total] = item.split(":");
-        months.push(month)
-        totals.push(parseInt(total))
-    });
-
+        const indexMonth = fullMonth.indexOf(month);
+        totalsTrend[indexMonth] = parseInt(total);
+    })
+    const maxTotalTrend = Math.max(...totalsTrend)
+    const yMaxLineChart = maxTotalTrend < 10 ? 10 : maxTotalTrend + 10;
+    const stepTicksLineChart = yMaxLineChart === 10 ? 2 : Math.floor(yMaxLineChart / 3);
     const chartLineData = {
-        labels: months,
+        labels: fullMonth,
         datasets: [{
             label: 'Total Dokumen',
-            data: totals,
+            data: totalsTrend,
             fill: false,
             borderColor: '#C9A961',
             borderWidth: 3,
@@ -194,9 +208,9 @@ document.addEventListener("DOMContentLoaded", function () {
                     color: "#6B7280",
                 },
                 beginAtZero: true,
-                // max: 150,
+                max: yMaxLineChart,
                 ticks: {
-                    stepSize: 6
+                    stepSize: stepTicksLineChart
                 }
             }
         },
