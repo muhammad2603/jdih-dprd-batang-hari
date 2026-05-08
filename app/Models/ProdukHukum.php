@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use CodeIgniter\Model;
+use CodeIgniter\I18n\Time;
 
 class ProdukHukum extends Model
 {
@@ -268,5 +269,60 @@ class ProdukHukum extends Model
             ->select()
             ->where("YEAR(created_at) =", $target_year)
             ->countAllResults();
+    }
+    /**
+     * Mengambil total dokumen per-tahun
+     * @return array
+     */
+    public function getTotalDocumentPerYears(): array
+    {
+        $subquery = $this->db->table("produk_hukum")
+            ->select([
+                "YEAR(created_at) AS tahun",
+                "COUNT(*) AS total"
+            ])
+            ->groupBy("YEAR(created_at)");
+        return $this->db->newQuery()
+            ->select("GROUP_CONCAT(tahun, ':', total) AS result")
+            ->fromSubquery($subquery, "sq")
+            ->get()->getFirstRow('array');
+    }
+    /**
+     * Mengambil total dokumen berdasarkan kategori
+     * @param int $limit batas hasil pengambilan baris data
+     * @return array
+     */
+    public function getTotalDocByCategories(int $limit = 5): array
+    {
+        $subquery = $this->db->table("produk_hukum")
+            ->select([
+                "doc_categ.category AS kategori",
+                "COUNT(category_id) AS total"
+            ])
+            ->join("document_categories doc_categ", "doc_categ.id = produk_hukum.category_id")
+            ->groupBy("category_id");
+        return $this->db->newQuery()
+            ->select("GROUP_CONCAT(kategori, ':', total) AS result")
+            ->fromSubquery($subquery, 'sq')
+            ->limit($limit)
+            ->get()->getFirstRow('array');
+    }
+    /**
+     * Mengambil total dokumen per-bulan ditahun saat ini
+     * @return array
+     */
+    public function getTotalDocPerMonths(): array
+    {
+        $subquery = $this->db->table('produk_hukum')
+            ->select([
+                "MONTHNAME(created_at) AS bulan",
+                "COUNT(*) AS total"
+            ])
+            ->where("YEAR(created_at)", Time::now()->getYear())
+            ->groupBy("MONTH(created_at)");
+        return $this->db->newQuery()
+            ->select("GROUP_CONCAT(CONCAT(bulan, ':', total) ORDER BY bulan SEPARATOR ',') AS result")
+            ->fromSubquery($subquery, "sq")
+            ->get()->getFirstRow('array');
     }
 }
