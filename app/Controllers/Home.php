@@ -17,14 +17,14 @@ class Home extends BaseController
     public function index(): string
     {
         $data_feconfig = $this->frontend_config->getAllData();
-        $get_all_new_document = $this->produk_hukum->getProdukHukumHighlight()["results"];
+        $get_all_new_document = $this->produk_hukum->getProdukHukumHighlight();
         $page_title = "Layanan JDIH DPRD Kabupaten Batang Hari";
         $page_alias = "Beranda";
         $page_description = "Website resmi JDIH DPRD Kabupaten Batang Hari untuk publikasi dokumen hukum daerah.";
         $page_keywords = ['JDIH', 'DPRD Batang Hari', 'Layanan DPRD Batang Hari', 'Informasi Dokumen Hukum'];
         $other_meta = [
             "new_documents"                     => $get_all_new_document,
-            "total_produk_hukum"                => $this->produk_hukum->getTotalDocument()["total"],
+            "total_produk_hukum"                => $this->produk_hukum->getTotalProdukHukumHighlight(),
             "total_produk_hukum_by_category"    => $this->produk_hukum->getTotalDocumentByCategory(),
             "total_pengunjung"                  => model("Pengunjung")->totalVisitor(),
         ];

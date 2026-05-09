@@ -65,7 +65,7 @@ class ProdukHukum extends Model
      * // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
      * ^^^^^^^^^^ jika bisa, ambil field yang wajib dan pisahkan field yang opsional dan bisa dipilih secara manual, agar field lebih spesifik (yang diinginkan) saat dibutuhkan
      */
-    public function getProdukHukumHighlight(int $perPage, int $offset): array
+    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0): array
     {
         return $this
             ->select([
