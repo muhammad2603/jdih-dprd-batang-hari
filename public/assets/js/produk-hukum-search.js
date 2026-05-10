@@ -10,8 +10,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const keyword = searchDocumentValue !== '' ? searchDocumentValue.toLowerCase() : false;
         const category = categoryDocument !== '*' ? parseInt(categoryDocument) : false;
         const year = yearDocument !== "*" ? yearDocument : false;
-        if (keyword === false && category === false && year === false) return alert("Tentukan kata kunci pencarian, kategori, atau tahun.");
-        if (year !== false && keyword === false && category === false) return alert("Tentukan kata kunci pencarian atau kategori.");
         const queryParams = new URLSearchParams();
         if (keyword !== false) {
             queryParams.append("keyword", keyword)
