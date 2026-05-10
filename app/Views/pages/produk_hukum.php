@@ -2,6 +2,7 @@
 
 <?= $this->section("konten") ?>
 <?php
+helper('string');
 $doc_categs = (new App\Models\DocumentCategories)->getDocumentCategories();
 $timeServices = service("timeServices");
 ?>
@@ -19,23 +20,24 @@ $timeServices = service("timeServices");
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <input id="searchDocument" type="text" placeholder="Cari berdasarkan judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            <input id="searchDocument" type="text" value="<?= uri_title_to_words($current_keyword) ?>" placeholder="Cari berdasarkan judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
         </div>
         <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
             <option value="*">Semua Jenis</option>
             <?php foreach ($doc_categs as $categ): ?>
-                <option value="<?= $categ["id"] ?>"><?= $categ["category"] ?></option>
+                <option value="<?= $categ["id"] ?>" <?= $current_category == $categ["id"] ? "selected" : "" ?>><?= $categ["category"] ?></option>
             <?php endforeach ?>
         </select>
         <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
             <option value="*">Semua Tahun</option>
-            <option value="2026">2026</option>
-            <option value="2025">2025</option>
-            <option value="2024">2024</option>
-            <option value="2023">2023</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
+            <!-- __FIX__ ambil tahun terkecil dan terbesar dari semua produk hukum yang tersedia, lalu buat rentangnya -->
+            <option value="2026" <?= $current_year == "2026" ? "selected" : "" ?>>2026</option>
+            <option value="2025" <?= $current_year == "2025" ? "selected" : "" ?>>2025</option>
+            <option value="2024" <?= $current_year == "2024" ? "selected" : "" ?>>2024</option>
+            <option value="2023" <?= $current_year == "2023" ? "selected" : "" ?>>2023</option>
+            <option value="2022" <?= $current_year == "2022" ? "selected" : "" ?>>2022</option>
+            <option value="2021" <?= $current_year == "2021" ? "selected" : "" ?>>2021</option>
+            <option value="2020" <?= $current_year == "2020" ? "selected" : "" ?>>2020</option>
         </select>
         <button type="button" id="searchDocumentBtn" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors cursor-pointer">Cari</button>
     </div>
@@ -44,7 +46,7 @@ $timeServices = service("timeServices");
     <div class="flex items-center justify-between mb-6 text-muted-foreground">
         <p>Menampilkan <?= $data_index ?> dari <?= $total_produk_hukum ?> dokumen yang tersedia</p>
     </div>
-    <div id="listDokumen" class="space-y-4">
+    <div class="space-y-4">
         <?php foreach ($paginate as $ph): ?>
             <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg hover:border-primary/30 transition-all group">
                 <div class="konten-dokumen flex items-start justify-between gap-4">
@@ -99,11 +101,9 @@ $timeServices = service("timeServices");
             </div>
         <?php endforeach ?>
     </div>
-    <div id="paginationWrapper">
-        <?php if ($total_produk_hukum > $data_per_page): ?>
-            <?= $pager_links ?>
-        <?php endif ?>
-    </div>
+    <?php if ($total_produk_hukum > $data_per_page): ?>
+        <?= $pager_links ?>
+    <?php endif ?>
 </div>
 <script src="/assets/js/produk-hukum-search.js"></script>
 <?= $this->endSection() ?>
