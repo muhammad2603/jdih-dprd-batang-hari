@@ -14,21 +14,21 @@ $timeServices = service("timeServices");
     </div>
 </div>
 <div class="searchs-wrapper bg-white border-b border-primary-border sticky top-18.25 z-40">
-    <div class="searchs-container max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div class="searchs-container max-w-7xl mx-auto px-6 py-6 grid grid-cols-1 md:grid-cols-5 gap-4">
         <div class="search md:col-span-2 relative">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <input id="searchDocument" type="text" placeholder="Cari berdasarkan judul, nomor, atau kata kunci..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            <input id="searchDocument" type="text" placeholder="Cari berdasarkan judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
         </div>
         <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-            <option value="Semua Jenis">Semua Jenis</option>
+            <option value="*">Semua Jenis</option>
             <?php foreach ($doc_categs as $categ): ?>
-                <option value="<?= $categ["category"] ?>"><?= $categ["category"] ?></option>
+                <option value="<?= $categ["id"] ?>"><?= $categ["category"] ?></option>
             <?php endforeach ?>
         </select>
         <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-            <option value="Semua Jenis">Semua Tahun</option>
+            <option value="*">Semua Tahun</option>
             <option value="2026">2026</option>
             <option value="2025">2025</option>
             <option value="2024">2024</option>
@@ -37,13 +37,14 @@ $timeServices = service("timeServices");
             <option value="2021">2021</option>
             <option value="2020">2020</option>
         </select>
+        <button type="button" id="searchDocumentBtn" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors cursor-pointer">Cari</button>
     </div>
 </div>
 <div class="dokumen-produk-hukum max-w-7xl mx-auto px-6 py-12">
     <div class="flex items-center justify-between mb-6 text-muted-foreground">
         <p>Menampilkan <?= $data_index ?> dari <?= $total_produk_hukum ?> dokumen yang tersedia</p>
     </div>
-    <div class="list-dokumen space-y-4">
+    <div id="listDokumen" class="space-y-4">
         <?php foreach ($paginate as $ph): ?>
             <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg hover:border-primary/30 transition-all group">
                 <div class="konten-dokumen flex items-start justify-between gap-4">
@@ -97,9 +98,12 @@ $timeServices = service("timeServices");
                 </div>
             </div>
         <?php endforeach ?>
-        <?php if($total_produk_hukum > $data_per_page): ?>
+    </div>
+    <div id="paginationWrapper">
+        <?php if ($total_produk_hukum > $data_per_page): ?>
             <?= $pager_links ?>
         <?php endif ?>
     </div>
 </div>
+<script src="/assets/js/produk-hukum-search.js"></script>
 <?= $this->endSection() ?>
