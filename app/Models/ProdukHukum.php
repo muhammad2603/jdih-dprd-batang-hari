@@ -13,7 +13,7 @@ class ProdukHukum extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    // __FIX__ Jika ada perubahan dimeta data, update juga kolom updated_at ditable produk_hukum
+    // __FIX__ Jika ada perubahan (update data) dimeta data, update juga kolom updated_at ditable produk_hukum
     protected $allowedFields    = [
         "id",
         "title",
@@ -60,26 +60,33 @@ class ProdukHukum extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
+    // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
+    // ^^^^^^^^^^ jika bisa, ambil field yang wajib dan pisahkan field yang opsional dan bisa dipilih secara manual, agar field lebih spesifik (yang diinginkan) saat dibutuhkan
     /**
      * Mengambil beberapa data produk hukum
-     * // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
-     * ^^^^^^^^^^ jika bisa, ambil field yang wajib dan pisahkan field yang opsional dan bisa dipilih secara manual, agar field lebih spesifik (yang diinginkan) saat dibutuhkan
+     * @param int|null $perPage batas pengambilan data per-halaman (pagination)
+     * @param int $offset indeks pengambilan data
+     * @param bool|string $byKeyword keyword untuk mencari produk hukum berdasarkan field title, biarkan jika tidak ingin melakukan pencarian
+     * @param bool|string $byCategory keyword untuk mencari produk hukum berdasarkan field category_id, biarkan jika tidak ingin melakukan pencarian
+     * @param bool|string $byYear keyword untuk mencari produk hukum berdasarkan field tahun, biarkan jika tidak ingin melakukan pencarian
+     * @return array
      */
-    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0): array
+    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0, bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false): array
     {
-        return $this
-            ->select([
-                "title AS judul",
-                "nomor",
-                "tahun",
-                "status",
-                "doccateg.category AS kategori",
-                "tanggal_penetapan",
-                "nama_berkas AS berkas",
-                "ru.counts AS total_unduhan",
-                "slug",
-                "DATE_FORMAT(ph.created_at, '%Y-%m-%d') AS tanggal_upload"
-            ])
+        $selected_field = [
+            "title AS judul",
+            "nomor",
+            "tahun",
+            "status",
+            "doccateg.category AS kategori",
+            "tanggal_penetapan",
+            "nama_berkas AS berkas",
+            "ru.counts AS total_unduhan",
+            "slug",
+            "DATE_FORMAT(ph.created_at, '%Y-%m-%d') AS tanggal_upload"
+        ];
+        $builder = $this
+            ->select($selected_field)
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
@@ -87,24 +94,45 @@ class ProdukHukum extends Model
             ->join("riwayat_unduhan ru", "ru.ph_id = ph.id")
             ->groupBy("ph.id")
             ->orderBy("ph.created_at", "DESC")
-            ->orderBy("ph.id", "DESC")
-            ->findAll($perPage, $offset);
+            ->orderBy("ph.id", "DESC");
+        if ($byKeyword !== false) {
+            $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
+        };
+        if ($byCategory !== false) {
+            $builder->where("category_id", $byCategory);
+        };
+        if ($byYear !== false) {
+            $builder->where("YEAR(tahun)", $byYear);
+        };
+        return $builder->findAll($perPage, $offset);
     }
     /**
      * Mengambil total data produk hukum highlight
+     * @param bool|string $byKeyword berdasarkan kata kunci pencarian
+     * @param bool|int $byCategory berdasarkan kategori
+     * @param bool|string $byYear berdasarkan kata kunci tahun
      * @return int
      */
-    public function getTotalProdukHukumHighlight(): int
+    public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false): int
     {
-        return $this
+        $builder = $this
             ->select("ph.id")
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
             ->join("riwayat_unduhan ru", "ru.ph_id = ph.id")
-            ->groupBy("ph.id")
-            ->countAllResults();
+            ->groupBy("ph.id");
+        if ($byKeyword !== false) {
+            $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
+        };
+        if ($byCategory !== false) {
+            $builder->where("category_id", $byCategory);
+        };
+        if ($byYear !== false) {
+            $builder->where("YEAR(tahun)", $byYear);
+        };
+        return $builder->countAllResults();
     }
     /**
      * Mengambil detail produk hukum
@@ -114,43 +142,44 @@ class ProdukHukum extends Model
      */
     public function getProdukHukumDetails(int|string $key, string|null $category = null): array
     {
-        $builder = $this->select([
-            "ph.id",
-            "ph.title AS judul",
-            "abstrak",
-            "catatan",
-            "nomor",
-            "tahun",
-            "nomor_tld",
-            "tahun_tld",
-            "status",
-            "sumber",
-            "(
+        $builder = $this
+            ->select([
+                "ph.id",
+                "ph.title AS judul",
+                "abstrak",
+                "catatan",
+                "nomor",
+                "tahun",
+                "nomor_tld",
+                "tahun_tld",
+                "status",
+                "sumber",
+                "(
                 SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pembuat_peraturan
-            ) AS pejabat_pembuat_peraturan",
-            "(
-                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.penandatanganan
-            ) AS pejabat_penandatanganan",
-            "(
-                SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pejabat_penetap
-            ) AS pejabat_penetap",
-            "tanggal_penetapan",
-            "tanggal_pengundangan",
-            "tanggal_berlaku",
-            "lokasi AS tempat_penetapan",
-            "(
-                SELECT lokasi FROM lokasi_produk_hukum sub_lph WHERE sub_lph.id = mph.lokasi_terbit
-            ) AS lokasi_terbit",
-            "GROUP_CONCAT(
-                CONCAT(lph.judul_berkas, ':', lph.nama_berkas)
-                ORDER BY lph.id DESC
-                SEPARATOR ','
-            ) AS berkas",
-            "counts AS total_unduhan",
-            "jumlah_halaman",
-            "ph.created_at",
-            "ph.updated_at"
-        ])
+                ) AS pejabat_pembuat_peraturan",
+                "(
+                    SELECT nama FROM pejabat pjb WHERE pjb.id = mph.penandatanganan
+                ) AS pejabat_penandatanganan",
+                "(
+                    SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pejabat_penetap
+                ) AS pejabat_penetap",
+                "tanggal_penetapan",
+                "tanggal_pengundangan",
+                "tanggal_berlaku",
+                "lokasi AS tempat_penetapan",
+                "(
+                    SELECT lokasi FROM lokasi_produk_hukum sub_lph WHERE sub_lph.id = mph.lokasi_terbit
+                ) AS lokasi_terbit",
+                "GROUP_CONCAT(
+                    CONCAT(lph.judul_berkas, ':', lph.nama_berkas)
+                    ORDER BY lph.id DESC
+                    SEPARATOR ','
+                ) AS berkas",
+                "counts AS total_unduhan",
+                "jumlah_halaman",
+                "ph.created_at",
+                "ph.updated_at"
+            ])
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
