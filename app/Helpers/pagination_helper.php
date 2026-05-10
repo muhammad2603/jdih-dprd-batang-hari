@@ -8,9 +8,12 @@ if (!function_exists('create_pagination')) {
      * @param string $pager_template template pager, default modern.
      * @return array ["page", "offset", "data_index", "pager"]
      */
-    function create_pagination(string|int $page, int $data_per_page, int $total_data, string $pager_template = "modern"): array
+    function create_pagination(string|int $page, int $data_per_page, int $total_data, bool|string $setPath = false, string $pager_template = "modern"): array
     {
         $pager = service("pager");
+        if ($setPath !== false) {
+            $pager->setPath($setPath);
+        }
         $page = is_numeric($page) ? (int) $page : 1;
         $offset = ($page - 1) * $data_per_page;
         $create_pager = $pager->makeLinks($page, $data_per_page, $total_data, $pager_template, 0);
