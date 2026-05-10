@@ -54,7 +54,10 @@ class DocumentCategories extends Model
     public function getDocumentCategories(string $orderBy = "ASC"): array
     {
         return $this
-            ->select("category")
+            ->select([
+                "id",
+                "category"
+            ])
             ->orderBy("id", $orderBy)
             ->findAll();
     }
