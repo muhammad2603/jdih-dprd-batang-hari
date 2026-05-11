@@ -82,7 +82,7 @@ foreach ($unique_footer_nav as $group => $items) {
         <div class="footer-bottom pt-8 border-t border-white/10">
             <div class="footer-bottom-contents flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/70">
                 <p class="copyright">© <?= $time->getYear() ?> <?= dot_array_search("Copyright.*.content", $footer) ?></p>
-                <div class="other-links flex gap-6">
+                <div class="other-links mt-4 xl:mt-0 flex gap-6">
                     <a href="<?= dot_array_search("Kebijakan Privasi.*.link", $footer) ?>" class="hover:text-accent transition-colors"><?= dot_array_search("Kebijakan Privasi.*.content", $footer) ?></a>
                     <a href="<?= dot_array_search("Syarat & Ketentuan.*.link", $footer) ?>" class="hover:text-accent transition-colors"><?= dot_array_search("Syarat & Ketentuan.*.content", $footer) ?></a>
                 </div>
