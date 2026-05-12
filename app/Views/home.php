@@ -2,6 +2,8 @@
 
 <?= $this->section('konten') ?>
 <?php
+// TODO buat toggle navbar untuk device smartphone
+// TODO >= 640px belum ada responsif
 helper("string");
 $docCategsModel = new App\Models\DocumentCategories;
 $pagesMetaModel = new App\Models\PagesMeta;
@@ -244,7 +246,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                                 <path d="M16 17H8" />
                             </svg>
                         </div>
-                        <div class="document-details flex-1 min-w-0">
+                        <div class="document-details flex-1 w-full">
                             <header class="top-detail flex items-end gap-4 mb-2">
                                 <div class="flex-1">
                                     <div class="sub-details flex justify-between xl:justify-start items-center gap-3 mb-3 xl:mb-2">
