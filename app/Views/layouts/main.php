@@ -37,6 +37,7 @@
         <?= $this->renderSection('konten') ?>
     </main>
     <?= $this->include('layouts/footer') ?>
+    <script type="module" src="/assets/js/hamburger-menu.js"></script>
 </body>
 
 </html>
