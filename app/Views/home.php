@@ -2,8 +2,6 @@
 
 <?= $this->section('konten') ?>
 <?php
-// TODO buat toggle navbar untuk device smartphone
-// TODO >= 640px belum ada responsif
 helper("string");
 $docCategsModel = new App\Models\DocumentCategories;
 $pagesMetaModel = new App\Models\PagesMeta;
