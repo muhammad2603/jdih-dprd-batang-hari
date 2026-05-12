@@ -21,11 +21,11 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
     <div class="jumbotron-text-view max-w-7xl h-full mx-auto py-18 px-6 flex xl:items-center">
         <div class="jumbotron-text max-w-2xl">
             <div class="badge-subtitle w-fit mb-10 py-2 px-4 bg-accent/20 rounded-full backdrop-blur-sm">
-                <h2 class="text-accent text-sm"><?= dot_array_search("jumbotron.about_media", $get_meta_home) ?></h2>
+                <h2 class="text-accent text-sm sm:text-base"><?= dot_array_search("jumbotron.about_media", $get_meta_home) ?></h2>
             </div>
-            <h2 class="mb-6 text-5xl md:text-7xl font-bold md:leading-tight">
-                <span class="text-foreground"><?= dot_array_search("jumbotron.title", $get_meta_home) ?></span>
-                <span class="text-accent text-4xl md:text-7xl"><?= dot_array_search("jumbotron.sub_title", $get_meta_home) ?></span>
+            <h2 class="mb-6 font-bold md:leading-tight">
+                <span class="text-foreground text-5xl sm:text-6xl md:text-7xl"><?= dot_array_search("jumbotron.title", $get_meta_home) ?></span>
+                <span class="block text-accent text-4xl sm:text-5xl md:text-7xl"><?= dot_array_search("jumbotron.sub_title", $get_meta_home) ?></span>
             </h2>
             <p class="motto max-w-xl mb-8 text-lg md:text-xl text-white/90"><?= dot_array_search("jumbotron.web_motto", $get_meta_home) ?></p>
             <div class="btn-cari-dokumen-wrapper">
@@ -140,7 +140,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("kategori_produk_hukum.title", $get_meta_home) ?></h2>
             <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $get_meta_home) ?></p>
         </div>
-        <div class="produk-hukum-categories-list grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="produk-hukum-categories-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php foreach ($total_produk_hukum_by_category as $total): ?>
                 <button type="button" class="group flex xl:flex-col gap-6 xl:gap-0 bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
                     <div class="icon-category bg-primary w-14 h-14 rounded-lg flex items-center justify-center xl:mb-6 group-hover:scale-110 transition-transform">
@@ -168,7 +168,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $get_meta_home) ?></h2>
             <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $get_meta_home) ?></p>
         </div>
-        <div class="statistics-data grid grid-cols-1 justify-center md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="statistics-data grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
@@ -217,7 +217,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 </section>
 <section class="dokumen-terbaru py-20 bg-white">
     <div class="content max-w-7xl mx-auto px-6">
-        <div class="top-content flex flex-col xl:flex-row xl:items-end justify-between gap-4 xl:gap-0 mb-12">
+        <div class="top-content flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4 sm:gap-0 mb-12">
             <div class="title-section">
                 <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("dokumen_terbaru.title", $get_meta_home) ?></h2>
                 <p class="text-muted-foreground"><?= dot_array_search("dokumen_terbaru.sub_title", $get_meta_home) ?></p>
@@ -234,8 +234,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <?php foreach ($new_documents as $doc): ?>
                 <?php $uri_path = urldecode("produk-hukum/" . url_title(esc($doc["kategori"]), "-", true) . "/" . esc($doc["slug"])) ?>
                 <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
-                    <div class="content flex flex-col xl:flex-row items-start gap-5 xl:gap-6">
-                        <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg hidden xl:flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                    <div class="content flex flex-col sm:flex-row items-start gap-5 xl:gap-6 sm:flex-wrap">
+                        <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg hidden sm:flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
                                 <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
                                 <path d="M14 2v5a1 1 0 0 0 1 1h5" />
