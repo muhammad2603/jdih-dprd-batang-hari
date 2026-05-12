@@ -9,7 +9,10 @@ const disabledButtons = (buttons, isDisabled = true) => buttons.forEach(el => el
 document.addEventListener("DOMContentLoaded", () => {
     const btnFilterSearchDocument = document.getElementById("filterSearchDocument");
     const filterDropdown = document.getElementById("filterDropdown");
-    const initHeight = "167px";
+    const getFilterDropdownFullHeightByChildren = Array.from(filterDropdown.children)
+        .map(child => child.getBoundingClientRect().height + parseFloat(getComputedStyle(child).marginTop))
+        .reduce((acc, num) => num + acc);
+    const initHeight = `${getFilterDropdownFullHeightByChildren}px`;
     const filtersValue = {
         jenisDokumen: null,
         tahun: null,
