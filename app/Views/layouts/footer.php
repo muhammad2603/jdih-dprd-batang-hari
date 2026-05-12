@@ -15,7 +15,7 @@ foreach ($unique_footer_nav as $group => $items) {
 <!-- TODO Buat credits untuk penggunaan library freeware -->
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
-        <div class="footer-contents grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+        <div class="footer-contents grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-12 mb-12">
             <div class="footer-content-col">
                 <div class="footer-identities flex items-center gap-3 mb-6">
                     <figure class="footer-logo">
@@ -40,20 +40,22 @@ foreach ($unique_footer_nav as $group => $items) {
                     <?php endforeach ?>
                 </div>
             </div>
-            <?php foreach ($footerNav as $title => $links): ?>
-                <div class="footer-content-col">
-                    <h3 class="font-semibold mb-6"><?= esc($title) ?></h3>
-                    <nav class="space-y-3 flex flex-col text-sm text-white/70">
-                        <?php foreach ($links as $link): ?>
-                            <a href="<?= esc($link['url']) ?>"
-                                class="hover:text-accent transition-colors w-fit">
-                                <?= esc($link['label']) ?>
-                            </a>
-                        <?php endforeach ?>
-                    </nav>
-                </div>
-            <?php endforeach ?>
-            <div class="fourth-col-content contacs">
+            <div class="footer-content-col space-y-6 col-span-2 flex flex-wrap">
+                <?php foreach ($footerNav as $title => $links): ?>
+                    <div class="footer-nav grow space-y-4">
+                        <h3 class="font-semibold"><?= esc($title) ?></h3>
+                        <nav class="space-y-3 flex flex-col text-sm text-white/70">
+                            <?php foreach ($links as $link): ?>
+                                <a href="<?= esc($link['url']) ?>"
+                                    class="hover:text-accent transition-colors w-fit">
+                                    <?= esc($link['label']) ?>
+                                </a>
+                            <?php endforeach ?>
+                        </nav>
+                    </div>
+                <?php endforeach ?>
+            </div>
+            <div class="fourth-col-content contacts">
                 <h3 class="font-semibold mb-6">Kontak</h3>
                 <ul class="space-y-3 flex flex-col text-sm text-white/70">
                     <li class="flex items-start gap-3">
