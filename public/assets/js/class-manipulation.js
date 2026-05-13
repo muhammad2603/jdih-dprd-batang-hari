@@ -2,10 +2,12 @@
  * @typedef {Object} ClassManipulator
  * @property {(property: string, value: string) => ClassManipulator} inlineStyle
  * Membuat property dan value pada atribut style element
- * @property {(...classes: string[])=> ClassManipulator} add
+ * @property {(...classes: string[]) => ClassManipulator} add
  * Menambah satu atau lebih class
- * @property {(...classes: string[])=> ClassManipulator} remove
+ * @property {(...classes: string[]) => ClassManipulator} remove
  * Menghapus satu atau lebih class
+ * @property {(...classes: string[]) => ClassManipulator} toggle
+ * Tambah class jika ada, dan hapus class jika tidak ada
  */
 /**
  * Manipulasi class pada element
@@ -29,5 +31,10 @@ export function classManipulation(element) {
             cls.forEach((cls) => this.el.classList.remove(cls));
             return this;
         },
+        toggle: function (...classes) {
+            const cls = !Array.isArray(classes[0]) ? classes : classes[0];
+            cls.forEach((cls) => this.el.classList.toggle(cls));
+            return this;
+        }
     }
 }
