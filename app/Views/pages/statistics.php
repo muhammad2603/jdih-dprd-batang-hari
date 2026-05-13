@@ -11,6 +11,10 @@ $categories_color = [
     "bg-accent-medium-dark-gray",
     "bg-accent-light-dark-gray"
 ];
+$total_categories = array_reduce(
+    array_map(fn($item) => (int) $item[1], $total_doc_by_categs_to_array),
+    fn($acc, $num) => $acc + $num
+);
 ?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
@@ -43,7 +47,7 @@ $categories_color = [
                 </svg>
             </span>
             <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= number_format($total_produk_hukum_current_year) ?></span>
-            <span class="text-sm text-muted-foreground">Dokumen Di Tahun 2026</span>
+            <span class="text-sm text-muted-foreground">Dokumen Di Tahun <?= $current_year ?></span>
         </div>
         <div class="total-document-current-month bg-white border border-primary-border rounded-lg p-6">
             <span class="block mb-4">
@@ -69,11 +73,11 @@ $categories_color = [
             <span class="text-sm text-muted-foreground">Total Unduhan</span>
         </div>
     </div>
-    <div class="statistics-chart grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+    <div class="statistics-chart grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 overflow-hidden">
         <div class="distributed-by-type bg-white border border-primary-border rounded-lg p-6">
             <h2 class="font-semibold mb-6 text-xl">Distribusi Berdasarkan Jenis</h2>
-            <div id="chartContainer" class="relative w-fit mx-auto">
-                <canvas id="chartDistributedByType" class="w-70! h-70!" {<?= $_ENV["CSP_STYLE_NONCE"] ?>}></canvas>
+            <div id="chartContainer" class="relative w-fit h-70 mx-auto">
+                <canvas id="chartDistributedByType" {<?= $_ENV["CSP_STYLE_NONCE"] ?>}></canvas>
             </div>
             <div class="mt-10 space-y-2">
                 <?php foreach ($total_doc_by_categs_to_array as $key => [$category, $total]): ?>
@@ -82,14 +86,14 @@ $categories_color = [
                             <div class="w-4 h-4 <?= $categories_color[$key] ?> rounded"></div>
                             <span class="text-muted-foreground"><?= esc($category) ?></span>
                         </div>
-                        <span class="font-medium"><?= esc($total) ?></span>
+                        <span class="font-medium"><?= esc($total) ?> <span class="average-percent text-xs align-middle">(<?= ($total / $total_categories) * 100 ?>%)</span></span>
                     </div>
                 <?php endforeach ?>
             </div>
         </div>
         <div class="total-document-by-year bg-white border border-primary-border rounded-lg p-6">
             <h2 class="font-semibold mb-6 text-xl">Jumlah Dokumen per Tahun</h2>
-            <div>
+            <div class="w-full lg:w-auto h-auto lg:h-70">
                 <canvas id="chartDocumentByYear" {<?= $_ENV["CSP_STYLE_NONCE"] ?>}></canvas>
             </div>
         </div>
@@ -110,7 +114,7 @@ $categories_color = [
 </div>
 <script src="<?= base_url() . 'assets/third-party/chartjs/chart.js' ?>"></script>
 <script type="module" src="<?= base_url() . 'assets/js/statistics-page.js' ?>"></script>
-<input type="hidden" id="distributedByCategories" value="<?= $total_doc_by_categories ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
-<input type="hidden" id="yearProdukHukumUploadRange" value="<?= $total_doc_by_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
-<input type="hidden" id="monthsTrend" value="<?= $total_doc_by_months_on_current_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" />
+<input type="hidden" id="distributedByCategories" value="<?= $total_doc_by_categories ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" hidden />
+<input type="hidden" id="yearProdukHukumUploadRange" value="<?= $total_doc_by_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" hidden />
+<input type="hidden" id="monthsTrend" value="<?= $total_doc_by_months_on_current_year ?>" class="hidden pointer-events-none opacity-0" aria-hidden="true" hidden />
 <?= $this->endSection() ?>
