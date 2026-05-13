@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="scroll-smooth text-sm xl:text-base">
+<html lang="id" class="scroll-smooth text-sm xl:text-base 2xl:text-lg">
 
 <head>
     <meta charset="UTF-8">
