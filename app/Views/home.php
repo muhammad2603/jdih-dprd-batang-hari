@@ -23,9 +23,9 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <div class="badge-subtitle w-fit mb-10 py-2 px-4 bg-accent/20 rounded-full backdrop-blur-sm">
                 <h2 class="text-accent text-sm sm:text-base"><?= dot_array_search("jumbotron.about_media", $get_meta_home) ?></h2>
             </div>
-            <h2 class="mb-6 font-bold md:leading-tight">
-                <span class="text-foreground text-5xl sm:text-6xl md:text-7xl"><?= dot_array_search("jumbotron.title", $get_meta_home) ?></span>
-                <span class="block text-accent text-4xl sm:text-5xl md:text-7xl"><?= dot_array_search("jumbotron.sub_title", $get_meta_home) ?></span>
+            <h2 class="mb-6 font-bold">
+                <span class="text-foreground text-5xl sm:text-6xl lg:text-7xl"><?= dot_array_search("jumbotron.title", $get_meta_home) ?></span>
+                <span class="block mt-1 lg:mt-2 text-accent text-4xl sm:text-5xl lg:text-7xl"><?= dot_array_search("jumbotron.sub_title", $get_meta_home) ?></span>
             </h2>
             <p class="motto max-w-xl mb-8 text-lg md:text-xl text-white/90"><?= dot_array_search("jumbotron.web_motto", $get_meta_home) ?></p>
             <div class="btn-cari-dokumen-wrapper">
@@ -168,7 +168,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $get_meta_home) ?></h2>
             <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $get_meta_home) ?></p>
         </div>
-        <div class="statistics-data grid grid-cols-1 justify-center sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div class="statistics-data grid grid-cols-1 justify-center sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
