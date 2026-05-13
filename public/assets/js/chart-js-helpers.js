@@ -38,7 +38,7 @@ const setCustomHtmlLabels = (config) => {
                 const modifyX = setX < 50 ? setX - 50 : (setX > 230 ? setX + 50 : setX);
                 Object.assign(label.style, {
                     position: 'absolute',
-                    left: `${modifyX}px`,
+                    left: `${modifyX - (config?.correctionPosX ?? 25)}px`,
                     top: `${setY}px`,
                     transform: 'translate(-50%, -50%)',
                     zIndex: '1',
@@ -47,6 +47,12 @@ const setCustomHtmlLabels = (config) => {
                     fontWeight: 'semibold',
                     color: labelColor
                 });
+                // label disembunyikan saat ruang terlalu sempit
+                const windowWidth = window.innerWidth;
+                const targetWindowWidth = config?.targetWindowWidth ?? 1280;
+                if (windowWidth < targetWindowWidth) {
+                    label.classList.add('hidden')
+                }
                 container.appendChild(label);
             });
         }
