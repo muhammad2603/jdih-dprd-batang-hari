@@ -1,8 +1,8 @@
 <?php
 ["Header" => $header, "Common" => $common] = $frontend_config;
 ?>
-<header id="headerNav" class="text-default-foreground sticky top-0 left-0 z-50">
-    <div class="max-w-7xl h-20 mx-auto py-4 px-6 bg-default flex justify-between items-center">
+<header id="headerNav" class="bg-default text-default-foreground sticky top-0 left-0 z-50">
+    <div class="max-w-7xl h-20 mx-auto py-4 px-6 flex justify-between items-center">
         <a href="<?= base_url() ?>" class="flex items-center gap-3" tabindex="-1">
             <figure>
                 <img
