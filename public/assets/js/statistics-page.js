@@ -2,6 +2,7 @@ import {
     setCustomHtmlLabels,
     ChartInit
 } from './chart-js-helpers.js';
+import { classManipulation } from './class-manipulation.js';
 function createNewArray(length, fill) {
     return Array.from({ length: length }).fill(fill);
 }
@@ -28,12 +29,16 @@ function setTrend(item, arrayRef, arrayFilled) {
     arrayFilled[indexMonth] = parseInt(total);
 }
 document.addEventListener("DOMContentLoaded", function () {
+    const chartPieContainer = document.getElementById('chartContainer');
     const ctxChartDistributedByType = document.getElementById('chartDistributedByType');
     const ctxChartDocumentByYear = document.getElementById('chartDocumentByYear');
     const ctxTrendMonths = document.getElementById('chartTrendMonths');
+    const windowWidthTargetToHideLabels = 1280;
+    const averagePercentCategories = document.querySelectorAll('.average-percent');
     const customHTMLLabels = setCustomHtmlLabels({
         containerElementId: 'chartContainer',
-        customLabelClass: '.custom-label'
+        customLabelClass: '.custom-label',
+        targetWindowWidth: windowWidthTargetToHideLabels
     });
     const [categoriesArray, totalArray] = createDataChartFromInputElement("distributedByCategories", ",");
     const dataChartPie = {
@@ -79,8 +84,24 @@ document.addEventListener("DOMContentLoaded", function () {
         data: dataChartPie,
         options: optionsChartPie,
         plugins: [customHTMLLabels]
-    });
-    chartPieInit.create();
+    }).create();
+    if(window.innerWidth < windowWidthTargetToHideLabels) {
+        averagePercentCategories.forEach(item => classManipulation(item).remove('hidden'))
+    }else {
+        averagePercentCategories.forEach(item => classManipulation(item).add('hidden'))
+    }
+    window.addEventListener("resize", () => {
+        const windowWidth = window.innerWidth;
+        if (windowWidth < windowWidthTargetToHideLabels) {
+            chartPieContainer.querySelectorAll('.custom-label')
+                .forEach(item => classManipulation(item).add('hidden'))
+            averagePercentCategories.forEach(item => classManipulation(item).remove('hidden'))
+        } else {
+            chartPieContainer.querySelectorAll('.custom-label')
+                .forEach(item => classManipulation(item).remove('hidden'))
+            averagePercentCategories.forEach(item => classManipulation(item).add('hidden'))
+        }
+    })
     const [yearArray, dataTotalArray] = createDataChartFromInputElement("yearProdukHukumUploadRange", ",");
     const getMaxTotal = Math.max(...dataTotalArray);
     const paddingMax = 20;
@@ -95,6 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
         }],
     };
     const chartBarOptions = {
+        responsive: true,
         plugins: {
             legend: {
                 display: false
