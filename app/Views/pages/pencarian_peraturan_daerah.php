@@ -38,20 +38,22 @@
     <div class="documents">
         <p class="text-muted-foreground">Menampilkan 5 dari 5 Peraturan Daerah</p>
         <div class="mt-6 space-y-4">
-            <!-- TODO Ambil data dokumen yang telah disediakan didatabase -->
+            <!-- TODO [High Priority] Ambil data dokumen yang telah disediakan didatabase -->
             <?php for ($i = 0; $i < 5; $i++): ?>
                 <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg transition-all group">
-                    <div class="konten-dokumen flex items-start justify-between gap-4">
+                    <div class="konten-dokumen flex flex-col lg:flex-row items-start justify-between gap-4">
                         <div class="flex-1">
-                            <div class="document-details flex items-center gap-3 mb-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
-                                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                    <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                    <path d="M10 9H8" />
-                                    <path d="M16 13H8" />
-                                    <path d="M16 17H8" />
-                                </svg>
-                                <span class="text-sm font-medium text-primary">Peraturan Daerah</span>
+                            <div class="document-details flex items-center gap-3 flex-wrap mb-3">
+                                <div class="category w-full sm:w-auto flex shrink-0 gap-3">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
+                                        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+                                        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                                        <path d="M10 9H8" />
+                                        <path d="M16 13H8" />
+                                        <path d="M16 17H8" />
+                                    </svg>
+                                    <span class="text-sm font-medium text-primary">Peraturan Daerah</span>
+                                </div>
                                 <span class="text-sm text-muted-foreground">Nomor 4 Tahun 2021</span>
                                 <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Berlaku</span>
                             </div>
@@ -68,8 +70,8 @@
                                 <span>Ditetapkan: <time datetime="2021-03-15">15 Maret 2021</time></span>
                             </div>
                         </div>
-                        <div class="flex gap-2 shrink-0">
-                            <a href="#" class="flex items-center gap-2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors">
+                        <div class="flex gap-2 shrink-0 self-end lg:self-start">
+                            <a href="#" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <path d="M12 7v14" />
                                     <path d="M16 12h2" />
@@ -80,7 +82,7 @@
                                 </svg>
                                 <span>Detail</span>
                             </a>
-                            <a href="#" class="flex items-center gap-2 p-2 text-primary hover:bg-primary/10 rounded-lg transition-colors" download>
+                            <a href="#" class="order-first lg:order-2 flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none" download>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
                                     <path d="M14 2v5a1 1 0 0 0 1 1h5" />
