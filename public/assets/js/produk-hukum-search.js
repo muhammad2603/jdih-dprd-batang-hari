@@ -1,8 +1,24 @@
+import { classManipulation } from './class-manipulation.js';
 document.addEventListener("DOMContentLoaded", () => {
+    const openSearchBtn = document.getElementById("openSearch");
+    const searchWrapper = document.getElementById("searchWrapper");
     const searchDocumentBtn = document.getElementById("searchDocumentBtn");
     const searchDocumentInput = document.getElementById("searchDocument");
     const selectCategoryDocument = document.getElementById("categoryDocument");
     const selectYearDocument = document.getElementById("yearDocument");
+    let stateSearch = false;
+    openSearchBtn.addEventListener("click", function () {
+        const iconOpenSearchBtn = this.querySelector('svg');
+        if (stateSearch === false) {
+            classManipulation(iconOpenSearchBtn).toggle('rotate-180')
+            classManipulation(searchWrapper).toggle('hidden', 'grid')
+            stateSearch = true;
+        } else {
+            classManipulation(iconOpenSearchBtn).toggle('rotate-180')
+            classManipulation(searchWrapper).toggle('grid', 'hidden')
+            stateSearch = false;
+        }
+    })
     searchDocumentBtn.addEventListener("click", () => {
         const searchDocumentValue = searchDocumentInput.value;
         const categoryDocument = selectCategoryDocument.value;
