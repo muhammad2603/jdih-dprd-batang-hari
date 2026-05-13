@@ -15,9 +15,9 @@ foreach ($unique_footer_nav as $group => $items) {
 <!-- TODO Buat credits untuk penggunaan library freeware -->
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
-        <div class="footer-contents grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-y-12 md:gap-12 mb-12">
+        <div class="footer-contents grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-12 mb-12">
             <div class="footer-content-col">
-                <div class="footer-identities flex items-center gap-3 mb-6">
+                <div class="footer-identities flex justify-center lg:justify-start items-center gap-3 mb-6">
                     <figure class="footer-logo">
                         <img
                             src="<?= dot_array_search("Logo.*.link", $common) ?>"
@@ -31,8 +31,8 @@ foreach ($unique_footer_nav as $group => $items) {
                         </h2>
                     </div>
                 </div>
-                <p class="text-sm text-white/70 mb-6"><?= dot_array_search("Identitas.0.content", $footer) ?></p>
-                <div class="footer-media-sosials flex gap-3 flex-wrap">
+                <p class="mx-auto lg:mx-0 w-4/5 md:w-1/2 lg:w-full text-sm text-center lg:text-left text-white/70 mb-6"><?= dot_array_search("Identitas.0.content", $footer) ?></p>
+                <div class="footer-media-sosials flex justify-center lg:justify-start gap-3 flex-wrap">
                     <?php foreach ($common["Media Sosial"] as $medsos): ?>
                         <a href="<?= $medsos["link"] ?>" target="_blank" class="w-10 h-10 bg-white/10 rounded-lg flex items-center justify-center hover:bg-accent transition-colors">
                             <?= $medsos["content"] ?>
@@ -43,8 +43,8 @@ foreach ($unique_footer_nav as $group => $items) {
             <div class="footer-content-col space-y-6 col-span-2 flex flex-wrap">
                 <?php foreach ($footerNav as $title => $links): ?>
                     <div class="footer-nav grow space-y-4">
-                        <h3 class="font-semibold"><?= esc($title) ?></h3>
-                        <nav class="space-y-3 flex flex-col text-sm text-white/70">
+                        <h3 class="font-semibold text-center lg:text-start"><?= esc($title) ?></h3>
+                        <nav class="space-y-3 flex items-center lg:items-start flex-col text-sm text-white/70">
                             <?php foreach ($links as $link): ?>
                                 <a href="<?= esc($link['url']) ?>"
                                     class="hover:text-accent transition-colors w-fit">
@@ -56,22 +56,22 @@ foreach ($unique_footer_nav as $group => $items) {
                 <?php endforeach ?>
             </div>
             <div class="fourth-col-content contacts">
-                <h3 class="font-semibold mb-6">Kontak</h3>
+                <h3 class="font-semibold mb-6 text-center lg:text-start">Kontak</h3>
                 <ul class="space-y-3 flex flex-col text-sm text-white/70">
-                    <li class="flex items-start gap-3">
+                    <li class="flex justify-center lg:justify-start items-start gap-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 shrink-0 mt-0.5">
                             <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
                             <circle cx="12" cy="10" r="3" />
                         </svg>
                         <span><?= dot_array_search("Lokasi.*.content", $kontak) ?></span>
                     </li>
-                    <li class="flex items-start gap-3">
+                    <li class="flex justify-center lg:justify-start items-start gap-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 shrink-0 mt-0.5">
                             <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
                         </svg>
                         <span><?= dot_array_search("Fax.*.content", $kontak) ?></span>
                     </li>
-                    <li class="flex items-start gap-3">
+                    <li class="flex justify-center lg:justify-start items-start gap-3">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 shrink-0 mt-0.5">
                             <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
                             <rect x="2" y="4" width="20" height="16" rx="2" />
