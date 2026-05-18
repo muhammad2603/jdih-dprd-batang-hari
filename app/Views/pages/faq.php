@@ -18,178 +18,45 @@
     </div>
 </div>
 <div class="contents-wrapper max-w-4xl mx-auto px-6 py-12">
-    <div class="search-wrapper mb-8 space-y-4">
-        <div class="search-input relative">
+    <div class="search-wrapper mb-8 grid grid-cols-6 gap-4">
+        <div class="search-input relative col-span-5">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground">
                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
             </svg>
-            <input type="text" placeholder="Cari pertanyaan..." class="w-full pl-12 pr-4 py-3 bg-white border border-primary-border rounded-lg focus:ring-2 focus:ring-primary outline-none">
+            <input id="inputSearchFaq" type="text" placeholder="Cari pertanyaan..." class="w-full h-full pl-12 pr-4 py-3 bg-white border border-primary-border rounded-lg focus:ring-2 focus:ring-primary outline-none">
         </div>
-        <div class="faq-categories flex flex-wrap gap-2">
-            <button type="button" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-primary text-white">Semua</button>
-            <button type="button" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted">Umum</button>
-            <button type="button" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted">Penggunaan</button>
-            <button type="button" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted">Teknis</button>
-            <button type="button" class="px-4 py-2 rounded-lg text-sm font-medium transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted">Bantuan</button>
+        <button type="button" id="btnSearchFaq" class="mt-2 md:mt-0 px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 active:bg-primary/90 transition-colors cursor-pointer focus:outline-none">Cari</button>
+        <div class="faq-categories flex flex-wrap gap-2 col-span-6">
+            <a href="<?= $by_category === false ? "javascript:void(0)" : current_url() ?>" class="px-4 py-2 rounded-lg text-sm font-medium <?= $by_category === false ? "bg-primary text-white" : "transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted" ?>">Semua</a>
+            <a href="<?= $by_category === "umum" ? "javascript:void(0)" : current_url() . "?kategori=umum" ?>" class="px-4 py-2 rounded-lg text-sm font-medium  <?= $by_category === "umum" ? "bg-primary text-white" : "transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted" ?>">Umum</a>
+            <a href="<?= $by_category === "penggunaan" ? "javascript:void(0)" : current_url() . "?kategori=penggunaan" ?>" class="px-4 py-2 rounded-lg text-sm font-medium  <?= $by_category === "penggunaan" ? "bg-primary text-white" : "transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted" ?>">Penggunaan</a>
+            <a href="<?= $by_category === "teknis" ? "javascript:void(0)" : current_url() . "?kategori=teknis" ?>" class="px-4 py-2 rounded-lg text-sm font-medium  <?= $by_category === "teknis" ? "bg-primary text-white" : "transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted" ?>">Teknis</a>
+            <a href="<?= $by_category === "bantuan" ? "javascript:void(0)" : current_url() . "?kategori=bantuan" ?>" class="px-4 py-2 rounded-lg text-sm font-medium  <?= $by_category === "bantuan" ? "bg-primary text-white" : "transition-colors bg-white border border-primary-border text-default-foreground cursor-pointer hover:bg-muted" ?>">Bantuan</a>
         </div>
     </div>
-    <div class="faqs space-y-4">
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Umum</span>
+    <div id="faqWrapper" class="faqs space-y-4">
+        <?php foreach ($faq_list as $faq): ?>
+            <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
+                <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 focus:bg-muted/50 focus:outline-none transition-colors cursor-pointer">
+                    <div class="faq-header flex-1 pr-4">
+                        <div class="category flex items-center gap-2 mb-1">
+                            <span class="text-xs font-medium text-primary"><?= esc($faq["kategori"]) ?></span>
+                        </div>
+                        <h3 class="font-semibold text-default-foreground"><?= esc($faq["judul"]) ?></h3>
                     </div>
-                    <h3 class="font-semibold text-default-foreground">Apa itu JDIH DPRD Kabupaten Batang Hari?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-            <!-- __COMMENT__ faq-dropdown-details akan diinject dari script ketika tombol faq-toggle-btn ke-trigger (click) -->
-            <div class="faq-dropdown-details overflow-hidden">
-                <div class="px-6 pb-4 text-muted-foreground leading-relaxed">
-                    <p>JDIH (Jaringan Dokumentasi dan Informasi Hukum) DPRD Kabupaten Batang Hari adalah sistem pengelolaan dokumen dan informasi hukum yang terintegrasi untuk memudahkan akses masyarakat terhadap produk hukum daerah. JDIH dibentuk berdasarkan Peraturan Presiden Nomor 33 Tahun 2012 tentang Jaringan Dokumentasi dan Informasi Hukum Nasional.</p>
+                    <span class="icon">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
+                            <path d="m6 9 6 6 6-6" />
+                        </svg>
+                    </span>
+                </button>
+                <div class="faq-dropdown-details mt-2 hidden overflow-hidden">
+                    <div class="px-6 pb-4 text-muted-foreground leading-relaxed">
+                        <p><?= esc($faq["deskripsi"]) ?></p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Umum</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Produk Hukum apa saja yang tersedia di JDIH?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Penggunaan</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Bagaimana cara mencari dokumen hukum di JDIH?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Penggunaan</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Apakah dokumen JDIH dapat diunduh?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Penggunaan</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Apakah perlu mendaftar untuk mengakses dokumen?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Teknis</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Seberapa sering database JDIH diperbarui?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Bantuan</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Bagaimana jika dokumen yang saya cari tidak ditemukan?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Umum</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Apakah dokumen di JDIH memiliki kekuatan hukum?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Umum</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Bagaimana cara mengetahui status berlaku suatu peraturan?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
-        <div class="faq bg-white border border-primary-border rounded-lg overflow-hidden">
-            <button type="button" class="faq-toggle-btn w-full px-6 py-4 flex items-center justify-between text-left hover:bg-muted/50 transition-colors cursor-pointer">
-                <div class="faq-header flex-1 pr-4">
-                    <div class="category flex items-center gap-2 mb-1">
-                        <span class="text-xs font-medium text-primary">Penggunaan</span>
-                    </div>
-                    <h3 class="font-semibold text-default-foreground">Apakah saya bisa menggunakan dokumen JDIH untuk keperluan penelitian?</h3>
-                </div>
-                <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5 text-muted-foreground shrink-0">
-                        <path d="m6 9 6 6 6-6" />
-                    </svg>
-                </span>
-            </button>
-        </div>
+        <?php endforeach ?>
     </div>
     <div class="contact-supports mt-12 bg-primary/5 border border-primary/20 rounded-lg p-8 text-center">
         <h3 class="font-semibold mb-2">Tidak menemukan jawaban yang Anda cari?</h3>
@@ -200,4 +67,5 @@
         </div>
     </div>
 </div>
+<script src="/assets/js/faq.js"></script>
 <?= $this->endSection() ?>
