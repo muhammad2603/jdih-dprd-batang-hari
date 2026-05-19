@@ -1,7 +1,7 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
 <?php
-    $timeServices = service("timeServices");
+$timeServices = service("timeServices");
 ?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
@@ -19,23 +19,24 @@
         </p>
     </div>
     <div class="filter-search-wrapper bg-white border border-primary-border rounded-lg p-6 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="search relative">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="search relative md:col-span-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
-                <input id="searchDocument" type="text" placeholder="Masukkan kata kunci, nomor peraturan, atau judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                <input id="searchInput" type="text" value="<?= $current_search ?>" placeholder="Masukkan kata kunci, nomor peraturan, atau judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
             </div>
             <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                <option value="Semua Jenis">Semua Tahun</option>
-                <option value="2026">2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
+                <option value="*">Semua Tahun</option>
+                <option value="2026" <?= $current_selected_year === "2026" ? "selected" : "" ?>>2026</option>
+                <option value="2025" <?= $current_selected_year === "2025" ? "selected" : "" ?>>2025</option>
+                <option value="2024" <?= $current_selected_year === "2024" ? "selected" : "" ?>>2024</option>
+                <option value="2023" <?= $current_selected_year === "2023" ? "selected" : "" ?>>2023</option>
+                <option value="2022" <?= $current_selected_year === "2022" ? "selected" : "" ?>>2022</option>
+                <option value="2021" <?= $current_selected_year === "2021" ? "selected" : "" ?>>2021</option>
+                <option value="2020" <?= $current_selected_year === "2020" ? "selected" : "" ?>>2020</option>
             </select>
+            <button id="submitSearchBtn" type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 focus:outline-none focus:bg-primary/90 transition-colors cursor-pointer">Cari</button>
         </div>
     </div>
     <div class="documents">
@@ -96,10 +97,11 @@
                     </div>
                 </div>
             <?php endforeach ?>
-            <?php if($pager_links !== false): ?>
+            <?php if ($pager_links !== false): ?>
                 <?= $pager_links ?>
             <?php endif ?>
         </div>
     </div>
 </div>
+<script src="/assets/js/pencarian-perda.js"></script>
 <?= $this->endSection() ?>
