@@ -1,5 +1,8 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
+<?php
+$timeServices = service("timeServices");
+?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
@@ -16,30 +19,30 @@
         </p>
     </div>
     <div class="filter-search-wrapper bg-white border border-primary-border rounded-lg p-6 mb-8">
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="search relative">
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+            <div class="search relative md:col-span-3">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
-                <input id="searchDocument" type="text" placeholder="Masukkan kata kunci, nomor peraturan, atau judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                <input id="searchInput" type="text" value="<?= $current_search ?>" placeholder="Masukkan kata kunci, nomor peraturan, atau judul dokumen..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
             </div>
             <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                <option value="Semua Jenis">Semua Tahun</option>
-                <option value="2026">2026</option>
-                <option value="2025">2025</option>
-                <option value="2024">2024</option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
+                <option value="*">Semua Tahun</option>
+                <option value="2026" <?= $current_selected_year === "2026" ? "selected" : "" ?>>2026</option>
+                <option value="2025" <?= $current_selected_year === "2025" ? "selected" : "" ?>>2025</option>
+                <option value="2024" <?= $current_selected_year === "2024" ? "selected" : "" ?>>2024</option>
+                <option value="2023" <?= $current_selected_year === "2023" ? "selected" : "" ?>>2023</option>
+                <option value="2022" <?= $current_selected_year === "2022" ? "selected" : "" ?>>2022</option>
+                <option value="2021" <?= $current_selected_year === "2021" ? "selected" : "" ?>>2021</option>
+                <option value="2020" <?= $current_selected_year === "2020" ? "selected" : "" ?>>2020</option>
             </select>
+            <button id="submitSearchBtn" type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 focus:outline-none focus:bg-primary/90 transition-colors cursor-pointer">Cari</button>
         </div>
     </div>
     <div class="documents">
-        <p class="text-muted-foreground">Menampilkan 5 dari 5 Peraturan Daerah</p>
+        <p class="text-muted-foreground">Menampilkan <?= $data_display_count ?> dari <?= $total_dokumen ?> Peraturan Daerah yang ditemukan</p>
         <div class="mt-6 space-y-4">
-            <!-- TODO [High Priority] Ambil data dokumen yang telah disediakan didatabase -->
-            <?php for ($i = 0; $i < 5; $i++): ?>
+            <?php foreach ($dokumen_perda as $perda): ?>
                 <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg transition-all group">
                     <div class="konten-dokumen flex flex-col lg:flex-row items-start justify-between gap-4">
                         <div class="flex-1">
@@ -52,13 +55,12 @@
                                         <path d="M16 13H8" />
                                         <path d="M16 17H8" />
                                     </svg>
-                                    <span class="text-sm font-medium text-primary">Peraturan Daerah</span>
+                                    <span class="text-sm font-medium text-primary"><?= esc($perda["kategori"]) ?></span>
                                 </div>
-                                <span class="text-sm text-muted-foreground">Nomor 4 Tahun 2021</span>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700">Berlaku</span>
+                                <span class="text-sm text-muted-foreground">Nomor <?= esc($perda["nomor"]) ?> Tahun <?= esc($perda["tahun"]) ?></span>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700"><?= esc($perda["status"]) ?></span>
                             </div>
-                            <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors">Peraturan Daerah tentang Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten Batang Hari Tahun 2021-2026</h3>
-                            <p class="description text-sm text-muted-foreground mb-3">Penetapan APBD Kabupaten Batang Hari untuk tahun anggaran 2026</p>
+                            <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors"><?= esc($perda["judul"]) ?></h3>
                             <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <path d="M11 14h1v4" />
@@ -67,11 +69,11 @@
                                     <path d="M8 2v4" />
                                     <rect x="3" y="4" width="18" height="18" rx="2" />
                                 </svg>
-                                <span>Ditetapkan: <time datetime="2021-03-15">15 Maret 2021</time></span>
+                                <span>Ditetapkan: <time datetime="<?= esc($perda["tanggal_penetapan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($perda["tanggal_penetapan"])) ?></time></span>
                             </div>
                         </div>
                         <div class="flex gap-2 shrink-0 self-end lg:self-start">
-                            <a href="#" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
+                            <a href="<?= "/produk-hukum/" . url_title(esc($perda["kategori"]), "-", true) . "/" . esc($perda["slug"]) ?>" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <path d="M12 7v14" />
                                     <path d="M16 12h2" />
@@ -94,8 +96,12 @@
                         </div>
                     </div>
                 </div>
-            <?php endfor ?>
+            <?php endforeach ?>
+            <?php if ($pager_links !== false): ?>
+                <?= $pager_links ?>
+            <?php endif ?>
         </div>
     </div>
 </div>
+<script src="/assets/js/pencarian-perda.js"></script>
 <?= $this->endSection() ?>
