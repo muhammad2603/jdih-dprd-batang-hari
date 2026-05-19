@@ -23,16 +23,17 @@ class PencarianPeraturanDaerah extends BaseController
         $data_feconfig = $this->fe_config_model->getAllData();
         $current_page = $this->request->getVar("page") ?? 1;
         $per_page = 10;
-        $by_keyword = false;
+        $by_keyword = $this->request->getVar("keyword") ?? false;
+        $by_year = $this->request->getVar("year") ?? false;
         $by_category = 1; // 1 -> PerDa (Peraturan Daerah)
-        $total_produk_hukum_perda = $this->ph_model->getTotalProdukHukumHighlight($by_keyword, $by_category);
+        $total_produk_hukum_perda = $this->ph_model->getTotalProdukHukumHighlight($by_keyword, $by_category, $by_year);
         [
             "page" => $current_page,
             "offset" => $data_offset,
             "data_index" => $data_index,
             "pager" => $mk_pager
         ] = create_pagination($current_page, $per_page, $total_produk_hukum_perda);
-        $produk_hukum_perda = $this->ph_model->getProdukHukumHighlight($per_page, $data_offset, $by_keyword, $by_category);
+        $produk_hukum_perda = $this->ph_model->getProdukHukumHighlight($per_page, $data_offset, $by_keyword, $by_category, $by_year);
         $page_title = "Pencarian Peraturan Daerah";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
@@ -43,6 +44,8 @@ class PencarianPeraturanDaerah extends BaseController
             "pager_links"           => $total_produk_hukum_perda > $per_page ? $mk_pager : false,
             "total_dokumen"         => $total_produk_hukum_perda,
             "data_display_count"    => $data_index,
+            "current_search"        => $by_keyword,
+            "current_selected_year" => $by_year,
         ];
         $page_data = create_page_meta(
             $page_title,
