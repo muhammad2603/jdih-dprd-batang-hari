@@ -3,8 +3,8 @@
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
-            <h1 class="text-4xl font-bold mb-4 leading-12">Kebijakan Privasi<br>JDIH DPRD Kabupaten Batang Hari</h1>
-            <p class="text-lg text-white/80 max-w-2xl">JDIH DPRD Kabupaten Batang Hari berkomitmen untuk melindungi dan menjaga kerahasiaan data pribadi setiap pengguna layanan. Kebijakan Privasi ini menjelaskan bagaimana informasi dikumpulkan, digunakan, dan dilindungi dalam penggunaan website resmi JDIH DPRD Kabupaten Batang Hari.</p>
+            <h1 class="text-2xl md:text-3xl xl:text-4xl font-bold mb-4 md:leading-12 text-pretty">Kebijakan Privasi<br>JDIH DPRD Kabupaten Batang Hari</h1>
+            <p class="text-sm md:text-lg text-white/80 max-w-2xl">JDIH DPRD Kabupaten Batang Hari berkomitmen untuk melindungi dan menjaga kerahasiaan data pribadi setiap pengguna layanan. Kebijakan Privasi ini menjelaskan bagaimana informasi dikumpulkan, digunakan, dan dilindungi dalam penggunaan website resmi JDIH DPRD Kabupaten Batang Hari.</p>
         </div>
     </div>
 </div>
@@ -97,9 +97,9 @@
     <div class="mt-8">
         <h2 class="text-default-foreground font-semibold">Kontak</h2>
         <p>Apabila terdapat pertanyaan terkait Kebijakan Privasi ini, silakan menghubungi:</p>
-        <ul class="mt-4">
+        <ul class="mt-2 xl:mt-4">
             <li>JDIH DPRD Kabupaten Batang Hari</li>
-            <li>Jl. Jend. Sudirman KM.V Kec. Muara Bulian, Kabupate Batang Hari, Jambi, 36613.</li>
+            <li>Jl. Jend. Sudirman KM.V Kec. Muara Bulian, Kabupaten Batang Hari, Jambi, 36613.</li>
             <li>Email: setwan@batangharikab.go.id</li>
             <li>Telepon/Fax: (0743) 21016</li>
         </ul>
