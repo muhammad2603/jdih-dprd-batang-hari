@@ -7,8 +7,8 @@ $timeServices = service("timeServices");
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
-            <h1 class="text-4xl font-bold mb-4">Peraturan Daerah</h1>
-            <p class="text-lg text-white/80 max-w-2xl">Kumpulan Peraturan Daerah (Perda) Kabupaten Batang Hari yang ditetapkan oleh DPRD bersama Bupati</p>
+            <h1 class="text-2xl sm:text-3xl xl:text-4xl font-bold md:leading-12 text-pretty mb-4">Peraturan Daerah</h1>
+            <p class="text-sm sm:text-lg text-white/80 max-w-2xl">Kumpulan Peraturan Daerah (Perda) Kabupaten Batang Hari yang ditetapkan oleh DPRD bersama Bupati</p>
         </div>
     </div>
 </div>
