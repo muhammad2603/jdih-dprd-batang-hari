@@ -13,7 +13,6 @@ $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
     $routes->get('/statistik', 'Statistics::index');
     $routes->get('/tentang', 'About::index');
     $routes->get('/faq', 'Faq::index');
-    $routes->get('/layanan/pencarian-dokumen', 'PencarianDokumen::index');
     $routes->get('/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
     $routes->get('/layanan/peraturan-bupati', 'PencarianPeraturanBupati::index');
     $routes->get('/layanan/keputusan-dprd', 'PencarianKeputusanDPRD::index');
