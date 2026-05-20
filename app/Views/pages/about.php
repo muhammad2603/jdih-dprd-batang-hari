@@ -9,8 +9,8 @@ $contacts = $frontend_config["Kontak"];
 <section class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
-            <h1 class="text-4xl font-bold mb-4"><?= esc(dot_array_search("jumbotron.title", $page_meta)) ?></h1>
-            <p class="text-lg text-white/80 max-w-2xl"><?= esc(dot_array_search("jumbotron.description", $page_meta)) ?></p>
+            <h1 class="text-2xl sm:text-3xl xl:text-4xl font-bold mb-4 md:leading-12 text-pretty"><?= esc(dot_array_search("jumbotron.title", $page_meta)) ?></h1>
+            <p class="text-sm sm:text-lg text-white/80 max-w-2xl"><?= esc(dot_array_search("jumbotron.description", $page_meta)) ?></p>
         </div>
     </div>
 </section>
