@@ -41,7 +41,7 @@ $timeServices = service("timeServices");
         </div>
     </div>
     <div class="documents">
-        <p class="text-muted-foreground">Menampilkan <?= $data_display_count ?> dari <?= $total_dokumen ?> Peraturan Daerah yang ditemukan</p>
+        <p class="text-muted-foreground">Menampilkan <?= $data_display_count ?> dari <?= $total_dokumen ?> Peraturan Bupati yang ditemukan</p>
         <div class="mt-6 space-y-4">
             <?php foreach ($dokumen_perbup as $perbup): ?>
                 <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg transition-all group">
