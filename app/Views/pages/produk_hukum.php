@@ -3,7 +3,6 @@
 <?= $this->section("konten") ?>
 <?php
 helper('string');
-$doc_categs = (new App\Models\DocumentCategories)->getDocumentCategories();
 $timeServices = service("timeServices");
 ?>
 <div class="jumbotron bg-primary text-white py-16">
@@ -32,7 +31,7 @@ $timeServices = service("timeServices");
             </div>
             <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background text-sm rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
                 <option value="*">Pilih Jenis Dokumen</option>
-                <?php foreach ($doc_categs as $categ): ?>
+                <?php foreach ($document_categories as $categ): ?>
                     <option value="<?= $categ["id"] ?>" <?= $current_category == $categ["id"] ? "selected" : "" ?>><?= $categ["category"] ?></option>
                 <?php endforeach ?>
             </select>
@@ -42,7 +41,6 @@ $timeServices = service("timeServices");
                     <option value="<?= esc($year) ?>" <?= $current_year == esc($year) ? "selected" : "" ?>><?= esc($year) ?></option>
                 <?php endforeach ?>
             </select>
-            <!-- __FIX__ saat filter tidak ada yang terisi, pencarian akan tetap dilakukan. perbaiki agar pencarian tidak berjalan jika filter-nya kosong -->
             <button type="button" id="searchDocumentBtn" class="col-span-2 md:col-span-1 mt-2 md:mt-0 px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 active:bg-primary/90 transition-colors cursor-pointer">Cari</button>
         </div>
     </div>
