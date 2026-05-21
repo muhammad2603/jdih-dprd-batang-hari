@@ -30,22 +30,17 @@ $timeServices = service("timeServices");
                 </svg>
                 <input id="searchDocument" type="text" value="<?= uri_title_to_words($current_keyword) ?>" placeholder="Cari berdasarkan judul dokumen..." class="w-full h-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
             </div>
-            <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                <option value="*">Semua Jenis</option>
+            <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background text-sm rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
+                <option value="*">Pilih Jenis Dokumen</option>
                 <?php foreach ($doc_categs as $categ): ?>
                     <option value="<?= $categ["id"] ?>" <?= $current_category == $categ["id"] ? "selected" : "" ?>><?= $categ["category"] ?></option>
                 <?php endforeach ?>
             </select>
-            <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                <option value="*">Semua Tahun</option>
-                <!-- __FIX__ ambil tahun terkecil dan terbesar dari semua produk hukum yang tersedia, lalu buat rentangnya -->
-                <option value="2026" <?= $current_year == "2026" ? "selected" : "" ?>>2026</option>
-                <option value="2025" <?= $current_year == "2025" ? "selected" : "" ?>>2025</option>
-                <option value="2024" <?= $current_year == "2024" ? "selected" : "" ?>>2024</option>
-                <option value="2023" <?= $current_year == "2023" ? "selected" : "" ?>>2023</option>
-                <option value="2022" <?= $current_year == "2022" ? "selected" : "" ?>>2022</option>
-                <option value="2021" <?= $current_year == "2021" ? "selected" : "" ?>>2021</option>
-                <option value="2020" <?= $current_year == "2020" ? "selected" : "" ?>>2020</option>
+            <select id="yearDocument" class="w-full px-4 py-3 bg-input-background text-sm rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
+                <option value="*">Pilih Tahun Upload</option>
+                <?php foreach ($years_option_select as ["tahun" => $year]): ?>
+                    <option value="<?= esc($year) ?>" <?= $current_year == esc($year) ? "selected" : "" ?>><?= esc($year) ?></option>
+                <?php endforeach ?>
             </select>
             <!-- __FIX__ saat filter tidak ada yang terisi, pencarian akan tetap dilakukan. perbaiki agar pencarian tidak berjalan jika filter-nya kosong -->
             <button type="button" id="searchDocumentBtn" class="col-span-2 md:col-span-1 mt-2 md:mt-0 px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 active:bg-primary/90 transition-colors cursor-pointer">Cari</button>
