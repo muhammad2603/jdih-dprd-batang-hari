@@ -102,7 +102,7 @@ class ProdukHukum extends Model
             $builder->where("category_id", $byCategory);
         };
         if ($byYear !== false) {
-            $builder->where("YEAR(tahun)", $byYear);
+            $builder->where("YEAR(ph.created_at)", $byYear);
         };
         return $builder->findAll($perPage, $offset);
     }
