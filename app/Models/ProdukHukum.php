@@ -60,8 +60,6 @@ class ProdukHukum extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
-    // ^^^^^^^^^^ jika bisa, ambil field yang wajib dan pisahkan field yang opsional dan bisa dipilih secara manual, agar field lebih spesifik (yang diinginkan) saat dibutuhkan
     /**
      * Mengambil beberapa data produk hukum
      * @param int|null $perPage batas pengambilan data per-halaman (pagination)
@@ -110,7 +108,7 @@ class ProdukHukum extends Model
      * Mengambil total data produk hukum highlight
      * @param bool|string $byKeyword berdasarkan kata kunci pencarian
      * @param bool|int $byCategory berdasarkan kategori
-     * @param bool|string $byYear berdasarkan kata kunci tahun
+     * @param bool|string $byYear berdasarkan tahun upload
      * @return int
      */
     public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false): int
