@@ -31,6 +31,7 @@ class ProdukHukum extends BaseController
             "pager" => $mk_pager
         ] = create_pagination($get_page, $data_per_page, $total_produk_hukum);
         $produk_hukum = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset, $keyword, $category, $year);
+        $getYearsDocumentUploaded = $this->produk_hukum_model->getYearsDocumentUploaded();
         $data_feconfig = $this->frontend_config_model->getAllData();
         $page_title = "Produk Hukum";
         $page_description = "Database lengkap produk hukum daerah Kabupaten Batang Hari yang dapat diakses dan diunduh oleh publik, mencakup peraturan daerah, peraturan bupati, keputusan, dan dokumen hukum lainnya secara transparan dan terstruktur.";
@@ -57,6 +58,7 @@ class ProdukHukum extends BaseController
             "current_keyword" => $keyword,
             "current_category" => $category,
             "current_year" => $year,
+            "years_option_select" => $getYearsDocumentUploaded,
         ];
         $page_data = create_page_meta(
             $page_title,

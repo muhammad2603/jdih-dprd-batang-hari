@@ -104,6 +104,7 @@ class ProdukHukum extends Model
         }
         return $builder->findAll($perPage, $offset);
     }
+    
     /**
      * Mengambil total data produk hukum highlight
      * @param bool|string $byKeyword berdasarkan kata kunci pencarian
@@ -132,6 +133,7 @@ class ProdukHukum extends Model
         };
         return $builder->countAllResults();
     }
+    
     /**
      * Mengambil detail produk hukum
      * @param int|string $key field id atau slug produk hukum
@@ -200,6 +202,7 @@ class ProdukHukum extends Model
         }
         return $builder->first();
     }
+    
     /**
      * Mengambil klasifikasi produk hukum
      * @param int $id ID produk hukum
@@ -230,6 +233,7 @@ class ProdukHukum extends Model
             "subjek" => $klasifikasi_subjek,
         ];
     }
+    
     /**
      * Mengambil dokumen terkait
      * @param int $ph_id ID Produk Hukum
@@ -256,6 +260,7 @@ class ProdukHukum extends Model
             ->where("rd.ph_id", $ph_id)
             ->findAll();
     }
+    
     /**
      * Mengambil total dokumen hukum berdasarkan kategori-nya
      * @return array
@@ -271,6 +276,7 @@ class ProdukHukum extends Model
             ->groupBy("ph.category_id")
             ->findAll();
     }
+    
     /**
      * Mengambil total produk hukum yang tersedia
      * @return array ["total" => int]
@@ -281,6 +287,7 @@ class ProdukHukum extends Model
             ->select("COUNT(*) AS total")
             ->findAll()[0];
     }
+    
     /**
      * Mengambil total dokumen berdasarkan bulan
      * @param string $target_month bulan pembuatan dokumen yang dicari
@@ -293,6 +300,7 @@ class ProdukHukum extends Model
             ->where("MONTH(created_at) =", $target_month)
             ->countAllResults();
     }
+    
     /**
      * Mengambil total dokumen berdasarkan tahun
      * @param string $target_year tahun pembuatan dokumen yang dicari
@@ -305,6 +313,7 @@ class ProdukHukum extends Model
             ->where("YEAR(created_at) =", $target_year)
             ->countAllResults();
     }
+
     /**
      * Mengambil total dokumen per-tahun
      * @return array
@@ -322,6 +331,7 @@ class ProdukHukum extends Model
             ->fromSubquery($subquery, "sq")
             ->get()->getFirstRow('array');
     }
+
     /**
      * Mengambil total dokumen berdasarkan kategori
      * @param int $limit batas hasil pengambilan baris data
@@ -342,6 +352,7 @@ class ProdukHukum extends Model
             ->limit($limit)
             ->get()->getFirstRow('array');
     }
+
     /**
      * Mengambil total dokumen per-bulan ditahun saat ini
      * @return array
@@ -359,5 +370,16 @@ class ProdukHukum extends Model
             ->select("GROUP_CONCAT(CONCAT(bulan, ':', total) ORDER BY bulan SEPARATOR ',') AS result")
             ->fromSubquery($subquery, "sq")
             ->get()->getFirstRow('array');
+    }
+
+    /**
+     * Mengambil tahun upload dokumen, digunakan untuk opsi pilihan
+     * @return array
+     */
+    public function getYearsDocumentUploaded(): array
+    {
+        return $this
+            ->select("DISTINCT YEAR(created_at) AS tahun")
+            ->findAll();
     }
 }
