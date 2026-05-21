@@ -92,13 +92,9 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         </span>
                         <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer focus:outline-none" data-filter-identity="year">
                             <option value="off">Pilih Tahun Dokumen</option>
-                            <option value="2026">2026</option>
-                            <option value="2025">2025</option>
-                            <option value="2024">2024</option>
-                            <option value="2023">2023</option>
-                            <option value="2022">2022</option>
-                            <option value="2021">2021</option>
-                            <option value="2020">2020</option>
+                            <?php foreach ($years_document_uploaded as ["tahun" => $year]): ?>
+                                <option value="<?= esc($year) ?>"><?= esc($year) ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
                     <div class="option">
