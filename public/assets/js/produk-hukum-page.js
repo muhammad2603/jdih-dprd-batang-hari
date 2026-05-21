@@ -6,8 +6,44 @@ import { classManipulation } from "./class-manipulation.js";
  * @returns {void}
  */
 const disabledButtons = (buttons, isDisabled = true) => buttons.forEach(el => el.disabled = isDisabled);
-// Endpoint pencariang
+class FilterManipulation {
+    constructor() {
+        this.state = false;
+    }
+    openDropdown(filterDropdownBtn, filterDropdownEl, height) {
+        this.state = true;
+        classManipulation(filterDropdownEl).inlineStyle("height", height)
+        classManipulation(filterDropdownBtn)
+            .remove("bg-muted")
+            .add("bg-primary/90", "text-foreground");
+    }
+    closeDropdown(filterDropdownBtn, filterDropdownEl) {
+        this.state = false;
+        classManipulation(filterDropdownEl).inlineStyle("height", '0px')
+        classManipulation(filterDropdownBtn)
+            .remove("bg-primary/90", "text-foreground")
+            .add("bg-muted");
+    }
+}
+const getDataAttributeElement = (el, dataValue) => el.dataset[dataValue];
+const appendQueryParam = (URLSearchParams, name, value) => {
+    if (!value) return;
+    URLSearchParams.append(name, value)
+};
+const appendQueryParamFromObject = (URLSearchParams, object) => {
+    Object.entries(object).forEach(([name, value]) => {
+        if (!value) return;
+        appendQueryParam(URLSearchParams, name, value)
+    })
+};
+const getHeightContainerByChildrens = (childrensEl, callback) => {
+    return Array.from(childrensEl)
+        .map(child => callback(child))
+        .reduce((acc, num) => num + acc);
+}
+// Endpoint pencarian
 const pathLocationSearch = '/produk-hukum?';
+const filterDropdownClass = new FilterManipulation();
 document.addEventListener("DOMContentLoaded", () => {
     const btnFilterSearchDocument = document.getElementById("filterSearchDocument");
     const filterDropdown = document.getElementById("filterDropdown");
@@ -22,21 +58,12 @@ document.addEventListener("DOMContentLoaded", () => {
         status: null,
     };
     const selectsFilter = document.querySelectorAll("#filterDropdown select");
-    let state = false;
     const btnFastFilters = document.querySelectorAll("#fastFilter > button[type=button]");
     btnFilterSearchDocument.addEventListener("click", function () {
-        if (state === false) {
-            state = true;
-            filterDropdown.style.height = initHeight;
-            classManipulation(btnFilterSearchDocument)
-                .remove("hover:bg-primary/90", "hover:text-foreground", "bg-muted")
-                .add("bg-primary/90", "text-foreground")
+        if (filterDropdownClass.state === false) {
+            filterDropdownClass.openDropdown(btnFilterSearchDocument, filterDropdown, initHeight)
         } else {
-            state = false;
-            filterDropdown.style.height = '0px';
-            classManipulation(btnFilterSearchDocument)
-                .remove("bg-primary/90", "text-foreground")
-                .add("hover:bg-primary/90", "hover:text-foreground", "bg-muted")
+            filterDropdownClass.closeDropdown(btnFilterSearchDocument, filterDropdown)
         }
     })
     btnFastFilters.forEach(el => el.addEventListener("click", function () {
@@ -70,14 +97,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const isAllFiltersValueNull = filtersValue.category === null && filtersValue.year === null && filtersValue.status === null;
         if (isAllFiltersValueNull) {
             disabledButtons(btnFastFilters, false)
-            const getLastFastFilterSelected = document.querySelector("#fastFilter > button[type=button].active").dataset.categoryValue;
+            const getLastFastFilterSelected = getDataAttributeElement(document.querySelector("#fastFilter > button[type=button].active"), "categoryValue");
             filtersValue.category = getLastFastFilterSelected !== "*" ? getLastFastFilterSelected : null;
         }
     }))
     btnResetFilter.addEventListener("click", () => {
         selectsFilter.forEach(el => el.selectedIndex = 0)
         disabledButtons(btnFastFilters, false)
-        const getLastFastFilterSelected = document.querySelector("#fastFilter > button[type=button].active").dataset.categoryValue;
+        const getLastFastFilterSelected = getDataAttributeElement(document.querySelector("#fastFilter > button[type=button].active"), "categoryValue");
         filtersValue.category = getLastFastFilterSelected !== "*" ? getLastFastFilterSelected : null;
         filtersValue.year = null;
         filtersValue.status = null;
@@ -88,12 +115,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const isAllFiltersValueNull = searchValue === "" && filtersValue.category === null && filtersValue.year === null && filtersValue.status === null;
         if (isAllFiltersValueNull) return;
         const queryParams = new URLSearchParams();
-        queryParams.append("keyword", searchValue)
-        Object.entries(filtersValue).forEach(([name, value]) => {
-            if (value !== null) {
-                queryParams.append(name, value)
-            }
-        })
+        appendQueryParam(queryParams, "keyword", searchValue)
+        appendQueryParamFromObject(queryParams, filtersValue)
         window.location.href = pathLocationSearch + queryParams.toString();
     })
 })
