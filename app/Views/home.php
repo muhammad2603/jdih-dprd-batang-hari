@@ -3,11 +3,7 @@
 <?= $this->section('konten') ?>
 <?php
 helper("string");
-$docCategsModel = new App\Models\DocumentCategories;
-$pagesMetaModel = new App\Models\PagesMeta;
 $timeServices = service("timeServices");
-$doc_categs = $docCategsModel->getDocumentCategories();
-$get_meta_home = $pagesMetaModel->getMetaPagesByIdentity("Beranda");
 $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
 ?>
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
@@ -21,13 +17,13 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
     <div class="jumbotron-text-view max-w-7xl h-full mx-auto py-18 px-6 flex xl:items-center">
         <div class="jumbotron-text max-w-2xl">
             <div class="badge-subtitle w-fit mb-10 py-2 px-4 bg-accent/20 rounded-full backdrop-blur-sm">
-                <h2 class="text-accent text-sm sm:text-base"><?= dot_array_search("jumbotron.about_media", $get_meta_home) ?></h2>
+                <h2 class="text-accent text-sm sm:text-base"><?= dot_array_search("jumbotron.about_media", $meta_page) ?></h2>
             </div>
             <h2 class="mb-6 font-bold">
-                <span class="text-foreground text-5xl sm:text-6xl lg:text-7xl"><?= dot_array_search("jumbotron.title", $get_meta_home) ?></span>
-                <span class="block mt-1 lg:mt-2 text-accent text-4xl sm:text-5xl lg:text-7xl"><?= dot_array_search("jumbotron.sub_title", $get_meta_home) ?></span>
+                <span class="text-foreground text-5xl sm:text-6xl lg:text-7xl"><?= dot_array_search("jumbotron.title", $meta_page) ?></span>
+                <span class="block mt-1 lg:mt-2 text-accent text-4xl sm:text-5xl lg:text-7xl"><?= dot_array_search("jumbotron.sub_title", $meta_page) ?></span>
             </h2>
-            <p class="motto max-w-xl mb-8 text-lg md:text-xl text-white/90"><?= dot_array_search("jumbotron.web_motto", $get_meta_home) ?></p>
+            <p class="motto max-w-xl mb-8 text-lg md:text-xl text-white/90"><?= dot_array_search("jumbotron.web_motto", $meta_page) ?></p>
             <div class="btn-cari-dokumen-wrapper">
                 <a href="#cari-dokumen" class="inline-block py-4 px-8 bg-accent text-white rounded-lg transform transition-all duration-100 ease-in hover:bg-accent/90 active:bg-accent/90 hover:scale-105 active:scale-105 focus:outline-none">Cari Dokumen Hukum</a>
             </div>
@@ -37,8 +33,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 <section class="pencarian-dokumen py-20 bg-linear-to-b from-white to-muted/30">
     <div class="content max-w-4xl mx-auto px-6">
         <div id="cari-dokumen" class="top-content mb-12 text-center">
-            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("pencarian_dokumen_hukum.title", $get_meta_home) ?></h2>
-            <p class="text-muted-foreground"><?= dot_array_search("pencarian_dokumen_hukum.sub_title", $get_meta_home) ?></p>
+            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("pencarian_dokumen_hukum.title", $meta_page) ?></h2>
+            <p class="text-muted-foreground"><?= dot_array_search("pencarian_dokumen_hukum.sub_title", $meta_page) ?></p>
         </div>
         <div class="input-pencarian-dokumen p-8 bg-white rounded-2xl shadow-lg">
             <div class="input-wrapper mb-6 flex flex-col xl:flex-row gap-4">
@@ -74,8 +70,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         </span>
                         <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="category">
                             <option value="off">Pilih Jenis Dokumen</option>
-                            <?php foreach ($doc_categs as $categ): ?>
-                                <option value="<?= $categ["category"] ?>"><?= $categ["category"] ?></option>
+                            <?php foreach ($document_categories as ["category" => $categ]): ?>
+                                <option value="<?= esc($categ) ?>"><?= esc($categ) ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -122,8 +118,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <div id="fastFilter" class="fast-filters flex gap-3 flex-wrap items-center">
                 <span class="text-sm text-muted-foreground mr-2">Filter Cepat:</span>
                 <button type="button" data-category-value="*" class="active px-4 py-2 text-xs xl:text-sm bg-primary text-white rounded-full transition-colors cursor-pointer disabled:opacity-60 disabled:pointer-events-none focus:outline-primary">Semua</button>
-                <?php foreach ($doc_categs as $categ): ?>
-                    <button type="button" data-category-value="<?= esc($categ["category"]) ?>" class="px-4 py-2 text-xs xl:text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none focus:outline-primary"><?= esc($categ["category"]) ?></button>
+                <?php foreach ($document_categories as ["category" => $categ]): ?>
+                    <button type="button" data-category-value="<?= esc($categ) ?>" class="px-4 py-2 text-xs xl:text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none focus:outline-primary"><?= esc($categ) ?></button>
                 <?php endforeach ?>
             </div>
         </div>
@@ -132,8 +128,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 <section class="kategori-produk-hukum py-20 bg-white">
     <div class="content max-w-7xl mx-auto px-6">
         <div class="top-content mb-16 text-center">
-            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("kategori_produk_hukum.title", $get_meta_home) ?></h2>
-            <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $get_meta_home) ?></p>
+            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("kategori_produk_hukum.title", $meta_page) ?></h2>
+            <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $meta_page) ?></p>
         </div>
         <div class="produk-hukum-categories-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <?php foreach ($total_produk_hukum_by_category as $total): ?>
@@ -160,8 +156,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 <section class="statistik py-20 bg-linear-to-b from-white to-muted/30">
     <div class="content max-w-7xl mx-auto px-6">
         <div id="cari-dokumen" class="top-content mb-12 text-center">
-            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $get_meta_home) ?></h2>
-            <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $get_meta_home) ?></p>
+            <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $meta_page) ?></h2>
+            <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $meta_page) ?></p>
         </div>
         <div class="statistics-data grid grid-cols-1 justify-center sm:grid-cols-2 md:grid-cols-3 gap-6">
             <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
@@ -214,8 +210,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
     <div class="content max-w-7xl mx-auto px-6">
         <div class="top-content flex flex-col sm:flex-row items-end sm:items-center justify-between gap-4 sm:gap-0 mb-12">
             <div class="title-section">
-                <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("dokumen_terbaru.title", $get_meta_home) ?></h2>
-                <p class="text-muted-foreground"><?= dot_array_search("dokumen_terbaru.sub_title", $get_meta_home) ?></p>
+                <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("dokumen_terbaru.title", $meta_page) ?></h2>
+                <p class="text-muted-foreground"><?= dot_array_search("dokumen_terbaru.sub_title", $meta_page) ?></p>
             </div>
             <a href="<?= dot_array_search("Header.Navigasi.1.link", $frontend_config) ?>" class="flex items-center gap-2 text-primary hover:gap-3 active:gap-3 transition-all">
                 <span>Lihat semua</span>
