@@ -36,11 +36,6 @@ const appendQueryParamFromObject = (URLSearchParams, object) => {
         appendQueryParam(URLSearchParams, name, value)
     })
 };
-const getHeightContainerByChildrens = (childrensEl, callback) => {
-    return Array.from(childrensEl)
-        .map(child => callback(child))
-        .reduce((acc, num) => num + acc);
-}
 // Endpoint pencarian
 const pathLocationSearch = '/produk-hukum?';
 const filterDropdownClass = new FilterManipulation();
