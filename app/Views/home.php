@@ -106,12 +106,11 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                             </svg>
                             <span>Status Berlaku</span>
                         </span>
-                        <!-- TODO Ambil status dokumen dari database -->
                         <select id="statusDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="status">
                             <option value="off">Pilih Status Dokumen</option>
-                            <option value="Berlaku">Berlaku</option>
-                            <option value="Dicabut">Dicabut</option>
-                            <option value="Penetapan">Penetapan</option>
+                            <?php foreach ($document_status as ["status" => $status]): ?>
+                                <option value="<?= esc($status) ?>"><?= esc($status) ?></option>
+                            <?php endforeach ?>
                         </select>
                     </div>
                 </div>
