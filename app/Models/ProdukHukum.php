@@ -97,13 +97,13 @@ class ProdukHukum extends Model
             ->orderBy("ph.id", "DESC");
         if ($byKeyword !== false) {
             $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
-        };
+        }
         if ($byCategory !== false) {
             $builder->where("category_id", $byCategory);
-        };
+        }
         if ($byYear !== false) {
             $builder->where("YEAR(ph.created_at)", $byYear);
-        };
+        }
         return $builder->findAll($perPage, $offset);
     }
     /**
