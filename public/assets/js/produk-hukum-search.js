@@ -36,7 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
         if (year !== false) {
             queryParams.append("year", year)
         }
-        const endpoint = '/produk-hukum?' + queryParams;
+        if (queryParams.toString() === "") return;
+        const endpoint = '/produk-hukum?' + queryParams.toString();
         window.location.href = endpoint;
     })
 })
