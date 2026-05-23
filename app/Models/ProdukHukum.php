@@ -276,7 +276,8 @@ class ProdukHukum extends Model
         return $this->db->table("document_categories doc_categ")
             ->select([
                 "doc_categ.category AS kategori",
-                "doc_categ.icon",
+                "icons.icon_name AS icon",
+                "icons.color",
                 "COUNT(ph.id) AS total_dokumen"
             ])
             ->join(
@@ -284,6 +285,7 @@ class ProdukHukum extends Model
                 "ph.category_id = doc_categ.id",
                 "left"
             )
+            ->join("icons", 'icons.id = doc_categ.icon')
             ->groupBy("doc_categ.id")
             ->orderBy("total_dokumen", "DESC")
             ->get()
