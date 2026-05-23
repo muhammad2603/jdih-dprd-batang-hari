@@ -39,18 +39,18 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
         <div class="input-pencarian-dokumen p-8 bg-white rounded-2xl shadow-lg">
             <div class="input-wrapper mb-6 flex flex-col xl:flex-row gap-4">
                 <div class="input flex-1 relative">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                        <use href="/assets/icons.svg#icon-magnifier"></use>
                     </svg>
-                    <input id="searchDocument" type="text" placeholder="Cari berdasarkan judul, nomor, atau kata kunci..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <input id=" searchDocument" type="text" placeholder="Cari berdasarkan judul, nomor, atau kata kunci..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
                 </div>
                 <button type="button" id="filterSearchDocument" class="px-6 py-4 bg-muted text-default-foreground rounded-lg hover:bg-primary/90 hover:text-foreground transition-colors flex justify-center items-center gap-2 cursor-pointer focus:outline-none focus:bg-primary/90 focus:text-foreground active:bg-primary/90 active:text-foreground">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 3c2.755 0 5.455.232 8.083.678.533.09.917.556.917 1.096v1.044a2.25 2.25 0 0 1-.659 1.591l-5.432 5.432a2.25 2.25 0 0 0-.659 1.591v2.927a2.25 2.25 0 0 1-1.244 2.013L9.75 21v-6.568a2.25 2.25 0 0 0-.659-1.591L3.659 7.409A2.25 2.25 0 0 1 3 5.818V4.774c0-.54.384-1.006.917-1.096A48.32 48.32 0 0 1 12 3Z" />
+                    <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6">
+                        <use href="/assets/icons.svg#icon-filter"></use>
                     </svg>
                     <span>Filter</span>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
-                        <path d="m6 9 6 6 6-6" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
+                        <use href="/assets/icons.svg#icon-caret-down"></use>
                     </svg>
                 </button>
                 <button type="button" id="btnSearch" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors cursor-pointer focus:outline-none focus:bg-primary/90">Cari</button>
@@ -59,7 +59,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                 <div class="filter-options grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div class="option">
                         <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
                                 <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
                                 <path d="M14 2v5a1 1 0 0 0 1 1h5" />
                                 <path d="M10 9H8" />
@@ -77,12 +77,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                     </div>
                     <div class="option">
                         <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                                <path d="M11 14h1v4" />
-                                <path d="M16 2v4" />
-                                <path d="M3 10h18" />
-                                <path d="M8 2v4" />
-                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                                <use href="/assets/icons.svg#icon-calendar"></use>
                             </svg>
                             <span>Tahun</span>
                         </span>
@@ -96,9 +92,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                     <div class="option">
                         <span class="option-title text-sm font-medium text-default-foreground mb-2 flex items-center gap-2">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                                <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
-                                <path d="M3 3v5h5" />
-                                <path d="M12 7v5l4 2" />
+                                <use href="/assets/icons.svg#icon-clock"></use>
                             </svg>
                             <span>Status Berlaku</span>
                         </span>
@@ -135,12 +129,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <?php foreach ($total_produk_hukum_by_category as $total): ?>
                 <button type="button" class="group flex xl:flex-col gap-6 xl:gap-0 bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
                     <div class="icon-category bg-primary w-14 h-14 rounded-lg flex items-center justify-center xl:mb-6 group-hover:scale-110 transition-transform">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
-                            <path d="m14 13-8.381 8.38a1 1 0 0 1-3.001-3l8.384-8.381" />
-                            <path d="m16 16 6-6" />
-                            <path d="m21.5 10.5-8-8" />
-                            <path d="m8 8 6-6" />
-                            <path d="m8.5 7.5 8 8" />
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
+                            <use href="/assets/icons.svg#icon-hammer"></use>
                         </svg>
                     </div>
                     <div class="text">
@@ -163,9 +153,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
-                            <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-                            <circle cx="12" cy="12" r="3" />
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
+                            <use href="/assets/icons.svg#icon-eye"></use>
                         </svg>
                     </div>
                 </div>
@@ -177,10 +166,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
-                            <path d="M12 15V3" />
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                            <path d="m7 10 5 5 5-5" />
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
+                            <use href="/assets/icons.svg#icon-download"></use>
                         </svg>
                     </div>
                 </div>
@@ -192,9 +179,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
-                            <path d="M16 7h6v6" />
-                            <path d="m22 7-8.5 8.5-5-5L2 17" />
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
+                            <use href="/assets/icons.svg#icon-trend-up"></use>
                         </svg>
                     </div>
                 </div>
@@ -215,9 +201,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             </div>
             <a href="<?= dot_array_search("Header.Navigasi.1.link", $frontend_config) ?>" class="flex items-center gap-2 text-primary hover:gap-3 active:gap-3 transition-all">
                 <span>Lihat semua</span>
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
-                    <path d="M5 12h14" />
-                    <path d="m12 5 7 7-7 7" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-5 h-5">
+                    <use href="/assets/icons.svg#icon-arrow-right"></use>
                 </svg>
             </a>
         </div>
@@ -227,12 +212,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                 <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
                     <div class="content flex flex-col sm:flex-row items-start gap-5 xl:gap-6 sm:flex-wrap">
                         <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg hidden sm:flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
-                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                <path d="M10 9H8" />
-                                <path d="M16 13H8" />
-                                <path d="M16 17H8" />
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
+                                <use href="/assets/icons.svg#icon-document"></use>
                             </svg>
                         </div>
                         <div class="document-details flex-1 w-full">
@@ -248,20 +229,14 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 
                             <div class="other-details mt-2 xl:mt-0 flex items-center gap-6 text-xs sm:text-sm text-muted-foreground">
                                 <div class="upload-date flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                        <path d="M11 14h1v4" />
-                                        <path d="M16 2v4" />
-                                        <path d="M3 10h18" />
-                                        <path d="M8 2v4" />
-                                        <rect x="3" y="4" width="18" height="18" rx="2" />
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <use href="/assets/icons.svg#icon-calendar"></use>
                                     </svg>
                                     <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time>
                                 </div>
                                 <div class="upload-date flex items-center gap-2">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                        <path d="M12 15V3" />
-                                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                                        <path d="m7 10 5 5 5-5" />
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <use href="/assets/icons.svg#icon-download"></use>
                                     </svg>
                                     <span><?= esc($doc["total_unduhan"]) ?> unduhan</span>
                                 </div>
@@ -269,13 +244,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         </div>
                         <div class="actions w-full xl:w-0 flex justify-end items-center gap-4">
                             <a href="<?= base_url() . $uri_path ?>" class="download xl:order-1 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0 text-sm xl:text-base">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                    <path d="M12 7v14" />
-                                    <path d="M16 12h2" />
-                                    <path d="M16 8h2" />
-                                    <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-                                    <path d="M6 12h2" />
-                                    <path d="M6 8h2" />
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                    <use href="/assets/icons.svg#icon-book"></use>
                                 </svg>
                                 <span>Detail</span>
                             </a>
