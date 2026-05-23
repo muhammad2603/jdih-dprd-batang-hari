@@ -15,7 +15,15 @@ $shareWhatsAppText .= "Jenis Peraturan: " . esc($produk_hukum["kategori"]) . "\n
 $shareWhatsAppText .= "Nomor/Tahun: " . esc($produk_hukum["nomor"]) . "/" . esc($produk_hukum["tahun"]) . "\n\n";
 $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
+$status_accent = json_decode($produk_hukum["warna_aksen"], true);
 ?>
+<style <?= csp_style_nonce() ?>>
+    #tagStatus {
+        background-color: <?= esc($status_accent["background"]) ?>;
+        color: <?= esc($status_accent["text"]) ?>;
+        border-color: <?= esc($status_accent["border"]) ?>;
+    }
+</style>
 <div class="jumbotron bg-primary text-white py-8">
     <div class="max-w-7xl mx-auto px-6">
         <a href="<?= previous_url() ?>" class="w-fit flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors" tabindex="-1">
@@ -39,12 +47,11 @@ $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
                 <div class="header-document flex items-center gap-3 mb-3">
                     <span class="px-3 py-1 bg-white/20 text-white text-sm font-medium rounded-full"><?= esc($produk_hukum["kategori"]) ?></span>
                     <span class="font-semibold">Nomor <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></span>
-                    <span class="px-3 py-1 rounded-full text-sm font-medium border flex items-center gap-2 bg-green-100 text-green-700 border-green-200">
+                    <span id="tagStatus" class="px-3 py-1 rounded-full text-sm font-medium border flex items-center gap-2">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                             <circle cx="12" cy="12" r="10" />
                             <path d="m9 12 2 2 4-4" />
                         </svg>
-                        <!-- __FIX__ Setiap status memiliki warna aksen tersendiri, jadi sesuaikan warna berdasarkan statusnya. -->
                         <span><?= esc($produk_hukum["status"]) ?></span>
                     </span>
                 </div>
