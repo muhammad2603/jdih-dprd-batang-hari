@@ -4,6 +4,9 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+use App\Models\FrontendConfig;
+use App\Models\ProdukHukum;
+use App\Models\RiwayatPerubahanProdukHukum;
 
 helper('string');
 
@@ -14,9 +17,9 @@ class ProdukHukumDetails extends BaseController
     private $riwayat_perubahan_ph_model;
     public function __construct()
     {
-        $this->fe_config_model              = model("FrontendConfig");
-        $this->ph_model                     = model("ProdukHukum");
-        $this->riwayat_perubahan_ph_model   = model("RiwayatPerubahanProdukHukum");
+        $this->fe_config_model              = new FrontendConfig;
+        $this->ph_model                     = new ProdukHukum;
+        $this->riwayat_perubahan_ph_model   = new RiwayatPerubahanProdukHukum;
     }
     public function index(...$segments)
     {
