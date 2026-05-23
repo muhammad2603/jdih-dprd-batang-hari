@@ -28,12 +28,8 @@ $total_categories = array_reduce(
     <div class="statistics-short grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
         <div class="total-document bg-white border border-primary-border rounded-lg p-6">
             <span class="block mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-primary">
-                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                    <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                    <path d="M10 9H8" />
-                    <path d="M16 13H8" />
-                    <path d="M16 17H8" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-primary">
+                    <use href="/assets/icons.svg#icon-document"></use>
                 </svg>
             </span>
             <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= number_format($total_produk_hukum) ?></span>
@@ -42,8 +38,7 @@ $total_categories = array_reduce(
         <div class="total-document-current-year bg-white border border-primary-border rounded-lg p-6">
             <span class="block mb-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-accent">
-                    <path d="M16 7h6v6" />
-                    <path d="m22 7-8.5 8.5-5-5L2 17" />
+                    <use href="/assets/icons.svg#icon-trend-up"></use>
                 </svg>
             </span>
             <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= number_format($total_produk_hukum_current_year) ?></span>
@@ -51,11 +46,8 @@ $total_categories = array_reduce(
         </div>
         <div class="total-document-current-month bg-white border border-primary-border rounded-lg p-6">
             <span class="block mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-primary">
-                    <path d="M8 2v4" />
-                    <path d="M16 2v4" />
-                    <rect width="18" height="18" x="3" y="4" rx="2" />
-                    <path d="M3 10h18" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-primary">
+                    <use href="/assets/icons.svg#icon-calendar"></use>
                 </svg>
             </span>
             <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= number_format($total_produk_hukum_current_month) ?></span>
@@ -63,10 +55,8 @@ $total_categories = array_reduce(
         </div>
         <div class="total-download bg-white border border-primary-border rounded-lg p-6">
             <span class="block mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-accent">
-                    <path d="M12 15V3" />
-                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                    <path d="m7 10 5 5 5-5" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-accent">
+                    <use href="/assets/icons.svg#icon-download"></use>
                 </svg>
             </span>
             <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= number_format($total_unduhan) ?></span>
