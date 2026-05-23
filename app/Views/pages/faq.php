@@ -5,10 +5,8 @@
         <div class="animate">
             <div class="title-wrapper flex gap-3 mb-4">
                 <span class="icon">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-7 md:size-10">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                        <path d="M12 17h.01" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-7 md:size-10">
+                        <use href="/assets/icons.svg#icon-question"></use>
                     </svg>
                 </span>
                 <h1 class="text-2xl md:text-3xl xl:text-4xl font-bold">Pertanyaan yang Sering Diajukan</h1>
@@ -20,8 +18,8 @@
 <div class="contents-wrapper max-w-4xl mx-auto px-6 py-12">
     <div class="search-wrapper mb-8 grid grid-cols-1 lg:grid-cols-6 gap-4">
         <div class="search-input relative lg:col-span-5">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground">
-                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground">
+                <use href="/assets/icons.svg#icon-magnifier"></use>
             </svg>
             <input id="inputSearchFaq" type="text" placeholder="Cari pertanyaan..." class="w-full h-full pl-12 pr-4 py-3 bg-white border border-primary-border rounded-lg focus:ring-2 focus:ring-primary outline-none">
         </div>
