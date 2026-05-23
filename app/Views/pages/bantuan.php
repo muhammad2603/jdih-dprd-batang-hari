@@ -25,8 +25,8 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
     <div class="contacts grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div class="telephone bg-white border border-primary-border rounded-lg p-6">
             <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-primary">
-                    <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-primary">
+                    <use href="/assets/icons.svg#icon-telephone"></use>
                 </svg>
             </div>
             <h3 class="font-semibold mb-2">Telepon</h3>
@@ -35,9 +35,8 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
         </div>
         <div class="email bg-white border border-primary-border rounded-lg p-6">
             <div class="icon w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-accent">
-                    <path d="m22 7-8.991 5.727a2 2 0 0 1-2.009 0L2 7" />
-                    <rect x="2" y="4" width="20" height="16" rx="2" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-accent">
+                    <use href="/assets/icons.svg#icon-mail"></use>
                 </svg>
             </div>
             <h3 class="font-semibold mb-2">Email</h3>
@@ -46,9 +45,8 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
         </div>
         <div class="location bg-white border border-primary-border rounded-lg p-6">
             <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-6">
-                    <path d="M20 10c0 4.993-5.539 10.193-7.399 11.799a1 1 0 0 1-1.202 0C9.539 20.193 4 14.993 4 10a8 8 0 0 1 16 0" />
-                    <circle cx="12" cy="10" r="3" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-6">
+                    <use href="/assets/icons.svg#icon-location"></use>
                 </svg>
             </div>
             <h3 class="font-semibold mb-2">Lokasi</h3>
@@ -58,9 +56,8 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
     <div class="operational-hours bg-accent/10 border border-accent/20 rounded-lg p-6 mb-12">
         <div class="flex items-start gap-4">
             <div class="icon w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center shrink-0">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-accent">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 6v6l4 2" />
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6 text-accent">
+                    <use href="/assets/icons.svg#icon-clock"></use>
                 </svg>
             </div>
             <div class="operational-details">
