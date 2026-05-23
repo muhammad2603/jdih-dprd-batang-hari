@@ -17,15 +17,15 @@ $timeServices = service("timeServices");
     <div class="searchs-container p-6 flex flex-col gap-5">
         <div class="search-open-btn-wrapper flex xl:hidden justify-end">
             <button type="button" id="openSearch" class="py-2.5 px-3 bg-primary text-white rounded-md active:bg-primary/90 focus:outline-none">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-7 ml-auto">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-7 ml-auto">
+                    <use href="/assets/icons.svg#icon-caret-down"></use>
                 </svg>
             </button>
         </div>
         <div id="searchWrapper" class="search-wrapper hidden xl:grid grid-cols-2 md:grid-cols-3 xl:grid-cols-5 gap-4">
             <div class="search col-span-2 md:col-span-3 xl:col-span-2 relative">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
+                    <use href="/assets/icons.svg#icon-magnifier"></use>
                 </svg>
                 <input id="searchDocument" type="text" value="<?= uri_title_to_words($current_keyword) ?>" placeholder="Cari berdasarkan judul dokumen..." class="w-full h-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
             </div>
@@ -56,12 +56,8 @@ $timeServices = service("timeServices");
                     <div class="flex-1 w-full xl:w-auto">
                         <div class="document-details flex sm:flex-row items-center gap-3 mb-3 flex-wrap">
                             <div class="category w-full sm:w-auto flex shrink-0 gap-3">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
-                                    <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                    <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                    <path d="M10 9H8" />
-                                    <path d="M16 13H8" />
-                                    <path d="M16 17H8" />
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
+                                    <use href="/assets/icons.svg#icon-document"></use>
                                 </svg>
                                 <span class="text-sm font-medium text-primary"><?= $ph["kategori"] ?></span>
                             </div>
@@ -70,34 +66,22 @@ $timeServices = service("timeServices");
                         </div>
                         <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors"><?= $ph["judul"] ?></h3>
                         <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                <path d="M11 14h1v4" />
-                                <path d="M16 2v4" />
-                                <path d="M3 10h18" />
-                                <path d="M8 2v4" />
-                                <rect x="3" y="4" width="18" height="18" rx="2" />
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                <use href="/assets/icons.svg#icon-calendar"></use>
                             </svg>
                             <span>Ditetapkan: <time datetime="<?= $ph["tanggal_penetapan"] ?>"><?= $timeServices->translateDateToLocalFormat($ph["tanggal_penetapan"]) ?></time></span>
                         </div>
                     </div>
                     <div class="flex gap-3 xl:gap-2 shrink-0 self-end md:self-start">
                         <a href="<?= base_url() . "produk-hukum/" . url_title($ph["kategori"], "-", true) . "/" . $ph["slug"] ?>" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                <path d="M12 7v14" />
-                                <path d="M16 12h2" />
-                                <path d="M16 8h2" />
-                                <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-                                <path d="M6 12h2" />
-                                <path d="M6 8h2" />
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                <use href="/assets/icons.svg#icon-book"></use>
                             </svg>
                             <span>Detail</span>
                         </a>
                         <a href="<?= base_url() . "assets/dokumen-hukum/" . $ph["berkas"] ?>" class="order-first xl:order-2 flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none" download>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                                <path d="M12 18v-6" />
-                                <path d="m9 15 3 3 3-3" />
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                <use href="/assets/icons.svg#icon-file-download"></use>
                             </svg>
                             <span>PDF</span>
                         </a>
