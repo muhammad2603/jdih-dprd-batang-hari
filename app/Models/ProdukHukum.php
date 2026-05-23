@@ -60,8 +60,6 @@ class ProdukHukum extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // __FIX__ jika bisa, satukan dengan query yang menampilkan data lengkapnya
-    // ^^^^^^^^^^ jika bisa, ambil field yang wajib dan pisahkan field yang opsional dan bisa dipilih secara manual, agar field lebih spesifik (yang diinginkan) saat dibutuhkan
     /**
      * Mengambil beberapa data produk hukum
      * @param int|null $perPage batas pengambilan data per-halaman (pagination)
@@ -97,21 +95,21 @@ class ProdukHukum extends Model
             ->orderBy("ph.id", "DESC");
         if ($byKeyword !== false) {
             $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
-        };
+        }
         if ($byCategory !== false) {
             $builder->where("category_id", $byCategory);
-        };
+        }
         if ($byYear !== false) {
             $builder->where("YEAR(ph.created_at)", $byYear);
-        };
+        }
         return $builder->findAll($perPage, $offset);
     }
-    
+
     /**
      * Mengambil total data produk hukum highlight
      * @param bool|string $byKeyword berdasarkan kata kunci pencarian
      * @param bool|int $byCategory berdasarkan kategori
-     * @param bool|string $byYear berdasarkan kata kunci tahun
+     * @param bool|string $byYear berdasarkan tahun upload
      * @return int
      */
     public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false): int
@@ -135,7 +133,7 @@ class ProdukHukum extends Model
         };
         return $builder->countAllResults();
     }
-    
+
     /**
      * Mengambil detail produk hukum
      * @param int|string $key field id atau slug produk hukum
@@ -154,7 +152,13 @@ class ProdukHukum extends Model
                 "tahun",
                 "nomor_tld",
                 "tahun_tld",
-                "status",
+                "(
+                    CASE
+                        WHEN docstat.sinonim IS NULL THEN docstat.status
+                        ELSE docstat.sinonim
+                    END
+                ) AS status",
+                "warna_aksen",
                 "sumber",
                 "(
                 SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pembuat_peraturan
@@ -204,7 +208,7 @@ class ProdukHukum extends Model
         }
         return $builder->first();
     }
-    
+
     /**
      * Mengambil klasifikasi produk hukum
      * @param int $id ID produk hukum
@@ -235,7 +239,7 @@ class ProdukHukum extends Model
             "subjek" => $klasifikasi_subjek,
         ];
     }
-    
+
     /**
      * Mengambil dokumen terkait
      * @param int $ph_id ID Produk Hukum
@@ -262,7 +266,7 @@ class ProdukHukum extends Model
             ->where("rd.ph_id", $ph_id)
             ->findAll();
     }
-    
+
     /**
      * Mengambil total dokumen hukum berdasarkan kategori-nya
      * @return array
@@ -278,7 +282,7 @@ class ProdukHukum extends Model
             ->groupBy("ph.category_id")
             ->findAll();
     }
-    
+
     /**
      * Mengambil total produk hukum yang tersedia
      * @return array ["total" => int]
@@ -289,7 +293,7 @@ class ProdukHukum extends Model
             ->select("COUNT(*) AS total")
             ->findAll()[0];
     }
-    
+
     /**
      * Mengambil total dokumen berdasarkan bulan
      * @param string $target_month bulan pembuatan dokumen yang dicari
@@ -302,7 +306,7 @@ class ProdukHukum extends Model
             ->where("MONTH(created_at) =", $target_month)
             ->countAllResults();
     }
-    
+
     /**
      * Mengambil total dokumen berdasarkan tahun
      * @param string $target_year tahun pembuatan dokumen yang dicari
