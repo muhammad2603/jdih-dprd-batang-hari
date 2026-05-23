@@ -81,7 +81,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public $styleSrc = 'self';
+    public array|string $styleSrc = ['self'];
 
     /**
      * Specifies valid sources for stylesheets <link> elements.
@@ -96,7 +96,7 @@ class ContentSecurityPolicy extends BaseConfig
      *
      * @var list<string>|string
      */
-    public array|string $styleSrcAttr = 'self';
+    public array|string $styleSrcAttr = (ENVIRONMENT === "production") ? 'self' : ['self', 'unsafe-inline'];
 
     /**
      * Defines the origins from which images can be loaded.
