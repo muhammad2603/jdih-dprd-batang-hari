@@ -122,16 +122,16 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $meta_page) ?></p>
         </div>
         <div class="produk-hukum-categories-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php foreach ($total_produk_hukum_by_category as $document): ?>
+            <?php foreach ($total_produk_hukum_by_category as $doc): ?>
                 <button type="button" class="group flex xl:flex-col gap-6 xl:gap-0 bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
-                    <div class="icon-category bg-primary w-14 h-14 rounded-lg flex items-center justify-center xl:mb-6 group-hover:scale-110 transition-transform">
+                    <div class="icon-<?= esc(url_title($doc["kategori"], "-", true)) ?> w-14 h-14 rounded-lg flex items-center justify-center xl:mb-6 group-hover:scale-110 transition-transform">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
-                            <use href="/assets/icons.svg#icon-<?= $document["icon"] ?>"></use>
+                            <use href="/assets/icons.svg#icon-<?= $doc["icon"] ?>"></use>
                         </svg>
                     </div>
                     <div class="text">
-                        <h3 class="category-name text-xl font-semibold xl:mb-2 group-hover:text-primary transition-colors"><?= esc($document["kategori"]) ?></h3>
-                        <p class="total-document text-3xl font-bold text-primary mb-2 xl:mb-2"><?= esc($document["total_dokumen"]) ?></p>
+                        <h3 class="category-name text-xl font-semibold xl:mb-2 group-hover:text-primary transition-colors"><?= esc($doc["kategori"]) ?></h3>
+                        <p class="total-document text-3xl font-bold text-primary mb-2 xl:mb-2"><?= esc($doc["total_dokumen"]) ?></p>
                         <p class="text-sm text-muted-foreground">Dokumen tersedia</p>
                     </div>
                 </button>
@@ -253,4 +253,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
     </div>
 </section>
 <script type="module" src="/assets/js/produk-hukum-page.js"></script>
+<style <?= csp_style_nonce() ?>>
+    <?php foreach ($total_produk_hukum_by_category as $doc): ?><?= ".icon-" . esc(url_title($doc["kategori"], "-", true)) . "{ background-color: " . esc($doc["color"]) . "; }" ?><?php endforeach ?>
+</style>
 <?= $this->endSection() ?>
