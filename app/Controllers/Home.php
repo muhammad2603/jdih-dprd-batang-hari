@@ -42,6 +42,7 @@ class Home extends BaseController
             "total_produk_hukum_by_category"    => $this->produk_hukum->getTotalDocumentByCategory(),
             "total_pengunjung"                  => model("Pengunjung")->totalVisitor(),
             "years_document_uploaded"           => $get_years_document_uploaded,
+            // __FIX__ query ganda, ini bisa dialihkan kemethod getTotalDocumentByCategory dimodel ProdukHukum
             "document_categories"               => $get_document_categories,
             "document_status"                   => $get_document_status,
         ];
