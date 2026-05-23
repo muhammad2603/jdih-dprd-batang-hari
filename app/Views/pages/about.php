@@ -27,9 +27,8 @@ $contacts = $frontend_config["Kontak"];
         <div class="visi bg-white border border-primary-border rounded-lg p-8">
             <div class="top flex items-center gap-3 mb-6">
                 <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                        <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
-                        <circle cx="12" cy="12" r="3" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                        <use href="/assets/icons.svg#icon-eye"></use>
                     </svg>
                 </div>
                 <h2 class="text-2xl font-semibold"><?= esc(dot_array_search("visi_section.title", $page_meta)) ?></h2>
@@ -39,10 +38,8 @@ $contacts = $frontend_config["Kontak"];
         <div class="misi bg-white border border-primary-border rounded-lg p-8">
             <div class="top flex items-center gap-3 mb-6">
                 <div class="icon w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent">
-                        <circle cx="12" cy="12" r="10" />
-                        <circle cx="12" cy="12" r="6" />
-                        <circle cx="12" cy="12" r="2" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent">
+                        <use href="/assets/icons.svg#icon-target"></use>
                     </svg>
                 </div>
                 <h2 class="text-2xl font-semibold"><?= esc(dot_array_search("misi_section.title", $page_meta)) ?></h2>
@@ -63,7 +60,7 @@ $contacts = $frontend_config["Kontak"];
             <div class="integrity bg-white border border-primary-border rounded-lg p-6">
                 <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                        <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                        <use href="/assets/icons.svg#icon-shield"></use>
                     </svg>
                 </div>
                 <h3 class="font-semibold mb-2">Integritas</h3>
@@ -72,9 +69,7 @@ $contacts = $frontend_config["Kontak"];
             <div class="service bg-white border border-primary-border rounded-lg p-6">
                 <div class="icon w-12 h-12 bg-accent/10 rounded-lg flex items-center justify-center mb-4">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-accent">
-                        <path d="M18 21a8 8 0 0 0-16 0" />
-                        <circle cx="10" cy="8" r="5" />
-                        <path d="M22 20c0-3.37-2-6.5-4-8a5 5 0 0 0-.45-8.3" />
+                        <use href="/assets/icons.svg#icon-persons"></use>
                     </svg>
                 </div>
                 <h3 class="font-semibold mb-2">Pelayanan</h3>
@@ -82,9 +77,8 @@ $contacts = $frontend_config["Kontak"];
             </div>
             <div class="transparency bg-white border border-primary-border rounded-lg p-6">
                 <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
-                        <path d="M12 7v14" />
-                        <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                        <use href="/assets/icons.svg#icon-book"></use>
                     </svg>
                 </div>
                 <h3 class="font-semibold mb-2">Transparansi</h3>
@@ -92,7 +86,6 @@ $contacts = $frontend_config["Kontak"];
             </div>
         </div>
     </div>
-    <!-- TODO Ambil data kontak dari Database -->
     <div class="contact-us bg-primary text-white rounded-lg p-8">
         <h2 class="text-2xl font-semibold mb-6">Hubungi Kami</h2>
         <div class="contacts grid grid-cols-1 md:grid-cols-3 gap-8">
