@@ -273,14 +273,21 @@ class ProdukHukum extends Model
      */
     public function getTotalDocumentByCategory(): array
     {
-        return $this
+        return $this->db->table("document_categories doc_categ")
             ->select([
                 "doc_categ.category AS kategori",
-                "COUNT(*) AS total_dokumen"
+                "doc_categ.icon",
+                "COUNT(ph.id) AS total_dokumen"
             ])
-            ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
-            ->groupBy("ph.category_id")
-            ->findAll();
+            ->join(
+                "produk_hukum ph",
+                "ph.category_id = doc_categ.id",
+                "left"
+            )
+            ->groupBy("doc_categ.id")
+            ->orderBy("total_dokumen", "DESC")
+            ->get()
+            ->getResultArray();
     }
 
     /**
