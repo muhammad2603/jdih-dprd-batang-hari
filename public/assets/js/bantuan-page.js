@@ -30,14 +30,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 return data;
             })
             .then(data => {
-                const { message } = data;
-                notificationTitle.textContent = "Pengiriman Pesan";
-                notificationMessage.textContent = message;
+                const { message, notification } = data;
+                toastNotification.innerHTML = notification;
             })
             .catch(err => {
-                const { message } = err;
-                notificationTitle.textContent = "Pengiriman Pesan";
-                notificationMessage.textContent = message;
+                const { message, notification } = err;
+                toastNotification.innerHTML = notification;
             });
     })
 })
