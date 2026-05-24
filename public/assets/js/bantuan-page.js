@@ -1,11 +1,16 @@
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = document.getElementById("btnSendMail");
+    const inputEmail = document.getElementById("email");
     const inputNamaLengkap = document.getElementById("namaLengkap");
     const inputNomorTelpon = document.getElementById("noTelp");
     const inputSubjek = document.getElementById("subject");
     const inputPesan = document.getElementById("message");
+    const toastNotification = document.getElementById("toastNotification");
+    const notificationTitle = toastNotification.querySelector(".title");
+    const notificationMessage = toastNotification.querySelector(".message");
     btnSendMail.addEventListener("click", () => {
+        payload.userEmail = inputEmail.value;
         payload.namaLengkap = inputNamaLengkap.value;
         payload.nomorTelpon = inputNomorTelpon.value;
         payload.subjek = inputSubjek.value;
@@ -17,8 +22,22 @@ document.addEventListener("DOMContentLoaded", () => {
             },
             body: JSON.stringify(payload)
         })
-            .then(resp => resp.json())
-            .then(data => console.table(data))
-            .catch(err => console.error(err));
+            .then(async (resp) => {
+                const data = await resp.json();
+                if (!resp.ok) {
+                    throw data;
+                };
+                return data;
+            })
+            .then(data => {
+                const { message } = data;
+                notificationTitle.textContent = "Pengiriman Pesan";
+                notificationMessage.textContent = message;
+            })
+            .catch(err => {
+                const { message } = err;
+                notificationTitle.textContent = "Pengiriman Pesan";
+                notificationMessage.textContent = message;
+            });
     })
 })
