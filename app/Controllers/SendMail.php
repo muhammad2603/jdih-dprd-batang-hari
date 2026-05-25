@@ -50,13 +50,23 @@ class SendMail extends BaseController
             $this->response->setStatusCode(200);
             return $this->response->setJSON([
                 "status" => 200,
-                "notification" => view('components/notification', ["title" => "Pengiriman Pesan", "message" => "Pesan berhasil terkirim."])
+                "notificationId" => $notification_id,
+                "notification" => view('components/notification', [
+                    "notificationId" => $notification_id,
+                    "title" => "Pengiriman Pesan",
+                    "message" => "Pesan berhasil Terkirim."
+                ]),
             ]);
         } else {
             $this->response->setStatusCode(400);
             return $this->response->setJSON([
                 "status" => 400,
-                "notification" => view('components/notification', ["title" => "Pengiriman Pesan", "message" => "Pesan gagal terkirim."])
+                "notificationId" => $notification_id,
+                "notification" => view('components/notification', [
+                    "notificationId" => $notification_id,
+                    "title" => "Pengiriman Pesan",
+                    "message" => "Pesan gagal terkirim."
+                ]),
             ]);
         }
     }

@@ -46,14 +46,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 return data;
             })
             .then(data => {
-<<<<<<< HEAD
-                const { message, notification } = data;
-                toastNotification.innerHTML = notification;
-            })
-            .catch(err => {
-                const { message, notification } = err;
-                toastNotification.innerHTML = notification;
-=======
                 const { message, notificationId, notification } = data;
                 toastNotification.insertAdjacentHTML(
                     'afterbegin',
@@ -90,7 +82,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 setTimeout(() => {
                     currentNotificationEl.remove()
                 }, 4100) // delay untuk menghapus element notifikasi
->>>>>>> component/toast-notification
             });
     })
 })
