@@ -148,7 +148,7 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
                 </div>
                 <div class="input-email-address">
                     <label for="email" class="block text-sm font-medium mb-2">Email</label>
-                    <input value="fattahillahmuhammad48@gmail.com" type="email" id="email" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="nama_email@gmail.com" autocomplete="email" />
+                    <input value="zidanhp255@gmail.com" type="email" id="email" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="nama_email@gmail.com" autocomplete="email" />
                 </div>
             </div>
             <div class="second-col grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -160,10 +160,10 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
                     <label for="subject" class="block text-sm font-medium mb-2">Subjek</label>
                     <select id="subject" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
                         <option value="#">Pilih Subjek</option>
-                        <option value="pencarian">Bantuan Pencarian Dokumen</option>
-                        <option value="teknis" selected>Masalah Teknis</option>
-                        <option value="permintaan">Permintaan Dokumen</option>
-                        <option value="lainnya">Lainnya</option>
+                        <option value="Pencarian">Bantuan Pencarian Dokumen</option>
+                        <option value="Teknis" selected>Masalah Teknis</option>
+                        <option value="Permintaan">Permintaan Dokumen</option>
+                        <option value="Lainnya">Lainnya</option>
                     </select>
                 </div>
             </div>
@@ -176,4 +176,5 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
     </div>
 </div>
 <script src="/assets/js/bantuan-page.js"></script>
+<?= csrf_field() ?>
 <?= $this->endSection() ?>
