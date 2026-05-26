@@ -38,7 +38,6 @@ class SendMail extends BaseController
         }
         $email_service  = Services::email();
         $to             = "fattahillahmuhammad48@gmail.com";
-        //! Cek saat pesan terkirim ke $to, dan dibalas, apakah akan masuk ke email pengguna di $setReplyTo?
         $setReplyTo     = $user_email;
         $message        = "Laporan dari Pengguna<br>";
         $message       .= "Nama Pengguna: " . esc($nama_lengkap_pengguna) . "<br>";
