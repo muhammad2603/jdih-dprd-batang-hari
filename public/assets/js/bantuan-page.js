@@ -21,6 +21,23 @@ function insertHTML(parentEl, childEl, position = 'afterbegin') {
 function $(selector) {
     return document.querySelector(selector)
 }
+
+function isEmptyValue(value) {
+    return value === "";
+}
+function isValidValue(pattern, value) {
+    return pattern.test(value);
+}
+function isInvalidValue(pattern, value) {
+    if (pattern instanceof RegExp) {
+        return pattern.test(value);
+    }
+    return value === pattern;
+}
+function isValidValueLength(value, min, max = false) {
+    return value.length < min || (max !== false && value.length > max);
+}
+
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $("#btnSendMail");
@@ -56,21 +73,22 @@ document.addEventListener("DOMContentLoaded", () => {
         payload.nomorTelpon = inputNomorTelpon.value.trim();
         payload.subjek = inputSubjek.value.trim();
         payload.pesan = inputPesan.value.trim();
-        if (payload.namaLengkap === "") {
+        if (isEmptyValue(payload.namaLengkap)) {
             isValid = false;
             inputErrorNamaLengkap.innerText = "Input tidak boleh kosong."
         }
-        const isValidEmail = /@gmail\.com$/i.test(payload.userEmail);
+        const isValidEmail = isValidValue(/@gmail\.com$/i, payload.userEmail);
         if (!isValidEmail) {
             isValid = false;
             inputErrorEmail.innerText = "Format email tidak valid.";
         }
-        if (payload.userEmail === "") {
+        if (isEmptyValue(payload.userEmail)) {
             isValid = false;
             inputErrorEmail.innerText = "Input tidak boleh kosong.";
         }
-        const isNomorTelponValid = /^08.*$/.test(payload.nomorTelpon);
-        if (/\D+/.test(payload.nomorTelpon)) {
+        const isNomorTelponValid = isValidValue(/^08/, payload.nomorTelpon);
+        const isNonDigitNomorTelpon = isInvalidValue(/\D+/, payload.nomorTelpon);
+        if (isNonDigitNomorTelpon) {
             isValid = false;
             inputErrorNomorTelpon.innerText = "Format nomor HP hanya berupa digit atau angka.";
         }
@@ -83,21 +101,21 @@ document.addEventListener("DOMContentLoaded", () => {
             isValid = false;
             inputErrorNomorTelpon.innerText = "Nomor HP tidak valid. Nomor yang valid minimal 10 digit dan maksimal 13 digit.";
         }
-        if (payload.nomorTelpon === "") {
+        if (isEmptyValue(payload.nomorTelpon)) {
             isValid = false;
             inputErrorNomorTelpon.innerText = "Input tidak boleh kosong.";
         }
-        const isSubjekSelected = payload.subjek !== "#";
-        if (!isSubjekSelected) {
+        const isValidSubjekSelected = isInvalidValue("#", payload.subjek);
+        if (isValidSubjekSelected) {
             isValid = false;
             inputErrorSubjek.innerText = "Pilih subjek anda.";
         }
-        const pesanValueLength = payload.pesan.length;
-        if (pesanValueLength < 30) {
+        const pesanValueLength = isValidValueLength(payload.pesan, 30);
+        if (pesanValueLength) {
             isValid = false;
             inputErrorPesan.innerText = "Pesan terlalu pendek, minimal 30 karakter.";
         }
-        if (payload.pesan === "") {
+        if (isEmptyValue(payload.pesan)) {
             isValid = false;
             inputErrorPesan.innerText = "Input tidak boleh kosong.";
         }
