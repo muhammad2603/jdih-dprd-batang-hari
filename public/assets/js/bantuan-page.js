@@ -7,6 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputSubjek = document.getElementById("subject");
     const inputPesan = document.getElementById("message");
     const toastNotification = document.getElementById("toastNotification");
+    const csrfToken = document.querySelector("input[name=csrf_token]");
     //! Event listener pada toastNotification dibutuhkan karena notification tidak tersedia sejak awal
     toastNotification.addEventListener('click', e => {
         const closeNotificationBtn = e.target.closest('.close-notification');
@@ -35,6 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
             method: 'POST',
             headers: {
                 "ContentType": 'application/json',
+                "X-Requested-With": 'XMLHttpRequest',
+                "X-CSRF-TOKEN": csrfToken.value,
             },
             body: JSON.stringify(payload)
         })
@@ -46,7 +49,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 return data;
             })
             .then(data => {
-                const { message, notificationId, notification } = data;
+                const { message, notificationId, notification, newToken } = data;
+                csrfToken.value = newToken;
                 toastNotification.insertAdjacentHTML(
                     'afterbegin',
                     notification
@@ -65,7 +69,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 }, 4100) // delay untuk menghapus element notifikasi
             })
             .catch(err => {
-                const { message, notificationId, notification } = err;
+                if (err.code === 403) return alert("Permintaan tidak diizinkan!");
+                const { message, notificationId, notification, newToken } = err;
+                csrfToken.value = newToken;
                 toastNotification.insertAdjacentHTML(
                     'afterbegin',
                     notification
