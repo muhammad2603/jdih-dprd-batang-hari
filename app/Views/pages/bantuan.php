@@ -42,7 +42,7 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
             </div>
             <h3 class="font-semibold mb-2">Email</h3>
             <p class="text-sm text-muted-foreground mb-3">Kirim pesan ke-Email kami</p>
-            <a href="https://mail.google.com/mail?view=cm&to=setwan@batangharikab.go.id" target="_blank" class="text-primary hover:text-primary/80 transition-colors"><?= esc($kontak["Mail"][0]["content"]) ?></a>
+            <a href="https://mail.google.com/mail?view=cm&to=<?= esc($kontak["Mail"][0]["content"]) ?>" target="_blank" class="text-primary hover:text-primary/80 transition-colors"><?= esc($kontak["Mail"][0]["content"]) ?></a>
         </div>
         <div class="location bg-white border border-primary-border rounded-lg p-6">
             <div class="icon w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center mb-4">
