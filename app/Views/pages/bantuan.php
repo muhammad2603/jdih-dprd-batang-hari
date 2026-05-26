@@ -143,21 +143,21 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
         <div class="form-send-mail space-y-6">
             <div class="first-col grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="input-nama-lengkap">
-                    <label for="namaLengkap" class="block text-sm font-medium mb-2">Nama Lengkap</label>
+                    <label for="namaLengkap" class="block text-sm font-medium mb-2">Nama Lengkap<span class="text-red-500">*</span></label>
                     <input type="text" id="namaLengkap" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="Masukkan Nama Lengkap..." autocomplete="name" />
                 </div>
                 <div class="input-email-address">
-                    <label for="email" class="block text-sm font-medium mb-2">Email</label>
+                    <label for="email" class="block text-sm font-medium mb-2">Email<span class="text-red-500">*</span></label>
                     <input type="email" id="email" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="nama_email@gmail.com" autocomplete="email" />
                 </div>
             </div>
             <div class="second-col grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="input-telephone-number">
-                    <label for="noTelp" class="block text-sm font-medium mb-2">Nomor Telepon</label>
+                    <label for="noTelp" class="block text-sm font-medium mb-2">Nomor Telepon<span class="text-red-500">*</span></label>
                     <input type="tel" id="noTelp" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="08XXXXXXXXXX" autocomplete="tel" />
                 </div>
                 <div class="input-subject">
-                    <label for="subject" class="block text-sm font-medium mb-2">Subjek</label>
+                    <label for="subject" class="block text-sm font-medium mb-2">Subjek<span class="text-red-500">*</span></label>
                     <select id="subject" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
                         <option value="#">Pilih Subjek</option>
                         <option value="Pencarian">Bantuan Pencarian Dokumen</option>
@@ -168,8 +168,17 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
                 </div>
             </div>
             <div class="message">
-                <label for="message" class="block text-sm font-medium mb-2">Pesan</label>
+                <label for="message" class="block text-sm font-medium mb-2">Pesan<span class="text-red-500">*</span></label>
                 <textarea rows="6" id="message" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none resize-none" placeholder="Tuliskan pesan Anda..."></textarea>
+            </div>
+            <div class="info flex gap-1.5 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="size-4">
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M12 16v-4" />
+                    <path d="M12 8h.01" />
+                </svg>
+                <p class="text-default-foreground text-sm">Kami menghargai privasi Anda. Informasi pribadi yang dikirimkan melalui formulir ini tidak akan <span class="font-semibold">disalahgunakan</span>, <span class="font-semibold">dibagikan</span>, maupun <span class="font-semibold">diperjualbelikan</span> kepada pihak lain.</p>
             </div>
             <button type="submit" id="btnSendMail" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium cursor-pointer">Kirim Pesan</button>
         </div>
