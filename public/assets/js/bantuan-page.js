@@ -25,10 +25,15 @@ let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $("#btnSendMail");
     const inputEmail = $("#email");
+    const inputErrorEmail = inputEmail.nextElementSibling;
     const inputNamaLengkap = $("#namaLengkap");
+    const inputErrorNamaLengkap = inputNamaLengkap.nextElementSibling;
     const inputNomorTelpon = $("#noTelp");
+    const inputErrorNomorTelpon = inputNomorTelpon.nextElementSibling;
     const inputSubjek = $("#subject");
+    const inputErrorSubjek = inputSubjek.nextElementSibling;
     const inputPesan = $("#message");
+    const inputErrorPesan = inputPesan.nextElementSibling;
     const toastNotification = $("#toastNotification");
     const csrfToken = $("input[name=csrf_token]");
     toastNotification.addEventListener('click', e => {
@@ -37,19 +42,66 @@ document.addEventListener("DOMContentLoaded", () => {
         const notification = closeNotificationBtn.parentElement;
         hideNotification(notification, false)
     })
+    inputNomorTelpon.addEventListener("change", function () {
+        const value = this.value;
+        if (value.startsWith('08')) return;
+        const fillZero = /^\+620/.test(value) ? '' : '0';
+        const getNumber = value.replace(/^\+62/, fillZero);
+        this.value = getNumber;
+    })
     btnSendMail.addEventListener("click", () => {
+        let isValid = true;
         payload.userEmail = inputEmail.value.trim();
         payload.namaLengkap = inputNamaLengkap.value.trim();
         payload.nomorTelpon = inputNomorTelpon.value.trim();
         payload.subjek = inputSubjek.value.trim();
         payload.pesan = inputPesan.value.trim();
-        if (
-            payload.userEmail === "" ||
-            payload.namaLengkap === "" ||
-            payload.nomorTelpon === "" ||
-            payload.subjek === "#" ||
-            payload.pesan === ""
-        ) return alert("Semua input form wajib diisi, pastikan tidak ada input yang kosong!");
+        if (payload.namaLengkap === "") {
+            isValid = false;
+            inputErrorNamaLengkap.innerText = "Input tidak boleh kosong."
+        }
+        const isValidEmail = /@gmail\.com$/i.test(payload.userEmail);
+        if (!isValidEmail) {
+            isValid = false;
+            inputErrorEmail.innerText = "Format email tidak valid.";
+        }
+        if (payload.userEmail === "") {
+            isValid = false;
+            inputErrorEmail.innerText = "Input tidak boleh kosong.";
+        }
+        const isNomorTelponValid = /^08.*$/.test(payload.nomorTelpon);
+        if (/\D+/.test(payload.nomorTelpon)) {
+            isValid = false;
+            inputErrorNomorTelpon.innerText = "Format nomor HP hanya berupa digit atau angka.";
+        }
+        if (!isNomorTelponValid) {
+            isValid = false;
+            inputErrorNomorTelpon.innerText = "Format nomor HP tidak valid, harus diawali dengan angka 08.";
+        }
+        const getNomorTelponLength = payload.nomorTelpon.length;
+        if (getNomorTelponLength < 10 || getNomorTelponLength > 13) {
+            isValid = false;
+            inputErrorNomorTelpon.innerText = "Nomor HP tidak valid. Nomor yang valid minimal 10 digit dan maksimal 13 digit.";
+        }
+        if (payload.nomorTelpon === "") {
+            isValid = false;
+            inputErrorNomorTelpon.innerText = "Input tidak boleh kosong.";
+        }
+        const isSubjekSelected = payload.subjek !== "#";
+        if (!isSubjekSelected) {
+            isValid = false;
+            inputErrorSubjek.innerText = "Pilih subjek anda.";
+        }
+        const pesanValueLength = payload.pesan.length;
+        if (pesanValueLength < 30) {
+            isValid = false;
+            inputErrorPesan.innerText = "Pesan terlalu pendek, minimal 30 karakter.";
+        }
+        if (payload.pesan === "") {
+            isValid = false;
+            inputErrorPesan.innerText = "Input tidak boleh kosong.";
+        }
+        if (isValid === false) return;
         fetch('/api/sendmail', {
             method: 'POST',
             headers: {
