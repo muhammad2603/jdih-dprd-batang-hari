@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
             payload.nomorTelpon === "" ||
             payload.subjek === "#" ||
             payload.pesan === ""
-        ) return;
+        ) return alert("Semua input form wajib diisi, pastikan tidak ada input yang kosong!");
         fetch('/api/sendmail', {
             method: 'POST',
             headers: {
