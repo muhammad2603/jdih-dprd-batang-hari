@@ -145,16 +145,19 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
                 <div class="input-nama-lengkap">
                     <label for="namaLengkap" class="block text-sm font-medium mb-2">Nama Lengkap<span class="text-red-500">*</span></label>
                     <input type="text" id="namaLengkap" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="Masukkan Nama Lengkap..." autocomplete="name" />
+                    <span class="input-error ml-2 font-semibold text-xs text-red-500"></span>
                 </div>
                 <div class="input-email-address">
                     <label for="email" class="block text-sm font-medium mb-2">Email<span class="text-red-500">*</span></label>
                     <input type="email" id="email" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="nama_email@gmail.com" autocomplete="email" />
+                    <span class="input-error ml-2 font-semibold text-xs text-red-500"></span>
                 </div>
             </div>
             <div class="second-col grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div class="input-telephone-number">
-                    <label for="noTelp" class="block text-sm font-medium mb-2">Nomor Telepon<span class="text-red-500">*</span></label>
+                    <label for="noTelp" class="block text-sm font-medium mb-2">Nomor HP<span class="text-red-500">*</span></label>
                     <input type="tel" id="noTelp" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none" placeholder="08XXXXXXXXXX" autocomplete="tel" />
+                    <span class="input-error ml-2 font-semibold text-xs text-red-500"></span>
                 </div>
                 <div class="input-subject">
                     <label for="subject" class="block text-sm font-medium mb-2">Subjek<span class="text-red-500">*</span></label>
@@ -165,11 +168,13 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
                         <option value="Permintaan">Permintaan Dokumen</option>
                         <option value="Lainnya">Lainnya</option>
                     </select>
+                    <span class="input-error ml-2 font-semibold text-xs text-red-500"></span>
                 </div>
             </div>
             <div class="message">
                 <label for="message" class="block text-sm font-medium mb-2">Pesan<span class="text-red-500">*</span></label>
                 <textarea rows="6" id="message" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none resize-none" placeholder="Tuliskan pesan Anda..."></textarea>
+                <span class="input-error ml-2 font-semibold text-xs text-red-500"></span>
             </div>
             <div class="info flex gap-1.5 items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
