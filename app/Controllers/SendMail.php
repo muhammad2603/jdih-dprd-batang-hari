@@ -7,6 +7,7 @@ use CodeIgniter\HTTP\ResponseInterface;
 use Config\Services;
 
 helper("text");
+helper("string");
 
 class SendMail extends BaseController
 {
@@ -21,27 +22,29 @@ class SendMail extends BaseController
         $pesan                   = $requests->pesan;
         $notification_id         = strtolower(random_string('alpha', 16));
         $allowed_subjects        = ["pencarian", "teknis", "permintaan", "lainnya"];
-        if (!in_array($subjek, $allowed_subjects)) {
+        $newToken                = csrf_hash();
+        if (!in_array(strtolower($subjek), $allowed_subjects)) {
             $this->response->setStatusCode(400);
             return $this->response->setJSON([
-                "status" => 400,
+                "status"         => 400,
                 "notificationId" => $notification_id,
-                "notification" => view('components/notification', [
-                    "notificationId" => $notification_id,
-                    "title" => "Pengiriman Pesan",
-                    "message" => "Subjek tidak diizinkan."
-                ])
+                "notification"   => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Subjek tidak diizinkan."
+                ]),
+                "newToken"       => $newToken
             ]);
         }
-        $email_service = Services::email();
-        $to = "fattahillahmuhammad@gmail.com";
+        $email_service  = Services::email();
+        $to             = "fattahillahmuhammad48@gmail.com";
         //! Cek saat pesan terkirim ke $to, dan dibalas, apakah akan masuk ke email pengguna di $setReplyTo?
-        $setReplyTo = $user_email;
-        $message = "Laporan dari Pengguna\n";
-        $message .= "Nama Pengguna: " . esc($nama_lengkap_pengguna) . "\n";
-        $message .= "Nomor Telpon Pengguna: " . esc($nomor_telpon) . "\n";
-        $message .= "Email Pengguna: " . esc($user_email) . "\n";
-        $message .= "Pesan: " . esc($pesan);
+        $setReplyTo     = $user_email;
+        $message        = "Laporan dari Pengguna<br>";
+        $message       .= "Nama Pengguna: " . esc($nama_lengkap_pengguna) . "<br>";
+        $message       .= "Nomor Telpon Pengguna: " . esc($nomor_telpon) . "<br>";
+        $message       .= "Email Pengguna: " . esc($user_email) . "<br>";
+        $message       .= "Pesan: " . esc($pesan);
         $email_service->setTo($to);
         $email_service->setReplyTo($setReplyTo, $nama_lengkap_pengguna);
         $email_service->setSubject(esc($subjek));
@@ -49,24 +52,26 @@ class SendMail extends BaseController
         if ($email_service->send()) {
             $this->response->setStatusCode(200);
             return $this->response->setJSON([
-                "status" => 200,
-                "notificationId" => $notification_id,
-                "notification" => view('components/notification', [
-                    "notificationId" => $notification_id,
-                    "title" => "Pengiriman Pesan",
-                    "message" => "Pesan berhasil Terkirim."
+                "status"            => 200,
+                "notificationId"    => $notification_id,
+                "notification"      => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Pesan berhasil Terkirim.",
                 ]),
+                "newToken"          => $newToken,
             ]);
         } else {
             $this->response->setStatusCode(400);
             return $this->response->setJSON([
-                "status" => 400,
-                "notificationId" => $notification_id,
-                "notification" => view('components/notification', [
-                    "notificationId" => $notification_id,
-                    "title" => "Pengiriman Pesan",
-                    "message" => "Pesan gagal terkirim."
+                "status"            => 400,
+                "notificationId"    => $notification_id,
+                "notification"      => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Pesan gagal terkirim."
                 ]),
+                "newToken"          => $newToken,
             ]);
         }
     }
