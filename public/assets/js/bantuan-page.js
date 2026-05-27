@@ -37,7 +37,110 @@ function isInvalidValue(pattern, value) {
 function isValidValueLength(value, min, max = false) {
     return value.length < min || (max !== false && value.length > max);
 }
-
+function Validations(value) {
+    return {
+        value,
+        isEmptyValue() {
+            return this.value.trim() === "";
+        },
+        isValidValue(pattern) {
+            return pattern.test(this.value);
+        },
+        isInvalidValue(pattern) {
+            if (pattern instanceof RegExp) {
+                return pattern.test(this.value);
+            }
+            return this.value === pattern;
+        },
+        isValidValueLength(min, max = false) {
+            return this.value.length < min || (max !== false && this.value.length > max);
+        },
+    }
+}
+const validations = [
+    {
+        inputElement: $("#namaLengkap"),
+        messageElement: $("#namaLengkap").nextElementSibling,
+        validators: [
+            {
+                method: "isEmptyValue",
+                parameters: [],
+                messageError: "Input tidak boleh kosong.",
+            },
+        ]
+    },
+    {
+        inputElement: $("#email"),
+        messageElement: $("#email").nextElementSibling,
+        validators: [
+            {
+                method: "isEmptyValue",
+                parameters: [],
+                messageError: "Input tidak boleh kosong.",
+            },
+            {
+                method: "isValidValue",
+                parameters: [/@gmail\.com$/],
+                messageError: "Format email tidak valid.",
+                isNegate: true
+            },
+        ]
+    },
+    {
+        inputElement: $("#noTelp"),
+        messageElement: $("#noTelp").nextElementSibling,
+        validators: [
+            {
+                method: "isEmptyValue",
+                parameters: [],
+                messageError: "Input tidak boleh kosong.",
+            },
+            {
+                method: "isInvalidValue",
+                parameters: [/\D+/],
+                messageError: "Format nomor HP hanya berupa digit atau angka.",
+            },
+            {
+                method: "isValidValue",
+                parameters: [/^08/],
+                messageError: "Format nomor HP tidak valid, harus diawali dengan angka 08.",
+                isNegate: true
+            },
+            {
+                method: "isValidValueLength",
+                parameters: [10, 13],
+                messageError: "Nomor HP tidak valid. Nomor yang valid minimal 10 digit dan maksimal 13 digit.",
+            },
+        ]
+    },
+    {
+        inputElement: $("#subject"),
+        messageElement: $("#subject").nextElementSibling,
+        validators: [
+            {
+                method: "isInvalidValue",
+                parameters: ["#"],
+                messageError: "Pilih subjek anda."
+            },
+        ]
+    },
+    {
+        inputElement: $("#message"),
+        messageElement: $("#message").nextElementSibling,
+        validators: [
+            {
+                method: "isEmptyValue",
+                parameters: [],
+                messageError: "Input tidak boleh kosong."
+            },
+            {
+                method: "isValidValueLength",
+                parameters: [30],
+                messageError: "Pesan terlalu pendek, minimal 30 karakter."
+            },
+        ]
+    },
+];
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $("#btnSendMail");
@@ -67,59 +170,28 @@ document.addEventListener("DOMContentLoaded", () => {
         this.value = getNumber;
     })
     btnSendMail.addEventListener("click", () => {
-        let isValid = true;
         payload.userEmail = inputEmail.value.trim();
         payload.namaLengkap = inputNamaLengkap.value.trim();
         payload.nomorTelpon = inputNomorTelpon.value.trim();
         payload.subjek = inputSubjek.value.trim();
         payload.pesan = inputPesan.value.trim();
-        if (isEmptyValue(payload.namaLengkap)) {
-            isValid = false;
-            inputErrorNamaLengkap.innerText = "Input tidak boleh kosong."
+        let isPassed;
+        validationLoop:
+        for (const validation of validations) {
+            const { inputElement, messageElement, validators } = validation;
+            for (const validator of validators) {
+                const { method, parameters, messageError } = validator;
+                const useNegate = validator.isNegate ?? false;
+                const result = Validations(inputElement.value)[method](...parameters);
+                const isValid = useNegate ? !result : result;
+                if (isValid) {
+                    isPassed = false
+                    messageElement.innerText = messageError;
+                    continue validationLoop;
+                }
+            }
         }
-        const isValidEmail = isValidValue(/@gmail\.com$/i, payload.userEmail);
-        if (!isValidEmail) {
-            isValid = false;
-            inputErrorEmail.innerText = "Format email tidak valid.";
-        }
-        if (isEmptyValue(payload.userEmail)) {
-            isValid = false;
-            inputErrorEmail.innerText = "Input tidak boleh kosong.";
-        }
-        const isNomorTelponValid = isValidValue(/^08/, payload.nomorTelpon);
-        const isNonDigitNomorTelpon = isInvalidValue(/\D+/, payload.nomorTelpon);
-        if (isNonDigitNomorTelpon) {
-            isValid = false;
-            inputErrorNomorTelpon.innerText = "Format nomor HP hanya berupa digit atau angka.";
-        }
-        if (!isNomorTelponValid) {
-            isValid = false;
-            inputErrorNomorTelpon.innerText = "Format nomor HP tidak valid, harus diawali dengan angka 08.";
-        }
-        const getNomorTelponLength = payload.nomorTelpon.length;
-        if (getNomorTelponLength < 10 || getNomorTelponLength > 13) {
-            isValid = false;
-            inputErrorNomorTelpon.innerText = "Nomor HP tidak valid. Nomor yang valid minimal 10 digit dan maksimal 13 digit.";
-        }
-        if (isEmptyValue(payload.nomorTelpon)) {
-            isValid = false;
-            inputErrorNomorTelpon.innerText = "Input tidak boleh kosong.";
-        }
-        const isValidSubjekSelected = isInvalidValue("#", payload.subjek);
-        if (isValidSubjekSelected) {
-            isValid = false;
-            inputErrorSubjek.innerText = "Pilih subjek anda.";
-        }
-        const pesanValueLength = isValidValueLength(payload.pesan, 30);
-        if (pesanValueLength) {
-            isValid = false;
-            inputErrorPesan.innerText = "Pesan terlalu pendek, minimal 30 karakter.";
-        }
-        if (isEmptyValue(payload.pesan)) {
-            isValid = false;
-            inputErrorPesan.innerText = "Input tidak boleh kosong.";
-        }
-        if (isValid === false) return;
+        if (!isPassed) return;
         fetch('/api/sendmail', {
             method: 'POST',
             headers: {
