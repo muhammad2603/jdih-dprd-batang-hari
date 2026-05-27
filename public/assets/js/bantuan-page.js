@@ -57,6 +57,22 @@ function Validations(value) {
         },
     }
 }
+const validate = (validation) => {
+    let isPassed;
+    const { inputElement, messageElement, validators } = validation;
+    for (const validator of validators) {
+        const { method, parameters, messageError } = validator;
+        const useNegate = validator.isNegate ?? false;
+        const result = Validations(inputElement.value)[method](...parameters);
+        const isValid = useNegate ? !result : result;
+        if (isValid) {
+            isPassed = false
+            messageElement.innerText = messageError;
+            return;
+        }
+    }
+    return isPassed;
+}
 const validations = [
     {
         inputElement: $("#namaLengkap"),
@@ -175,23 +191,11 @@ document.addEventListener("DOMContentLoaded", () => {
         payload.nomorTelpon = inputNomorTelpon.value.trim();
         payload.subjek = inputSubjek.value.trim();
         payload.pesan = inputPesan.value.trim();
-        let isPassed;
-        validationLoop:
+        let statusValidation;
         for (const validation of validations) {
-            const { inputElement, messageElement, validators } = validation;
-            for (const validator of validators) {
-                const { method, parameters, messageError } = validator;
-                const useNegate = validator.isNegate ?? false;
-                const result = Validations(inputElement.value)[method](...parameters);
-                const isValid = useNegate ? !result : result;
-                if (isValid) {
-                    isPassed = false
-                    messageElement.innerText = messageError;
-                    continue validationLoop;
-                }
-            }
+            statusValidation = validate(validation);
         }
-        if (!isPassed) return;
+        if (!statusValidation) return;
         fetch('/api/sendmail', {
             method: 'POST',
             headers: {
