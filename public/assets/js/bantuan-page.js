@@ -21,22 +21,6 @@ function insertHTML(parentEl, childEl, position = 'afterbegin') {
 function $(selector) {
     return document.querySelector(selector)
 }
-
-function isEmptyValue(value) {
-    return value === "";
-}
-function isValidValue(pattern, value) {
-    return pattern.test(value);
-}
-function isInvalidValue(pattern, value) {
-    if (pattern instanceof RegExp) {
-        return pattern.test(value);
-    }
-    return value === pattern;
-}
-function isValidValueLength(value, min, max = false) {
-    return value.length < min || (max !== false && value.length > max);
-}
 function Validations(value) {
     return {
         value,
