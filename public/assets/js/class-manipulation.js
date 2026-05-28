@@ -35,6 +35,12 @@ export function classManipulation(element) {
             const cls = !Array.isArray(classes[0]) ? classes : classes[0];
             cls.forEach((cls) => this.el.classList.toggle(cls));
             return this;
+        },
+        useAnimFrame: function (callback) {
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => callback(this.el))
+            })
+            return this;
         }
     }
 }

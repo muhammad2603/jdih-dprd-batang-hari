@@ -189,6 +189,6 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
         </div>
     </div>
 </div>
-<script src="/assets/js/bantuan-page.js"></script>
+<script type="module" src="/assets/js/bantuan-page.js"></script>
 <?= csrf_field() ?>
 <?= $this->endSection() ?>

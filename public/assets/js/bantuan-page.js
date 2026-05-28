@@ -5,6 +5,9 @@ function insertHTML(parentEl, childEl, position = 'afterbegin') {
 function $(selector) {
     return document.querySelector(selector)
 }
+$.id = (id) => {
+    return document.getElementById(id);
+}
 function $$(element) {
     return {
         element,
@@ -220,7 +223,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const { message, notificationId, notification, newToken } = data;
                 csrfToken.value = newToken;
                 insertHTML(toastNotification, notification, 'afterbegin')
-                const currentNotificationEl = document.getElementById(notificationId);
+                const currentNotificationEl = $.id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
             })
@@ -229,7 +232,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const { message, notificationId, notification, newToken } = err;
                 csrfToken.value = newToken;
                 insertHTML(toastNotification, notification, 'afterbegin')
-                const currentNotificationEl = document.getElementById(notificationId);
+                const currentNotificationEl = $.id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
             });

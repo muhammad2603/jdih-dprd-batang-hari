@@ -11,18 +11,32 @@ helper("string");
 
 class SendMail extends BaseController
 {
+    // TODO masukkan log pada pengiriman pesan
     public function send()
     {
         $this->response->setHeader("content-type", 'application/json');
-        $requests                = $this->request->getJSON();
-        $nama_lengkap_pengguna   = $requests->namaLengkap;
-        $nomor_telpon            = $requests->nomorTelpon;
-        $user_email              = $requests->userEmail;
-        $subjek                  = $requests->subjek;
-        $pesan                   = $requests->pesan;
+        // $requests                = $this->request->getJSON();
+        // $nama_lengkap_pengguna   = $requests->namaLengkap;
+        // $nomor_telpon            = $requests->nomorTelpon;
+        // $user_email              = $requests->userEmail;
+        // $subjek                  = $requests->subjek;
+        // $pesan                   = $requests->pesan;
         $notification_id         = strtolower(random_string('alpha', 16));
         $allowed_subjects        = ["pencarian", "teknis", "permintaan", "lainnya"];
         $newToken                = csrf_hash();
+
+        $this->response->setStatusCode(200);
+        return $this->response->setJSON([
+            "status"            => 200,
+            "notificationId"    => $notification_id,
+            "notification"      => view('components/notification', [
+                "notificationId"    => $notification_id,
+                "title"             => "Pengiriman Pesan",
+                "message"           => "Pesan berhasil Terkirim.",
+            ]),
+            "newToken"          => $newToken,
+        ]);
+
         if (!in_array(strtolower($subjek), $allowed_subjects)) {
             $this->response->setStatusCode(400);
             return $this->response->setJSON([
