@@ -1,7 +1,4 @@
 import { classManipulation } from "./class-manipulation.js";
-function insertHTML(parentEl, childEl, position = 'afterbegin') {
-    parentEl.insertAdjacentHTML(position, childEl)
-}
 function $(selector) {
     return document.querySelector(selector)
 }
@@ -11,6 +8,9 @@ $.id = (id) => {
 function $$(element) {
     return {
         element,
+        insertHTML(childEl, position = 'afterbegin') {
+            this.element.insertAdjacentHTML(position, childEl)
+        },
         prevEl() {
             return this.element.previousElementSibling;
         },
@@ -166,18 +166,18 @@ const validations = [
 ];
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
-    const btnSendMail = $("#btnSendMail");
-    const inputEmail = $("#email");
+    const btnSendMail = $.id("btnSendMail");
+    const inputEmail = $.id("email");
     const inputErrorEmail = $$(inputEmail).nextEl();
-    const inputNamaLengkap = $("#namaLengkap");
+    const inputNamaLengkap = $.id("namaLengkap");
     const inputErrorNamaLengkap = $$(inputNamaLengkap).nextEl();
-    const inputNomorTelpon = $("#noTelp");
+    const inputNomorTelpon = $.id("noTelp");
     const inputErrorNomorTelpon = $$(inputNomorTelpon).nextEl();
-    const inputSubjek = $("#subject");
+    const inputSubjek = $.id("subject");
     const inputErrorSubjek = $$(inputSubjek).nextEl();
-    const inputPesan = $("#message");
+    const inputPesan = $.id("message");
     const inputErrorPesan = $$(inputPesan).nextEl();
-    const toastNotification = $("#toastNotification");
+    const toastNotification = $.id("toastNotification");
     const csrfToken = $("input[name=csrf_token]");
     toastNotification.addEventListener('click', e => {
         const closeNotificationBtn = e.target.closest('.close-notification');
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then(data => {
                 const { message, notificationId, notification, newToken } = data;
                 csrfToken.value = newToken;
-                insertHTML(toastNotification, notification, 'afterbegin')
+                $$(toastNotification).insertHTML(notification)
                 const currentNotificationEl = $.id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
@@ -231,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (err.code === 403) return alert("Permintaan tidak diizinkan!");
                 const { message, notificationId, notification, newToken } = err;
                 csrfToken.value = newToken;
-                insertHTML(toastNotification, notification, 'afterbegin')
+                $$(toastNotification).insertHTML(notification)
                 const currentNotificationEl = $.id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
