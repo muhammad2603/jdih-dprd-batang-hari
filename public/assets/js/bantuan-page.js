@@ -7,6 +7,11 @@ import {
     manualCloseNotification,
 } from './notification.js';
 import { validations, validate } from './validations.js';
+function autoZeroFillValue(inputEl, value) {
+    const isZeroFill = !(validations(value).isValidValue(/^\+620/)) ? '0' : '';
+    const getNumber = value.replace(/^\+62/, isZeroFill);
+    inputEl.value = getNumber;
+}
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $id("btnSendMail");
@@ -115,9 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
     inputNomorTelpon.addEventListener("change", function () {
         const value = this.value;
         if (value.startsWith('08')) return;
-        const fillZero = validations(value).isValidValue(/^\+620/) ? '' : '0';
-        const getNumber = value.replace(/^\+62/, fillZero);
-        this.value = getNumber;
+        autoZeroFillValue(this, value)
     })
     btnSendMail.addEventListener("click", () => {
         payload.userEmail = $$(inputEmail).getInputValue();
