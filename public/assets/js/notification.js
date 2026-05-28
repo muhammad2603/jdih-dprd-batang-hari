@@ -1,6 +1,7 @@
 import { classManipulation } from "./class-manipulation.js";
+import { $$ } from './dom.js';
 function showNotification(el) {
-    classManipulation(el).useAnimFrame(el => el.classList.remove('translate-x-2/4', 'opacity-75', 'pointer-events-none'))
+    classManipulation(el).useAnimFrame(el => classManipulation(el).remove('translate-x-2/4', 'opacity-75', 'pointer-events-none'))
 }
 function hideNotification(el) {
     classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0')
