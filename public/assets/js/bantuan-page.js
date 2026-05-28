@@ -12,6 +12,14 @@ function autoZeroFillValue(inputEl, value) {
     const getNumber = value.replace(/^\+62/, isZeroFill);
     inputEl.value = getNumber;
 }
+
+function setError(elementId, message) {
+    $$($id(elementId)).nextEl().innerText = message;
+}
+function setErrorsFromResponse(errors, message) {
+    Object.entries(errors).forEach(([id, error]) => setError(id, error))
+}
+
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $id("btnSendMail");
@@ -123,11 +131,12 @@ document.addEventListener("DOMContentLoaded", () => {
         autoZeroFillValue(this, value)
     })
     btnSendMail.addEventListener("click", () => {
-        payload.userEmail = $$(inputEmail).getInputValue();
+        payload.email = $$(inputEmail).getInputValue();
         payload.namaLengkap = $$(inputNamaLengkap).getInputValue();
-        payload.nomorTelpon = $$(inputNomorTelpon).getInputValue();
-        payload.subjek = $$(inputSubjek).getInputValue();
-        payload.pesan = $$(inputPesan).getInputValue();
+        payload.noTelp = $$(inputNomorTelpon).getInputValue();
+        payload.subject = $$(inputSubjek).getInputValue();
+        payload.message = $$(inputPesan).getInputValue();
+        // __FIX__ jika input telah diperbaiki dan valid, maka error sebelumnya harus dihapus
         let statusValidation;
         for (const validation of validationsConfig) {
             statusValidation = validate(validation);
@@ -150,7 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 return data;
             })
             .then(data => {
-                const { message, notificationId, notification, newToken } = data;
+                const { notificationId, notification, newToken } = data;
                 csrfToken.value = newToken;
                 $$(toastNotification).insertHTML(notification)
                 const currentNotificationEl = $id(notificationId);
@@ -159,12 +168,13 @@ document.addEventListener("DOMContentLoaded", () => {
             })
             .catch(err => {
                 if (err.code === 403) return alert("Permintaan tidak diizinkan!");
-                const { message, notificationId, notification, newToken } = err;
+                const { fieldsError, notificationId, notification, newToken } = err;
                 csrfToken.value = newToken;
                 $$(toastNotification).insertHTML(notification)
                 const currentNotificationEl = $id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
+                setErrorsFromResponse(fieldsError)
             });
     })
 })
