@@ -6,126 +6,7 @@ import {
     autoCloseNotification,
     manualCloseNotification,
 } from './notification.js';
-function Validations(value) {
-    return {
-        value,
-        isEmptyValue() {
-            return this.value.trim() === "";
-        },
-        isValidValue(pattern) {
-            return pattern.test(this.value.trim());
-        },
-        isInvalidValue(pattern) {
-            if (pattern instanceof RegExp) {
-                return pattern.test(this.value.trim());
-            }
-            return this.value.trim() === pattern;
-        },
-        isValidValueLength(min, max = false) {
-            return this.value.trim().length < min || (max !== false && this.value.trim().length > max);
-        },
-    }
-}
-const validate = (validation) => {
-    let isPassed;
-    const { inputElement, messageElement, validators } = validation;
-    for (const validator of validators) {
-        const { method, parameters, messageError } = validator;
-        const useNegate = validator.isNegate ?? false;
-        const result = Validations(inputElement.value)[method](...parameters);
-        const isValid = useNegate ? !result : result;
-        if (isValid) {
-            isPassed = false
-            messageElement.innerText = messageError;
-            return;
-        }
-    }
-    return isPassed;
-}
-const validations = [
-    {
-        inputElement: $("#namaLengkap"),
-        messageElement: $("#namaLengkap").nextElementSibling,
-        validators: [
-            {
-                method: "isEmptyValue",
-                parameters: [],
-                messageError: "Input tidak boleh kosong.",
-            },
-        ]
-    },
-    {
-        inputElement: $("#email"),
-        messageElement: $("#email").nextElementSibling,
-        validators: [
-            {
-                method: "isEmptyValue",
-                parameters: [],
-                messageError: "Input tidak boleh kosong.",
-            },
-            {
-                method: "isValidValue",
-                parameters: [/@gmail\.com$/],
-                messageError: "Format email tidak valid.",
-                isNegate: true
-            },
-        ]
-    },
-    {
-        inputElement: $("#noTelp"),
-        messageElement: $("#noTelp").nextElementSibling,
-        validators: [
-            {
-                method: "isEmptyValue",
-                parameters: [],
-                messageError: "Input tidak boleh kosong.",
-            },
-            {
-                method: "isInvalidValue",
-                parameters: [/\D+/],
-                messageError: "Format nomor HP hanya berupa digit atau angka.",
-            },
-            {
-                method: "isValidValue",
-                parameters: [/^08/],
-                messageError: "Format nomor HP tidak valid, harus diawali dengan angka 08.",
-                isNegate: true
-            },
-            {
-                method: "isValidValueLength",
-                parameters: [10, 13],
-                messageError: "Nomor HP tidak valid. Nomor yang valid minimal 10 digit dan maksimal 13 digit.",
-            },
-        ]
-    },
-    {
-        inputElement: $("#subject"),
-        messageElement: $("#subject").nextElementSibling,
-        validators: [
-            {
-                method: "isInvalidValue",
-                parameters: ["#"],
-                messageError: "Pilih subjek anda."
-            },
-        ]
-    },
-    {
-        inputElement: $("#message"),
-        messageElement: $("#message").nextElementSibling,
-        validators: [
-            {
-                method: "isEmptyValue",
-                parameters: [],
-                messageError: "Input tidak boleh kosong."
-            },
-            {
-                method: "isValidValueLength",
-                parameters: [30],
-                messageError: "Pesan terlalu pendek, minimal 30 karakter."
-            },
-        ]
-    },
-];
+import { validations, validate } from './validations.js';
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $id("btnSendMail");
@@ -141,6 +22,90 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputErrorPesan = $$(inputPesan).nextEl();
     const toastNotification = $id("toastNotification");
     const csrfToken = $("input[name=csrf_token]");
+    const validationsConfig = [
+        {
+            inputElement: inputNamaLengkap,
+            messageElement: inputErrorNamaLengkap,
+            validators: [
+                {
+                    method: "isEmptyValue",
+                    parameters: [],
+                    messageError: "Input tidak boleh kosong.",
+                },
+            ]
+        },
+        {
+            inputElement: inputEmail,
+            messageElement: inputErrorEmail,
+            validators: [
+                {
+                    method: "isEmptyValue",
+                    parameters: [],
+                    messageError: "Input tidak boleh kosong.",
+                },
+                {
+                    method: "isValidValue",
+                    parameters: [/@gmail\.com$/],
+                    messageError: "Format email tidak valid.",
+                    isNegate: true
+                },
+            ]
+        },
+        {
+            inputElement: inputNomorTelpon,
+            messageElement: inputErrorNomorTelpon,
+            validators: [
+                {
+                    method: "isEmptyValue",
+                    parameters: [],
+                    messageError: "Input tidak boleh kosong.",
+                },
+                {
+                    method: "isInvalidValue",
+                    parameters: [/\D+/],
+                    messageError: "Format nomor HP hanya berupa digit atau angka.",
+                },
+                {
+                    method: "isValidValue",
+                    parameters: [/^08/],
+                    messageError: "Format nomor HP tidak valid, harus diawali dengan angka 08.",
+                    isNegate: true
+                },
+                {
+                    method: "isValidValueLength",
+                    parameters: [10, 13],
+                    messageError: "Nomor HP tidak valid. Nomor yang valid minimal 10 digit dan maksimal 13 digit.",
+                },
+            ]
+        },
+        {
+            inputElement: inputSubjek,
+            messageElement: inputErrorSubjek,
+            validators: [
+                {
+                    method: "isInvalidValue",
+                    parameters: ["#"],
+                    messageError: "Pilih subjek anda."
+                },
+            ]
+        },
+        {
+            inputElement: inputPesan,
+            messageElement: inputErrorPesan,
+            validators: [
+                {
+                    method: "isEmptyValue",
+                    parameters: [],
+                    messageError: "Input tidak boleh kosong."
+                },
+                {
+                    method: "isValidValueLength",
+                    parameters: [30],
+                    messageError: "Pesan terlalu pendek, minimal 30 karakter."
+                },
+            ]
+        },
+    ];
     toastNotification.addEventListener('click', e => {
         const closeNotificationBtn = e.target.closest('.close-notification');
         if (!closeNotificationBtn) return;
@@ -150,21 +115,21 @@ document.addEventListener("DOMContentLoaded", () => {
     inputNomorTelpon.addEventListener("change", function () {
         const value = this.value;
         if (value.startsWith('08')) return;
-        const fillZero = Validations(value).isValidValue(/^\+620/) ? '' : '0';
+        const fillZero = validations(value).isValidValue(/^\+620/) ? '' : '0';
         const getNumber = value.replace(/^\+62/, fillZero);
         this.value = getNumber;
     })
     btnSendMail.addEventListener("click", () => {
-        // payload.userEmail = $$(inputEmail).getInputValue();
-        // payload.namaLengkap = $$(inputNamaLengkap).getInputValue();
-        // payload.nomorTelpon = $$(inputNomorTelpon).getInputValue();
-        // payload.subjek = $$(inputSubjek).getInputValue();
-        // payload.pesan = $$(inputPesan).getInputValue();
-        // let statusValidation;
-        // for (const validation of validations) {
-        //     statusValidation = validate(validation);
-        // }
-        // if (!statusValidation) return;
+        payload.userEmail = $$(inputEmail).getInputValue();
+        payload.namaLengkap = $$(inputNamaLengkap).getInputValue();
+        payload.nomorTelpon = $$(inputNomorTelpon).getInputValue();
+        payload.subjek = $$(inputSubjek).getInputValue();
+        payload.pesan = $$(inputPesan).getInputValue();
+        let statusValidation;
+        for (const validation of validationsConfig) {
+            statusValidation = validate(validation);
+        }
+        if (!statusValidation) return;
         fetch('/api/sendmail', {
             method: 'POST',
             headers: {

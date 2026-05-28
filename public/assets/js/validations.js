@@ -1,4 +1,4 @@
-function Validations(value) {
+function validations(value) {
     return {
         value,
         isEmptyValue() {
@@ -18,5 +18,21 @@ function Validations(value) {
         },
     }
 }
+function validate(validation) {
+    let isPassed;
+    const { inputElement, messageElement, validators } = validation;
+    for (const validator of validators) {
+        const { method, parameters, messageError } = validator;
+        const useNegate = validator.isNegate ?? false;
+        const result = validations(inputElement.value)[method](...parameters);
+        const isValid = useNegate ? !result : result;
+        if (isValid) {
+            isPassed = false
+            messageElement.innerText = messageError;
+            return;
+        }
+    }
+    return isPassed;
+}
 
-export { Validations };
+export { validations, validate };
