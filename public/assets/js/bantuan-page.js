@@ -25,17 +25,21 @@ function $$(element) {
 function showNotification(el) {
     classManipulation(el).useAnimFrame(el => el.classList.remove('translate-x-2/4', 'opacity-75', 'pointer-events-none'))
 }
-function hideNotification(el, delay = true) {
-    if (delay) {
-        setTimeout(() => classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0'), 4000)
-    } else {
-        classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0')
-        setTimeout(() => $$(el).removeEl(), 200)
-    }
+function hideNotification(el) {
+    classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0')
 }
-function removeNotification(el) {
+function removeNotification(el, delay = 0) {
+    setTimeout(() => $$(el).removeEl(), delay)
+}
+function autoCloseNotification(el) {
+    setTimeout(() => {
+        hideNotification(el)
+        setTimeout(() => removeNotification(el), 100)
+    }, 4000)
+}
+function manualCloseNotification(el) {
     hideNotification(el)
-    setTimeout(() => $$(el).removeEl(), 4100)
+    removeNotification(el, 200)
 }
 function Validations(value) {
     return {
@@ -176,7 +180,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const closeNotificationBtn = e.target.closest('.close-notification');
         if (!closeNotificationBtn) return;
         const notification = closeNotificationBtn.parentElement;
-        hideNotification(notification, false)
+        manualCloseNotification(notification)
     })
     inputNomorTelpon.addEventListener("change", function () {
         const value = this.value;
@@ -218,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 insertHTML(toastNotification, notification, 'afterbegin')
                 const currentNotificationEl = document.getElementById(notificationId);
                 showNotification(currentNotificationEl)
-                removeNotification(currentNotificationEl)
+                autoCloseNotification(currentNotificationEl)
             })
             .catch(err => {
                 if (err.code === 403) return alert("Permintaan tidak diizinkan!");
@@ -227,7 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 insertHTML(toastNotification, notification, 'afterbegin')
                 const currentNotificationEl = document.getElementById(notificationId);
                 showNotification(currentNotificationEl)
-                removeNotification(currentNotificationEl)
+                autoCloseNotification(currentNotificationEl)
             });
     })
 })
