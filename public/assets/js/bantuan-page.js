@@ -21,6 +21,20 @@ function insertHTML(parentEl, childEl, position = 'afterbegin') {
 function $(selector) {
     return document.querySelector(selector)
 }
+function $$(element) {
+    return {
+        element,
+        prevEl() {
+            return this.element.previousElementSibling;
+        },
+        nextEl() {
+            return this.element.nextElementSibling;
+        },
+        getInputValue() {
+            return this.element.value.trim()
+        }
+    }
+}
 function Validations(value) {
     return {
         value,
@@ -28,16 +42,16 @@ function Validations(value) {
             return this.value.trim() === "";
         },
         isValidValue(pattern) {
-            return pattern.test(this.value);
+            return pattern.test(this.value.trim());
         },
         isInvalidValue(pattern) {
             if (pattern instanceof RegExp) {
-                return pattern.test(this.value);
+                return pattern.test(this.value.trim());
             }
-            return this.value === pattern;
+            return this.value.trim() === pattern;
         },
         isValidValueLength(min, max = false) {
-            return this.value.length < min || (max !== false && this.value.length > max);
+            return this.value.trim().length < min || (max !== false && this.value.trim().length > max);
         },
     }
 }
@@ -145,15 +159,15 @@ let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $("#btnSendMail");
     const inputEmail = $("#email");
-    const inputErrorEmail = inputEmail.nextElementSibling;
+    const inputErrorEmail = $$(inputEmail).nextEl();
     const inputNamaLengkap = $("#namaLengkap");
-    const inputErrorNamaLengkap = inputNamaLengkap.nextElementSibling;
+    const inputErrorNamaLengkap = $$(inputNamaLengkap).nextEl();
     const inputNomorTelpon = $("#noTelp");
-    const inputErrorNomorTelpon = inputNomorTelpon.nextElementSibling;
+    const inputErrorNomorTelpon = $$(inputNomorTelpon).nextEl();
     const inputSubjek = $("#subject");
-    const inputErrorSubjek = inputSubjek.nextElementSibling;
+    const inputErrorSubjek = $$(inputSubjek).nextEl();
     const inputPesan = $("#message");
-    const inputErrorPesan = inputPesan.nextElementSibling;
+    const inputErrorPesan = $$(inputPesan).nextEl();
     const toastNotification = $("#toastNotification");
     const csrfToken = $("input[name=csrf_token]");
     toastNotification.addEventListener('click', e => {
@@ -165,16 +179,16 @@ document.addEventListener("DOMContentLoaded", () => {
     inputNomorTelpon.addEventListener("change", function () {
         const value = this.value;
         if (value.startsWith('08')) return;
-        const fillZero = /^\+620/.test(value) ? '' : '0';
+        const fillZero = Validations(value).isValidValue(/^\+620/) ? '' : '0';
         const getNumber = value.replace(/^\+62/, fillZero);
         this.value = getNumber;
     })
     btnSendMail.addEventListener("click", () => {
-        payload.userEmail = inputEmail.value.trim();
-        payload.namaLengkap = inputNamaLengkap.value.trim();
-        payload.nomorTelpon = inputNomorTelpon.value.trim();
-        payload.subjek = inputSubjek.value.trim();
-        payload.pesan = inputPesan.value.trim();
+        payload.userEmail = $$(inputEmail).getInputValue();
+        payload.namaLengkap = $$(inputNamaLengkap).getInputValue();
+        payload.nomorTelpon = $$(inputNomorTelpon).getInputValue();
+        payload.subjek = $$(inputSubjek).getInputValue();
+        payload.pesan = $$(inputPesan).getInputValue();
         let statusValidation;
         for (const validation of validations) {
             statusValidation = validate(validation);
