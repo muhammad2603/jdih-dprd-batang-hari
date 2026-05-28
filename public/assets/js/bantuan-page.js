@@ -1,20 +1,4 @@
-function showNotification(el) {
-    requestAnimationFrame(() => {
-        requestAnimationFrame(() => el.classList.remove('translate-x-2/4', 'opacity-75', 'pointer-events-none'))
-    })
-}
-function hideNotification(el, delay = true) {
-    if (delay) {
-        setTimeout(() => el.classList.add('pointer-events-none', 'translate-x-2/4', 'opacity-0'), 4000)
-    } else {
-        el.classList.add('pointer-events-none', 'translate-x-2/4', 'opacity-0')
-        setTimeout(() => el.remove(), 200)
-    }
-}
-function removeNotification(el) {
-    hideNotification(el)
-    setTimeout(() => el.remove(), 4100)
-}
+import { classManipulation } from "./class-manipulation.js";
 function insertHTML(parentEl, childEl, position = 'afterbegin') {
     parentEl.insertAdjacentHTML(position, childEl)
 }
@@ -30,10 +14,28 @@ function $$(element) {
         nextEl() {
             return this.element.nextElementSibling;
         },
+        removeEl() {
+            return this.element.remove();
+        },
         getInputValue() {
-            return this.element.value.trim()
+            return this.element.value.trim();
         }
     }
+}
+function showNotification(el) {
+    classManipulation(el).useAnimFrame(el => el.classList.remove('translate-x-2/4', 'opacity-75', 'pointer-events-none'))
+}
+function hideNotification(el, delay = true) {
+    if (delay) {
+        setTimeout(() => classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0'), 4000)
+    } else {
+        classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0')
+        setTimeout(() => $$(el).removeEl(), 200)
+    }
+}
+function removeNotification(el) {
+    hideNotification(el)
+    setTimeout(() => $$(el).removeEl(), 4100)
 }
 function Validations(value) {
     return {
@@ -215,8 +217,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 csrfToken.value = newToken;
                 insertHTML(toastNotification, notification, 'afterbegin')
                 const currentNotificationEl = document.getElementById(notificationId);
-                showNotification(currentNotificationEl, 'translate-x-2/4', 'opacity-75', 'pointer-events-none')
-                removeNotification(currentNotificationEl, 'pointer-events-none', 'translate-x-2/4', 'opacity-0')
+                showNotification(currentNotificationEl)
+                removeNotification(currentNotificationEl)
             })
             .catch(err => {
                 if (err.code === 403) return alert("Permintaan tidak diizinkan!");
@@ -224,8 +226,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 csrfToken.value = newToken;
                 insertHTML(toastNotification, notification, 'afterbegin')
                 const currentNotificationEl = document.getElementById(notificationId);
-                showNotification(currentNotificationEl, 'translate-x-2/4', 'opacity-75', 'pointer-events-none')
-                removeNotification(currentNotificationEl, 'pointer-events-none', 'translate-x-2/4', 'opacity-0')
+                showNotification(currentNotificationEl)
+                removeNotification(currentNotificationEl)
             });
     })
 })
