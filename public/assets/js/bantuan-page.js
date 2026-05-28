@@ -12,14 +12,15 @@ function autoZeroFillValue(inputEl, value) {
     const getNumber = value.replace(/^\+62/, isZeroFill);
     inputEl.value = getNumber;
 }
-
 function setError(elementId, message) {
     $$($id(elementId)).nextEl().innerText = message;
 }
 function setErrorsFromResponse(errors, message) {
     Object.entries(errors).forEach(([id, error]) => setError(id, error))
 }
-
+function emptyText(el) {
+    el.innerText = "";
+}
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
     const btnSendMail = $id("btnSendMail");
@@ -136,7 +137,11 @@ document.addEventListener("DOMContentLoaded", () => {
         payload.noTelp = $$(inputNomorTelpon).getInputValue();
         payload.subject = $$(inputSubjek).getInputValue();
         payload.message = $$(inputPesan).getInputValue();
-        // __FIX__ jika input telah diperbaiki dan valid, maka error sebelumnya harus dihapus
+        emptyText(inputErrorNamaLengkap)
+        emptyText(inputErrorEmail)
+        emptyText(inputErrorNomorTelpon)
+        emptyText(inputErrorSubjek)
+        emptyText(inputErrorPesan)
         let statusValidation;
         for (const validation of validationsConfig) {
             statusValidation = validate(validation);
