@@ -1,49 +1,11 @@
-import { classManipulation } from "./class-manipulation.js";
-function $(selector) {
-    return document.querySelector(selector)
-}
-$.id = (id) => {
-    return document.getElementById(id);
-}
-function $$(element) {
-    return {
-        element,
-        insertHTML(childEl, position = 'afterbegin') {
-            this.element.insertAdjacentHTML(position, childEl)
-        },
-        prevEl() {
-            return this.element.previousElementSibling;
-        },
-        nextEl() {
-            return this.element.nextElementSibling;
-        },
-        removeEl() {
-            return this.element.remove();
-        },
-        getInputValue() {
-            return this.element.value.trim();
-        }
-    }
-}
-function showNotification(el) {
-    classManipulation(el).useAnimFrame(el => el.classList.remove('translate-x-2/4', 'opacity-75', 'pointer-events-none'))
-}
-function hideNotification(el) {
-    classManipulation(el).add('pointer-events-none', 'translate-x-2/4', 'opacity-0')
-}
-function removeNotification(el, delay = 0) {
-    setTimeout(() => $$(el).removeEl(), delay)
-}
-function autoCloseNotification(el) {
-    setTimeout(() => {
-        hideNotification(el)
-        setTimeout(() => removeNotification(el), 100)
-    }, 4000)
-}
-function manualCloseNotification(el) {
-    hideNotification(el)
-    removeNotification(el, 200)
-}
+import { $, $id, $$ } from './dom.js';
+import {
+    showNotification,
+    hideNotification,
+    removeNotification,
+    autoCloseNotification,
+    manualCloseNotification,
+} from './notification.js';
 function Validations(value) {
     return {
         value,
@@ -166,18 +128,18 @@ const validations = [
 ];
 let payload = {};
 document.addEventListener("DOMContentLoaded", () => {
-    const btnSendMail = $.id("btnSendMail");
-    const inputEmail = $.id("email");
+    const btnSendMail = $id("btnSendMail");
+    const inputEmail = $id("email");
     const inputErrorEmail = $$(inputEmail).nextEl();
-    const inputNamaLengkap = $.id("namaLengkap");
+    const inputNamaLengkap = $id("namaLengkap");
     const inputErrorNamaLengkap = $$(inputNamaLengkap).nextEl();
-    const inputNomorTelpon = $.id("noTelp");
+    const inputNomorTelpon = $id("noTelp");
     const inputErrorNomorTelpon = $$(inputNomorTelpon).nextEl();
-    const inputSubjek = $.id("subject");
+    const inputSubjek = $id("subject");
     const inputErrorSubjek = $$(inputSubjek).nextEl();
-    const inputPesan = $.id("message");
+    const inputPesan = $id("message");
     const inputErrorPesan = $$(inputPesan).nextEl();
-    const toastNotification = $.id("toastNotification");
+    const toastNotification = $id("toastNotification");
     const csrfToken = $("input[name=csrf_token]");
     toastNotification.addEventListener('click', e => {
         const closeNotificationBtn = e.target.closest('.close-notification');
@@ -193,16 +155,16 @@ document.addEventListener("DOMContentLoaded", () => {
         this.value = getNumber;
     })
     btnSendMail.addEventListener("click", () => {
-        payload.userEmail = $$(inputEmail).getInputValue();
-        payload.namaLengkap = $$(inputNamaLengkap).getInputValue();
-        payload.nomorTelpon = $$(inputNomorTelpon).getInputValue();
-        payload.subjek = $$(inputSubjek).getInputValue();
-        payload.pesan = $$(inputPesan).getInputValue();
-        let statusValidation;
-        for (const validation of validations) {
-            statusValidation = validate(validation);
-        }
-        if (!statusValidation) return;
+        // payload.userEmail = $$(inputEmail).getInputValue();
+        // payload.namaLengkap = $$(inputNamaLengkap).getInputValue();
+        // payload.nomorTelpon = $$(inputNomorTelpon).getInputValue();
+        // payload.subjek = $$(inputSubjek).getInputValue();
+        // payload.pesan = $$(inputPesan).getInputValue();
+        // let statusValidation;
+        // for (const validation of validations) {
+        //     statusValidation = validate(validation);
+        // }
+        // if (!statusValidation) return;
         fetch('/api/sendmail', {
             method: 'POST',
             headers: {
@@ -223,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const { message, notificationId, notification, newToken } = data;
                 csrfToken.value = newToken;
                 $$(toastNotification).insertHTML(notification)
-                const currentNotificationEl = $.id(notificationId);
+                const currentNotificationEl = $id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
             })
@@ -232,7 +194,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 const { message, notificationId, notification, newToken } = err;
                 csrfToken.value = newToken;
                 $$(toastNotification).insertHTML(notification)
-                const currentNotificationEl = $.id(notificationId);
+                const currentNotificationEl = $id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
             });
