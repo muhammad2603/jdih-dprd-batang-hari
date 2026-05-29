@@ -44,7 +44,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                 </svg>
             </div>
             <div class="document-meta flex-1">
-                <div class="header-document flex items-center gap-3 mb-3">
+                <div class="header-document flex items-center gap-3 mb-3 flex-wrap">
                     <span class="px-3 py-1 bg-white/20 text-white text-sm font-medium rounded-full"><?= esc($produk_hukum["kategori"]) ?></span>
                     <span class="font-semibold">Nomor <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></span>
                     <span id="tagStatus" class="px-3 py-1 rounded-full text-sm font-medium border flex items-center gap-2">
@@ -55,15 +55,15 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                         <span><?= esc($produk_hukum["status"]) ?></span>
                     </span>
                 </div>
-                <h1 class="text-3xl font-bold mb-2"><?= esc($produk_hukum["judul"]) ?></h1>
+                <h1 class="text-2xl sm:text-3xl font-bold mt-6 xl:mt-0 mb-2"><?= esc($produk_hukum["judul"]) ?></h1>
             </div>
         </div>
     </div>
 </div>
-<div id="stickyTop" class="bg-white border-b border-primary-border sticky top-18.25 z-40">
+<div id="stickyTop" class="bg-white border-b border-primary-border sm:sticky sm:top-18.25 sm:z-40">
     <div class="max-w-7xl mx-auto px-6 py-4">
-        <div class="flex items-center gap-3">
-            <button type="button" id="btnDownloads" class="px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center gap-2 cursor-pointer focus:outline-none focus:bg-primary/90">
+        <div class="flex items-center gap-6 xl:gap-3 flex-wrap">
+            <button type="button" id="btnDownloads" class="grow xl:grow-0 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex justify-center items-center gap-2 cursor-pointer focus:outline-none focus:bg-primary/90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                     <path d="M12 15V3" />
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -71,8 +71,8 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                 </svg>
                 <span>Unduh PDF</span>
             </button>
-            <div class="print-pdf-wrapper relative w-max">
-                <button type="button" id="btnPrintDropdown" class="px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer focus:bg-muted focus:outline-none">
+            <div class="print-pdf-wrapper relative w-max grow xl:grow-0">
+                <button type="button" id="btnPrintDropdown" class="w-full xl:w-auto px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex justify-center items-center gap-2 cursor-pointer focus:bg-muted focus:outline-none">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                         <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
                         <path d="M6 9V3a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v6" />
@@ -80,7 +80,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     </svg>
                     <span>Cetak</span>
                 </button>
-                <div id="printDropdown" class="print-dropdown absolute left-0 mbs-2 w-[230%] p-4 bg-white border border-primary-border z-20 space-y-2 rounded-sm shadow-lg transition duration-200 ease-in pointer-events-none -translate-y-8 opacity-0">
+                <div id="printDropdown" class="print-dropdown absolute left-0 mbs-2 w-full sm:w-[150%] xl:w-[230%] p-4 bg-white border border-primary-border z-20 space-y-2 rounded-sm shadow-lg transition duration-200 ease-in pointer-events-none -translate-y-8 opacity-0">
                     <?php foreach ($attachments_to_array as $key => [$filename, $filepath]): ?>
                         <button type="button" class="print-btn w-full p-2 text-sm text-left flex gap-2 group cursor-pointer focus:outline-none" data-index-to-document='<?= "document-$key" ?>' tabindex="-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 group-hover:text-primary">
@@ -92,8 +92,8 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     <?php endforeach ?>
                 </div>
             </div>
-            <div class="shares-wrapper relative w-max">
-                <button type="button" id="btnShareDropdown" class="px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer focus:outline-none focus:bg-muted">
+            <div class="shares-wrapper relative w-max grow xl:grow-0">
+                <button type="button" id="btnShareDropdown" class="w-full xl:w-auto px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer focus:outline-none focus:bg-muted">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                         <circle cx="18" cy="5" r="3" />
                         <circle cx="6" cy="12" r="3" />
@@ -103,7 +103,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     </svg>
                     <span>Bagikan</span>
                 </button>
-                <div id="shareDropdown" class="shares-dropdown absolute left-0 mbs-2 w-[130%] p-4 bg-white border border-primary-border z-20 space-y-2 rounded-sm shadow-lg transition duration-200 ease-in pointer-events-none -translate-y-8 opacity-0">
+                <div id="shareDropdown" class="shares-dropdown absolute left-0 mbs-2 w-full xl:w-[130%] p-4 bg-white border border-primary-border z-20 space-y-2 rounded-sm shadow-lg transition duration-200 ease-in pointer-events-none -translate-y-8 opacity-0">
                     <button type="button" id="btnCopyLink" class="copy-btn p-1 w-full text-sm text-left flex gap-3 group cursor-pointer focus:outline-none" tabindex="-1">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
                             <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
@@ -127,7 +127,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     </a>
                 </div>
             </div>
-            <div class="total-download ml-auto flex items-center gap-2 text-sm text-muted-foreground">
+            <div class="total-download grow xl:grow-0 xl:ml-auto flex justify-end items-center gap-2 text-base xl:text-sm text-muted-foreground">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                     <path d="M12 15V3" />
                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -149,7 +149,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     </svg>
                     <span>Abstrak</span>
                 </h2>
-                <p class="text-default-foreground leading-relaxed"><?= esc($produk_hukum["abstrak"]) ?></p>
+                <p class="text-default-foreground leading-7 xl:leading-relaxed"><?= esc($produk_hukum["abstrak"]) ?></p>
             </div>
             <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex gap-2">
@@ -175,8 +175,8 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     <?php foreach ($related_documents as $rd): ?>
                         <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
                             <div class="flex-1">
-                                <header class="flex items-center gap-2 mb-1">
-                                    <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) ?></span>
+                                <header class="flex flex-col xl:flex-row xl:items-center gap-2 mb-2.5 xl:mb-1">
+                                    <span class="w-fit xl:w-auto text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) ?></span>
                                     <span class="text-sm font-semibold text-default-foreground"><?= esc($rd["kategori"]) ?> No. <?= esc($rd["nomor"]) ?> Tahun <?= esc($rd["tahun"]) ?></span>
                                 </header>
                                 <p class="text-sm text-default-foreground"><?= esc($rd["judul"]) ?></p>
@@ -197,7 +197,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                 <div class="files space-y-4">
                     <?php foreach ($attachments_to_array as $key => [$title, $file_name]): ?>
                         <?php $file_size = get_file_info($document_path . $file_name, ["size"]) ?>
-                        <div class="file flex items-center justify-between p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                        <div class="file flex flex-col sm:flex-row xl:items-center justify-between gap-4 xl:gap-0 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                             <div class="file-details flex items-center gap-3">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
                                     <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
@@ -211,7 +211,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                                     <p class="text-sm text-muted-foreground"><?= number_to_size($file_size["size"], 1, "en_US") ?></p>
                                 </div>
                             </div>
-                            <a href="<?= base_url() . $pub_document_path . esc($file_name) ?>" class="px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
+                            <a href="<?= base_url() . $pub_document_path . esc($file_name) ?>" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <path d="M12 15V3" />
                                     <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -234,13 +234,13 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                     <span>Riwayat Perubahan Dokumen</span>
                 </h2>
                 <div class="change-histories relative">
-                    <div class="timeline absolute left-6 top-0 bottom-0 w-0.5 bg-primary-border"></div>
+                    <div class="timeline absolute left-0 xl:left-6 top-0 bottom-0 w-0.5 bg-primary-border"></div>
                     <div class="space-y-6">
-                        <div id="changeHistoryWrapper" class="relative pl-16">
+                        <div id="changeHistoryWrapper" class="relative pl-8 xl:pl-16">
                             <div id="contentHistoryWrapper" class="space-y-6">
                                 <?php foreach ($histories_change as $history): ?>
                                     <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
-                                        <div class="flex items-start justify-between gap-4 mb-2">
+                                        <div class="flex flex-col xl:flex-row items-start justify-between gap-3 xl:gap-4 mb-4 xl:mb-2">
                                             <div class="flex items-center gap-2">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-purple-600">
                                                     <path d="M16 22h2a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v2.85" />
@@ -261,7 +261,7 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                                                 <time datetime="<?= esc($history["changed_at"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($history["changed_at"])) ?></time>
                                             </div>
                                         </div>
-                                        <p class="text-default-foreground mb-2"><?= esc($history["comment"]) ?></p>
+                                        <p class="text-default-foreground mb-3 xl:mb-2"><?= esc($history["comment"]) ?></p>
                                         <div class="flex items-center gap-2 text-sm">
                                             <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($history["kategori"]) ?? esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($history["nomor"]) ?? esc($produk_hukum["nomor"]) ?> Tahun <?= esc($history["tahun"]) ?? esc($produk_hukum["tahun"]) ?></p>
                                         </div>

@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
     const contents = contentHistoryWrapper.querySelectorAll(".change-history");
     const dotHistoryWrapper = document.createElement("div");
     const dot = document.createElement("div");
-    dotHistoryWrapper.classList.add("dot-history", "absolute", "left-3", "w-6", "h-6", "rounded-full", "border-2", "flex", "items-center", "justify-center")
+    const setPosLeftDot = window.innerWidth < 1280 ? '-left-3' : 'left-3';
+    dotHistoryWrapper.classList.add("dot-history", "absolute", setPosLeftDot, "w-6", "h-6", "rounded-full", "border-2", "flex", "items-center", "justify-center")
     dot.classList.add("dot", "w-2", "h-2", "rounded-full", "bg-current")
     dotHistoryWrapper.append(dot)
     const dotsFragment = document.createDocumentFragment();
