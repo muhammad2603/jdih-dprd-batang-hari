@@ -11,13 +11,12 @@ helper("string");
 
 class SendMail extends BaseController
 {
-    // TODO masukkan log pada pengiriman pesan
     public function send()
     {
         $this->response->setHeader("content-type", 'application/json');
         $requests                = $this->request->getJSON(true);
         $notification_id         = strtolower(random_string('alpha', 16));
-        $allowed_subjects        = ["pencarian", "teknis", "permintaan", "lainnya"];
+        $allowed_subjects        = ["Pencarian", "Teknis", "Permintaan", "Lainnya"];
         $newToken                = csrf_hash();
         $rules = [
             "namaLengkap"   => [
@@ -41,7 +40,7 @@ class SendMail extends BaseController
                 ]
             ],
             "subject"       => [
-                "rules" => 'in_list[pencarian,teknis,permintaan,lainnya]',
+                "rules" => 'in_list[' . implode(",", $allowed_subjects) . ']',
                 "errors" => [
                     "in_list" => "Pilih subjek anda."
                 ]
@@ -72,33 +71,19 @@ class SendMail extends BaseController
         $user_email              = $requests["email"];
         $subjek                  = $requests["subject"];
         $pesan                   = $requests["message"];
-        if (!in_array(strtolower($subjek), $allowed_subjects)) {
-            $this->response->setStatusCode(400);
-            return $this->response->setJSON([
-                "status"         => 400,
-                "notificationId" => $notification_id,
-                "notification"   => view('components/notification', [
-                    "notificationId"    => $notification_id,
-                    "title"             => "Pengiriman Pesan",
-                    "message"           => "Subjek tidak diizinkan."
-                ]),
-                "newToken"       => $newToken
-            ]);
-        }
-        $email_service  = Services::email();
-        $to             = "fattahillahmuhammad48@gmail.com";
-        $setReplyTo     = $user_email;
-        $message        = "Laporan dari Pengguna<br>";
-        $message       .= "Nama Pengguna: " . esc($nama_lengkap_pengguna) . "<br>";
-        $message       .= "Nomor Telpon Pengguna: " . esc($nomor_telpon) . "<br>";
-        $message       .= "Email Pengguna: " . esc($user_email) . "<br>";
-        $message       .= "Pesan: " . esc($pesan);
+        $email_service           = Services::email();
+        $to                      = $_ENV["MAIL_REPLY"];
+        $setReplyTo              = $user_email;
+        $message                 = "Laporan dari Pengguna<br>";
+        $message                .= "Nama Pengguna: " . esc($nama_lengkap_pengguna) . "<br>";
+        $message                .= "Nomor Telpon Pengguna: " . esc($nomor_telpon) . "<br>";
+        $message                .= "Email Pengguna: " . esc($user_email) . "<br>";
+        $message                .= "Pesan: " . esc($pesan);
         $email_service->setTo($to);
         $email_service->setReplyTo($setReplyTo, $nama_lengkap_pengguna);
         $email_service->setSubject(esc($subjek));
         $email_service->setMessage($message);
         if ($email_service->send()) {
-            $this->response->setStatusCode(200);
             return $this->response->setJSON([
                 "status"            => 200,
                 "notificationId"    => $notification_id,
@@ -108,9 +93,10 @@ class SendMail extends BaseController
                     "message"           => "Pesan berhasil Terkirim.",
                 ]),
                 "newToken"          => $newToken,
-            ]);
+            ])->setStatusCode(200);
         } else {
-            $this->response->setStatusCode(400);
+            log_message("error", "Email gagal terkirim: " . $email_service->printDebugger());
+            log_message("info", "Email pengirim: " . $user_email);
             return $this->response->setJSON([
                 "status"            => 400,
                 "notificationId"    => $notification_id,
@@ -120,7 +106,7 @@ class SendMail extends BaseController
                     "message"           => "Pesan gagal terkirim."
                 ]),
                 "newToken"          => $newToken,
-            ]);
+            ])->setStatusCode(400);
         }
     }
 }
