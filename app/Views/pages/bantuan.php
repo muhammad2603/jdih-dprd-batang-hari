@@ -185,7 +185,7 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
                 </svg>
                 <p class="text-default-foreground text-sm">Kami menghargai privasi Anda. Informasi pribadi yang dikirimkan melalui formulir ini tidak akan <span class="font-semibold">disalahgunakan</span>, <span class="font-semibold">dibagikan</span>, maupun <span class="font-semibold">diperjualbelikan</span> kepada pihak lain.</p>
             </div>
-            <button type="submit" id="btnSendMail" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium cursor-pointer">Kirim Pesan</button>
+            <button type="submit" id="btnSendMail" class="px-8 py-3 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium cursor-pointer focus:outline-none active:bg-primary/90">Kirim Pesan</button>
         </div>
     </div>
 </div>
