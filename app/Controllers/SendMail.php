@@ -22,20 +22,20 @@ class SendMail extends BaseController
             "namaLengkap"   => [
                 "rules" => 'required',
                 "errors" => [
-                    "required" => "Input tidak boleh kosong."
+                    "required" => "Isi nama lengkap anda."
                 ]
             ],
             "email"         => [
                 "rules" => 'required|valid_email',
                 "errors" => [
-                    "required" => "Input tidak boleh kosong.",
+                    "required" => "Isi alamat email anda.",
                     "valid_email" => "Format email tidak valid."
                 ]
             ],
             "noTelp"        => [
                 "rules" => 'required|regex_match[/^08/]|regex_match[/[\d]{10,13}/]',
                 "errors" => [
-                    "required" => "Input tidak boleh kosong.",
+                    "required" => "Isi nomor HP anda.",
                     "regex_match" => "Format nomor HP tidak valid."
                 ]
             ],
@@ -48,7 +48,7 @@ class SendMail extends BaseController
             "message"       => [
                 "rules" => 'required|min_length[30]',
                 "errors" => [
-                    "required" => 'Input tidak boleh kosong.',
+                    "required" => 'Isi pesan anda.',
                     "min_length" => 'Pesan terlalu pendek, minimal 30 karakter.'
                 ]
             ]

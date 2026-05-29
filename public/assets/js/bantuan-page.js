@@ -44,7 +44,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 {
                     method: "isEmptyValue",
                     parameters: [],
-                    messageError: "Input tidak boleh kosong.",
+                    messageError: "Isi nama lengkap anda.",
                 },
             ]
         },
@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 {
                     method: "isEmptyValue",
                     parameters: [],
-                    messageError: "Input tidak boleh kosong.",
+                    messageError: "Isi alamat email anda.",
                 },
                 {
                     method: "isValidValue",
@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 {
                     method: "isEmptyValue",
                     parameters: [],
-                    messageError: "Input tidak boleh kosong.",
+                    messageError: "Isi nomor HP anda.",
                 },
                 {
                     method: "isInvalidValue",
@@ -110,7 +110,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 {
                     method: "isEmptyValue",
                     parameters: [],
-                    messageError: "Input tidak boleh kosong."
+                    messageError: "Isi pesan anda."
                 },
                 {
                     method: "isValidValueLength",
