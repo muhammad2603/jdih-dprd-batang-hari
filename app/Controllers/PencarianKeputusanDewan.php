@@ -34,7 +34,7 @@ class PencarianKeputusanDewan extends BaseController
             "pager"         => $pager,
         ] = create_pagination($current_page, $data_per_page, $total_dokumen_keputusan_dewan);
         $get_dokumen_keputusan_dewan = $this->ph_model->getProdukHukumHighlight($data_per_page, $offet, $get_keyword, $category_id, $get_year);
-        $page_title = "Pencarian Keputusan Dewan";
+        $page_title = "Pencarian Keputusan DPRD Batang Hari";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
             "Statistik"
