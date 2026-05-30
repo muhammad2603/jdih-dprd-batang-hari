@@ -26,26 +26,26 @@ class PencarianSekretarisDewan extends BaseController
         $by_keyword = $this->request->getVar("keyword") ?? false;
         $by_year = $this->request->getVar("year") ?? false;
         $by_category = 2; // 2 -> Sekretaris Dewan
-        $total_produk_hukum_perbup = $this->ph_model->getTotalProdukHukumHighlight($by_keyword, $by_category, $by_year);
+        $total_produk_hukum_keputusan_sekwan = $this->ph_model->getTotalProdukHukumHighlight($by_keyword, $by_category, $by_year);
         [
             "page" => $current_page,
             "offset" => $data_offset,
             "data_index" => $data_index,
             "pager" => $mk_pager
-        ] = create_pagination($current_page, $per_page, $total_produk_hukum_perbup);
-        $produk_hukum_perbup = $this->ph_model->getProdukHukumHighlight($per_page, $data_offset, $by_keyword, $by_category, $by_year);
-        $page_title = "Pencarian Peraturan Bupati";
+        ] = create_pagination($current_page, $per_page, $total_produk_hukum_keputusan_sekwan);
+        $produk_hukum_keputusan_sekwan = $this->ph_model->getProdukHukumHighlight($per_page, $data_offset, $by_keyword, $by_category, $by_year);
+        $page_title = "Pencarian Peraturan Sekretaris DPRD Batang Hari";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
             "Statistik"
         ];
         $other_meta = [
-            "dokumen_perbup"         => $produk_hukum_perbup,
-            "pager_links"           => $total_produk_hukum_perbup > $per_page ? $mk_pager : false,
-            "total_dokumen"         => $total_produk_hukum_perbup,
-            "data_display_count"    => $data_index,
-            "current_search"        => $by_keyword,
-            "current_selected_year" => $by_year,
+            "dokumen_keputusan_sekwan"  => $produk_hukum_keputusan_sekwan,
+            "pager_links"               => $total_produk_hukum_keputusan_sekwan > $per_page ? $mk_pager : false,
+            "total_dokumen"             => $total_produk_hukum_keputusan_sekwan,
+            "data_display_count"        => $data_index,
+            "current_search"            => $by_keyword,
+            "current_selected_year"     => $by_year,
         ];
         $page_data = create_page_meta(
             $page_title,
