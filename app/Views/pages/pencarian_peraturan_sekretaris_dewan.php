@@ -42,7 +42,7 @@ $timeServices = service("timeServices");
     <div class="documents">
         <p class="text-muted-foreground">Menampilkan <?= $data_display_count ?> dari <?= $total_dokumen ?> Peraturan Sekretaris Dewan yang ditemukan</p>
         <div class="mt-6 space-y-4">
-            <?php foreach ($dokumen_perbup as $perbup): ?>
+            <?php foreach ($dokumen_keputusan_sekwan as $sekwan): ?>
                 <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg transition-all group">
                     <div class="konten-dokumen flex flex-col lg:flex-row items-start justify-between gap-4">
                         <div class="flex-1">
@@ -51,21 +51,21 @@ $timeServices = service("timeServices");
                                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
                                         <use href="/assets/icons.svg#icon-document">
                                     </svg>
-                                    <span class="text-sm font-medium text-primary"><?= esc($perbup["kategori"]) ?></span>
+                                    <span class="text-sm font-medium text-primary"><?= esc($sekwan["kategori"]) ?></span>
                                 </div>
-                                <span class="text-sm text-muted-foreground">Nomor <?= esc($perbup["nomor"]) ?> Tahun <?= esc($perbup["tahun"]) ?></span>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700"><?= esc($perbup["status"]) ?></span>
+                                <span class="text-sm text-muted-foreground">Nomor <?= esc($sekwan["nomor"]) ?> Tahun <?= esc($sekwan["tahun"]) ?></span>
+                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700"><?= esc($sekwan["status"]) ?></span>
                             </div>
-                            <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors"><?= esc($perbup["judul"]) ?></h3>
+                            <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors"><?= esc($sekwan["judul"]) ?></h3>
                             <div class="flex items-center gap-2 text-sm text-muted-foreground">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-calendar">
                                 </svg>
-                                <span>Ditetapkan: <time datetime="<?= esc($perbup["tanggal_penetapan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($perbup["tanggal_penetapan"])) ?></time></span>
+                                <span>Ditetapkan: <time datetime="<?= esc($sekwan["tanggal_penetapan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($sekwan["tanggal_penetapan"])) ?></time></span>
                             </div>
                         </div>
                         <div class="flex gap-2 shrink-0 self-end lg:self-start">
-                            <a href="<?= "/produk-hukum/" . url_title(esc($perbup["kategori"]), "-", true) . "/" . esc($perbup["slug"]) ?>" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
+                            <a href="<?= "/produk-hukum/" . url_title(esc($sekwan["kategori"]), "-", true) . "/" . esc($sekwan["slug"]) ?>" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-book">
                                 </svg>
