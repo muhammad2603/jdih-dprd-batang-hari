@@ -14,7 +14,7 @@ $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
     $routes->get('/tentang', 'About::index');
     $routes->get('/faq', 'Faq::index');
     $routes->get('/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
-    $routes->get('/layanan/peraturan-bupati', 'PencarianPeraturanBupati::index');
+    $routes->get('/layanan/peraturan-sekretaris-dewan', 'PencarianSekretarisDewan::index');
     $routes->get('/layanan/keputusan-dprd', 'PencarianKeputusanDPRD::index');
     $routes->get('/layanan/bantuan', 'LayananBantuan::index');
     $routes->get('/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');

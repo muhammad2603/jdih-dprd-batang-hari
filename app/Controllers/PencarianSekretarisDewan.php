@@ -55,6 +55,6 @@ class PencarianSekretarisDewan extends BaseController
             $data_feconfig,
             $other_meta
         );
-        return view('pages/pencarian_peraturan_bupati', $page_data);
+        return view('pages/pencarian_peraturan_sekretaris_dewan', $page_data);
     }
 }
