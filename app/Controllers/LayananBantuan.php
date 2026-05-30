@@ -6,15 +6,18 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\FrontendConfig;
 use App\Models\PagesMeta;
+use App\Models\TopikBantuan;
 
 class LayananBantuan extends BaseController
 {
     private $fe_config_model;
     private $pages_meta_model;
+    private $topik_bantuan_model;
     public function __construct()
     {
-        $this->fe_config_model  = new FrontendConfig;
-        $this->pages_meta_model = new PagesMeta;
+        $this->fe_config_model      = new FrontendConfig;
+        $this->pages_meta_model     = new PagesMeta;
+        $this->topik_bantuan_model  = new TopikBantuan;
     }
     public function index()
     {
@@ -25,7 +28,8 @@ class LayananBantuan extends BaseController
             "Statistik"
         ];
         $other_meta = [
-            "pages_meta" => $this->pages_meta_model->getMetaPagesByIdentity("Bantuan"),
+            "pages_meta"        => $this->pages_meta_model->getMetaPagesByIdentity("Bantuan"),
+            "topik_bantuan"     => $this->topik_bantuan_model->getTopicsHelp(),
         ];
         $page_data = create_page_meta(
             $page_title,
