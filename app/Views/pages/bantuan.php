@@ -3,6 +3,7 @@
 <?php
 $kontak = $frontend_config["Kontak"];
 $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
+$document_help_path = "/assets/dokumen-bantuan/";
 ?>
 <?= view('components/toast-notification') ?>
 <div class="jumbotron bg-primary text-white py-16">
@@ -75,67 +76,22 @@ $faq_link = $frontend_config["Footer"]["Navigasi"][4]["link"];
     <div class="general-help-topics mb-12">
         <h2 class="text-2xl font-semibold mb-6">Topik Bantuan Umum</h2>
         <div class="topics grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="topic bg-white border border-primary-border rounded-lg p-6">
-                <div class="topic-contents flex items-start gap-4">
-                    <div class="icon w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
-                            <path d="M12 7v14" />
-                            <path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z" />
-                        </svg>
-                    </div>
-                    <div class="topic-details">
-                        <h3 class="font-semibold mb-2">Cara Menggunakan JDIH</h3>
-                        <p class="text-sm text-muted-foreground mb-3">Panduan lengkap untuk menggunakan Portal JDIH, mencari dokumen, dan mengunduh file.</p>
-                        <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">Lihat Panduan →</a>
-                    </div>
-                </div>
-            </div>
-            <div class="topic bg-white border border-primary-border rounded-lg p-6">
-                <div class="topic-contents flex items-start gap-4">
-                    <div class="icon w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-accent">
-                            <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
-                            <path d="M12 17h.01" />
-                            <path d="M9.1 9a3 3 0 0 1 5.82 1c0 2-3 3-3 3" />
-                        </svg>
-                    </div>
-                    <div class="topic-details">
-                        <h3 class="font-semibold mb-2">Permintaan Dokumen</h3>
-                        <p class="text-sm text-muted-foreground mb-3">Cara mengajukan permintaan dokumen yang tidak tersedia di portal JDIH.</p>
-                        <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">Pelajari Lebih Lanjut →</a>
+            <?php foreach ($topik_bantuan as $tb): ?>
+                <div class="topic bg-white border border-primary-border rounded-lg p-6">
+                    <div class="topic-contents flex items-start gap-4">
+                        <div class="icon w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
+                                <use href="/assets/icons.svg#icon-<?= $tb["icon"] ?>">
+                            </svg>
+                        </div>
+                        <div class="topic-details">
+                            <h3 class="font-semibold mb-2"><?= esc($tb["topik"]) ?></h3>
+                            <p class="text-sm text-muted-foreground mb-3"><?= esc($tb["deskripsi"]) ?></p>
+                            <a href="<?= $tb["link"] ?? $document_help_path . $tb["attachment"] ?>" class="text-sm text-primary hover:text-primary/80 transition-colors" target="<?= is_null($tb["attachment"]) ? '_self' : '_blank' ?>">Lihat Panduan →</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="topic bg-white border border-primary-border rounded-lg p-6">
-                <div class="topic-contents flex items-start gap-4">
-                    <div class="icon w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
-                            <path d="M2.992 16.342a2 2 0 0 1 .094 1.167l-1.065 3.29a1 1 0 0 0 1.236 1.168l3.413-.998a2 2 0 0 1 1.099.092 10 10 0 1 0-4.777-4.719" />
-                        </svg>
-                    </div>
-                    <div class="topic-details">
-                        <h3 class="font-semibold mb-2">Konsultasi Hukum</h3>
-                        <p class="text-sm text-muted-foreground mb-3">Informasi tentang layanan konsultasi terkait produk hukum daerah.</p>
-                        <a href="#" class="text-sm text-primary hover:text-primary/80 transition-colors">Hubungi Kami →</a>
-                    </div>
-                </div>
-            </div>
-            <div class="topic bg-white border border-primary-border rounded-lg p-6">
-                <div class="topic-contents flex items-start gap-4">
-                    <div class="icon w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center shrink-0">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-accent">
-                            <circle cx="12" cy="12" r="10" />
-                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                            <path d="M12 17h.01" />
-                        </svg>
-                    </div>
-                    <div class="topic-details">
-                        <h3 class="font-semibold mb-2">Pertanyaan Umum (FAQ)</h3>
-                        <p class="text-sm text-muted-foreground mb-3">Temukan jawaban atas pertanyaan yang sering diajukan tentang JDIH.</p>
-                        <a href="<?= esc($faq_link) ?>" class="text-sm text-primary hover:text-primary/80 transition-colors">Lihat FAQ →</a>
-                    </div>
-                </div>
-            </div>
+            <?php endforeach ?>
         </div>
     </div>
     <div class="send-message bg-white border border-primary-border rounded-lg p-8">
