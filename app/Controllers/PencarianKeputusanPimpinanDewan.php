@@ -26,23 +26,23 @@ class PencarianKeputusanPimpinanDewan extends BaseController
         $get_year = $this->request->getVar("year") ?? false;
         $data_per_page = 10;
         $category_id = 3; // Keputusan Pimpinan Dewan
-        $total_dokumen_keputusan_dprd = $this->ph_model->getTotalProdukHukumHighlight($get_keyword, $category_id, $get_year);
+        $total_dokumen_keputusan_pimpinan_dewan = $this->ph_model->getTotalProdukHukumHighlight($get_keyword, $category_id, $get_year);
         [
             "page"          => $page,
             "offset"        => $offet,
             "data_index"    => $data_index,
             "pager"         => $pager,
-        ] = create_pagination($current_page, $data_per_page, $total_dokumen_keputusan_dprd);
-        $get_dokumen_keputusan_dprd = $this->ph_model->getProdukHukumHighlight($data_per_page, $offet, $get_keyword, $category_id, $get_year);
-        $page_title = "Pencarian Keputusan DPRD";
+        ] = create_pagination($current_page, $data_per_page, $total_dokumen_keputusan_pimpinan_dewan);
+        $get_dokumen_keputusan_pimpinan_dewan = $this->ph_model->getProdukHukumHighlight($data_per_page, $offet, $get_keyword, $category_id, $get_year);
+        $page_title = "Pencarian Keputusan Pimpinan DPRD Batang Hari";
         $page_description = "Deskripsi halaman";
         $page_keywords = [
             "Statistik"
         ];
         $other_meta = [
-            "dokumen"               => $get_dokumen_keputusan_dprd,
-            "pager_links"           => $total_dokumen_keputusan_dprd > $data_per_page ? $pager : false,
-            "total_dokumen"         => $total_dokumen_keputusan_dprd,
+            "dokumen"               => $get_dokumen_keputusan_pimpinan_dewan,
+            "pager_links"           => $total_dokumen_keputusan_pimpinan_dewan > $data_per_page ? $pager : false,
+            "total_dokumen"         => $total_dokumen_keputusan_pimpinan_dewan,
             "data_display_count"    => $data_index,
             "current_search"        => $get_keyword,
             "current_selected_year" => $get_year,
