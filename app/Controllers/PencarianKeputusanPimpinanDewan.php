@@ -9,7 +9,7 @@ use App\Models\ProdukHukum;
 
 helper("pagination");
 
-class PencarianKeputusanDPRD extends BaseController
+class PencarianKeputusanPimpinanDewan extends BaseController
 {
     private $fe_config_model;
     private $ph_model;
@@ -25,7 +25,7 @@ class PencarianKeputusanDPRD extends BaseController
         $get_keyword = $this->request->getVar("keyword") ?? false;
         $get_year = $this->request->getVar("year") ?? false;
         $data_per_page = 10;
-        $category_id = 5;
+        $category_id = 3; // Keputusan Pimpinan Dewan
         $total_dokumen_keputusan_dprd = $this->ph_model->getTotalProdukHukumHighlight($get_keyword, $category_id, $get_year);
         [
             "page"          => $page,
@@ -55,6 +55,6 @@ class PencarianKeputusanDPRD extends BaseController
             $data_feconfig,
             $other_meta
         );
-        return view('pages/pencarian_keputusan_dprd', $page_data);
+        return view('pages/pencarian_keputusan_pimpinan_dewan', $page_data);
     }
 }
