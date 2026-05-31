@@ -293,17 +293,6 @@ class ProdukHukum extends Model
     }
 
     /**
-     * Mengambil total produk hukum yang tersedia
-     * @return array ["total" => int]
-     */
-    public function getTotalDocument(): array
-    {
-        return $this
-            ->select("COUNT(*) AS total")
-            ->findAll()[0];
-    }
-
-    /**
      * Mengambil total dokumen berdasarkan bulan
      * @param string $target_month bulan pembuatan dokumen yang dicari
      * @return int
