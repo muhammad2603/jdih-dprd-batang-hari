@@ -29,7 +29,7 @@ class Home extends BaseController
         $get_all_new_document = $this->produk_hukum->getProdukHukumHighlight();
         $get_years_document_uploaded = $this->produk_hukum->getYearsDocumentUploaded();
         $get_document_status = $this->document_status_model->getStatus();
-        $get_document_categories = $this->document_categories_model->getDocumentCategories();
+        $get_document_categories = $this->produk_hukum->getTotalDocumentByCategory();
         $page_title = "Layanan JDIH DPRD Kabupaten Batang Hari";
         $page_alias = "Beranda";
         $page_description = "Website resmi JDIH DPRD Kabupaten Batang Hari untuk publikasi dokumen hukum daerah.";
@@ -39,10 +39,8 @@ class Home extends BaseController
             "meta_page"                         => $get_meta_page,
             "new_documents"                     => $get_all_new_document,
             "total_produk_hukum"                => $this->produk_hukum->getTotalProdukHukumHighlight(),
-            "total_produk_hukum_by_category"    => $this->produk_hukum->getTotalDocumentByCategory(),
             "total_pengunjung"                  => model("Pengunjung")->totalVisitor(),
             "years_document_uploaded"           => $get_years_document_uploaded,
-            // __FIX__ query ganda, ini bisa dialihkan kemethod getTotalDocumentByCategory dimodel ProdukHukum
             "document_categories"               => $get_document_categories,
             "document_status"                   => $get_document_status,
         ];
