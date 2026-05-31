@@ -23,6 +23,7 @@ class Statistics extends BaseController
         $data_feconfig = $this->fe_config_model->getAllData();
         $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
         $page_title = "Statistik JDIH Kabupaten Batang Hari";
+        $page_alias = "Statistik";
         $page_description = "Statistik JDIH DPRD Kabupaten Batang Hari yang menampilkan data produk hukum daerah, jumlah dokumen, distribusi kategori peraturan, tren publikasi, dan total unduhan dokumen hukum secara transparan.";
         $page_keywords = [
             "JDIH",
@@ -45,7 +46,7 @@ class Statistics extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
