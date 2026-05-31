@@ -40,12 +40,13 @@ class PencarianPeraturanDaerah extends BaseController
             "Statistik"
         ];
         $other_meta = [
-            "dokumen_perda"         => $produk_hukum_perda,
-            "pager_links"           => $total_produk_hukum_perda > $per_page ? $mk_pager : false,
-            "total_dokumen"         => $total_produk_hukum_perda,
-            "data_display_count"    => $data_index,
-            "current_search"        => $by_keyword,
-            "current_selected_year" => $by_year,
+            "dokumen_perda"             => $produk_hukum_perda,
+            "pager_links"               => $total_produk_hukum_perda > $per_page ? $mk_pager : false,
+            "total_dokumen"             => $total_produk_hukum_perda,
+            "data_display_count"        => $data_index,
+            "current_search"            => $by_keyword,
+            "current_selected_year"     => $by_year,
+            "years_document_uploaded"   => $this->ph_model->getYearsDocumentUploaded($by_category),
         ];
         $page_data = create_page_meta(
             $page_title,
