@@ -12,7 +12,6 @@ foreach ($unique_footer_nav as $group => $items) {
     }
 }
 ?>
-<!-- TODO Buat credits untuk penggunaan library freeware -->
 <footer class="bg-primary text-white">
     <div class="footer-container max-w-7xl mx-auto px-6 py-16">
         <div class="footer-contents grid grid-cols-1 lg:grid-cols-4 gap-y-12 lg:gap-12 mb-12">
@@ -81,7 +80,10 @@ foreach ($unique_footer_nav as $group => $items) {
         </div>
         <div class="footer-bottom pt-8 border-t border-white/10">
             <div class="footer-bottom-contents flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-white/70">
-                <p class="copyright">© <?= $time->getYear() ?> <?= dot_array_search("Copyright.*.content", $footer) ?></p>
+                <div class="credits">
+                    <p class="copyright mb-1.5">© <?= $time->getYear() ?> <?= dot_array_search("Copyright.*.content", $footer) ?></p>
+                    <p>Powered By CodeIgniter 4 • Icons by HeroIcons, Lucide & Font Awesome.</p>
+                </div>
                 <div class="other-links mt-4 xl:mt-0 flex gap-6">
                     <a href="<?= dot_array_search("Kebijakan Privasi.*.link", $footer) ?>" class="hover:text-accent transition-colors"><?= dot_array_search("Kebijakan Privasi.*.content", $footer) ?></a>
                     <a href="<?= dot_array_search("Syarat & Ketentuan.*.link", $footer) ?>" class="hover:text-accent transition-colors"><?= dot_array_search("Syarat & Ketentuan.*.content", $footer) ?></a>
