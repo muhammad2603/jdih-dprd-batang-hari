@@ -389,12 +389,16 @@ class ProdukHukum extends Model
 
     /**
      * Mengambil tahun upload dokumen, digunakan untuk opsi pilihan
+     * @param bool|int $by_category mengambil tahun upload dokumen berdasarkan kategori
      * @return array
      */
-    public function getYearsDocumentUploaded(): array
+    public function getYearsDocumentUploaded(bool|int $by_category = false): array
     {
-        return $this
-            ->select("DISTINCT YEAR(created_at) AS tahun")
-            ->findAll();
+        $builder = $this
+            ->select("DISTINCT YEAR(created_at) AS tahun");
+        if ($by_category !== false) {
+            $builder->where("category_id", $by_category);
+        }
+        return $builder->findAll();
     }
 }
