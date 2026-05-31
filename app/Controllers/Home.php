@@ -5,7 +5,6 @@ namespace App\Controllers;
 use App\Models\DocumentStatus;
 use App\Models\FrontendConfig;
 use App\Models\ProdukHukum;
-use App\Models\DocumentCategories;
 use App\Models\PagesMeta;
 
 class Home extends BaseController
@@ -20,7 +19,6 @@ class Home extends BaseController
         $this->frontend_config           = new FrontendConfig;
         $this->produk_hukum              = new ProdukHukum;
         $this->document_status_model     = new DocumentStatus;
-        $this->document_categories_model = new DocumentCategories;
         $this->pages_meta_model          = new PagesMeta;
     }
     public function index(): string
