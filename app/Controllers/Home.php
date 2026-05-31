@@ -12,7 +12,6 @@ class Home extends BaseController
     private $frontend_config;
     private $produk_hukum;
     private $document_status_model;
-    private $document_categories_model;
     private $pages_meta_model;
     public function __construct()
     {
