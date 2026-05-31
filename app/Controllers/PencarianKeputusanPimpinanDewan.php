@@ -46,6 +46,7 @@ class PencarianKeputusanPimpinanDewan extends BaseController
             "data_display_count"    => $data_index,
             "current_search"        => $get_keyword,
             "current_selected_year" => $get_year,
+            "years_document_uploaded"   => $this->ph_model->getYearsDocumentUploaded($category_id),
         ];
         $page_data = create_page_meta(
             $page_title,
