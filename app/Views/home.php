@@ -66,8 +66,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         </span>
                         <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="category">
                             <option value="off">Pilih Jenis Dokumen</option>
-                            <?php foreach ($document_categories as ["category" => $categ]): ?>
-                                <option value="<?= esc($categ) ?>"><?= esc($categ) ?></option>
+                            <?php foreach ($document_categories as $category): ?>
+                                <option value="<?= esc($category["kategori"]) ?>"><?= esc($category["kategori"]) ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -108,8 +108,8 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <div id="fastFilter" class="fast-filters flex gap-3 flex-wrap items-center">
                 <span class="text-sm text-muted-foreground mr-2">Filter Cepat:</span>
                 <button type="button" data-category-value="*" class="active px-4 py-2 text-xs xl:text-sm bg-primary text-white rounded-full transition-colors cursor-pointer disabled:opacity-60 disabled:pointer-events-none focus:outline-primary">Semua</button>
-                <?php foreach ($document_categories as ["category" => $categ]): ?>
-                    <button type="button" data-category-value="<?= esc($categ) ?>" class="px-4 py-2 text-xs xl:text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none focus:outline-primary"><?= esc($categ) ?></button>
+                <?php foreach ($document_categories as $category): ?>
+                    <button type="button" data-category-value="<?= esc($category["kategori"]) ?>" class="px-4 py-2 text-xs xl:text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none focus:outline-primary"><?= esc($category["kategori"]) ?></button>
                 <?php endforeach ?>
             </div>
         </div>
@@ -122,16 +122,16 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             <p class="text-muted-foreground"><?= dot_array_search("kategori_produk_hukum.sub_title", $meta_page) ?></p>
         </div>
         <div class="produk-hukum-categories-list grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            <?php foreach ($total_produk_hukum_by_category as $doc): ?>
+            <?php foreach ($document_categories as $category): ?>
                 <button type="button" class="group flex xl:flex-col gap-6 xl:gap-0 bg-white border border-primary-border rounded-xl p-8 hover:shadow-sm transition-all text-left">
-                    <div class="icon-<?= esc(url_title($doc["kategori"], "-", true)) ?> w-14 h-14 rounded-lg flex items-center justify-center xl:mb-6 group-hover:scale-110 transition-transform">
+                    <div class="icon-<?= esc(url_title($category["kategori"], "-", true)) ?> w-14 h-14 rounded-lg flex items-center justify-center xl:mb-6 group-hover:scale-110 transition-transform">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-white">
-                            <use href="/assets/icons.svg#icon-<?= $doc["icon"] ?>"></use>
+                            <use href="/assets/icons.svg#icon-<?= $category["icon"] ?>"></use>
                         </svg>
                     </div>
                     <div class="text">
-                        <h3 class="category-name text-xl font-semibold xl:mb-2 group-hover:text-primary transition-colors"><?= esc($doc["kategori"]) ?></h3>
-                        <p class="total-document text-3xl font-bold text-primary mb-2 xl:mb-2"><?= esc($doc["total_dokumen"]) ?></p>
+                        <h3 class="category-name text-xl font-semibold xl:mb-2 group-hover:text-primary transition-colors"><?= esc($category["kategori"]) ?></h3>
+                        <p class="total-document text-3xl font-bold text-primary mb-2 xl:mb-2"><?= esc($category["total_dokumen"]) ?></p>
                         <p class="text-sm text-muted-foreground">Dokumen tersedia</p>
                     </div>
                 </button>
@@ -254,6 +254,6 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 </section>
 <script type="module" src="/assets/js/produk-hukum-page.js"></script>
 <style <?= csp_style_nonce() ?>>
-    <?php foreach ($total_produk_hukum_by_category as $doc): ?><?= ".icon-" . esc(url_title($doc["kategori"], "-", true)) . "{ background-color: " . esc($doc["color"]) . "; }" ?><?php endforeach ?>
+    <?php foreach ($document_categories as $category): ?><?= ".icon-" . esc(url_title($category["kategori"], "-", true)) . "{ background-color: " . esc($category["color"]) . "; }" ?><?php endforeach ?>
 </style>
 <?= $this->endSection() ?>
