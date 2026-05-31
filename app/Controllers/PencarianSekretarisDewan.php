@@ -46,6 +46,7 @@ class PencarianSekretarisDewan extends BaseController
             "data_display_count"        => $data_index,
             "current_search"            => $by_keyword,
             "current_selected_year"     => $by_year,
+            "years_document_uploaded"   => $this->ph_model->getYearsDocumentUploaded($by_category),
         ];
         $page_data = create_page_meta(
             $page_title,

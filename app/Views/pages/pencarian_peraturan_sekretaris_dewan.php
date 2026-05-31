@@ -27,14 +27,9 @@ $timeServices = service("timeServices");
             </div>
             <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
                 <option value="*">Semua Tahun</option>
-                <!-- TODO ambil tahun dokumen yang tersedia didatabase berdasarkan kategori dokumen -->
-                <option value="2026" <?= $current_selected_year === "2026" ? "selected" : "" ?>>2026</option>
-                <option value="2025" <?= $current_selected_year === "2025" ? "selected" : "" ?>>2025</option>
-                <option value="2024" <?= $current_selected_year === "2024" ? "selected" : "" ?>>2024</option>
-                <option value="2023" <?= $current_selected_year === "2023" ? "selected" : "" ?>>2023</option>
-                <option value="2022" <?= $current_selected_year === "2022" ? "selected" : "" ?>>2022</option>
-                <option value="2021" <?= $current_selected_year === "2021" ? "selected" : "" ?>>2021</option>
-                <option value="2020" <?= $current_selected_year === "2020" ? "selected" : "" ?>>2020</option>
+                <?php foreach ($years_document_uploaded as $year): ?>
+                    <option value="<?= $year["tahun"] ?>" <?= $current_selected_year === $year["tahun"] ? "selected" : "" ?>><?= $year["tahun"] ?></option>
+                <?php endforeach ?>
             </select>
             <button id="submitSearchBtn" type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 focus:outline-none focus:bg-primary/90 transition-colors cursor-pointer">Cari</button>
         </div>
