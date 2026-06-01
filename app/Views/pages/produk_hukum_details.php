@@ -16,6 +16,7 @@ $shareWhatsAppText .= "Nomor/Tahun: " . esc($produk_hukum["nomor"]) . "/" . esc(
 $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
 $status_accent = json_decode($produk_hukum["warna_aksen"], true);
+$document_note = esc($produk_hukum["catatan"]);
 ?>
 <style <?= csp_style_nonce() ?>>
     #tagStatus {
@@ -127,15 +128,17 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                 </h2>
                 <p class="text-default-foreground leading-7 xl:leading-relaxed"><?= esc($produk_hukum["abstrak"]) ?></p>
             </div>
-            <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
-                <h2 class="font-bold text-xl mb-4 flex gap-2">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-amber-600">
-                        <use href="/assets/icons.svg#icon-info">
-                    </svg>
-                    <span>Catatan</span>
-                </h2>
-                <p class="text-default-foreground"><?= esc($produk_hukum["catatan"]) ?></p>
-            </div>
+            <?php if (!is_null($document_note)): ?>
+                <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
+                    <h2 class="font-bold text-xl mb-4 flex gap-2">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-amber-600">
+                            <use href="/assets/icons.svg#icon-info">
+                        </svg>
+                        <span>Catatan</span>
+                    </h2>
+                    <p class="text-default-foreground"><?= esc($produk_hukum["catatan"]) ?></p>
+                </div>
+            <?php endif ?>
             <div class="references-document bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex gap-2">
                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
