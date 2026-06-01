@@ -66,11 +66,65 @@ class SendMail extends BaseController
                 "newToken"          => $newToken,
             ])->setStatusCode(400);
         }
+        $throttler               = service('throttler');
         $nama_lengkap_pengguna   = $requests["namaLengkap"];
         $nomor_telpon            = $requests["noTelp"];
         $user_email              = $requests["email"];
         $subjek                  = $requests["subject"];
         $pesan                   = $requests["message"];
+        $token_by_full_name      = md5($nama_lengkap_pengguna);
+        $token_by_phone_number   = md5($nomor_telpon);
+        $token_by_user_email     = md5($user_email);
+        $token_by_ip_address     = md5($this->request->getIPAddress());
+        $req_throttler_limit     = 1;
+        if (!$throttler->check($token_by_ip_address, $req_throttler_limit, MINUTE)) {
+            return $this->response->setJSON([
+                "status"            => 429,
+                "notificationId"    => $notification_id,
+                "notification"      => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Terlalu banyak pengajuan, silahkan coba " . $throttler->getTokentime() . " detik lagi."
+                ]),
+                "newToken"          => $newToken,
+            ])->setStatusCode(429);
+        }
+        if (!$throttler->check($token_by_full_name, $req_throttler_limit, MINUTE)) {
+            return $this->response->setJSON([
+                "status"            => 429,
+                "notificationId"    => $notification_id,
+                "notification"      => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Terlalu banyak pengajuan, silahkan coba " . $throttler->getTokentime() . " detik lagi."
+                ]),
+                "newToken"          => $newToken,
+            ])->setStatusCode(429);
+        }
+        if (!$throttler->check($token_by_phone_number, $req_throttler_limit, MINUTE)) {
+            return $this->response->setJSON([
+                "status"            => 429,
+                "notificationId"    => $notification_id,
+                "notification"      => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Terlalu banyak pengajuan, silahkan coba " . $throttler->getTokentime() . " detik lagi."
+                ]),
+                "newToken"          => $newToken,
+            ])->setStatusCode(429);
+        }
+        if (!$throttler->check($token_by_user_email, $req_throttler_limit, MINUTE)) {
+            return $this->response->setJSON([
+                "status"            => 429,
+                "notificationId"    => $notification_id,
+                "notification"      => view('components/notification', [
+                    "notificationId"    => $notification_id,
+                    "title"             => "Pengiriman Pesan",
+                    "message"           => "Terlalu banyak pengajuan, silahkan coba " . $throttler->getTokentime() . " detik lagi."
+                ]),
+                "newToken"          => $newToken,
+            ])->setStatusCode(429);
+        }
         $email_service           = Services::email();
         $to                      = $_ENV["MAIL_REPLY"];
         $setReplyTo              = $user_email;
