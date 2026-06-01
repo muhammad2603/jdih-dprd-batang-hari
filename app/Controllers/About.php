@@ -19,19 +19,27 @@ class About extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "Tentang";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Tentang JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Tentang";
+        $page_description = "Halaman Tentang JDIH DPRD Kabupaten Batang Hari yang menyajikan profil lembaga, visi dan misi, nilai-nilai integritas, pelayanan, transparansi, serta informasi kontak dan jam operasional layanan dokumentasi hukum daerah.";
         $page_keywords = [
             "Tentang JDIH DPRD Batang Hari",
-            "Kabupaten Batang Hari",
-            "DPRD Batang Hari"
+            "JDIH Kabupaten Batang Hari",
+            "Profil JDIH DPRD",
+            "Visi dan Misi JDIH",
+            "Dokumentasi Hukum Daerah",
+            "Informasi Hukum DPRD",
+            "Transparansi Informasi Hukum",
+            "Pelayanan Hukum Daerah",
+            "Kontak JDIH DPRD Batang Hari",
+            "JDIH Provinsi Jambi",
         ];
         $other_meta = [
             "page_meta" => $this->pages_meta_model->getMetaPagesByIdentity("Tentang"),
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
