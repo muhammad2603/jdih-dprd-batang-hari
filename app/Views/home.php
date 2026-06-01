@@ -203,52 +203,56 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
             </a>
         </div>
         <div class="documents-list space-y-6 xl:space-y-4">
-            <?php foreach ($new_documents as $doc): ?>
-                <?php $uri_path = urldecode("produk-hukum/" . url_title(esc($doc["kategori"]), "-", true) . "/" . esc($doc["slug"])) ?>
-                <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
-                    <div class="content flex flex-col sm:flex-row items-start gap-5 xl:gap-6 sm:flex-wrap">
-                        <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg hidden sm:flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
-                                <use href="/assets/icons.svg#icon-document"></use>
-                            </svg>
-                        </div>
-                        <div class="document-details flex-1 w-full">
-                            <header class="top-detail flex items-end gap-4 mb-2">
-                                <div class="flex-1">
-                                    <div class="sub-details flex justify-between xl:justify-start items-center gap-3 mb-3 xl:mb-2">
-                                        <span class="document-category inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full"><?= esc($doc["kategori"]) ?></span>
-                                        <span class="number-document text-sm font-semibold text-default-foreground">Nomor <?= esc($doc["nomor"]) ?> Tahun <?= esc($doc["tahun"]) ?></span>
+            <?php if (count($new_documents) === 0): ?>
+                <?= view('components/data-not-found') ?>
+            <?php else: ?>
+                <?php foreach ($new_documents as $doc): ?>
+                    <?php $uri_path = urldecode("produk-hukum/" . url_title(esc($doc["kategori"]), "-", true) . "/" . esc($doc["slug"])) ?>
+                    <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
+                        <div class="content flex flex-col sm:flex-row items-start gap-5 xl:gap-6 sm:flex-wrap">
+                            <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg hidden sm:flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
+                                    <use href="/assets/icons.svg#icon-document"></use>
+                                </svg>
+                            </div>
+                            <div class="document-details flex-1 w-full">
+                                <header class="top-detail flex items-end gap-4 mb-2">
+                                    <div class="flex-1">
+                                        <div class="sub-details flex justify-between xl:justify-start items-center gap-3 mb-3 xl:mb-2">
+                                            <span class="document-category inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-medium rounded-full"><?= esc($doc["kategori"]) ?></span>
+                                            <span class="number-document text-sm font-semibold text-default-foreground">Nomor <?= esc($doc["nomor"]) ?> Tahun <?= esc($doc["tahun"]) ?></span>
+                                        </div>
+                                        <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2"><?= esc($doc["judul"]) ?></h3>
                                     </div>
-                                    <h3 class="document-title font-semibold text-default-foreground group-hover:text-primary transition-colors line-clamp-2"><?= esc($doc["judul"]) ?></h3>
-                                </div>
-                            </header>
+                                </header>
 
-                            <div class="other-details mt-2 xl:mt-0 flex items-center gap-6 text-xs sm:text-sm text-muted-foreground">
-                                <div class="upload-date flex items-center gap-2">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                        <use href="/assets/icons.svg#icon-calendar"></use>
-                                    </svg>
-                                    <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time>
-                                </div>
-                                <div class="upload-date flex items-center gap-2">
-                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                        <use href="/assets/icons.svg#icon-download"></use>
-                                    </svg>
-                                    <span><?= esc($doc["total_unduhan"]) ?> unduhan</span>
+                                <div class="other-details mt-2 xl:mt-0 flex items-center gap-6 text-xs sm:text-sm text-muted-foreground">
+                                    <div class="upload-date flex items-center gap-2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                            <use href="/assets/icons.svg#icon-calendar"></use>
+                                        </svg>
+                                        <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time>
+                                    </div>
+                                    <div class="upload-date flex items-center gap-2">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                            <use href="/assets/icons.svg#icon-download"></use>
+                                        </svg>
+                                        <span><?= esc($doc["total_unduhan"]) ?> unduhan</span>
+                                    </div>
                                 </div>
                             </div>
+                            <div class="actions w-full xl:w-0 flex justify-end items-center gap-4">
+                                <a href="<?= base_url() . $uri_path ?>" class="download xl:order-1 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0 text-sm xl:text-base">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
+                                        <use href="/assets/icons.svg#icon-book"></use>
+                                    </svg>
+                                    <span>Detail</span>
+                                </a>
+                            </div>
                         </div>
-                        <div class="actions w-full xl:w-0 flex justify-end items-center gap-4">
-                            <a href="<?= base_url() . $uri_path ?>" class="download xl:order-1 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0 text-sm xl:text-base">
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                    <use href="/assets/icons.svg#icon-book"></use>
-                                </svg>
-                                <span>Detail</span>
-                            </a>
-                        </div>
-                    </div>
-                </article>
-            <?php endforeach ?>
+                    </article>
+                <?php endforeach ?>
+            <?php endif ?>
         </div>
     </div>
 </section>
