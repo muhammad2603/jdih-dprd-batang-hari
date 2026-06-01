@@ -35,51 +35,55 @@ $timeServices = service("timeServices");
         </div>
     </div>
     <div class="documents">
-        <p class="text-muted-foreground">Menampilkan <?= $data_display_count ?> dari <?= $total_dokumen ?> Peraturan Sekretaris Dewan yang ditemukan</p>
-        <div class="mt-6 space-y-4">
-            <?php foreach ($dokumen_keputusan_sekwan as $sekwan): ?>
-                <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg transition-all group">
-                    <div class="konten-dokumen flex flex-col lg:flex-row items-start justify-between gap-4">
-                        <div class="flex-1">
-                            <div class="document-details flex items-center gap-3 flex-wrap mb-3">
-                                <div class="category w-full sm:w-auto flex shrink-0 gap-3">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
-                                        <use href="/assets/icons.svg#icon-document">
-                                    </svg>
-                                    <span class="text-sm font-medium text-primary"><?= esc($sekwan["kategori"]) ?></span>
+        <?php if (count($dokumen_keputusan_sekwan) === 0): ?>
+            <?= view("components/data-not-found") ?>
+        <?php else: ?>
+            <p class="text-muted-foreground">Menampilkan <?= $data_display_count ?> dari <?= $total_dokumen ?> Peraturan Sekretaris Dewan yang ditemukan</p>
+            <div class="mt-6 space-y-4">
+                <?php foreach ($dokumen_keputusan_sekwan as $sekwan): ?>
+                    <div class="dokumen bg-white border border-primary-border rounded-lg p-6 hover:shadow-lg transition-all group">
+                        <div class="konten-dokumen flex flex-col lg:flex-row items-start justify-between gap-4">
+                            <div class="flex-1">
+                                <div class="document-details flex items-center gap-3 flex-wrap mb-3">
+                                    <div class="category w-full sm:w-auto flex shrink-0 gap-3">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary transition-colors">
+                                            <use href="/assets/icons.svg#icon-document">
+                                        </svg>
+                                        <span class="text-sm font-medium text-primary"><?= esc($sekwan["kategori"]) ?></span>
+                                    </div>
+                                    <span class="text-sm text-muted-foreground">Nomor <?= esc($sekwan["nomor"]) ?> Tahun <?= esc($sekwan["tahun"]) ?></span>
+                                    <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700"><?= esc($sekwan["status"]) ?></span>
                                 </div>
-                                <span class="text-sm text-muted-foreground">Nomor <?= esc($sekwan["nomor"]) ?> Tahun <?= esc($sekwan["tahun"]) ?></span>
-                                <span class="px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700"><?= esc($sekwan["status"]) ?></span>
+                                <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors"><?= esc($sekwan["judul"]) ?></h3>
+                                <div class="flex items-center gap-2 text-sm text-muted-foreground">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <use href="/assets/icons.svg#icon-calendar">
+                                    </svg>
+                                    <span>Ditetapkan: <time datetime="<?= esc($sekwan["tanggal_penetapan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($sekwan["tanggal_penetapan"])) ?></time></span>
+                                </div>
                             </div>
-                            <h3 class="font-semibold text-default-foreground mb-2 group-hover:text-primary transition-colors"><?= esc($sekwan["judul"]) ?></h3>
-                            <div class="flex items-center gap-2 text-sm text-muted-foreground">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-calendar">
-                                </svg>
-                                <span>Ditetapkan: <time datetime="<?= esc($sekwan["tanggal_penetapan"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($sekwan["tanggal_penetapan"])) ?></time></span>
+                            <div class="flex gap-2 shrink-0 self-end lg:self-start">
+                                <a href="<?= "/produk-hukum/" . url_title(esc($sekwan["kategori"]), "-", true) . "/" . esc($sekwan["slug"]) ?>" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <use href="/assets/icons.svg#icon-book">
+                                    </svg>
+                                    <span>Detail</span>
+                                </a>
+                                <a href="#" class="order-first lg:order-2 flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none" download>
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <use href="/assets/icons.svg#icon-file-download">
+                                    </svg>
+                                    <span>PDF</span>
+                                </a>
                             </div>
-                        </div>
-                        <div class="flex gap-2 shrink-0 self-end lg:self-start">
-                            <a href="<?= "/produk-hukum/" . url_title(esc($sekwan["kategori"]), "-", true) . "/" . esc($sekwan["slug"]) ?>" class="flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-book">
-                                </svg>
-                                <span>Detail</span>
-                            </a>
-                            <a href="#" class="order-first lg:order-2 flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none" download>
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-file-download">
-                                </svg>
-                                <span>PDF</span>
-                            </a>
                         </div>
                     </div>
-                </div>
-            <?php endforeach ?>
-            <?php if ($pager_links !== false): ?>
-                <?= $pager_links ?>
-            <?php endif ?>
-        </div>
+                <?php endforeach ?>
+                <?php if ($pager_links !== false): ?>
+                    <?= $pager_links ?>
+                <?php endif ?>
+            </div>
+        <?php endif ?>
     </div>
 </div>
 <script src="/assets/js/pencarian-perbup.js"></script>
