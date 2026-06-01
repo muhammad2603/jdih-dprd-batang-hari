@@ -34,10 +34,20 @@ class PencarianPeraturanDaerah extends BaseController
             "pager" => $mk_pager
         ] = create_pagination($current_page, $per_page, $total_produk_hukum_perda);
         $produk_hukum_perda = $this->ph_model->getProdukHukumHighlight($per_page, $data_offset, $by_keyword, $by_category, $by_year);
-        $page_title = "Pencarian Peraturan Daerah";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Peraturan Daerah | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Peraturan Daerah";
+        $page_description = "Akses Peraturan Daerah DPRD Kabupaten Batang Hari melalui layanan JDIH secara cepat, mudah, dan transparan. Temukan arsip produk hukum daerah, dokumen peraturan, serta informasi hukum resmi yang selalu diperbarui.";
         $page_keywords = [
-            "Statistik"
+            "Peraturan Daerah",
+            "Perda Kabupaten Batang Hari",
+            "JDIH DPRD Kabupaten Batang Hari",
+            "Dokumentasi Hukum Daerah",
+            "Produk Hukum Daerah",
+            "Arsip Peraturan Daerah",
+            "Informasi Peraturan Daerah",
+            "Pencarian Peraturan Hukum",
+            "JDIH Kabupaten Batang Hari",
+            "Regulasi Daerah Batang Hari",
         ];
         $other_meta = [
             "dokumen_perda"             => $produk_hukum_perda,
@@ -50,7 +60,7 @@ class PencarianPeraturanDaerah extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
