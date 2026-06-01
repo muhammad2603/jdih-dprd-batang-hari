@@ -25,15 +25,16 @@ class ProdukHukum extends BaseController
         $keyword = $this->request->getVar('keyword') ?? false;
         $category = $this->request->getVar('category') ?? false;
         $year = $this->request->getVar('year') ?? false;
+        $status = $this->request->getVar('status') ?? false;
         $data_per_page = 10;
-        $total_produk_hukum = $this->produk_hukum_model->getTotalProdukHukumHighlight($keyword, $category, $year);
+        $total_produk_hukum = $this->produk_hukum_model->getTotalProdukHukumHighlight($keyword, $category, $year, $status);
         [
             "page" => $current_page,
             "offset" => $data_offset,
             "data_index" => $data_index,
             "pager" => $mk_pager
         ] = create_pagination($get_page, $data_per_page, $total_produk_hukum);
-        $produk_hukum = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset, $keyword, $category, $year);
+        $produk_hukum = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset, $keyword, $category, $year, $status);
         $getYearsDocumentUploaded = $this->produk_hukum_model->getYearsDocumentUploaded();
         $getDocumentCategories = $this->document_categories_model->getDocumentCategories();
         $data_feconfig = $this->frontend_config_model->getAllData();
