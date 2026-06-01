@@ -25,10 +25,20 @@ class Faq extends BaseController
             "field" => "judul",
             "sort" => "ASC"
         ], $faq_by_keyword, $faq_by_category);
-        $page_title = "FAQ";
-        $page_description = "Deskripsi halaman";
+        $page_title = "FAQ JDIH DPRD Kabupaten Batang Hari | Bantuan & Panduan Penggunaan";
+        $page_alias = "FAQ";
+        $page_description = "Temukan jawaban atas pertanyaan umum seputar JDIH DPRD Kabupaten Batang Hari, mulai dari penggunaan sistem, bantuan layanan, hingga informasi teknis terkait akses dan pencarian dokumen hukum daerah.";
         $page_keywords = [
-            "Statistik"
+            "FAQ JDIH DPRD Batang Hari",
+            "Bantuan JDIH",
+            "Panduan Penggunaan JDIH",
+            "FAQ Dokumentasi Hukum",
+            "Informasi Hukum Daerah",
+            "Bantuan Teknis JDIH",
+            "Pusat Bantuan JDIH",
+            "Tanya Jawab JDIH",
+            "JDIH Kabupaten Batang Hari",
+            "Sistem Informasi Hukum DPRD",
         ];
         $other_meta = [
             "faq_list"      => $faq,
@@ -36,7 +46,7 @@ class Faq extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
