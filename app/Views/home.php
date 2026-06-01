@@ -67,7 +67,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="category">
                             <option value="off">Pilih Jenis Dokumen</option>
                             <?php foreach ($document_categories as $category): ?>
-                                <option value="<?= esc($category["kategori"]) ?>"><?= esc($category["kategori"]) ?></option>
+                                <option value="<?= $category["category_id"] ?>"><?= esc($category["kategori"]) ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -95,7 +95,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                         <select id="statusDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="status">
                             <option value="off">Pilih Status Dokumen</option>
                             <?php foreach ($document_status as ["status" => $status]): ?>
-                                <option value="<?= esc($status) ?>"><?= esc($status) ?></option>
+                                <option value="<?= esc(strtolower($status)) ?>"><?= esc($status) ?></option>
                             <?php endforeach ?>
                         </select>
                     </div>
@@ -109,7 +109,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                 <span class="text-sm text-muted-foreground mr-2">Filter Cepat:</span>
                 <button type="button" data-category-value="*" class="active px-4 py-2 text-xs xl:text-sm bg-primary text-white rounded-full transition-colors cursor-pointer disabled:opacity-60 disabled:pointer-events-none focus:outline-primary">Semua</button>
                 <?php foreach ($document_categories as $category): ?>
-                    <button type="button" data-category-value="<?= esc($category["kategori"]) ?>" class="px-4 py-2 text-xs xl:text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none focus:outline-primary"><?= esc($category["kategori"]) ?></button>
+                    <button type="button" data-category-value="<?= $category["category_id"] ?>" class="px-4 py-2 text-xs xl:text-sm bg-muted rounded-full transition-colors cursor-pointer hover:bg-primary hover:text-white disabled:opacity-60 disabled:pointer-events-none focus:outline-primary"><?= esc($category["kategori"]) ?></button>
                 <?php endforeach ?>
             </div>
         </div>
