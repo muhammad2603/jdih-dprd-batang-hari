@@ -26,23 +26,33 @@ class ProdukHukumDetails extends BaseController
         [$category, $slug] = $segments;
         $category = uri_title_to_words($category);
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_alias = "Produk Hukum";
-        $page_description = "Deskripsi halaman";
-        $page_keywords = [
-            "Statistik"
-        ];
-        $produk_hukum = $this->ph_model->getProdukHukumDetails($slug, $category);
-        $ph_id = intval($produk_hukum["id"]);
-        $classify_produk_hukum = $this->ph_model->getClassifyProdukHukum($ph_id);
+        $document = $this->ph_model->getProdukHukumDetails($slug, $category);
+        $ph_id = intval($document["id"]);
+        $classify_document = $this->ph_model->getClassifyProdukHukum($ph_id);
         $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
-        $relatedDocuments = $this->ph_model->getRelatedDocuments($ph_id);
-        $page_title = $produk_hukum["judul"] . " | Produk Hukum";
+        $related_documents = $this->ph_model->getRelatedDocuments($ph_id);
+        $document_title = esc($document["judul"]);
+        $document_category = esc($document["kategori"]);
+        $page_title = $document_title . " | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Produk Hukum";
+        $autofill_category = str_starts_with($document_category, "Peraturan") ? $document_category : "Peraturan " . $document_category;
+        $page_description = "Akses dokumen hukum " . $autofill_category . " dengan judul " . $document_title . " Nomor " . esc($document['nomor']) . " Tahun " . esc($document['tahun']) . " Kabupaten Batang Hari. Unduh dokumen resmi dan informasi hukum daerah melalui JDIH DPRD Kabupaten Batang Hari.";
+        $page_keywords = [
+            $document_title,
+            $autofill_category,
+            $autofill_category . " Kabupaten Batang Hari",
+            "JDIH DPRD Kabupaten Batang Hari",
+            "Dokumen Hukum Daerah",
+            "Produk Hukum",
+            "Peraturan Daerah Batang Hari",
+            "Arsip Hukum Resmi",
+        ];
         $other_meta = [
-            "produk_hukum"      => $produk_hukum,
+            "produk_hukum"      => $document,
             "histories_change"  => $histories_change,
-            "bidang_hukum"      => explode(", ", $classify_produk_hukum["bidang_hukum"]),
-            "subjek"            => $classify_produk_hukum["subjek"],
-            "related_documents" => $relatedDocuments
+            "bidang_hukum"      => explode(", ", $classify_document["bidang_hukum"]),
+            "subjek"            => $classify_document["subjek"],
+            "related_documents" => $related_documents
         ];
         $page_data = create_page_meta(
             $page_title,
