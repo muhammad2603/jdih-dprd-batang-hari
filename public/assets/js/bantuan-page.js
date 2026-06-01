@@ -172,14 +172,16 @@ document.addEventListener("DOMContentLoaded", () => {
                 autoCloseNotification(currentNotificationEl)
             })
             .catch(err => {
-                if (err.code === 403) return alert("Permintaan tidak diizinkan!");
+                if (err.code === 403) return alert("Token CSRF tidak ada atau telah kadaluarsa, silahkan refresh halaman dan coba lagi.");
                 const { fieldsError, notificationId, notification, newToken } = err;
                 csrfToken.value = newToken;
                 $$(toastNotification).insertHTML(notification)
                 const currentNotificationEl = $id(notificationId);
                 showNotification(currentNotificationEl)
                 autoCloseNotification(currentNotificationEl)
-                setErrorsFromResponse(fieldsError)
+                if (fieldsError) {
+                    setErrorsFromResponse(fieldsError)
+                }
             });
     })
 })

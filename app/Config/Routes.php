@@ -2,10 +2,12 @@
 
 use App\Filters\VisitCounter;
 use CodeIgniter\Router\RouteCollection;
+use App\Filters\APIFilter;
 
 /**
  * @var RouteCollection $routes
  */
+/** Public Endpoint */
 $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('/produk-hukum', 'ProdukHukum::index');
@@ -21,5 +23,5 @@ $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
     $routes->get('/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
     $routes->get('/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
 });
-
+/** For API Endpoint */
 $routes->post('/api/sendmail', 'SendMail::send');
