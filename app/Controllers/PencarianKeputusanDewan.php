@@ -35,6 +35,7 @@ class PencarianKeputusanDewan extends BaseController
         ] = create_pagination($current_page, $data_per_page, $total_dokumen_keputusan_dewan);
         $get_dokumen_keputusan_dewan = $this->ph_model->getProdukHukumHighlight($data_per_page, $offet, $get_keyword, $category_id, $get_year);
         $page_title = "Peraturan Keputusan DPRD Batang Hari | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Peraturan Keputusan Dewan";
         $page_description = "Temukan Peraturan Keputusan Dewan DPRD Kabupaten Batang Hari melalui layanan pencarian dokumen hukum JDIH. Akses informasi keputusan dewan, dokumentasi hukum daerah, dan arsip peraturan secara mudah dan cepat.";
         $page_keywords = [
             "Peraturan Keputusan Dewan",
@@ -59,7 +60,7 @@ class PencarianKeputusanDewan extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
