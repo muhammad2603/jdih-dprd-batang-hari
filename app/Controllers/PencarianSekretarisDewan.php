@@ -34,10 +34,20 @@ class PencarianSekretarisDewan extends BaseController
             "pager" => $mk_pager
         ] = create_pagination($current_page, $per_page, $total_produk_hukum_keputusan_sekwan);
         $produk_hukum_keputusan_sekwan = $this->ph_model->getProdukHukumHighlight($per_page, $data_offset, $by_keyword, $by_category, $by_year);
-        $page_title = "Pencarian Peraturan Sekretaris DPRD Batang Hari";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Peraturan Sekretaris Dewan | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Peraturan Sekretaris Dewan";
+        $page_description = "Temukan Peraturan Sekretaris Dewan DPRD Kabupaten Batang Hari melalui layanan JDIH secara cepat, mudah, dan transparan. Akses arsip peraturan Sekretariat Dewan serta dokumentasi hukum resmi daerah yang selalu diperbarui.";
         $page_keywords = [
-            "Statistik"
+            "Peraturan Sekretaris Dewan",
+            "Peraturan Sekwan",
+            "JDIH DPRD Kabupaten Batang Hari",
+            "Dokumentasi Hukum Daerah",
+            "Produk Hukum Sekretariat DPRD",
+            "Arsip Peraturan Sekretaris Dewan",
+            "Informasi Hukum Daerah",
+            "Pencarian Dokumen Hukum",
+            "JDIH Kabupaten Batang Hari",
+            "Regulasi Sekretariat DPRD Batang Hari",
         ];
         $other_meta = [
             "dokumen_keputusan_sekwan"  => $produk_hukum_keputusan_sekwan,
@@ -50,7 +60,7 @@ class PencarianSekretarisDewan extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
