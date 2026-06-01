@@ -23,6 +23,7 @@ class LayananBantuan extends BaseController
     {
         $data_feconfig = $this->fe_config_model->getAllData();
         $page_title = "Layanan Bantuan JDIH DPRD Kabupaten Batang Hari | Kontak & Dukungan Pengguna";
+        $page_alias = "Layanan Bantuan";
         $page_description = "Hubungi layanan bantuan JDIH DPRD Kabupaten Batang Hari untuk panduan penggunaan portal, bantuan pencarian dokumen hukum, pengajuan permintaan dokumen, serta dukungan teknis melalui layanan kontak dan email resmi.";
         $page_keywords = [
             "Layanan Bantuan JDIH",
@@ -43,7 +44,7 @@ class LayananBantuan extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
