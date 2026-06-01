@@ -1,5 +1,11 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
+<?php
+$email = esc(dot_array_search("Kontak.Mail.*.content", $frontend_config));
+$fax = esc(dot_array_search("Kontak.Fax.*.content", $frontend_config));
+preg_match_all("/\d+/", $fax, $matches);
+$fax_number = implode("", $matches[0]);
+?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
@@ -60,8 +66,8 @@
         <h3 class="font-semibold mb-2">Tidak menemukan jawaban yang Anda cari?</h3>
         <p class="text-muted-foreground mb-4">Tim kami siap membantu Anda. Hubungi kami melalui Email atau Telepon.</p>
         <div class="contact flex flex-wrap items-center justify-center gap-4">
-            <a href="https://mail.google.com/mail/?view=cm&to=setwan@batangharikab.go.id" target="_blank" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">Email</a>
-            <a href="tel:074321016" class="px-6 py-2 bg-white border border-primary-border rounded-lg hover:bg-muted transition-colors">Hubungi Telepon</a>
+            <a href="https://mail.google.com/mail/?view=cm&to=<?= $email ?>" target="_blank" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors">Email</a>
+            <a href="tel:<?= $fax_number ?>" class="px-6 py-2 bg-white border border-primary-border rounded-lg hover:bg-muted transition-colors">Hubungi Telepon</a>
         </div>
     </div>
 </div>
