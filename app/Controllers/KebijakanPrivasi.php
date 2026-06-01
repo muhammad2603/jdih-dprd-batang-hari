@@ -16,15 +16,24 @@ class KebijakanPrivasi extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "Kebijakan Privasi";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Kebijakan Privasi JDIH DPRD Kabupaten Batang Hari | Perlindungan Data Pengguna";
+        $page_alias = "Kebijakan Privasi";
+        $page_description = "Kebijakan Privasi JDIH DPRD Kabupaten Batang Hari yang menjelaskan pengelolaan data pengguna, penggunaan informasi, keamanan sistem, serta komitmen terhadap perlindungan privasi dalam layanan dokumentasi dan informasi hukum daerah.";
         $page_keywords = [
-            "Statistik"
+            "Kebijakan Privasi JDIH",
+            "Privasi Pengguna JDIH",
+            "Perlindungan Data Pengguna",
+            "JDIH DPRD Kabupaten Batang Hari",
+            "Keamanan Informasi Hukum",
+            "Privasi Website Pemerintahan",
+            "Dokumentasi Hukum Daerah",
+            "Kebijakan Data Pengguna",
+            "Sistem Informasi Hukum Daerah",
         ];
         $other_meta = [];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
