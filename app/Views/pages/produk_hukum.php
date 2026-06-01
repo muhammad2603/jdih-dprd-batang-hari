@@ -82,12 +82,6 @@ $timeServices = service("timeServices");
                                 </svg>
                                 <span>Detail</span>
                             </a>
-                            <a href="<?= base_url() . "assets/dokumen-hukum/" . $ph["berkas"] ?>" class="order-first xl:order-2 flex items-center gap-2 py-2.5 px-4 xl:py-2 xl:px-2 text-primary hover:bg-primary/10 active:bg-primary/10 rounded-lg transition-colors focus:outline-none" download>
-                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-file-download"></use>
-                                </svg>
-                                <span>PDF</span>
-                            </a>
                         </div>
                     </div>
                 </div>
