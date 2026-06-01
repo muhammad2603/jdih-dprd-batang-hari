@@ -22,10 +22,20 @@ class LayananBantuan extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "Pusat Bantuan";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Layanan Bantuan JDIH DPRD Kabupaten Batang Hari | Kontak & Dukungan Pengguna";
+        $page_description = "Hubungi layanan bantuan JDIH DPRD Kabupaten Batang Hari untuk panduan penggunaan portal, bantuan pencarian dokumen hukum, pengajuan permintaan dokumen, serta dukungan teknis melalui layanan kontak dan email resmi.";
         $page_keywords = [
-            "Statistik"
+            "Layanan Bantuan JDIH",
+            "Bantuan JDIH DPRD Batang Hari",
+            "Kontak JDIH",
+            "Dukungan Pengguna JDIH",
+            "Bantuan Pencarian Dokumen",
+            "Pengajuan Dokumen Hukum",
+            "Help Center JDIH",
+            "FAQ JDIH",
+            "Dokumentasi Hukum Daerah",
+            "Dukungan Teknis JDIH",
+            "Portal JDIH Kabupaten Batang Hari",
         ];
         $other_meta = [
             "pages_meta"        => $this->pages_meta_model->getMetaPagesByIdentity("Bantuan"),
