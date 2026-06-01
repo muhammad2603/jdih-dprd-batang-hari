@@ -27,10 +27,24 @@ class Home extends BaseController
         $get_years_document_uploaded = $this->produk_hukum->getYearsDocumentUploaded();
         $get_document_status = $this->document_status_model->getStatus();
         $get_document_categories = $this->produk_hukum->getTotalDocumentByCategory();
-        $page_title = "Layanan JDIH DPRD Kabupaten Batang Hari";
+        $page_title = "JDIH DPRD Kabupaten Batang Hari | Dokumentasi & Informasi Hukum Daerah";
         $page_alias = "Beranda";
-        $page_description = "Website resmi JDIH DPRD Kabupaten Batang Hari untuk publikasi dokumen hukum daerah.";
-        $page_keywords = ['JDIH', 'DPRD Batang Hari', 'Layanan DPRD Batang Hari', 'Informasi Dokumen Hukum'];
+        $page_description = "Portal resmi JDIH DPRD Kabupaten Batang Hari untuk akses dokumentasi dan informasi hukum daerah. Jelajahi produk hukum terbaru, pencarian dokumen cepat, statistik layanan hukum, dan kategori peraturan secara lengkap dan transparan.";
+        $page_keywords = [
+            "JDIH DPRD Kabupaten Batang Hari",
+            "Dokumentasi Hukum Daerah",
+            "Informasi Hukum Daerah",
+            "Produk Hukum DPRD",
+            "Peraturan Daerah",
+            "Keputusan DPRD",
+            "JDIH Kabupaten Batang Hari",
+            "Pusat Dokumentasi Hukum",
+            "Statistik Dokumen Hukum",
+            "Pencarian Produk Hukum",
+            "Transparansi Informasi Publik",
+            "JDIH Provinsi Jambi",
+            "Produk Hukum Terbaru",
+        ];
         $get_meta_page = $this->pages_meta_model->getMetaPagesByIdentity("Beranda");
         $other_meta = [
             "meta_page"                         => $get_meta_page,
