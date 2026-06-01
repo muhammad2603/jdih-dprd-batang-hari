@@ -34,10 +34,20 @@ class PencarianKeputusanPimpinanDewan extends BaseController
             "pager"         => $pager,
         ] = create_pagination($current_page, $data_per_page, $total_dokumen_keputusan_pimpinan_dewan);
         $get_dokumen_keputusan_pimpinan_dewan = $this->ph_model->getProdukHukumHighlight($data_per_page, $offet, $get_keyword, $category_id, $get_year);
-        $page_title = "Pencarian Keputusan Pimpinan DPRD Batang Hari";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Peraturan Keputusan Pimpinan Dewan | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Layanan Peraturan Keputusan Pimpinan Dewan";
+        $page_description = "Temukan Peraturan Keputusan Pimpinan Dewan DPRD Kabupaten Batang Hari melalui layanan pencarian dokumen hukum JDIH. Akses arsip keputusan pimpinan dewan dan dokumentasi hukum daerah secara mudah, cepat, dan transparan.";
         $page_keywords = [
-            "Statistik"
+            "Peraturan Keputusan Pimpinan Dewan",
+            "Keputusan Pimpinan DPRD",
+            "JDIH DPRD Kabupaten Batang Hari",
+            "Dokumentasi Hukum Daerah",
+            "Produk Hukum DPRD",
+            "Arsip Keputusan Pimpinan Dewan",
+            "Informasi Hukum Daerah",
+            "Pencarian Dokumen Hukum",
+            "JDIH Kabupaten Batang Hari",
+            "Keputusan Pimpinan DPRD Batang Hari",
         ];
         $other_meta = [
             "dokumen"               => $get_dokumen_keputusan_pimpinan_dewan,
@@ -50,7 +60,7 @@ class PencarianKeputusanPimpinanDewan extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
