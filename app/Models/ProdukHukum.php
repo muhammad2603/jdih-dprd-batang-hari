@@ -69,7 +69,7 @@ class ProdukHukum extends Model
      * @param bool|string $byYear keyword untuk mencari produk hukum berdasarkan field tahun, biarkan jika tidak ingin melakukan pencarian
      * @return array
      */
-    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0, bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false): array
+    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0, bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false): array
     {
         $selected_field = [
             "title AS judul",
@@ -100,7 +100,10 @@ class ProdukHukum extends Model
             $builder->where("category_id", $byCategory);
         }
         if ($byYear !== false) {
-            $builder->where("YEAR(ph.created_at)", $byYear);
+            $builder->where("YEAR(tahun)", $byYear);
+        }
+        if ($byStatus !== false) {
+            $builder->where("docstat.status", $byStatus);
         }
         return $builder->findAll($perPage, $offset);
     }
@@ -112,7 +115,7 @@ class ProdukHukum extends Model
      * @param bool|string $byYear berdasarkan tahun upload
      * @return int
      */
-    public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false): int
+    public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false): int
     {
         $builder = $this
             ->select("ph.id")
@@ -130,6 +133,9 @@ class ProdukHukum extends Model
         };
         if ($byYear !== false) {
             $builder->where("YEAR(tahun)", $byYear);
+        };
+        if ($byStatus !== false) {
+            $builder->where("docstat.status", $byStatus);
         };
         return $builder->countAllResults();
     }
@@ -275,6 +281,7 @@ class ProdukHukum extends Model
     {
         return $this->db->table("document_categories doc_categ")
             ->select([
+                "doc_categ.id AS category_id",
                 "doc_categ.category AS kategori",
                 "icons.icon_name AS icon",
                 "icons.color",
