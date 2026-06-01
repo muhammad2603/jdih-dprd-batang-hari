@@ -38,7 +38,8 @@ class ProdukHukum extends BaseController
         $getYearsDocumentUploaded = $this->produk_hukum_model->getYearsDocumentUploaded();
         $getDocumentCategories = $this->document_categories_model->getDocumentCategories();
         $data_feconfig = $this->frontend_config_model->getAllData();
-        $page_title = "Produk Hukum";
+        $page_title = "Produk Hukum | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Produk Hukum";
         $page_description = "Database lengkap produk hukum daerah Kabupaten Batang Hari yang dapat diakses dan diunduh oleh publik, mencakup peraturan daerah, peraturan bupati, keputusan, dan dokumen hukum lainnya secara transparan dan terstruktur.";
         $page_keywords = [
             "Produk Hukum Batang Hari",
@@ -68,7 +69,7 @@ class ProdukHukum extends BaseController
         ];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
