@@ -35,14 +35,6 @@ document.addEventListener("DOMContentLoaded", function () {
         const calcPosition = (positionTopAttachmentsWrapper - heightBaseParentBtn) - heightBaseParentBtn - gap;
         window.scrollTo(0, calcPosition)
     })
-    const btnPrintPdf = document.querySelectorAll("#printDropdown > button.print-btn");
-    btnPrintPdf.forEach(btn => {
-        btn.addEventListener('click', function () {
-            const dataBtn = this.dataset.indexToDocument;
-            const iframedDocument = document.querySelector(`iframe[data-document-index=${dataBtn}]`);
-            iframedDocument.contentWindow.print();
-        })
-    })
     window.addEventListener("click", e => {
         const eventTarget = e.target;
         const {
