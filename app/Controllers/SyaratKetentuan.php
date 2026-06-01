@@ -16,15 +16,23 @@ class SyaratKetentuan extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $page_title = "Syarat & Ketentuan";
-        $page_description = "Deskripsi halaman";
+        $page_title = "Syarat dan Ketentuan Penggunaan Layanan | JDIH DPRD Kabupaten Batang Hari";
+        $page_alias = "Syarat & Ketentuan";
+        $page_description = "Menjelaskan syarat dan ketentuan penggunaan layanan JDIH DPRD Kabupaten Batang Hari, termasuk ketentuan akses informasi hukum daerah, batasan penggunaan data, serta tanggung jawab pengguna layanan.";
         $page_keywords = [
-            "Statistik"
+            "Syarat dan Ketentuan",
+            "Terms and Conditions JDIH",
+            "Ketentuan Penggunaan JDIH DPRD Kabupaten Batang Hari",
+            "Aturan Layanan JDIH",
+            "JDIH Kabupaten Batang Hari",
+            "Informasi Hukum Daerah",
+            "Dokumentasi Hukum Resmi",
+            "Produk Hukum Daerah",
         ];
         $other_meta = [];
         $page_data = create_page_meta(
             $page_title,
-            $page_title,
+            $page_alias,
             $page_description,
             $page_keywords,
             $data_feconfig,
