@@ -180,15 +180,7 @@ $document_note = esc($produk_hukum["catatan"]);
                                     <p class="text-sm text-muted-foreground"><?= number_to_size($file_size["size"], 1, "en_US") ?></p>
                                 </div>
                             </div>
-                            <!-- TODO
-                                gunakan PDF Viewer untuk melihat isi berkas pdf, PASTIKAN BERKAS TIDAK DAPAT DIUNDUH (HANYA MODE BACA).
-                                buat file php untuk menampilkan isi berkas pdf dan tidak dapat diunduh.
-                                gunakan layanan pihak ketiga untuk membaca pdf (PDF Viewer)
-                                
-                                Lokasi dokumen ada di: base_url() . $pub_document_path . esc($file_name)
-                                ATTENTION: Lebih baik berkas dipindah ke writable/uploads
-                            -->
-                            <a href="#" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
+                            <a href="/document-viewer?dokumen=<?= esc($file_name) ?>" target="_blank" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-sheet">
                                 </svg>
