@@ -25,3 +25,4 @@ $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
 });
 /** For API Endpoint */
 $routes->post('/api/sendmail', 'SendMail::send');
+$routes->get('/document-viewer', 'DocumentViewer::index');

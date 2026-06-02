@@ -4,6 +4,7 @@
     "build-tailwind": "tailwindcss -i ./public/assets/third-party/tailwindcss/input.css -o ./public/assets/css/base.css --minify"
   },
   "dependencies": {
+    "@embedpdf/snippet": "^2.14.3",
     "@tailwindcss/cli": "^4.2.2",
     "tailwindcss": "^4.2.2"
   }

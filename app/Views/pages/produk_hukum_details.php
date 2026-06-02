@@ -16,6 +16,7 @@ $shareWhatsAppText .= "Nomor/Tahun: " . esc($produk_hukum["nomor"]) . "/" . esc(
 $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
 $status_accent = json_decode($produk_hukum["warna_aksen"], true);
+$document_note = esc($produk_hukum["catatan"]);
 ?>
 <style <?= csp_style_nonce() ?>>
     #tagStatus {
@@ -56,9 +57,9 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
         <div class="flex items-center gap-6 xl:gap-3 flex-wrap">
             <button type="button" id="btnDownloads" class="grow xl:grow-0 px-6 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex justify-center items-center gap-2 cursor-pointer focus:outline-none focus:bg-primary/90">
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
-                    <use href="/assets/icons.svg#icon-download">
+                    <use href="/assets/icons.svg#icon-sheet">
                 </svg>
-                <span>Unduh PDF</span>
+                <span>Berkas PDF</span>
             </button>
             <div class="print-pdf-wrapper relative w-max grow xl:grow-0">
                 <button type="button" id="btnPrintDropdown" class="w-full xl:w-auto px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex justify-center items-center gap-2 cursor-pointer focus:bg-muted focus:outline-none">
@@ -127,15 +128,17 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                 </h2>
                 <p class="text-default-foreground leading-7 xl:leading-relaxed"><?= esc($produk_hukum["abstrak"]) ?></p>
             </div>
-            <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
-                <h2 class="font-bold text-xl mb-4 flex gap-2">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-amber-600">
-                        <use href="/assets/icons.svg#icon-info">
-                    </svg>
-                    <span>Catatan</span>
-                </h2>
-                <p class="text-default-foreground"><?= esc($produk_hukum["catatan"]) ?></p>
-            </div>
+            <?php if (!is_null($document_note)): ?>
+                <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
+                    <h2 class="font-bold text-xl mb-4 flex gap-2">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-amber-600">
+                            <use href="/assets/icons.svg#icon-info">
+                        </svg>
+                        <span>Catatan</span>
+                    </h2>
+                    <p class="text-default-foreground"><?= esc($produk_hukum["catatan"]) ?></p>
+                </div>
+            <?php endif ?>
             <div class="references-document bg-white border border-primary-border rounded-lg p-6">
                 <h2 class="font-bold text-xl mb-4 flex gap-2">
                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -177,13 +180,12 @@ $status_accent = json_decode($produk_hukum["warna_aksen"], true);
                                     <p class="text-sm text-muted-foreground"><?= number_to_size($file_size["size"], 1, "en_US") ?></p>
                                 </div>
                             </div>
-                            <a href="<?= base_url() . $pub_document_path . esc($file_name) ?>" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
+                            <a href="/document-viewer?dokumen=<?= esc($file_name) ?>" target="_blank" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-download">
+                                    <use href="/assets/icons.svg#icon-sheet">
                                 </svg>
-                                <span>Unduh</span>
+                                <span class="text-sm">Buka PDF</span>
                             </a>
-                            <iframe src="<?= base_url() . $pub_document_path . $file_name ?>" frameborder="0" data-document-index="<?= "document-$key" ?>" hidden></iframe>
                         </div>
                     <?php endforeach ?>
                 </div>
