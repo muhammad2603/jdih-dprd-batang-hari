@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Controllers\BaseController;
+use CodeIgniter\Exceptions\PageNotFoundException;
 use CodeIgniter\HTTP\ResponseInterface;
 
 helper("string");
@@ -22,7 +23,8 @@ class DocumentViewer extends BaseController
         $csp->addWorkerSrc("'self' blob:");
         $csp->addConnectSrc("'self' data: https://cdn.jsdelivr.net");
         $document = $this->request->getVar('dokumen') ?? false;
-        if ($document === false) {
+        $is_accessed = session()->get('document_access') ?? false;
+        if ($document === false || $is_accessed === false) {
             return $this->response->redirect(previous_url());
         }
         $document_title = strtoupper(uri_title_to_words(str_replace(".pdf", '', $document)));
