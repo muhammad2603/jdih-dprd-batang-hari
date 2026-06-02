@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
+
 helper("string");
 
 class DocumentViewer extends BaseController
@@ -25,7 +26,8 @@ class DocumentViewer extends BaseController
             return $this->response->redirect(previous_url());
         }
         $document_title = strtoupper(uri_title_to_words(str_replace(".pdf", '', $document)));
-        $document_content = file_get_contents(FCPATH . "/assets/dokumen-hukum/" . $document);
+        $path_document = WRITEPATH . 'uploads/dokumen-hukum/';
+        $document_content = file_get_contents($path_document . $document);
         $document_content = "data:application/pdf;base64," . base64_encode($document_content);
         return view('pages/document_viewer', ["title" => $document_title, "content" => $document_content]);
     }
