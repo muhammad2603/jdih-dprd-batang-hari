@@ -29,10 +29,10 @@ function validate(validation) {
         if (isValid) {
             isPassed = false
             messageElement.innerText = messageError;
-            return;
+            return isPassed;
         }
     }
-    return isPassed;
+    return true;
 }
 
 export { validations, validate };
