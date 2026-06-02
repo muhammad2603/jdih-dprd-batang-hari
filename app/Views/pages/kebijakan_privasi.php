@@ -1,5 +1,9 @@
 <?= $this->extend("layouts/main") ?>
 <?= $this->section("konten") ?>
+<?php
+$email = dot_array_search("Kontak.Mail.*.content", $frontend_config);
+$fax_number = dot_array_search('Kontak.Fax.*.content', $frontend_config);
+?>
 <div class="jumbotron bg-primary text-white py-16">
     <div class="max-w-7xl mx-auto px-6">
         <div class="animate">
@@ -100,8 +104,8 @@
         <ul class="mt-2 xl:mt-4">
             <li>JDIH DPRD Kabupaten Batang Hari</li>
             <li>Jl. Jend. Sudirman KM.V Kec. Muara Bulian, Kabupaten Batang Hari, Jambi, 36613.</li>
-            <li>Email: setwan@batangharikab.go.id</li>
-            <li>Telepon/Fax: (0743) 21016</li>
+            <li>Email: <?= esc($email) ?></li>
+            <li>Telepon/Fax: <?= esc($fax_number) ?></li>
         </ul>
     </div>
 </div>
