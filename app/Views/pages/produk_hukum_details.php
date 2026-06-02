@@ -15,6 +15,7 @@ $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
 $status_accent = json_decode($produk_hukum["warna_aksen"], true);
 $document_note = esc($produk_hukum["catatan"]);
+session()->set('document_access', true);
 ?>
 <style <?= csp_style_nonce() ?>>
     #tagStatus {
