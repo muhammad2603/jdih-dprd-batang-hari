@@ -20,3 +20,5 @@ $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
     $routes->get('/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
     $routes->get('/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
 });
+
+$routes->get('/document-viewer', 'DocumentViewer::index');
