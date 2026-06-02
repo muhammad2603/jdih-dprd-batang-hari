@@ -7,8 +7,6 @@ $timeServices = service("timeServices");
 $split_attachments = explode(",", $produk_hukum["berkas"]);
 unset($produk_hukum["berkas"]);
 $attachments_to_array = split_string_on_array(":", $split_attachments);
-$pub_document_path = "assets/dokumen-hukum/";
-$document_path = FCPATH . $pub_document_path;
 $shareWhatsAppText = "Dokumen Hukum:\n";
 $shareWhatsAppText .= "Judul: " . esc($produk_hukum["judul"]) . "\n";
 $shareWhatsAppText .= "Jenis Peraturan: " . esc($produk_hukum["kategori"]) . "\n";
@@ -169,7 +167,6 @@ $document_note = esc($produk_hukum["catatan"]);
                 </h2>
                 <div class="files space-y-4">
                     <?php foreach ($attachments_to_array as $key => [$title, $file_name]): ?>
-                        <?php $file_size = get_file_info($document_path . $file_name, ["size"]) ?>
                         <div class="file flex flex-col sm:flex-row xl:items-center justify-between gap-4 xl:gap-0 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
                             <div class="file-details flex items-center gap-3">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
@@ -177,7 +174,6 @@ $document_note = esc($produk_hukum["catatan"]);
                                 </svg>
                                 <div>
                                     <p class="font-medium text-default-foreground"><?= esc($title) ?></p>
-                                    <p class="text-sm text-muted-foreground"><?= number_to_size($file_size["size"], 1, "en_US") ?></p>
                                 </div>
                             </div>
                             <a href="/document-viewer?dokumen=<?= esc($file_name) ?>" target="_blank" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
