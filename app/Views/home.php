@@ -4,7 +4,6 @@
 <?php
 helper("string");
 $timeServices = service("timeServices");
-$total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
 ?>
 <section class="jumbotron h-[calc(100vh-80px)] min-h-150 relative">
     <div class="jumbotron-image-view w-full h-full absolute top-0 left-0 -z-10">
@@ -141,12 +140,12 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
 </section>
 <section class="statistik py-20 bg-linear-to-b from-white to-muted/30">
     <div class="content max-w-7xl mx-auto px-6">
-        <div id="cari-dokumen" class="top-content mb-12 text-center">
+        <div class="top-content mb-12 text-center">
             <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $meta_page) ?></h2>
             <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $meta_page) ?></p>
         </div>
-        <div class="statistics-data grid grid-cols-1 justify-center sm:grid-cols-2 md:grid-cols-3 gap-6">
-            <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
+        <div class="statistics-data grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 justify-center gap-6">
+            <div class="statistic flex items-center xl:flex-col gap-4 xl:gap-0 bg-white text-center rounded-xl p-12 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
@@ -159,20 +158,7 @@ $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS 
                     <span class="statistic-text text-sm text-muted-foreground block">Total Pengunjung</span>
                 </div>
             </div>
-            <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
-                <div class="top flex items-center justify-between mb-4">
-                    <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
-                            <use href="/assets/icons.svg#icon-download"></use>
-                        </svg>
-                    </div>
-                </div>
-                <div class="text">
-                    <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= number_format($total_unduhan) ?></span>
-                    <span class="statistic-text text-sm text-muted-foreground block">Total Unduhan</span>
-                </div>
-            </div>
-            <div class="statistic flex xl:flex-col gap-4 xl:gap-0 bg-white rounded-xl p-8 border border-primary-border hover:shadow-sm transition-shadow">
+            <div class="statistic flex items-center xl:flex-col gap-4 xl:gap-0 bg-white text-center rounded-xl p-12 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
