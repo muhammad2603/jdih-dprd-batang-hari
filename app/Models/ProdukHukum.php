@@ -79,7 +79,6 @@ class ProdukHukum extends Model
             "doccateg.category AS kategori",
             "tanggal_penetapan",
             "nama_berkas AS berkas",
-            "ru.counts AS total_unduhan",
             "slug",
             "DATE_FORMAT(ph.created_at, '%Y-%m-%d') AS tanggal_upload"
         ];
@@ -89,7 +88,6 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
-            ->join("riwayat_unduhan ru", "ru.ph_id = ph.id")
             ->groupBy("ph.id")
             ->orderBy("ph.created_at", "DESC")
             ->orderBy("ph.id", "DESC");
@@ -123,7 +121,6 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
-            ->join("riwayat_unduhan ru", "ru.ph_id = ph.id")
             ->groupBy("ph.id");
         if ($byKeyword !== false) {
             $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
@@ -187,7 +184,6 @@ class ProdukHukum extends Model
                     ORDER BY lph.id DESC
                     SEPARATOR ','
                 ) AS berkas",
-                "counts AS total_unduhan",
                 "jumlah_halaman",
                 "ph.created_at",
                 "ph.updated_at"
@@ -196,8 +192,7 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
-            ->join("riwayat_unduhan ru", "ru.ph_id = ph.id");
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id");
         if (!is_null($category)) {
             $builder
                 ->select([
