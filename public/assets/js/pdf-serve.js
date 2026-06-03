@@ -1,3 +1,5 @@
+import { classManipulation } from './class-manipulation.js';
+import { $id, $$ } from './dom.js';
 document.addEventListener("DOMContentLoaded", () => {
     const { pdfjsLib } = globalThis;
     pdfjsLib.GlobalWorkerOptions.workerSrc = "/assets/third-party/pdfjs/build/pdf.worker.mjs";
@@ -7,27 +9,27 @@ document.addEventListener("DOMContentLoaded", () => {
     let pageRendering = false;
     let pageNumPending = null;
     const scale = 1.2;
-    const canvas = document.getElementById("pdfContent");
+    const canvas = $id("pdfContent");
     const ctx = canvas.getContext('2d');
-    const src = document.getElementById("pdfViewer").dataset.src;
-    const currPage = document.getElementById('currPage');
-    const totalPageSpan = document.getElementById('totalPage');
-    const prevPageBtn = document.getElementById('prevPage');
-    const nextPageBtn = document.getElementById('nextPage');
+    const src = $id("pdfViewer").dataset.src;
+    const currPage = $id('currPage');
+    const totalPageSpan = $id('totalPage');
+    const prevPageBtn = $id('prevPage');
+    const nextPageBtn = $id('nextPage');
     /**
      * Render halaman PDF berdasarkan nomor halaman
      * @param num Page number.
      */
     function renderPage(num) {
         if (num <= 1) {
-            prevPageBtn.setAttribute("disabled", true)
+            $$(prevPageBtn).setAttr("disabled", true)
         } else {
-            prevPageBtn.removeAttribute("disabled")
+            $$(prevPageBtn).removeAttr("disabled")
         }
         if (num >= totalPage) {
-            nextPageBtn.setAttribute("disabled", true)
+            $$(nextPageBtn).setAttr("disabled", true)
         } else {
-            nextPageBtn.removeAttribute("disabled")
+            $$(nextPageBtn).removeAttr("disabled")
         }
         pageRendering = true;
         pdfDoc.getPage(num).then(function (page) {
@@ -39,18 +41,15 @@ document.addEventListener("DOMContentLoaded", () => {
                 viewport: viewport
             };
             const renderTask = page.render(renderContext);
-
-            // Wait for rendering to finish
             renderTask.promise.then(function () {
                 pageRendering = false;
                 if (pageNumPending !== null) {
-                    // New page rendering is pending
                     renderPage(pageNumPending);
                     pageNumPending = null;
                 }
             });
         });
-        currPage.textContent = num;
+        $$(currPage).text(num)
     }
     function queueRenderPage(num) {
         if (pageRendering) {
@@ -68,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
     prevPageBtn.addEventListener('click', onPrevPage);
     function onNextPage() {
-        if (pageNum >= pdfDoc.numPages) {
+        if (pageNum >= totalPage) {
             return;
         }
         pageNum++;
@@ -79,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
         pdfDoc = pdfDoc_;
         const getTotalPage = pdfDoc.numPages;
         totalPage = getTotalPage;
-        totalPageSpan.textContent = getTotalPage;
+        $$(totalPageSpan).text(getTotalPage)
         renderPage(pageNum);
     });
 })
