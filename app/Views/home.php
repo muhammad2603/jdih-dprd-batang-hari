@@ -219,12 +219,6 @@ $timeServices = service("timeServices");
                                         </svg>
                                         <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time>
                                     </div>
-                                    <div class="upload-date flex items-center gap-2">
-                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
-                                            <use href="/assets/icons.svg#icon-download"></use>
-                                        </svg>
-                                        <span><?= esc($doc["total_unduhan"]) ?> unduhan</span>
-                                    </div>
                                 </div>
                             </div>
                             <div class="actions w-full xl:w-0 flex justify-end items-center gap-4">
