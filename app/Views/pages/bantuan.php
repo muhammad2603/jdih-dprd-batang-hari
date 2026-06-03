@@ -73,27 +73,29 @@ $document_help_path = "/assets/dokumen-bantuan/";
             </div>
         </div>
     </div>
-    <div class="general-help-topics mb-12">
-        <h2 class="text-2xl font-semibold mb-6">Topik Bantuan Umum</h2>
-        <div class="topics grid grid-cols-1 md:grid-cols-2 gap-6">
-            <?php foreach ($topik_bantuan as $tb): ?>
-                <div class="topic bg-white border border-primary-border rounded-lg p-6">
-                    <div class="topic-contents flex items-start gap-4">
-                        <div class="icon w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
-                                <use href="/assets/icons.svg#icon-<?= $tb["icon"] ?>">
-                            </svg>
-                        </div>
-                        <div class="topic-details">
-                            <h3 class="font-semibold mb-2"><?= esc($tb["topik"]) ?></h3>
-                            <p class="text-sm text-muted-foreground mb-3"><?= esc($tb["deskripsi"]) ?></p>
-                            <a href="<?= $tb["link"] ?? $document_help_path . $tb["attachment"] ?>" class="text-sm text-primary hover:text-primary/80 transition-colors" target="<?= is_null($tb["attachment"]) ? '_self' : '_blank' ?>">Lihat Panduan →</a>
+    <?php if (count($topik_bantuan) !== 0): ?>
+        <div class="general-help-topics mb-12">
+            <h2 class="text-2xl font-semibold mb-6">Topik Bantuan Umum</h2>
+            <div class="topics grid grid-cols-1 md:grid-cols-2 gap-6">
+                <?php foreach ($topik_bantuan as $tb): ?>
+                    <div class="topic bg-white border border-primary-border rounded-lg p-6">
+                        <div class="topic-contents flex items-start gap-4">
+                            <div class="icon w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center shrink-0">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
+                                    <use href="/assets/icons.svg#icon-<?= $tb["icon"] ?>">
+                                </svg>
+                            </div>
+                            <div class="topic-details">
+                                <h3 class="font-semibold mb-2"><?= esc($tb["topik"]) ?></h3>
+                                <p class="text-sm text-muted-foreground mb-3"><?= esc($tb["deskripsi"]) ?></p>
+                                <a href="<?= $tb["link"] ?? $document_help_path . $tb["attachment"] ?>" class="text-sm text-primary hover:text-primary/80 transition-colors" target="<?= is_null($tb["attachment"]) ? '_self' : '_blank' ?>">Lihat Panduan →</a>
+                            </div>
                         </div>
                     </div>
-                </div>
-            <?php endforeach ?>
+                <?php endforeach ?>
+            </div>
         </div>
-    </div>
+    <?php endif ?>
     <div class="send-message bg-white border border-primary-border rounded-lg p-8">
         <h2 class="text-2xl font-semibold mb-6">Kirim Pesan</h2>
         <div class="form-send-mail space-y-6">
