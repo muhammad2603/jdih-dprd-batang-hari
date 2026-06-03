@@ -39,12 +39,12 @@
         <p>Seluruh konten dalam website ini, termasuk namun tidak terbatas pada dokumen, teks, desain, dan struktur sistem, dilindungi oleh ketentuan peraturan perundang-undangan yang berlaku.</p>
         <p>Pengguna diperbolehkan:</p>
         <ul class="list-disc mx-6">
-            <li>Mengunduh dan menggunakan dokumen untuk keperluan pribadi, pendidikan, dan non-komersial</li>
+            <li>Pengguna diperbolehkan untuk melihat, mempelajari, dan menjadikan dokumen hukum yang tersedia sebagai referensi. Demi menghargai pihak perundang-undangan yang telah menyusun dan mengembangkan dokumen hukum tersebut, pengguna diharapkan menggunakan dokumen secara bijaksana, mencantumkan sumber yang sesuai apabila diperlukan, serta tidak menyalin atau menggandakan dokumen secara keseluruhan tanpa memperhatikan ketentuan yang berlaku.</li>
         </ul>
         <p>Pengguna dilarang:</p>
         <ul class="list-disc mx-6">
-            <li>Menggunakan konten untuk tujuan komersial tanpa izin</li>
-            <li>Mengubah atau memanipulasi isi dokumen sehingga menyesatkan</li>
+            <li>Menggunakan konten atau dokumen yang tersedia untuk tujuan komersial tanpa izin dari pihak yang berwenang.</li>
+            <li>Mengubah, memanipulasi, atau menyebarluaskan isi dokumen hukum dengan cara yang dapat menimbulkan kesalahpahaman, menyesatkan, atau mengubah makna dari dokumen aslinya.</li>
         </ul>
     </div>
     <div class="mt-8">
