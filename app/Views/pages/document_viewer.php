@@ -23,9 +23,9 @@
 
 <body class="print:hidden">
     <header class="w-full h-12.5 px-4 z-10 bg-zinc-800 flex justify-center items-center gap-3">
-        <button id="prevPage" class="previous-page cursor-pointer text-muted-foreground hover:text-foreground disabled:opacity-0 disabled:pointer-events-none" title="Halaman sebelumnya">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
-                <path d="m15 18-6-6 6-6" />
+        <button id="prevPage" class="previous-page cursor-pointer text-muted-foreground hover:text-foreground disabled:opacity-0 disabled:pointer-events-none" title="Halaman sebelumnya" hidden>
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
+                <use href="/assets/icons.svg#icon-chevron-left">
             </svg>
         </button>
         <p class="pages text-foreground">
@@ -34,8 +34,8 @@
             <span id="totalPage"></span>
         </p>
         <button id="nextPage" class="previous-page cursor-pointer text-muted-foreground hover:text-foreground disabled:opacity-0 disabled:pointer-events-none" title="Halaman selanjutnya">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
-                <path d="m9 18 6-6-6-6" />
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-6">
+                <use href="/assets/icons.svg#icon-chevron-right">
             </svg>
         </button>
     </header>
