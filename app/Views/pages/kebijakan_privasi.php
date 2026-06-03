@@ -29,7 +29,6 @@ $address = dot_array_search('Kontak.Lokasi.*.content', $frontend_config);
         <ul class="list-disc mx-6">
             <li>Alamat protokol internet (ip address): digunakan untuk menghitung jumlah pengunjung unik (unique visitors) dan mencegah penghitungan ganda dalam statistik kunjungan.</li>
             <li>Jumlah dan waktu kunjungan: untuk menganalisis lalu lintas pengguna (traffic analysis).</li>
-            <li>Aktivitas pengunduhan dokumen: hukum untuk mengetahui dokumen mana yang paling banyak diakses.</li>
         </ul>
         <p>Data IP Address tidak digunakan untuk mengidentifikasi individu secara pribadi. Data ini disimpan sementara dalam bentuk terenkripsi atau teranonimkan, dan hanya digunakan dalam bentuk agregat untuk keperluan:</p>
         <ul class="list-disc mx-6">
