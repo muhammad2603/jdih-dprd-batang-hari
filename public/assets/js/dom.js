@@ -21,6 +21,15 @@ function $$(element) {
         },
         getInputValue() {
             return this.element.value.trim();
+        },
+        setAttr(atr, value) {
+            return this.element.setAttribute(atr, value);
+        },
+        removeAttr(atr, value) {
+            return this.element.removeAttribute(atr, value);
+        },
+        text(str) {
+            return this.element.textContent = str;
         }
     }
 }
