@@ -60,6 +60,7 @@ class TopikBantuan extends Model
                 "icons.icon_name AS icon"
             ])
             ->join("icons", 'icons.id = tb.icon', 'left')
+            ->where("state_view", true)
             ->orderBy("created_at", $order_by)
             ->findAll();
     }
