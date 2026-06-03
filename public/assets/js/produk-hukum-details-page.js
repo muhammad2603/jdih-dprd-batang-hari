@@ -1,7 +1,12 @@
 import { ShowDropdownByButton } from "./dropdown-by-button-class.js";
-function openDropdownAndCloseOther(classForDropdownToOpen, classForDropdownToClose) {
+/**
+ * Fungsi akan membuka dropdown target dan menghapus dropdown lain agar tidak terjadi tabrakan atau collapse satu sama lain.
+ * @param {ShowDropdownByButton} classForDropdownToOpen - Class dropdown yang diinisialisasi untuk membuka dropdown.
+ * @param {ShowDropdownByButton|null} classForDropdownToClose - Class dropdown yang diinisialisasi untuk menutup dropdown, biarkan null jika dropdown tidak tumpang tindih.
+ */
+function openDropdownAndCloseOther(classForDropdownToOpen, classForDropdownToClose = null) {
     classForDropdownToOpen.openDropdown()
-    if (classForDropdownToClose.stateDropdown === true) {
+    if (classForDropdownToClose !== null && classForDropdownToClose.stateDropdown === true) {
         classForDropdownToClose.closeDropdown()
     }
 }
@@ -21,7 +26,6 @@ async function copyText(text) {
     }
 }
 document.addEventListener("DOMContentLoaded", function () {
-    const showDropdownPrint = new ShowDropdownByButton({ targetButtonId: "btnPrintDropdown", targetDropdownId: "printDropdown" });
     const showDropdownShare = new ShowDropdownByButton({ targetButtonId: "btnShareDropdown", targetDropdownId: "shareDropdown" });
     const btnDownloads = document.getElementById("btnDownloads");
     const btnCopyLink = document.getElementById("btnCopyLink");
@@ -38,28 +42,17 @@ document.addEventListener("DOMContentLoaded", function () {
     window.addEventListener("click", e => {
         const eventTarget = e.target;
         const {
-            isTargetButton: isTargetBtnPrintDropdown,
-            isTargetDropdown: isTargetPrintDropdown,
-            isNotTargetsClicked: isPrintNotTargeted
-        } = showDropdownPrint.checkClosestTarget(eventTarget)
-        const {
             isTargetButton: isTargetBtnShareDropdown,
             isTargetDropdown: isTargetShareDropdown,
             isNotTargetsClicked: isShareNotTargeted
         } = showDropdownShare.checkClosestTarget(eventTarget)
-        if (isPrintNotTargeted && isShareNotTargeted) {
+        if (isShareNotTargeted) {
             showDropdownPrint.closeDropdown()
             showDropdownShare.closeDropdown()
         }
-        if (isTargetPrintDropdown || isTargetShareDropdown) return;
-        if (isTargetBtnPrintDropdown && showDropdownPrint.stateDropdown === false) {
-            return openDropdownAndCloseOther(showDropdownPrint, showDropdownShare);
-        }
+        if (isTargetShareDropdown) return;
         if (isTargetBtnShareDropdown && showDropdownShare.stateDropdown === false) {
-            return openDropdownAndCloseOther(showDropdownShare, showDropdownPrint);
-        }
-        if (isTargetBtnPrintDropdown && showDropdownPrint.stateDropdown === true) {
-            showDropdownPrint.closeDropdown()
+            return openDropdownAndCloseOther(showDropdownShare);
         }
         if (isTargetBtnShareDropdown && showDropdownShare.stateDropdown === true) {
             showDropdownShare.closeDropdown()
