@@ -6,6 +6,7 @@ use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use App\Models\FrontendConfig;
 use App\Models\PagesMeta;
+use App\Models\TopikBantuan;
 
 class LayananBantuan extends BaseController
 {
