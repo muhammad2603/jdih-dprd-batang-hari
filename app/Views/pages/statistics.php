@@ -62,12 +62,13 @@ $total_categories = array_reduce(
             </div>
             <div class="mt-10 space-y-2">
                 <?php foreach ($total_doc_by_categs_to_array as $key => [$category, $total]): ?>
+                    <?php $average = ($total / $total_categories) * 100 ?>
                     <div class="flex items-center justify-between text-sm">
                         <div class="flex items-center gap-2">
                             <div class="w-4 h-4 <?= $categories_color[$key] ?> rounded"></div>
                             <span class="text-muted-foreground"><?= esc($category) ?></span>
                         </div>
-                        <span class="font-medium"><?= esc($total) ?> <span class="average-percent text-xs align-middle">(<?= ($total / $total_categories) * 100 ?>%)</span></span>
+                        <span class="font-medium"><?= esc($total) ?> <span class="average-percent text-xs align-middle">(<?= sprintf('%.2f', floor($average * 100) / 100) ?>%)</span></span>
                     </div>
                 <?php endforeach ?>
             </div>
