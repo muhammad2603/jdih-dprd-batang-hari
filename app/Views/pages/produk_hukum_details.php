@@ -88,12 +88,6 @@ session()->set('document_access', true);
                     </a>
                 </div>
             </div>
-            <div class="total-download grow xl:grow-0 xl:ml-auto flex justify-end items-center gap-2 text-base xl:text-sm text-muted-foreground">
-                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                    <use href="/assets/icons.svg#icon-download">
-                </svg>
-                <span><?= str_number_to_humanize($produk_hukum["total_unduhan"]) ?> unduhan</span>
-            </div>
         </div>
     </div>
 </div>
