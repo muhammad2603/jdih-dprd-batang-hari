@@ -25,7 +25,7 @@ $total_categories = array_reduce(
     </div>
 </div>
 <div class="content-wrapper max-w-7xl mx-auto px-6 py-12">
-    <div class="statistics-short grid grid-cols-1 md:grid-cols-4 gap-6 mb-12">
+    <div class="statistics-short grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
         <div class="total-document bg-white border border-primary-border rounded-lg p-6">
             <span class="block mb-4">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-primary">
@@ -52,15 +52,6 @@ $total_categories = array_reduce(
             </span>
             <span class="total-count-document block text-3xl font-bold text-primary mb-1"><?= number_format($total_produk_hukum_current_month) ?></span>
             <span class="text-sm text-muted-foreground">Dokumen Di Bulan Ini</span>
-        </div>
-        <div class="total-download bg-white border border-primary-border rounded-lg p-6">
-            <span class="block mb-4">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-10 text-accent">
-                    <use href="/assets/icons.svg#icon-download"></use>
-                </svg>
-            </span>
-            <span class="total-count-document block text-3xl font-bold text-accent mb-1"><?= number_format($total_unduhan) ?></span>
-            <span class="text-sm text-muted-foreground">Total Unduhan</span>
         </div>
     </div>
     <div class="statistics-chart grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8 overflow-hidden">

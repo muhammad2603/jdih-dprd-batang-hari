@@ -21,7 +21,6 @@ class Statistics extends BaseController
     {
         (Database::connect())->query("SET lc_time_names = 'id_ID'");
         $data_feconfig = $this->fe_config_model->getAllData();
-        $total_unduhan = db_connect()->table("riwayat_unduhan")->select("SUM(counts) AS total_unduhan")->get()->getResult('array')[0]["total_unduhan"];
         $page_title = "Statistik JDIH Kabupaten Batang Hari";
         $page_alias = "Statistik";
         $page_description = "Statistik JDIH DPRD Kabupaten Batang Hari yang menampilkan data produk hukum daerah, jumlah dokumen, distribusi kategori peraturan, tren publikasi, dan total unduhan dokumen hukum secara transparan.";
@@ -39,7 +38,6 @@ class Statistics extends BaseController
             "total_produk_hukum"                            => $this->produk_hukum_model->getTotalDocument()["total"],
             "total_produk_hukum_current_month"              => $this->produk_hukum_model->getTotalDocumentByMonth(date("m", time())),
             "total_produk_hukum_current_year"               => $this->produk_hukum_model->getTotalDocumentByYear(date("Y", time())),
-            "total_unduhan"                                 => $total_unduhan,
             "total_doc_by_year"                             => $this->produk_hukum_model->getTotalDocumentPerYears()["result"],
             "total_doc_by_categories"                       => $this->produk_hukum_model->getTotalDocByCategories()["result"],
             "total_doc_by_months_on_current_year"           => $this->produk_hukum_model->getTotalDocPerMonths()["result"],
