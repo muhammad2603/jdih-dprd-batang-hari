@@ -192,7 +192,7 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id");
         if (!is_null($category)) {
             $builder
                 ->select([
