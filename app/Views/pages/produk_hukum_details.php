@@ -128,17 +128,21 @@ session()->set('document_access', true);
                     <span>Dokumen Terkait</span>
                 </h2>
                 <div class="documents space-y-3">
-                    <?php foreach ($related_documents as $rd): ?>
-                        <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
-                            <div class="flex-1">
-                                <header class="flex flex-col xl:flex-row xl:items-center gap-2 mb-2.5 xl:mb-1">
-                                    <span class="w-fit xl:w-auto text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) ?></span>
-                                    <span class="text-sm font-semibold text-default-foreground"><?= esc($rd["kategori"]) ?> No. <?= esc($rd["nomor"]) ?> Tahun <?= esc($rd["tahun"]) ?></span>
-                                </header>
-                                <p class="text-sm text-default-foreground"><?= esc($rd["judul"]) ?></p>
-                            </div>
-                        </article>
-                    <?php endforeach ?>
+                    <?php if (count($related_documents) > 0): ?>
+                        <?php foreach ($related_documents as $rd): ?>
+                            <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
+                                <div class="flex-1">
+                                    <header class="flex flex-col xl:flex-row xl:items-center gap-2 mb-2.5 xl:mb-1">
+                                        <span class="w-fit xl:w-auto text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) ?></span>
+                                        <span class="text-sm font-semibold text-default-foreground"><?= esc($rd["kategori"]) ?> No. <?= esc($rd["nomor"]) ?> Tahun <?= esc($rd["tahun"]) ?></span>
+                                    </header>
+                                    <p class="text-sm text-default-foreground"><?= esc($rd["judul"]) ?></p>
+                                </div>
+                            </article>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <?= view("components/data-not-found", ["message" => "Tidak ada dokumen terkait yang ditemukan."]) ?>
+                    <?php endif ?>
                 </div>
             </div>
             <div id="lampiran" class="attachments bg-white border border-primary-border rounded-lg p-6">
