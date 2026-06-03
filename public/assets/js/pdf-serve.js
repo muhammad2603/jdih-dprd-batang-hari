@@ -1,5 +1,5 @@
 import { classManipulation } from './class-manipulation.js';
-import { $id, $$ } from './dom.js';
+import { $id, $$, $ } from './dom.js';
 document.addEventListener("DOMContentLoaded", () => {
     const { pdfjsLib } = globalThis;
     pdfjsLib.GlobalWorkerOptions.workerSrc = "/assets/third-party/pdfjs/build/pdf.worker.mjs";
@@ -79,6 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const getTotalPage = pdfDoc.numPages;
         totalPage = getTotalPage;
         $$(totalPageSpan).text(getTotalPage)
+        $$(prevPageBtn).removeAttr("hidden")
         renderPage(pageNum);
     });
 })
