@@ -60,24 +60,6 @@ session()->set('document_access', true);
                 </svg>
                 <span>Berkas PDF</span>
             </button>
-            <div class="print-pdf-wrapper relative w-max grow xl:grow-0">
-                <button type="button" id="btnPrintDropdown" class="w-full xl:w-auto px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex justify-center items-center gap-2 cursor-pointer focus:bg-muted focus:outline-none">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
-                        <use href="/assets/icons.svg#icon-print">
-                    </svg>
-                    <span>Cetak</span>
-                </button>
-                <div id="printDropdown" class="print-dropdown absolute left-0 mbs-2 w-full sm:w-[150%] xl:w-[230%] p-4 bg-white border border-primary-border z-20 space-y-2 rounded-sm shadow-lg transition duration-200 ease-in pointer-events-none -translate-y-8 opacity-0">
-                    <?php foreach ($attachments_to_array as $key => [$filename, $filepath]): ?>
-                        <button type="button" class="print-btn w-full p-2 text-sm text-left flex gap-2 group cursor-pointer focus:outline-none" data-index-to-document='<?= "document-$key" ?>' tabindex="-1">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 group-hover:text-primary">
-                                <use href="/assets/icons.svg#icon-sheet">
-                            </svg>
-                            <span class="inline-block w-full truncate text-default-foreground group-hover:text-primary" title="<?= $filename ?>"><?= $filename ?></span>
-                        </button>
-                    <?php endforeach ?>
-                </div>
-            </div>
             <div class="shares-wrapper relative w-max grow xl:grow-0">
                 <button type="button" id="btnShareDropdown" class="w-full xl:w-auto px-6 py-2.5 bg-white border border-primary-border text-default-foreground rounded-lg hover:bg-muted transition-colors flex items-center gap-2 cursor-pointer focus:outline-none focus:bg-muted">
                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
