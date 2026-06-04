@@ -219,6 +219,10 @@ session()->set('document_access', true);
                         <span class="block text-muted-foreground mb-1">Nomor/Tahun</span>
                         <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["nomor"]) ?> / <?= esc($produk_hukum["tahun"]) ?></span>
                     </div>
+                    <div>
+                        <span class="block text-muted-foreground mb-1">Tajuk Entri Utama (T.E.U)</span>
+                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["tajuk_entri_utama"]) ?></span>
+                    </div>
                     <div class="pt-4 border-t border-primary-border">
                         <span class="block text-muted-foreground mb-1">Tanggal Penetapan</span>
                         <span class="font-medium text-default-foreground flex items-center gap-2">
