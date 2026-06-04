@@ -102,6 +102,30 @@ session()->set('document_access', true);
                     <span>Abstrak</span>
                 </h2>
                 <p class="text-default-foreground leading-7 xl:leading-relaxed"><?= esc($produk_hukum["abstrak"]) ?></p>
+                <div class="file-abstract mt-6 flex flex-col sm:flex-row xl:items-center sm:justify-between gap-4 xl:gap-0 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                    <div class="flex items-center gap-3">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
+                            <use href="/assets/icons.svg#icon-document">
+                        </svg>
+                        <div>
+                            <p class="font-medium text-default-foreground">Abstrak PDF</p>
+                        </div>
+                    </div>
+                    <div class="link-pdf flex justify-end gap-4">
+                        <a href="/assets/abstrak/<?= esc($produk_hukum["abstrak_pdf"]) ?>" class="w-fit xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2" download>
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                <use href="/assets/icons.svg#icon-download">
+                            </svg>
+                            <span class="text-sm">Unduh</span>
+                        </a>
+                        <a href="/assets/abstrak/<?= esc($produk_hukum["abstrak_pdf"]) ?>" target="_blank" class="w-fit xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                <use href="/assets/icons.svg#icon-sheet">
+                            </svg>
+                            <span class="text-sm">Buka</span>
+                        </a>
+                    </div>
+                </div>
             </div>
             <?php if (!is_null($document_note)): ?>
                 <div class="note bg-amber-50 border border-amber-200 rounded-lg p-6">
