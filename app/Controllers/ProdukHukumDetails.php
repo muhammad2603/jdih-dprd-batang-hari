@@ -27,6 +27,9 @@ class ProdukHukumDetails extends BaseController
         $category = uri_title_to_words($category);
         $data_feconfig = $this->fe_config_model->getAllData();
         $document = $this->ph_model->getProdukHukumDetails($slug, $category);
+        if (!$document) {
+            return redirect()->to('/produk-hukum');
+        }
         $ph_id = intval($document["id"]);
         $classify_document = $this->ph_model->getClassifyProdukHukum($ph_id);
         $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);

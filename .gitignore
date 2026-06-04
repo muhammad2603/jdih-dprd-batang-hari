@@ -129,3 +129,5 @@ _modules/*
 
 # Tailwind CSS Generator
 /public/assets/css/base.css
+
+/public/assets/abstrak/*
