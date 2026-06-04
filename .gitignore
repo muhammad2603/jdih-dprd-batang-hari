@@ -59,6 +59,7 @@ Vagrantfile
 
 /writable/uploads/*
 !/writable/uploads/index.html
+/writable/uploads/dokumen-hukum/*.pdf
 
 /writable/debugbar/*
 !/writable/debugbar/index.html
@@ -130,4 +131,4 @@ _modules/*
 # Tailwind CSS Generator
 /public/assets/css/base.css
 
-/public/assets/abstrak/*
+/public/assets/abstrak/*.pdf
