@@ -88,6 +88,7 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->where('ph.is_publish', true)
             ->groupBy("ph.id")
             ->orderBy("ph.created_at", "DESC")
             ->orderBy("ph.id", "DESC");
@@ -121,6 +122,7 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->where('ph.is_publish', true)
             ->groupBy("ph.id");
         if ($byKeyword !== false) {
             $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
@@ -141,9 +143,9 @@ class ProdukHukum extends Model
      * Mengambil detail produk hukum
      * @param int|string $key field id atau slug produk hukum
      * @param string|null $category kategori produk hukum yang ingin dicari. Default null
-     * @return array
+     * @return array|bool false jika produk hukum memiliki status publish = false
      */
-    public function getProdukHukumDetails(int|string $key, string|null $category = null): array
+    public function getProdukHukumDetails(int|string $key, string|null $category = null): array|bool
     {
         $builder = $this
             ->select([
@@ -155,6 +157,7 @@ class ProdukHukum extends Model
                 "tahun",
                 "nomor_tld",
                 "tahun_tld",
+                "tajuk_entri_utama",
                 "(
                     CASE
                         WHEN docstat.sinonim IS NULL THEN docstat.status
@@ -192,7 +195,8 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id");
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->where('ph.is_publish', true);
         if (!is_null($category)) {
             $builder
                 ->select([
@@ -203,11 +207,12 @@ class ProdukHukum extends Model
                 ->where("doccateg.category", $category);
         }
         if (is_int($key)) {
-            $builder->where("id", $key);
+            $builder->where("ph.id", $key);
         } else if (is_string($key)) {
             $builder->where("slug", $key);
         }
-        return $builder->first();
+        $result = $builder->first();
+        return !is_null($result["id"]) ? $result : false;
     }
 
     /**
