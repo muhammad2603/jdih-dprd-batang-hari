@@ -47,7 +47,6 @@ document.addEventListener("DOMContentLoaded", function () {
             isNotTargetsClicked: isShareNotTargeted
         } = showDropdownShare.checkClosestTarget(eventTarget)
         if (isShareNotTargeted) {
-            showDropdownPrint.closeDropdown()
             showDropdownShare.closeDropdown()
         }
         if (isTargetShareDropdown) return;
