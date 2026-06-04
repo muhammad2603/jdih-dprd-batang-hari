@@ -187,6 +187,7 @@ class ProdukHukum extends Model
                     ORDER BY lph.id DESC
                     SEPARATOR ','
                 ) AS berkas",
+                 "mph.abstrak_pdf",
                 "jumlah_halaman",
                 "ph.created_at",
                 "ph.updated_at"
