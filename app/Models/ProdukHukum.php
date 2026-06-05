@@ -187,7 +187,7 @@ class ProdukHukum extends Model
                     ORDER BY lph.id DESC
                     SEPARATOR ','
                 ) AS berkas",
-                 "mph.abstrak_pdf",
+                "mph.abstrak_pdf",
                 "jumlah_halaman",
                 "ph.created_at",
                 "ph.updated_at"
@@ -408,5 +408,28 @@ class ProdukHukum extends Model
             $builder->where("category_id", $by_category);
         }
         return $builder->findAll();
+    }
+
+    /**
+     * Mengambil produk hukum beserta metadata untuk feed
+     * @param array $fields field yang ingin diambil
+     * @param string $order_by urutan data berdasarkan timestamp created_at dan id, default desc dengan urutan dari terbaru-terlama
+     * @return array
+     */
+    public function getProdukHukumFeed(array $fields, string $order_by = 'desc'): array
+    {
+        return $this
+            ->select($fields)
+            ->join("meta_produk_hukum mph", 'mph.ph_id = ph.id', 'inner')
+            ->join("document_categories doc_categs", 'doc_categs.id = ph.category_id', 'inner')
+            ->join("document_status doc_status", 'doc_status.id = ph.status_id')
+            ->join("sumber_produk_hukum sph", 'sph.id = mph.sumber_id')
+            ->join("klasifikasi_bidang_hukum klf_bh", 'klf_bh.ph_id = ph.id')
+            ->join("kategori_bidang_hukum kbh", 'kbh.id = klf_bh.bidang_hukum_id')
+            ->where("ph.is_publish", true)
+            ->orderBy('ph.created_at', $order_by)
+            ->orderBy('ph.id', $order_by)
+            ->groupBy('ph.id')
+            ->findAll();
     }
 }
