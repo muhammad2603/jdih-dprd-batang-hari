@@ -17,7 +17,6 @@ class GenerateFeed extends BaseController
 
     public function view()
     {
-        $this->response->setHeader("ContentType", 'application/json');
         $abstract_url = base_url() . 'assets/abstrak/';
         $produk_hukum_url = base_url() . 'produk-hukum/';
         $fields = [
@@ -46,6 +45,10 @@ class GenerateFeed extends BaseController
             "'1' AS display",
         ];
         $produk_hukum = $this->ph_model->getProdukHukumFeed($fields);
-        return $this->response->setJSON($produk_hukum);
+        $max_time_cache = 3 * (60 * 60);
+        return $this->response
+            ->setHeader("Content-Type", 'application/json')
+            ->setHeader("Cache-Control", "public, max-age=$max_time_cache")
+            ->setJSON($produk_hukum);
     }
 }
