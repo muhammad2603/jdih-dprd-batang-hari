@@ -18,8 +18,8 @@ class GenerateFeed extends BaseController
     public function view()
     {
         $this->response->setHeader("ContentType", 'application/json');
-
-        // Selected fields
+        $abstract_url = base_url() . 'assets/abstrak/';
+        $produk_hukum_url = base_url() . 'produk-hukum/';
         $fields = [
             "ph.id AS idData",
             "YEAR(ph.tanggal_pengundangan) AS tahun_pengundangan",
@@ -36,8 +36,8 @@ class GenerateFeed extends BaseController
             "GROUP_CONCAT(kbh.kategori SEPARATOR ', ') AS bidangHukum",
             "ph.tajuk_entri_utama AS teuBadan",
             "ph.updated_at AS last_updated",
-            "CONCAT('" . base_url() . "', 'assets/abstrak/', mph.abstrak_pdf) AS urlAbstrak",
-            "CONCAT('" . base_url() . "', 'produk-hukum/', REPLACE(LOWER(doc_categs.category), ' ', '-'), '/', ph.slug) AS urlDetailPeraturan",
+            "CONCAT('$abstract_url', mph.abstrak_pdf) AS urlAbstrak",
+            "CONCAT('$produk_hukum_url', REPLACE(LOWER(doc_categs.category), ' ', '-'), '/', ph.slug) AS urlDetailPeraturan",
             // __COMMENT__ selalu pantau field dibawah ini didokumentasi JDIHN BPHN, karena mereka akan meminta field ini diupdate mendatang
             "'-' AS fileDownload",
             "'-' AS urlDownload",
@@ -45,24 +45,7 @@ class GenerateFeed extends BaseController
             "'4' AS operasi",
             "'1' AS display",
         ];
-
-        // Ambil produk hukum
-        $produk_hukum = (\Config\Database::connect())
-            ->table("produk_hukum ph")
-            ->select($fields)
-            ->join("meta_produk_hukum mph", 'mph.ph_id = ph.id', 'inner')
-            ->join("document_categories doc_categs", 'doc_categs.id = ph.category_id', 'inner')
-            ->join("document_status doc_status", 'doc_status.id = ph.status_id')
-            ->join("sumber_produk_hukum sph", 'sph.id = mph.sumber_id')
-            ->join("klasifikasi_bidang_hukum klf_bh", 'klf_bh.ph_id = ph.id')
-            ->join("kategori_bidang_hukum kbh", 'kbh.id = klf_bh.bidang_hukum_id')
-            ->where("ph.is_publish", true)
-            ->groupBy('ph.id')
-            ->get()->getResultArray();
-
-        $data = [
-            ...$produk_hukum
-        ];
-        return $this->response->setJSON($data);
+        $produk_hukum = $this->ph_model->getProdukHukumFeed($fields);
+        return $this->response->setJSON($produk_hukum);
     }
 }
