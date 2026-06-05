@@ -413,9 +413,10 @@ class ProdukHukum extends Model
     /**
      * Mengambil produk hukum beserta metadata untuk feed
      * @param array $fields field yang ingin diambil
+     * @param string $order_by urutan data berdasarkan timestamp created_at dan id, default desc dengan urutan dari terbaru-terlama
      * @return array
      */
-    public function getProdukHukumFeed(array $fields): array
+    public function getProdukHukumFeed(array $fields, string $order_by = 'desc'): array
     {
         return $this
             ->select($fields)
@@ -426,6 +427,8 @@ class ProdukHukum extends Model
             ->join("klasifikasi_bidang_hukum klf_bh", 'klf_bh.ph_id = ph.id')
             ->join("kategori_bidang_hukum kbh", 'kbh.id = klf_bh.bidang_hukum_id')
             ->where("ph.is_publish", true)
+            ->orderBy('ph.created_at', $order_by)
+            ->orderBy('ph.id', $order_by)
             ->groupBy('ph.id')
             ->findAll();
     }
