@@ -35,7 +35,7 @@ class Statistics extends BaseController
             "Visualisasi Produk Hukum Daerah"
         ];
         $other_meta = [
-            "total_produk_hukum"                            => $this->produk_hukum_model->getTotalDocument()["total"],
+            "total_produk_hukum"                            => (int) $this->produk_hukum_model->getTotalDocument()["total"],
             "total_produk_hukum_current_month"              => $this->produk_hukum_model->getTotalDocumentByMonth(date("m", time())),
             "total_produk_hukum_current_year"               => $this->produk_hukum_model->getTotalDocumentByYear(date("Y", time())),
             "total_doc_by_year"                             => $this->produk_hukum_model->getTotalDocumentPerYears()["result"],
