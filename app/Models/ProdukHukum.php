@@ -87,7 +87,7 @@ class ProdukHukum extends Model
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
             ->where('ph.is_publish', true)
             ->groupBy("ph.id")
             ->orderBy("ph.created_at", "DESC")
@@ -121,7 +121,7 @@ class ProdukHukum extends Model
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
             ->where('ph.is_publish', true)
             ->groupBy("ph.id");
         if ($byKeyword !== false) {
@@ -196,7 +196,7 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id")
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
             ->where('ph.is_publish', true);
         if (!is_null($category)) {
             $builder
