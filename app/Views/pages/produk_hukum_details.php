@@ -4,9 +4,10 @@
 helper("filesystem");
 helper("number");
 $timeServices = service("timeServices");
-$split_attachments = explode(",", $produk_hukum["berkas"]);
-unset($produk_hukum["berkas"]);
-$attachments_to_array = split_string_on_array(":", $split_attachments);
+if (!is_null($produk_hukum["berkas"])) {
+    $split_attachments = explode(",", $produk_hukum["berkas"]);
+    $attachments_to_array = split_string_on_array(":", $split_attachments);
+}
 $shareWhatsAppText = "Dokumen Hukum:\n";
 $shareWhatsAppText .= "Judul: " . esc($produk_hukum["judul"]) . "\n";
 $shareWhatsAppText .= "Jenis Peraturan: " . esc($produk_hukum["kategori"]) . "\n";
@@ -165,7 +166,7 @@ session()->set('document_access', true);
                             </article>
                         <?php endforeach ?>
                     <?php else: ?>
-                        <?= view("components/data-not-found", ["message" => "Tidak ada dokumen terkait yang ditemukan."]) ?>
+                        <?= view("components/data-not-found", ["message" => "Dokumen terkait tidak ditemukan."]) ?>
                     <?php endif ?>
                 </div>
             </div>
@@ -177,24 +178,28 @@ session()->set('document_access', true);
                     <span>Lampiran</span>
                 </h2>
                 <div class="files space-y-4">
-                    <?php foreach ($attachments_to_array as $key => [$title, $file_name]): ?>
-                        <div class="file flex flex-col sm:flex-row xl:items-center justify-between gap-4 xl:gap-0 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
-                            <div class="file-details flex items-center gap-3">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
-                                    <use href="/assets/icons.svg#icon-document">
-                                </svg>
-                                <div>
-                                    <p class="font-medium text-default-foreground"><?= esc($title) ?></p>
+                    <?php if (!is_null($produk_hukum["berkas"])): ?>
+                        <?php foreach ($attachments_to_array as $key => [$title, $file_name]): ?>
+                            <div class="file flex flex-col sm:flex-row xl:items-center justify-between gap-4 xl:gap-0 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors group">
+                                <div class="file-details flex items-center gap-3">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
+                                        <use href="/assets/icons.svg#icon-document">
+                                    </svg>
+                                    <div>
+                                        <p class="font-medium text-default-foreground"><?= esc($title) ?></p>
+                                    </div>
                                 </div>
+                                <a href="/document-viewer?dokumen=<?= esc($file_name) ?>" target="_blank" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <use href="/assets/icons.svg#icon-sheet">
+                                    </svg>
+                                    <span class="text-sm">Buka PDF</span>
+                                </a>
                             </div>
-                            <a href="/document-viewer?dokumen=<?= esc($file_name) ?>" target="_blank" class="w-fit ml-auto xl:ml-0 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-colors flex items-center gap-2">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-sheet">
-                                </svg>
-                                <span class="text-sm">Buka PDF</span>
-                            </a>
-                        </div>
-                    <?php endforeach ?>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <?= view('components/data-not-found', ["message" => 'Lampiran tidak ditemukan.']) ?>
+                    <?php endif ?>
                 </div>
             </div>
             <div class="document-change-histories bg-white border border-primary-border rounded-lg p-6">
@@ -205,35 +210,40 @@ session()->set('document_access', true);
                     <span>Riwayat Perubahan Dokumen</span>
                 </h2>
                 <div class="change-histories relative">
-                    <div class="timeline absolute left-0 xl:left-6 top-0 bottom-0 w-0.5 bg-primary-border"></div>
-                    <div class="space-y-6">
-                        <div id="changeHistoryWrapper" class="relative pl-8 xl:pl-16">
-                            <div id="contentHistoryWrapper" class="space-y-6">
-                                <?php foreach ($histories_change as $history): ?>
-                                    <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
-                                        <div class="flex flex-col xl:flex-row items-start justify-between gap-3 xl:gap-4 mb-4 xl:mb-2">
-                                            <div class="flex items-center gap-2">
-                                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-purple-600">
-                                                    <use href="/assets/icons.svg#icon-document-history">
-                                                </svg>
-                                                <span class="font-semibold text-default-foreground"><?= !is_null($history["status"]) ? esc($history["status"]) : esc($history["change_type"]) ?></span>
+                    <?php if (count($histories_change) > 0): ?>
+                        <div class="timeline absolute left-0 xl:left-6 top-0 bottom-0 w-0.5 bg-primary-border"></div>
+                        <div class="space-y-6">
+                            <div id="changeHistoryWrapper" class="relative pl-8 xl:pl-16">
+                                <div id="contentHistoryWrapper" class="space-y-6">
+                                    <?php foreach ($histories_change as $history): ?>
+                                        <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
+                                            <div class="flex flex-col xl:flex-row items-start justify-between gap-3 xl:gap-4 mb-4 xl:mb-2">
+                                                <div class="flex items-center gap-2">
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-purple-600">
+                                                        <use href="/assets/icons.svg#icon-document-history">
+                                                    </svg>
+                                                    <span class="font-semibold text-default-foreground"><?= !is_null($history["status"]) ? esc($history["status"]) : esc($history["change_type"]) ?></span>
+                                                </div>
+                                                <div class="date-change flex gap-2 text-sm text-muted-foreground">
+                                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                                        <use href="/assets/icons.svg#icon-calendar">
+                                                    </svg>
+                                                    <time datetime="<?= esc($history["changed_at"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($history["changed_at"])) ?></time>
+                                                </div>
                                             </div>
-                                            <div class="date-change flex gap-2 text-sm text-muted-foreground">
-                                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                                    <use href="/assets/icons.svg#icon-calendar">
-                                                </svg>
-                                                <time datetime="<?= esc($history["changed_at"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($history["changed_at"])) ?></time>
+                                            <p class="text-default-foreground mb-3 xl:mb-2"><?= esc($history["comment"]) ?></p>
+                                            <div class="flex items-center gap-2 text-sm">
+                                                <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($history["kategori"]) ?? esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($history["nomor"]) ?? esc($produk_hukum["nomor"]) ?> Tahun <?= esc($history["tahun"]) ?? esc($produk_hukum["tahun"]) ?></p>
                                             </div>
                                         </div>
-                                        <p class="text-default-foreground mb-3 xl:mb-2"><?= esc($history["comment"]) ?></p>
-                                        <div class="flex items-center gap-2 text-sm">
-                                            <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($history["kategori"]) ?? esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($history["nomor"]) ?? esc($produk_hukum["nomor"]) ?> Tahun <?= esc($history["tahun"]) ?? esc($produk_hukum["tahun"]) ?></p>
-                                        </div>
-                                    </div>
-                                <?php endforeach ?>
+                                    <?php endforeach ?>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                        <script src="<?= base_url() . "assets/js/history-ui.js" ?>" async></script>
+                    <?php else: ?>
+                        <?= view('components/data-not-found', ["message" => 'Dokumen tidak memiliki riwayat perubahan yang tercatat.']) ?>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -374,5 +384,4 @@ session()->set('document_access', true);
     </div>
 </div>
 <script type="module" src="<?= base_url() . "assets/js/produk-hukum-details-page.js" ?>"></script>
-<script src="<?= base_url() . "assets/js/history-ui.js" ?>"></script>
 <?= $this->endSection() ?>
