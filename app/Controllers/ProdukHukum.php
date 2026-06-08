@@ -35,7 +35,7 @@ class ProdukHukum extends BaseController
             "pager" => $mk_pager
         ] = create_pagination($get_page, $data_per_page, $total_produk_hukum);
         $produk_hukum = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset, $keyword, $category, $year, $status);
-        $getYearsDocumentUploaded = $this->produk_hukum_model->getYearsDocumentUploaded();
+        $get_years_product_law = $this->produk_hukum_model->getYearsProductLaw();
         $getDocumentCategories = $this->document_categories_model->getDocumentCategories();
         $data_feconfig = $this->frontend_config_model->getAllData();
         $page_title = "Produk Hukum | JDIH DPRD Kabupaten Batang Hari";
@@ -64,7 +64,7 @@ class ProdukHukum extends BaseController
             "current_keyword" => $keyword,
             "current_category" => $category,
             "current_year" => $year,
-            "years_option_select" => $getYearsDocumentUploaded,
+            "years_product_law" => $get_years_product_law,
             "document_categories" => $getDocumentCategories,
         ];
         $page_data = create_page_meta(

@@ -256,20 +256,20 @@ class ProdukHukum extends Model
     {
         return $this
             ->select([
-                "ph.title AS judul",
-                "ph.nomor",
-                "ph.tahun",
+                "rd.judul",
+                "rd.nomor",
+                "rd.tahun",
                 "(
                     CASE
-                        WHEN doc_categ.category_synonym IS NULL THEN doc_categ.category
-                        ELSE doc_categ.category_synonym
+                        WHEN doc_categ.category_synonym IS NULL THEN UPPER(doc_categ.category)
+                        ELSE UPPER(doc_categ.category_synonym)
                     END
                 ) AS kategori",
-                "status AS ref_status"
+                "docstatact.action AS ref_status"
             ])
-            ->join("document_categories doc_categ", "doc_categ.id = ph.category_id")
-            ->join("related_document rd", "rd.related_ph_id = ph.id")
-            ->join("document_status docstat", "docstat.id = rd.related_status")
+            ->join("related_document rd", "rd.ph_id = ph.id")
+            ->join("document_categories doc_categ", "doc_categ.id = rd.category_id")
+            ->join("document_status_action docstatact", "docstatact.id = rd.status_action")
             ->where("rd.ph_id", $ph_id)
             ->findAll();
     }
@@ -294,6 +294,7 @@ class ProdukHukum extends Model
                 "left"
             )
             ->join("icons", 'icons.id = doc_categ.icon')
+            ->where("doc_categ.is_view", true)
             ->groupBy("doc_categ.id")
             ->orderBy("total_dokumen", "DESC")
             ->get()
@@ -430,6 +431,20 @@ class ProdukHukum extends Model
             ->orderBy('ph.created_at', $order_by)
             ->orderBy('ph.id', $order_by)
             ->groupBy('ph.id')
+            ->findAll();
+    }
+
+    /**
+     * Mengambil tahun peraturan produk hukum yang tersedia didatabase
+     * @param string $order_by (asc|desc) Mengatur urutan tahun, default asc (terendah - tertinggi)
+     * @return array
+     */
+    public function getYearsProductLaw(string $order_by = 'asc'): array
+    {
+        return $this
+            ->select("tahun")
+            ->distinct()
+            ->orderBy("tahun", $order_by)
             ->findAll();
     }
 }
