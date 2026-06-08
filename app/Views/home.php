@@ -61,7 +61,7 @@ $timeServices = service("timeServices");
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
                                 <use href="/assets/icons.svg#icon-document"></use>
                             </svg>
-                            <span>Jenis Dokumen</span>
+                            <span>Jenis</span>
                         </span>
                         <select id="categoryDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="category">
                             <option value="off">Pilih Jenis Dokumen</option>
@@ -78,8 +78,8 @@ $timeServices = service("timeServices");
                             <span>Tahun</span>
                         </span>
                         <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer focus:outline-none" data-filter-identity="year">
-                            <option value="off">Pilih Tahun Dokumen</option>
-                            <?php foreach ($years_document_uploaded as ["tahun" => $year]): ?>
+                            <option value="off">Pilih Tahun Peraturan</option>
+                            <?php foreach ($years_product_law as ["tahun" => $year]): ?>
                                 <option value="<?= esc($year) ?>"><?= esc($year) ?></option>
                             <?php endforeach ?>
                         </select>
@@ -89,7 +89,7 @@ $timeServices = service("timeServices");
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
                                 <use href="/assets/icons.svg#icon-clock"></use>
                             </svg>
-                            <span>Status Berlaku</span>
+                            <span>Status</span>
                         </span>
                         <select id="statusDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer" data-filter-identity="status">
                             <option value="off">Pilih Status Dokumen</option>
@@ -217,7 +217,7 @@ $timeServices = service("timeServices");
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                                             <use href="/assets/icons.svg#icon-calendar"></use>
                                         </svg>
-                                        <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time>
+                                        <span>Tanggal upload: <time datetime="<?= esc($doc["tanggal_upload"]) ?>"><?= $timeServices->translateDateToLocalFormat(esc($doc["tanggal_upload"])) ?></time></span>
                                     </div>
                                 </div>
                             </div>
