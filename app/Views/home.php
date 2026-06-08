@@ -144,7 +144,7 @@ $timeServices = service("timeServices");
             <h2 class="mb-4 text-4xl font-bold"><?= dot_array_search("statistik.title", $meta_page) ?></h2>
             <p class="text-muted-foreground"><?= dot_array_search("statistik.sub_title", $meta_page) ?></p>
         </div>
-        <div class="statistics-data grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 justify-center gap-6">
+        <div class="statistics-data grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-center gap-6">
             <div class="statistic flex items-center xl:flex-col gap-4 xl:gap-0 bg-white text-center rounded-xl p-12 border border-primary-border hover:shadow-sm transition-shadow">
                 <div class="top flex items-center justify-between mb-4">
                     <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
@@ -169,6 +169,19 @@ $timeServices = service("timeServices");
                 <div class="text">
                     <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= $total_produk_hukum ?></span>
                     <span class="statistic-text text-sm text-muted-foreground block">Total Dokumen</span>
+                </div>
+            </div>
+            <div class="statistic flex items-center xl:flex-col gap-4 xl:gap-0 bg-white text-center rounded-xl p-12 border border-primary-border hover:shadow-sm transition-shadow">
+                <div class="top flex items-center justify-between mb-4">
+                    <div class="icon-statistic bg-primary/10 w-12 h-12 rounded-lg flex items-center justify-center">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-primary">
+                            <use href="/assets/icons.svg#icon-hammer"></use>
+                        </svg>
+                    </div>
+                </div>
+                <div class="text">
+                    <span class="counts text-4xl font-bold text-default-foreground mb-2 block"><?= $total_categories ?></span>
+                    <span class="statistic-text text-sm text-muted-foreground block">Total Kategori Produk Hukum</span>
                 </div>
             </div>
         </div>
