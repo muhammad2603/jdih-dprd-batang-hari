@@ -26,8 +26,8 @@ $timeServices = service("timeServices");
                 <input id="searchInput" type="text" value="<?= uri_title_to_words($current_search) ?>" placeholder="Cari kata kunci keputusan pimpinan dprd..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
             </div>
             <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                <option value="*">Semua Tahun</option>
-                <?php foreach ($years_document_uploaded as $year): ?>
+                <option value="*">Semua Tahun Peraturan</option>
+                <?php foreach ($years_product_law as $year): ?>
                     <option value="<?= $year["tahun"] ?>" <?= $current_selected_year === $year["tahun"] ? "selected" : "" ?>><?= $year["tahun"] ?></option>
                 <?php endforeach ?>
             </select>
