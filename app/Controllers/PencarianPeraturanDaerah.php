@@ -49,6 +49,7 @@ class PencarianPeraturanDaerah extends BaseController
             "JDIH Kabupaten Batang Hari",
             "Regulasi Daerah Batang Hari",
         ];
+        $get_years_product_law = $this->ph_model->getYearsProductLaw();
         $other_meta = [
             "dokumen_perda"             => $produk_hukum_perda,
             "pager_links"               => $total_produk_hukum_perda > $per_page ? $mk_pager : false,
@@ -56,7 +57,7 @@ class PencarianPeraturanDaerah extends BaseController
             "data_display_count"        => $data_index,
             "current_search"            => $by_keyword,
             "current_selected_year"     => $by_year,
-            "years_document_uploaded"   => $this->ph_model->getYearsDocumentUploaded($by_category),
+            "years_product_law"         => $get_years_product_law,
         ];
         $page_data = create_page_meta(
             $page_title,
