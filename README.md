@@ -4,16 +4,25 @@ Sistem Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Har
 
 # Teknologi Yang Digunakan
 
-1. CodeIgniter
-2. MySQL
+* CodeIgniter
+* MySQL
 
 # Alat Pihak Ketiga Yang Digunakan
 
-1. PDF.JS (Mozilla)
-2. Tailwind CSS
-3. Chart JS
+* PDF.JS (Mozilla)
+* Tailwind CSS
+* Chart JS
 
 # Apa Yang Baru?
+
+Versi 2.1.0:
+
+1. Perbaikan halaman statistik saat produk hukum tidak tersedia
+2. Perbaikan join dibeberapa method model Produk Hukum
+3. Perbaikan struktur table database
+4. Menambahkan table khusus untuk tindakan antar produk hukum
+5. Perbaikan query sql dimodel produk hukum
+6. Mengganti pencarian produk hukum dari berdasarkan tahun upload dengan tahun peraturan
 
 Versi 2.0.0:
 
