@@ -36,8 +36,8 @@ $timeServices = service("timeServices");
                 <?php endforeach ?>
             </select>
             <select id="yearDocument" class="w-full px-4 py-3 bg-input-background text-sm rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
-                <option value="*">Pilih Tahun Upload</option>
-                <?php foreach ($years_option_select as ["tahun" => $year]): ?>
+                <option value="*">Pilih Tahun Peraturan</option>
+                <?php foreach ($years_product_law as ["tahun" => $year]): ?>
                     <option value="<?= esc($year) ?>" <?= $current_year == esc($year) ? "selected" : "" ?>><?= esc($year) ?></option>
                 <?php endforeach ?>
             </select>
