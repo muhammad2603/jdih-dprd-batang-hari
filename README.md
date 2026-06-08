@@ -15,6 +15,9 @@ Sistem Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Har
 
 # Apa Yang Baru?
 
+Versi 2.1.1:
+1. Menambahkan informasi statistik total kategori produk hukum dihalaman beranda
+
 Versi 2.1.0:
 
 1. Perbaikan halaman statistik saat produk hukum tidak tersedia
