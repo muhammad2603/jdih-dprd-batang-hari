@@ -157,8 +157,8 @@ session()->set('document_access', true);
                         <?php foreach ($related_documents as $rd): ?>
                             <article class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg hover:bg-muted transition-colors">
                                 <div class="flex-1">
-                                    <header class="flex flex-col xl:flex-row xl:items-center gap-2 mb-2.5 xl:mb-1">
-                                        <span class="w-fit xl:w-auto text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) ?></span>
+                                    <header class="flex flex-col xl:flex-row xl:items-center gap-2 mb-2.5">
+                                        <span class="w-fit xl:w-auto text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) === "Dicabut" ? esc($rd["ref_status"]) . ' Oleh' : esc($rd["ref_status"]) ?></span>
                                         <span class="text-sm font-semibold text-default-foreground"><?= esc($rd["kategori"]) ?> No. <?= esc($rd["nomor"]) ?> Tahun <?= esc($rd["tahun"]) ?></span>
                                     </header>
                                     <p class="text-sm text-default-foreground"><?= esc($rd["judul"]) ?></p>
@@ -325,9 +325,13 @@ session()->set('document_access', true);
                     <div>
                         <p class="text-muted-foreground mb-2">Bidang Hukum</p>
                         <div class="flex flex-wrap gap-2">
-                            <?php foreach ($bidang_hukum as $kategori): ?>
-                                <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"><?= esc($kategori) ?></span>
-                            <?php endforeach ?>
+                            <?php if ($bidang_hukum[0] !== ""): ?>
+                                <?php foreach ($bidang_hukum as $kategori): ?>
+                                    <span class="px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-medium"><?= esc($kategori) ?></span>
+                                <?php endforeach ?>
+                            <?php else: ?>
+                                <span class="text-xs font-medium">-</span>
+                            <?php endif ?>
                         </div>
                     </div>
                     <div>
