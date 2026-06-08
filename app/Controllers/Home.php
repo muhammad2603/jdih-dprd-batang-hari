@@ -24,7 +24,7 @@ class Home extends BaseController
     {
         $data_feconfig = $this->frontend_config->getAllData();
         $get_all_new_document = $this->produk_hukum->getProdukHukumHighlight();
-        $get_years_document_uploaded = $this->produk_hukum->getYearsDocumentUploaded();
+        $get_years_product_law = $this->produk_hukum->getYearsProductLaw();
         $get_document_status = $this->document_status_model->getStatus();
         $get_document_categories = $this->produk_hukum->getTotalDocumentByCategory();
         $page_title = "JDIH DPRD Kabupaten Batang Hari | Dokumentasi & Informasi Hukum Daerah";
@@ -51,7 +51,7 @@ class Home extends BaseController
             "new_documents"                     => $get_all_new_document,
             "total_produk_hukum"                => $this->produk_hukum->getTotalProdukHukumHighlight(),
             "total_pengunjung"                  => model("Pengunjung")->totalVisitor(),
-            "years_document_uploaded"           => $get_years_document_uploaded,
+            "years_product_law"                 => $get_years_product_law,
             "document_categories"               => $get_document_categories,
             "document_status"                   => $get_document_status,
         ];
