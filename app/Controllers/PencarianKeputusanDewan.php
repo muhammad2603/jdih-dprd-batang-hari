@@ -49,6 +49,7 @@ class PencarianKeputusanDewan extends BaseController
             "JDIH Kabupaten Batang Hari",
             "Keputusan Anggota DPRD",
         ];
+        $get_years_product_law = $this->ph_model->getYearsProductLaw();
         $other_meta = [
             "dokumen"                   => $get_dokumen_keputusan_dewan,
             "pager_links"               => $total_dokumen_keputusan_dewan > $data_per_page ? $pager : false,
@@ -56,7 +57,7 @@ class PencarianKeputusanDewan extends BaseController
             "data_display_count"        => $data_index,
             "current_search"            => $get_keyword,
             "current_selected_year"     => $get_year,
-            "years_document_uploaded"   => $this->ph_model->getYearsDocumentUploaded($category_id),
+            "years_product_law"         => $get_years_product_law,
         ];
         $page_data = create_page_meta(
             $page_title,
