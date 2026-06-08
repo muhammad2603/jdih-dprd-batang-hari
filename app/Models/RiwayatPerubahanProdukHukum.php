@@ -49,12 +49,7 @@ class RiwayatPerubahanProdukHukum extends Model
         $selected_fields = [
             "change_type",
             "doc_categ.category_synonym AS kategori",
-            "(
-                CASE
-                    WHEN docstat.sinonim IS NULL THEN docstat.status
-                    ELSE docstat.sinonim
-                END
-            ) AS status",
+            "docstatact.action AS status",
             "rdp.nomor",
             "rdp.tahun",
             "rdp.comment",
@@ -65,7 +60,7 @@ class RiwayatPerubahanProdukHukum extends Model
             ->join("produk_hukum ph", "ph.id = $ph_id")
             ->join("riwayat_detail_perubahan rdp", "rdp.id = rpph.rdp_id")
             ->join("document_categories doc_categ", "doc_categ.id = rdp.category_id", "LEFT")
-            ->join("document_status docstat", "docstat.id = rdp.status_id", "LEFT")
+            ->join("document_status_action docstatact", "docstatact.id = rdp.status_id", "LEFT")
             ->where("rpph.ph_id", $ph_id)
             ->orderBy("rdp.changed_at", "DESC")
             ->orderBy("rdp.id", "DESC")
