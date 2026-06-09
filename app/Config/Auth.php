@@ -46,9 +46,9 @@ class Auth extends ShieldAuth
      * --------------------------------------------------------------------
      */
     public array $views = [
-        'login'                       => '\CodeIgniter\Shield\Views\login',
-        'register'                    => '\CodeIgniter\Shield\Views\register',
-        'layout'                      => '\CodeIgniter\Shield\Views\layout',
+        'login'                       => '\App\Views\dashboard\auth\login',
+        // 'register'                    => '\CodeIgniter\Shield\Views\register',
+        // 'layout'                      => '\CodeIgniter\Shield\Views\layout',
         'action_email_2fa'            => '\CodeIgniter\Shield\Views\email_2fa_show',
         'action_email_2fa_verify'     => '\CodeIgniter\Shield\Views\email_2fa_verify',
         'action_email_2fa_email'      => '\CodeIgniter\Shield\Views\Email\email_2fa_email',
@@ -74,7 +74,7 @@ class Auth extends ShieldAuth
      * to apply any logic you may need.
      */
     public array $redirects = [
-        'register'          => '/',
+        // 'register'          => '/',
         'login'             => '/',
         'logout'            => 'login',
         'force_reset'       => '/',
@@ -103,7 +103,7 @@ class Auth extends ShieldAuth
      * @var array<string, class-string<ActionInterface>|null>
      */
     public array $actions = [
-        'register' => null,
+        // 'register' => null,
         'login'    => null,
     ];
 
@@ -157,7 +157,7 @@ class Auth extends ShieldAuth
      * --------------------------------------------------------------------
      * Determines whether users can register for the site.
      */
-    public bool $allowRegistration = true;
+    public bool $allowRegistration = false;
 
     /**
      * --------------------------------------------------------------------
