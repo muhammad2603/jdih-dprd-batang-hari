@@ -44,25 +44,13 @@ class DocumentStatus extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    // Mengambil status untuk opsi pemilihan berdasarkan status
-    protected $selectStatus = [
-        "Penetapan",
-        "Pencabutan",
-        "Berlaku",
-        "Tidak Berlaku",
-    ];
-
     /**
      * Mengambil status yang tersedia di Database
      * @param bool $selectAll Mengambil semua status yang tersedia, jika false, hanya akan mengambil status yang ada diproperty selectStatus
      * @return array
      */
-    public function getStatus($selectAll = false): array
+    public function getStatus(): array
     {
-        $builder = $this->select("status");
-        if ($selectAll === false) {
-            $builder->whereIn("status", $this->selectStatus);
-        }
-        return $builder->findAll();
+        return $this->select("status")->findAll();
     }
 }
