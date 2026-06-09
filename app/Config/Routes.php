@@ -3,6 +3,7 @@
 use App\Filters\VisitCounter;
 use CodeIgniter\Router\RouteCollection;
 use App\Filters\APIFilter;
+service('auth')->routes($routes);
 
 /**
  * @var RouteCollection $routes

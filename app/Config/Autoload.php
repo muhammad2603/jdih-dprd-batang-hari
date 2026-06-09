@@ -88,5 +88,5 @@ class Autoload extends AutoloadConfig
      *
      * @var list<string>
      */
-    public $helpers = ["array", "page_meta", "generate_uuid"];
+    public $helpers = ['array', 'page_meta', 'generate_uuid', 'auth', 'setting'];
 }
