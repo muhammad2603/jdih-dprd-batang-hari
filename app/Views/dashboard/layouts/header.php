@@ -26,7 +26,7 @@
                 <!-- __COMMENT__ Ganti "A" dengan first letter username -->
                 <div class="w-9 h-9 bg-accent rounded-full flex items-center justify-center text-white font-semibold text-sm">A</div>
             </button>
-            <div class="profile-dropdown absolute top-[115%] right-0 bg-white border border-gray-200 shadow-md rounded-lg" style="width: 200px;">
+            <div class="profile-dropdown absolute top-[115%] right-0 w-50 bg-white border border-gray-200 shadow-md rounded-lg transition-opacity duration-200 ease-in opacity-0 pointer-events-none">
                 <div class="user-info p-3.5 text-left flex flex-col gap-1 border-b border-gray-200">
                     <span class="role text-sm">Administrator</span>
                     <span class="username text-xs text-gray-500">Admin</span>
