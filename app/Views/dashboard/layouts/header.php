@@ -1,6 +1,6 @@
 <header class="h-16 sticky top-0 left-0 z-9999999 px-6 py-3 flex justify-between items-center bg-white border-b border-gray-200">
     <div class="header-left">
-        <h1 class="text-xl font-bold">Dashboard</h1>
+        <h1 class="text-xl font-bold"><?= $title ?? "Dashboard" ?></h1>
     </div>
     <div class="header-right flex items-center gap-3">
         <button class="notification relative p-2 rounded-lg hover:bg-gray-100 focus:outline-gray-300 focus:bg-gray-100 text-gray-600 cursor-pointer">
@@ -10,16 +10,18 @@
             </svg>
             <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
         </button>
-        <!-- __COMMENT__ Isi endpoint ke url tambah dokumen -->
-        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-lg transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                <path d="M11.35 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v5.35" />
-                <path d="M14 2v5a1 1 0 0 0 1 1h5" />
-                <path d="M14 19h6" />
-                <path d="M17 16v6" />
-            </svg>
-            <span>Tambah Dokumen</span>
-        </a>
+        <?php if ($title !== "Kelola Dokumen"): ?>
+            <!-- __COMMENT__ Isi endpoint ke url tambah dokumen -->
+            <a href="#" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-lg transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                    <path d="M11.35 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v5.35" />
+                    <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+                    <path d="M14 19h6" />
+                    <path d="M17 16v6" />
+                </svg>
+                <span>Tambah Dokumen</span>
+            </a>
+        <?php endif ?>
         <!-- __COMMENT__ Profile adalah CTA, buat interaksi untuk membuka dropdownnya -->
         <div class="profile relative">
             <button type="button" class="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-1 rounded-lg" tabindex="-1">
