@@ -4,17 +4,17 @@
     </div>
     <div class="header-right flex items-center gap-3">
         <div class="notification-wrapper relative">
-            <button class="notification-btn relative p-2 rounded-lg hover:bg-gray-100 focus:outline-gray-300 focus:bg-gray-100 text-gray-600 cursor-pointer">
+            <button id="notificationBtn" class="notification-btn relative p-2 rounded-lg hover:bg-gray-100 focus:outline-gray-300 focus:bg-gray-100 text-gray-600 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                     <path d="M10.268 21a2 2 0 0 0 3.464 0" />
                     <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
                 </svg>
-                <span class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
+                <span id="dotIconNotification" class="absolute top-1.5 right-1.5 w-2 h-2 bg-red-500 rounded-full"></span>
             </button>
-            <div class="absolute top-[115%] right-0 w-80 p-1 bg-white border border-accent-light-gray rounded-md shadow-md overflow-y-auto overflow-x-hidden hidden">
+            <div id="notificationPopUp" class="absolute top-[115%] right-0 w-80 p-1 bg-white border border-accent-light-gray rounded-md shadow-md overflow-y-auto overflow-x-hidden hidden">
                 <div class="notification-header px-2 py-1.5 text-sm font-medium flex items-center justify-between">
                     <span>Notifikasi</span>
-                    <span class="text-xs font-normal text-muted-foreground">3 belum dibaca</span>
+                    <span id="unreadNotification" class="text-xs font-normal text-muted-foreground">3 belum dibaca</span>
                 </div>
                 <div class="separator bg-accent-light-gray/90 -mx-1 my-1 h-px"></div>
                 <div class="notifications max-h-146 overflow-y-auto scrollbar-thin">
@@ -79,7 +79,6 @@
                             <p class="text-xs text-gray-500 mt-0.5 leading-snug">Perda No. 18 Tahun 2023 telah berhasil dihapus. Anda dapat memulihkannya kembali dihalaman Riwayat Hapus.</p>
                             <p class="text-xs text-gray-400 mt-1">1 jam yang lalu</p>
                         </div>
-                        <span class="dot-notification w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5"></span>
                     </div>
                     <div class="flex items-start gap-3 px-3 py-3 cursor-pointer transition-colors hover:bg-gray-100">
                         <div class="icon-notification mt-0.5 w-8 h-8 rounded-full flex items-center justify-center shrink-0 bg-sky-100">
@@ -94,7 +93,6 @@
                             <p class="text-xs text-gray-500 mt-0.5 leading-snug">Profil anda telah berhasil diperbarui.</p>
                             <p class="text-xs text-gray-400 mt-1">3 jam yang lalu</p>
                         </div>
-                        <span class="dot-notification w-2 h-2 rounded-full bg-primary shrink-0 mt-1.5"></span>
                     </div>
                 </div>
             </div>
