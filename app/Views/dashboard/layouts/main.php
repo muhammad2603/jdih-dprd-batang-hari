@@ -19,6 +19,7 @@
         </main>
     </div>
     <script src="/assets/js/notification-dashboard.js"></script>
+    <script src="/assets/js/button-profile-dashboard.js"></script>
 </body>
 
 </html>
