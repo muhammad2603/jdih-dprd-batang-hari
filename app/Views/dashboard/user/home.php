@@ -75,8 +75,7 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
         <span class="mt-1 text-sm text-white/70">Kelola dokumen hukum JDIH DPRD Kabupaten Batang Hari</span>
     </div>
     <div class="action-buttons flex items-center gap-2">
-        <!-- __COMMENT__ Isi endpoint ke url tambah dokumen -->
-        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-white text-primary text-sm rounded-lg font-medium transition-colors outline-none hover:bg-gray-100 focus:bg-gray-200">
+        <a href="/user/dashboard/tambah-dokumen" class="flex items-center gap-2 px-4 py-2 bg-white text-primary text-sm rounded-lg font-medium transition-colors outline-none hover:bg-gray-100 focus:bg-gray-200">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                 <path d="M11.35 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v5.35" />
                 <path d="M14 2v5a1 1 0 0 0 1 1h5" />
@@ -85,8 +84,7 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
             </svg>
             <span>Tambah Dokumen</span>
         </a>
-        <!-- __COMMENT__ Isi endpoint ke url kelola dokumen -->
-        <a href="#" class="flex items-center gap-2 px-4 py-2 bg-white/20 text-white text-sm rounded-lg font-medium transition-colors outline-none hover:bg-white/30 focus:bg-white/30">
+        <a href="/user/dashboard/kelola-dokumen" class="flex items-center gap-2 px-4 py-2 bg-white/20 text-white text-sm rounded-lg font-medium transition-colors outline-none hover:bg-white/30 focus:bg-white/30">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-white">
                 <use href="/assets/icons.svg#icon-document">
             </svg>
