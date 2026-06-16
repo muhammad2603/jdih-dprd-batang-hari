@@ -18,6 +18,7 @@
             </div>
         </main>
     </div>
+    <script src="/assets/js/notification-dashboard.js"></script>
 </body>
 
 </html>
