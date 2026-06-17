@@ -28,10 +28,9 @@
     <div class="document-type relative shrink-0">
         <select id="documentType" class="appearance-none pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg bg-white cursor-pointer outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
             <option value="semua">Jenis: Semua</option>
-            <!-- __COMMENT__ Ambil jenis dokumen yang tersedia didatabase -->
-            <option value="peraturan-daerah">Peraturan daerah</option>
-            <option value="keputusan-pimpinan-dewan">Keputusan Pimpinan dewan</option>
-            <option value="keputusan-dewan">Keputusan Dewan</option>
+            <?php foreach ($document_categories as $category): ?>
+                <option value="<?= url_title(esc($category["category"]), '-', true) ?>"><?= esc($category["category"]) ?></option>
+            <?php endforeach ?>
         </select>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-4 absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">
             <path d="m6 9 6 6 6-6" />
@@ -40,10 +39,9 @@
     <div class="document-status relative shrink-0">
         <select id="documentStatus" class="appearance-none pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg bg-white cursor-pointer outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
             <option value="semua">Status: Semua</option>
-            <!-- __COMMENT__ Ambil status dokumen yang tersedia didatabase -->
-            <option value="berlaku">Berlaku</option>
-            <option value="diubah">Diubah</option>
-            <option value="dicabut">Dicabut</option>
+            <?php foreach ($document_status as $status): ?>
+                <option value="<?= esc($status["status"]) ?>"><?= esc($status["status"]) ?></option>
+            <?php endforeach ?>
         </select>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-4 absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">
             <path d="m6 9 6 6 6-6" />
@@ -52,12 +50,9 @@
     <div class="document-year relative shrink-0">
         <select id="documentYear" class="appearance-none pl-3 pr-8 py-2 text-sm border border-gray-200 rounded-lg bg-white cursor-pointer outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary">
             <option value="semua">Tahun: Semua</option>
-            <!-- __COMMENT__ Ambil tahun peraturan dokumen yang tersedia didatabase -->
-            <option value="2024">2024</option>
-            <option value="2022">2022</option>
-            <option value="2021">2021</option>
-            <option value="2020">2020</option>
-            <option value="2017">2017</option>
+            <?php foreach ($document_years as $year): ?>
+                <option value="<?= esc($year["tahun"]) ?>"><?= esc($year["tahun"]) ?></option>
+            <?php endforeach ?>
         </select>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="size-4 absolute right-2 top-1/2 -translate-y-1/2 text-muted-foreground">
             <path d="m6 9 6 6 6-6" />
@@ -78,201 +73,48 @@
                 </tr>
             </thead>
             <tbody class="divide-y divide-gray-50">
-                <tr class="hover:bg-gray-50/80 group">
-                    <td class="px-5 py-3.5 text-sm text-gray-400">1</td>
-                    <td class="py-3 5 px-4">
-                        <p class="text-sm font-medium text-gray-800 line-clamp-2 max-w-md">Peraturan Daerah tentang Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten Batang Hari Tahun 2021-2026</p>
-                        <p class="text-xs text-gray-400 mt-1">Bupati Batang Hari</p>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary">PERDA</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="text-sm text-gray-600 whitespace-nowrap">3/2021</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700">Berlaku</span>
-                    </td>
-                    <td class="py-3 5 px-5">
-                        <div class="flex items-center justify-end gap-1">
-                            <button title="Lihat" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-eye">
-                                </svg>
-                            </button>
-                            <button title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                </svg>
-                            </button>
-                            <button title="Hapus" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-red-50 hover:text-red-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M10 11v6" />
-                                    <path d="M14 11v6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                    <path d="M3 6h18" />
-                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50/80 group">
-                    <td class="px-5 py-3.5 text-sm text-gray-400">2</td>
-                    <td class="py-3 5 px-4">
-                        <p class="text-sm font-medium text-gray-800 line-clamp-2 max-w-md">Peraturan Bupati tentang Pembentukan Tim Percepatan Penanganan COVID-19</p>
-                        <p class="text-xs text-gray-400 mt-1">Sekretariat Daerah</p>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary">PERBUP</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="text-sm text-gray-600 whitespace-nowrap">12/2021</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700">Berlaku</span>
-                    </td>
-                    <td class="py-3 5 px-5">
-                        <div class="flex items-center justify-end gap-1">
-                            <button title="Lihat" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-eye">
-                                </svg>
-                            </button>
-                            <button title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                </svg>
-                            </button>
-                            <button title="Hapus" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-red-50 hover:text-red-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M10 11v6" />
-                                    <path d="M14 11v6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                    <path d="M3 6h18" />
-                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50/80 group">
-                    <td class="px-5 py-3.5 text-sm text-gray-400">3</td>
-                    <td class="py-3 5 px-4">
-                        <p class="text-sm font-medium text-gray-800 line-clamp-2 max-w-md">Peraturan Daerah tentang Retribusi Pelayanan Persampahan/Kebersihan</p>
-                        <p class="text-xs text-gray-400 mt-1">Dinas Lingkungan Hidup</p>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary">PERDA</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="text-sm text-gray-600 whitespace-nowrap">8/2019</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-yellow-100 text-yellow-700">Diubah</span>
-                    </td>
-                    <td class="py-3 5 px-5">
-                        <div class="flex items-center justify-end gap-1">
-                            <button title="Lihat" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-eye">
-                                </svg>
-                            </button>
-                            <button title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                </svg>
-                            </button>
-                            <button title="Hapus" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-red-50 hover:text-red-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M10 11v6" />
-                                    <path d="M14 11v6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                    <path d="M3 6h18" />
-                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50/80 group">
-                    <td class="px-5 py-3.5 text-sm text-gray-400">4</td>
-                    <td class="py-3 5 px-4">
-                        <p class="text-sm font-medium text-gray-800 line-clamp-2 max-w-md">Keputusan DPRD tentang Penetapan Pimpinan Alat Kelengkapan DPRD</p>
-                        <p class="text-xs text-gray-400 mt-1">Sekretariat DPRD</p>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary">SK DPRD</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="text-sm text-gray-600 whitespace-nowrap">8/2024</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700">Berlaku</span>
-                    </td>
-                    <td class="py-3 5 px-5">
-                        <div class="flex items-center justify-end gap-1">
-                            <button title="Lihat" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-eye">
-                                </svg>
-                            </button>
-                            <button title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                </svg>
-                            </button>
-                            <button title="Hapus" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-red-50 hover:text-red-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M10 11v6" />
-                                    <path d="M14 11v6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                    <path d="M3 6h18" />
-                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50/80 group">
-                    <td class="px-5 py-3.5 text-sm text-gray-400">5</td>
-                    <td class="py-3 5 px-4">
-                        <p class="text-sm font-medium text-gray-800 line-clamp-2 max-w-md">Keputusan Bupati tentang Penetapan Lokasi Prioritas Pembangunan Infrastruktur 2026</p>
-                        <p class="text-xs text-gray-400 mt-1">Dinas Pekerjaan Umum</p>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary">SK BUPATI</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="text-sm text-gray-600 whitespace-nowrap">15/2026</span>
-                    </td>
-                    <td class="py-3 5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700">Berlaku</span>
-                    </td>
-                    <td class="py-3 5 px-5">
-                        <div class="flex items-center justify-end gap-1">
-                            <button title="Lihat" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <use href="/assets/icons.svg#icon-eye">
-                                </svg>
-                            </button>
-                            <button title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
-                                </svg>
-                            </button>
-                            <button title="Hapus" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-red-50 hover:text-red-700">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                    <path d="M10 11v6" />
-                                    <path d="M14 11v6" />
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
-                                    <path d="M3 6h18" />
-                                    <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
-                                </svg>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
+                <?php for ($i = 0; $i < count($produk_hukum_highlight); $i++): ?>
+                    <?php $ph = $produk_hukum_highlight[$i] ?>
+                    <tr class="hover:bg-gray-50/80 group">
+                        <td class="px-5 py-3.5 text-sm text-gray-400"><?= $i + 1 ?></td>
+                        <td class="py-3 5 px-4">
+                            <p class="text-sm font-medium text-gray-800 line-clamp-2 max-w-md"><?= esc($ph["judul"]) ?></p>
+                            <p class="text-xs text-gray-400 mt-1"><?= esc($ph["kategori"]) ?></p>
+                        </td>
+                        <td class="py-3 5 px-4">
+                            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-primary/10 text-primary uppercase truncate"><?= esc($ph["kategori_sinonim"]) ?? esc($ph["kategori"]) ?></span>
+                        </td>
+                        <td class="py-3 5 px-4">
+                            <span class="text-sm text-gray-600 whitespace-nowrap"><?= esc($ph["nomor"]) ?>/<?= esc($ph["tahun"]) ?></span>
+                        </td>
+                        <td class="py-3 5 px-4">
+                            <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700"><?= esc($ph["status"]) ?></span>
+                        </td>
+                        <td class="py-3 5 px-5">
+                            <div class="flex items-center justify-end gap-1">
+                                <button title="Lihat" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <use href="/assets/icons.svg#icon-eye">
+                                    </svg>
+                                </button>
+                                <button title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
+                                    </svg>
+                                </button>
+                                <button title="Hapus" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-red-50 hover:text-red-700">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                        <path d="M10 11v6" />
+                                        <path d="M14 11v6" />
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                        <path d="M3 6h18" />
+                                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                <?php endfor ?>
             </tbody>
         </table>
     </div>
