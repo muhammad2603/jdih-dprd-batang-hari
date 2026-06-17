@@ -11,13 +11,11 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
     <p class="text-gray-500">Selamat datang, Admin — <?= $current_date ?></p>
 </section>
 <section class="document-cards grid grid-cols-4 gap-4">
-    <!-- __COMMENT__ Ambil total dokumen dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Total Dokumen</span>
-            <span class="font-bold text-3xl text-default-foreground">8</span>
-            <!-- __COMMENT__ +3 adalah total dokumen yang ditambahkan dibulan ini, data ini berdasarkan field created_at (upload) pada table produk hukum -->
-            <span class="text-xs text-gray-400">+3 bulan ini</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document) ?></span>
+            <span class="text-xs text-gray-400">+<?= esc($total_document_current_month) ?> bulan ini</span>
         </div>
         <div class="card-icon w-11 h-11 bg-primary rounded-xl flex items-center justify-center">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -25,13 +23,11 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
             </svg>
         </div>
     </div>
-    <!-- __COMMENT__ Ambil total dokumen dengan status berlaku dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Berlaku</span>
-            <span class="font-bold text-3xl text-default-foreground">7</span>
-            <!-- __COMMENT__ Hitungan ini berdasarkan distribusi dokumen berlaku dari total dokumen yang tersedia -->
-            <span class="text-xs text-gray-400">88% dari total dokumen</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_berlaku) ?></span>
+            <span class="text-xs text-gray-400"><?= esc($percentage_active_document) ?>% dari total dokumen</span>
         </div>
         <div class="card-icon w-11 h-11 bg-green-600 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -40,12 +36,10 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
             </svg>
         </div>
     </div>
-    <!-- __COMMENT__ Ambil total dokumen dengan status diubah dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Diubah</span>
-            <span class="font-bold text-3xl text-default-foreground">1</span>
-            <span class="text-xs text-gray-400">+0 bulan ini</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_diubah) ?></span>
         </div>
         <div class="card-icon w-11 h-11 bg-accent rounded-xl flex items-center justify-center">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -53,12 +47,10 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
             </svg>
         </div>
     </div>
-    <!-- __COMMENT__ Ambil total dokumen dengan status dicabut dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Dicabut</span>
-            <span class="font-bold text-3xl text-default-foreground">0</span>
-            <span class="text-xs text-gray-400">+0 bulan ini</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_dicabut) ?></span>
         </div>
         <div class="card-icon w-11 h-11 bg-red-600 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -102,77 +94,28 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
     <div class="distributed-by-type col-span-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <h2 class="mb-4 font-semibold text-lg text-default-foreground">Distribusi per Jenis</h2>
         <div class="distributed-values space-y-5">
-            <!-- __COMMENT__ Hitungan distribusi adalah (total_document_by_type / total_document) * 100 -->
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Peraturan Daerah</span>
-                    <span class="font-semibold text-default-foreground text-sm">45%</span>
+            <?php foreach ($total_document_per_category as $doc): ?>
+                <?php
+                $total_doc = (int) esc($doc["total_dokumen"]);
+                $calc_doc_percentage = ($total_doc / $total_document) * 100;
+                $category = esc($doc["kategori"]);
+                ?>
+                <div class="document-type">
+                    <div class="type-info flex justify-between mb-1.5">
+                        <span class="text-gray-600 text-sm"><?= $category ?></span>
+                        <span class="font-semibold text-default-foreground text-sm"><?= sprintf("%.2f", $calc_doc_percentage) ?>%</span>
+                    </div>
+                    <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
+                        <div class="h-full bg-primary rounded-full meter-<?= url_title($category, "-", true) ?>"></div>
+                    </div>
                 </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-primary rounded-full" style="width: 45%;"></div>
-                </div>
-            </div>
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Keputusan Pimpinan Dewan</span>
-                    <span class="font-semibold text-default-foreground text-sm">25%</span>
-                </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-accent rounded-full" style="width: 25%;"></div>
-                </div>
-            </div>
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Keputusan Dewan</span>
-                    <span class="font-semibold text-default-foreground text-sm">20%</span>
-                </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-dashboard-gold rounded-full" style="width: 20%;"></div>
-                </div>
-            </div>
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Sekretaris Dewan</span>
-                    <span class="font-semibold text-default-foreground text-sm">10%</span>
-                </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-accent-dark-gray rounded-full" style="width: 10%;"></div>
-                </div>
-            </div>
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Keputusan Badan Musyawarah</span>
-                    <span class="font-semibold text-default-foreground text-sm">0%</span>
-                </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-accent-dark-gray rounded-full" style="width: 0%;"></div>
-                </div>
-            </div>
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Keputusan Badan Kehormatan</span>
-                    <span class="font-semibold text-default-foreground text-sm">0%</span>
-                </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-accent-dark-gray rounded-full" style="width: 0%;"></div>
-                </div>
-            </div>
-            <div class="document-type">
-                <div class="type-info flex justify-between mb-1.5">
-                    <span class="text-gray-600 text-sm">Peraturan Daerah Inisiatif</span>
-                    <span class="font-semibold text-default-foreground text-sm">0%</span>
-                </div>
-                <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
-                    <div class="h-full bg-accent-dark-gray rounded-full" style="width: 0%;"></div>
-                </div>
-            </div>
+            <?php endforeach ?>
         </div>
     </div>
     <div class="new-documents-uploaded col-span-3 bg-white rounded-xl shadow-sm border border-gray-100">
         <div class="legend flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 class="font-semibold text-lg text-default-foreground">Dokumen Terbaru</h2>
-            <!-- __COMMENT__ Isi endpoint ke halaman kelola dokumen -->
-            <a href="#" class="flex items-center gap-1 text-sm text-primary outline-none hover:underline focus:underline">
+            <a href="/user/dashboard/kelola-dokumen" class="flex items-center gap-1 text-sm text-primary outline-none hover:underline focus:underline">
                 <span>Lihat semua</span>
                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                     <use href="/assets/icons.svg#icon-arrow-right">
@@ -180,31 +123,33 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
             </a>
         </div>
         <div class="list divide-y divide-gray-50">
-            <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
-                <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                        <use href="/assets/icons.svg#icon-document">
-                    </svg>
-                </div>
-                <div class="document-details flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate">Tata Cara Penyusunan Program Pembentukan Peraturan Daerah</p>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="text-xs text-gray-400">Peraturan Daerah</span>
-                        <span class="text-gray-300">·</span>
-                        <!-- __COMMENT__ Ini adalah tanggal peraturan, bukan tanggal upload -->
-                        <span class="text-xs text-gray-400">2026</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700">Berlaku</span>
+            <?php foreach ($produk_hukum_highlight as $ph): ?>
+                <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
+                    <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                            <use href="/assets/icons.svg#icon-document">
+                        </svg>
+                    </div>
+                    <div class="document-details flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-800 truncate"><?= esc($ph["judul"]) ?></p>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="text-xs text-gray-400"><?= esc($ph["kategori"]) ?></span>
+                            <span class="text-gray-300">·</span>
+                            <!-- __COMMENT__ Ini adalah tanggal peraturan, bukan tanggal upload -->
+                            <span class="text-xs text-gray-400"><?= esc($ph["tahun"]) ?></span>
+                            <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700"><?= esc($ph["status"]) ?></span>
+                        </div>
+                    </div>
+                    <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                        <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                <use href="/assets/icons.svg#icon-eye">
+                            </svg>
+                        </a>
                     </div>
                 </div>
-                <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                            <use href="/assets/icons.svg#icon-eye">
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
+            <?php endforeach ?>
+            <!-- <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
                 <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
                         <use href="/assets/icons.svg#icon-document">
@@ -295,8 +240,11 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
                         </svg>
                     </a>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
+    <style <?= csp_style_nonce() ?>>
+        <?php foreach ($total_document_per_category as $doc): ?><?= '.meter-' . url_title(esc($doc["kategori"]), "-", true) . "{ width: " . (esc($doc["total_dokumen"]) / $total_document) * 100 . "%; background-color: " . esc($doc["color"]) . "; }" ?><?php endforeach ?>
+    </style>
 </section>
 <?= $this->endSection() ?>
