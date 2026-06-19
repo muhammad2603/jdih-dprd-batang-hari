@@ -1,14 +1,14 @@
 <?= $this->extend('dashboard/layouts/main') ?>
 <?= $this->section('content') ?>
+<?php $style_bar = "" ?>
 <section>
     <p class="text-gray-500">Ringkasan data dokumen hukum JDIH DPRD Kabupaten Batang Hari</p>
 </section>
 <section class="document-cards grid grid-cols-4 gap-4">
-    <!-- __COMMENT__ Ambil total dokumen dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Total Dokumen</span>
-            <span class="font-bold text-3xl text-default-foreground">8</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document) ?></span>
         </div>
         <div class="card-icon w-11 h-11 bg-primary rounded-xl flex items-center justify-center">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -16,11 +16,10 @@
             </svg>
         </div>
     </div>
-    <!-- __COMMENT__ Ambil total dokumen dengan status berlaku dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Berlaku</span>
-            <span class="font-bold text-3xl text-default-foreground">7</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_active) ?></span>
         </div>
         <div class="card-icon w-11 h-11 bg-green-600 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -29,11 +28,10 @@
             </svg>
         </div>
     </div>
-    <!-- __COMMENT__ Ambil total dokumen dengan status diubah dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Diubah</span>
-            <span class="font-bold text-3xl text-default-foreground">1</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_ammended) ?></span>
         </div>
         <div class="card-icon w-11 h-11 bg-accent rounded-xl flex items-center justify-center">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -41,11 +39,10 @@
             </svg>
         </div>
     </div>
-    <!-- __COMMENT__ Ambil total dokumen dengan status dicabut dari Database menggunakan method di model Produk Hukum -->
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Dicabut</span>
-            <span class="font-bold text-3xl text-default-foreground">0</span>
+            <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_revoked) ?></span>
         </div>
         <div class="card-icon w-11 h-11 bg-red-600 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -70,115 +67,36 @@
                     <th class="text-left text-xs font-semibold text-gray-500 uppercase tracking-wider pb-3 pl-4">Proporsi</th>
                 </tr>
             </thead>
-            <!-- __COMMENT__ Ambil data kategori produk hukum yang tersedia didatabase -->
             <tbody class="divide-y divide-gray-50">
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Peraturan Daerah</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-primary rounded-full" style="width: 45%;"></div>
+                <?php foreach ($statistics_breakdown as $stat): ?>
+                    <?php
+                    $category = esc($stat["kategori"]);
+                    $category_class = url_title($category, '-', true);
+                    $total_document_by_category = (int) esc($stat["total_dokumen"]);
+                    $average_total_document = $total_document !== 0 ? ($total_document_by_category / $total_document) * 100 : 0;
+                    $style_bar .= ".$category_class { width: " . $average_total_document . "%; background-color: " . esc($stat["color"]) . " }\n";
+                    ?>
+                    <tr class="hover:bg-gray-50">
+                        <td class="py-3 text-sm text-gray-800 font-medium"><?= $category ?></td>
+                        <td class="py-3 text-sm text-center font-bold text-gray-900"><?= $total_document_by_category ?></td>
+                        <td class="py-3 text-sm text-center text-green-600"><?= esc($stat["total_dokumen_berlaku"]) ?></td>
+                        <td class="py-3 text-sm text-center text-yellow-600"><?= esc($stat["total_dokumen_diubah"]) ?></td>
+                        <td class="py-3 text-sm text-center text-red-600"><?= esc($stat["total_dokumen_dicabut"]) ?></td>
+                        <td class="py-3 pl-4">
+                            <div class="flex items-center gap-2">
+                                <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
+                                    <div class="h-full rounded-full <?= $category_class ?>"></div>
+                                </div>
+                                <span class="meter-info text-xs text-gray-400 w-10 text-right"><?= ($average_total_document === 100 || $average_total_document === 0) ? $average_total_document : sprintf('%.1f', $average_total_document) ?>%</span>
                             </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">45%</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Keputusan Pimpinan Dewan</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-accent rounded-full" style="width: 25%;"></div>
-                            </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">25%</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Keputusan Dewan</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-dashboard-gold rounded-full" style="width: 20%;"></div>
-                            </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">20%</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Sekretaris Dewan</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-accent-dark-gray rounded-full" style="width: 10%;"></div>
-                            </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">10%</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Keputusan Badan Musyawarah</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-accent-dark-gray rounded-full" style="width: 0%;"></div>
-                            </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">0%</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Keputusan Badan Kehormatan</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-accent-dark-gray rounded-full" style="width: 0%;"></div>
-                            </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">0%</span>
-                        </div>
-                    </td>
-                </tr>
-                <tr class="hover:bg-gray-50">
-                    <td class="py-3 text-sm text-gray-800 font-medium">Peraturan Daerah Inisiatif</td>
-                    <td class="py-3 text-sm text-center font-bold text-gray-900">3</td>
-                    <td class="py-3 text-sm text-center text-green-600">2</td>
-                    <td class="py-3 text-sm text-center text-yellow-600">1</td>
-                    <td class="py-3 text-sm text-center text-red-600">0</td>
-                    <td class="py-3 pl-4">
-                        <div class="flex items-center gap-2">
-                            <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                <div class="h-full bg-accent-dark-gray rounded-full" style="width: 0%;"></div>
-                            </div>
-                            <span class="meter-info text-xs text-gray-400 w-10 text-right">0%</span>
-                        </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
+                <?php endforeach ?>
             </tbody>
         </table>
     </div>
 </section>
+<style <?= csp_style_nonce() ?>>
+    <?= $style_bar ?>
+</style>
 <?= $this->endSection() ?>
