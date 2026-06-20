@@ -1,5 +1,15 @@
 <?= $this->extend('dashboard/layouts/main') ?>
 <?= $this->section('content') ?>
+<?php
+helper('string');
+
+use CodeIgniter\I18n\Time;
+
+if (!is_null($produk_hukum["berkas"])) {
+    $split_attachments = explode(",", $produk_hukum["berkas"]);
+    $attachments_to_array = split_string_on_array(":", $split_attachments);
+}
+?>
 <div class="details-document-wrapper max-w-4xl mx-auto space-y-5">
     <div class="header flex items-center justify-between">
         <div class="flex items-center gap-4">
@@ -11,13 +21,12 @@
             <div class="title">
                 <h2 class="text-xl font-bold text-gray-900">Detail Dokumen</h2>
                 <p class="text-gray-500 text-sm">
-                    <span class="id-document">#1</span> · <span class="type-document">Peraturan Daerah</span>
+                    <span class="id-document">#<?= esc($produk_hukum["id"]) ?></span> · <span class="type-document"><?= esc($produk_hukum["kategori"]) ?></span>
                 </p>
             </div>
         </div>
         <div class="cta flex gap-2">
-            <!-- __COMMENT__ Isi endpoint dengan link edit dokumen dengan menyertakan slug didokumen yang sedang dilihat detailnya -->
-            <a href="#" class="flex items-center gap-2 px-4 py-2 border border-[#7B0D0D] text-[#7B0D0D] text-sm rounded-lg hover:bg-[#7B0D0D] hover:text-white transition-colors">
+            <a href="/user/dashboard/kelola-dokumen/edit/<?= esc($produk_hukum["slug"]) ?>" class="flex items-center gap-2 px-4 py-2 border border-[#7B0D0D] text-[#7B0D0D] text-sm rounded-lg hover:bg-[#7B0D0D] hover:text-white transition-colors">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                     <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
                 </svg>
@@ -30,14 +39,16 @@
             <path d="M21.801 10A10 10 0 1 1 17 3.335" />
             <path d="m9 11 3 3L22 4" />
         </svg>
-        <p class="text-sm font-medium text-green-600">Status dokumen: <strong>Aktif</strong></p>
+        <p class="text-sm font-medium text-green-600">Status dokumen: <strong><?= esc($produk_hukum["status"]) ?></strong></p>
     </div>
-    <div class="note-document flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-100">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-amber-600 shrink-0">
-            <use href="/assets/icons.svg#icon-info">
-        </svg>
-        <p class="text-sm font-medium text-amber-600">Catatan: Peraturan pelaksanaan Peraturan Daerah ini ditetapkan paling lambat 1 (satu) tahun setelah berlakunya Peraturan Daerah ini. Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati soluta perspiciatis officiis consectetur ipsa repudiandae excepturi ullam aut perferendis iure.</p>
-    </div>
+    <?php if (!is_null(esc($produk_hukum["catatan"]))): ?>
+        <div class="note-document flex items-start gap-3 px-4 py-3 rounded-xl bg-amber-100">
+            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-amber-600 shrink-0">
+                <use href="/assets/icons.svg#icon-info">
+            </svg>
+            <p class="text-sm font-medium text-amber-600">Catatan: <?= esc($produk_hukum["catatan"]) ?></p>
+        </div>
+    <?php endif ?>
     <div class="details grid grid-cols-3 gap-5">
         <aside class="left col-span-2 space-y-5">
             <div class="document-informations bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -50,32 +61,32 @@
                 <div class="contents space-y-4">
                     <div class="title">
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">Judul</h3>
-                        <p class="text-gray-800 font-medium leading-relaxed">Peraturan Daerah tentang Rencana Pembangunan Jangka Menengah Daerah (RPJMD) Kabupaten Batang Hari Tahun 2021-2026</p>
+                        <p class="text-gray-800 font-medium leading-relaxed"><?= esc($produk_hukum["judul"]) ?></p>
                     </div>
                     <div class="tajuk-entri-utama">
                         <h3 class="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-1">Tajuk Entri Utama (T.E.U)</h3>
-                        <p class="text-gray-800 font-medium leading-relaxed">DPRD Batang Hari</p>
+                        <p class="text-gray-800 font-medium leading-relaxed"><?= esc($produk_hukum["tajuk_entri_utama"]) ?></p>
                     </div>
                     <div class="other-identities grid grid-cols-2 gap-6 pt-2">
                         <div class="nomor-dokumen">
                             <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-0.5">Nomor</h3>
-                            <p class="text-sm text-gray-800 font-medium">3</p>
+                            <p class="text-sm text-gray-800 font-medium"><?= esc($produk_hukum["nomor"]) ?></p>
                         </div>
                         <div class="tahun-dokumen">
                             <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-0.5">Tahun</h3>
-                            <p class="text-sm text-gray-800 font-medium">2021</p>
+                            <p class="text-sm text-gray-800 font-medium"><?= esc($produk_hukum["tahun"]) ?></p>
                         </div>
                         <div class="tanggal-penetapan-dokumen">
                             <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-0.5">Tanggal Penetapan</h3>
-                            <time datetime="2021-09-28" class="text-sm text-gray-800 font-medium">28 September 2021</time>
+                            <time datetime="<?= esc($produk_hukum["tanggal_penetapan"]) ?>" class="text-sm text-gray-800 font-medium"><?= Time::parse(esc($produk_hukum["tanggal_penetapan"]))->toLocalizedString('dd MMMM YYYY') ?></time>
                         </div>
                         <div class="tanggal-pengundangan-dokumen">
                             <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-0.5">Tanggal Pengundangan</h3>
-                            <time datetime="2021-09-28" class="text-sm text-gray-800 font-medium">28 September 2021</time>
+                            <time datetime="<?= esc($produk_hukum["tanggal_pengundangan"]) ?>" class="text-sm text-gray-800 font-medium"><?= Time::parse(esc($produk_hukum["tanggal_pengundangan"]))->toLocalizedString('dd MMMM YYYY') ?></time>
                         </div>
                         <div class="tanggal-berlaku-dokumen">
                             <h3 class="font-semibold text-sm text-gray-400 uppercase tracking-wider mb-0.5">Tanggal Berlaku</h3>
-                            <time datetime="2021-09-28" class="text-sm text-gray-800 font-medium">28 September 2021</time>
+                            <time datetime="<?= esc($produk_hukum["tanggal_berlaku"]) ?>" class="text-sm text-gray-800 font-medium"><?= Time::parse(esc($produk_hukum["tanggal_berlaku"]))->toLocalizedString('dd MMMM YYYY') ?></time>
                         </div>
                     </div>
                 </div>
@@ -88,24 +99,21 @@
                     Dokumen Terkait
                 </h2>
                 <div class="space-y-4">
-                    <div class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                        <div class="flex-1">
-                            <header class="flex items-center gap-2 mb-2.5">
-                                <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium">Mencabut</span>
-                                <span class="text-sm font-semibold text-default-foreground">PERDA No. 23 Tahun 2014</span>
-                            </header>
-                            <p class="text-sm text-default-foreground">Urusan Pemberdayaan Perempuan dan Perlindungan Anak</p>
-                        </div>
-                    </div>
-                    <div class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
-                        <div class="flex-1">
-                            <header class="flex items-center gap-2 mb-2.5">
-                                <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium">Mencabut</span>
-                                <span class="text-sm font-semibold text-default-foreground">PERDA No. 23 Tahun 2014</span>
-                            </header>
-                            <p class="text-sm text-default-foreground">Urusan Pemberdayaan Perempuan dan Perlindungan Anak</p>
-                        </div>
-                    </div>
+                    <?php if (count($related_documents) > 0): ?>
+                        <?php foreach ($related_documents as $rd): ?>
+                            <div class="document flex items-start gap-3 p-4 bg-muted/50 rounded-lg">
+                                <div class="flex-1">
+                                    <header class="flex items-center gap-2 mb-2.5">
+                                        <span class="text-xs px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($rd["ref_status"]) === "Dicabut" ? esc($rd["ref_status"]) . ' Oleh' : esc($rd["ref_status"]) ?></span>
+                                        <span class="text-sm font-semibold text-default-foreground"><?= esc($rd["kategori"]) ?> No. <?= esc($rd["nomor"]) ?> Tahun <?= esc($rd["tahun"]) ?></span>
+                                    </header>
+                                    <p class="text-sm text-default-foreground"><?= esc($rd["judul"]) ?></p>
+                                </div>
+                            </div>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <?= view('components/data-not-found', ["message" => "Tidak memiliki dokumen terkait."]) ?>
+                    <?php endif ?>
                 </div>
             </div>
             <div class="file-abstract bg-white rounded-xl shadow-sm border border-gray-100 p-6">
@@ -115,46 +123,41 @@
                     </svg>
                     File Abstrak
                 </h2>
-                <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                    <div class="flex items-center gap-3">
-                        <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
-                                <use href="/assets/icons.svg#icon-document">
-                            </svg>
+                <?php if (!is_null($produk_hukum["abstrak_pdf"])): ?>
+                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
+                                    <use href="/assets/icons.svg#icon-document">
+                                </svg>
+                            </div>
+                            <span class="filename text-sm text-gray-700"><?= esc($produk_hukum["abstrak_pdf"]) ?></span>
                         </div>
-                        <span class="filename text-sm text-gray-700">Abstrak</span>
                     </div>
-                </div>
+                <?php else: ?>
+                    <?= view('components/data-not-found', ["message" => "Abstrak tidak dilampirkan"]) ?>
+                <?php endif ?>
             </div>
             <div class="attachments bg-white rounded-xl shadow-sm border border-gray-100 p-6">
                 <h2 class="font-semibold text-lg text-gray-800 mb-4 flex items-center gap-2">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
                         <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
                     </svg>
-                    <!-- __COMMENT__ 2 adalah jumlah lampiran -->
-                    <span>Lampiran (2)</span>
+                    <span>Lampiran (<?= count($attachments_to_array) ?>)</span>
                 </h2>
                 <div class="space-y-4">
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
-                                    <use href="/assets/icons.svg#icon-document">
-                                </svg>
+                    <?php foreach ($attachments_to_array as $attach): ?>
+                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                            <div class="flex items-center gap-3">
+                                <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
+                                        <use href="/assets/icons.svg#icon-document">
+                                    </svg>
+                                </div>
+                                <span class="filename text-sm text-gray-700"><?= esc($attach[0]) ?></span>
                             </div>
-                            <span class="filename text-sm text-gray-700">Dokumen utama</span>
                         </div>
-                    </div>
-                    <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
-                                    <use href="/assets/icons.svg#icon-document">
-                                </svg>
-                            </div>
-                            <span class="filename text-sm text-gray-700">Dokumen pendukung</span>
-                        </div>
-                    </div>
+                    <?php endforeach ?>
                 </div>
             </div>
         </aside>
@@ -168,7 +171,7 @@
                         </svg>
                         <div>
                             <p class="text-sm text-gray-400">Dibuat</p>
-                            <time datetime="2024-03-04" class="text-sm text-gray-700 font-medium">04 Maret 2024</time>
+                            <time datetime="<?= $produk_hukum["created_at"] ?>" class="text-sm text-gray-700 font-medium"><?= Time::parse($produk_hukum["created_at"])->toLocalizedString("dd MMMM YYYY") ?></time>
                         </div>
                     </div>
                     <div class="tanggal-update flex gap-2.5">
@@ -177,7 +180,12 @@
                         </svg>
                         <div>
                             <p class="text-sm text-gray-400">Diperbarui</p>
-                            <time datetime="2025-06-04" class="text-sm text-gray-700 font-medium">04 Juni 2025</time>
+                            <?php if (!is_null($produk_hukum["updated_at"])): ?>
+                                <time datetime="<?= $produk_hukum["updated_at"] ?>" class="text-sm text-gray-700 font-medium"><?= Time::parse($produk_hukum["updated_at"])->toLocalizedString("dd MMMM YYYY") ?></time>
+                            <?php else: ?>
+                                <p class="text-sm text-gray-700 font-medium">Belum ada perubahan</p>
+                            <?php endif ?>
+
                         </div>
                     </div>
                     <div class="lokasi flex gap-2.5">
@@ -186,8 +194,8 @@
                             <circle cx="12" cy="10" r="3" />
                         </svg>
                         <div>
-                            <p class="text-sm text-gray-400">Lokasi</p>
-                            <p class="text-sm text-gray-700 font-medium">Muara Bulian</p>
+                            <p class="text-sm text-gray-400">Lokasi Terbit</p>
+                            <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["lokasi_terbit"]) ?></p>
                         </div>
                     </div>
                 </div>
@@ -202,15 +210,15 @@
                 <div class="space-y-2.5">
                     <div class="tempat-penetapan">
                         <p class="text-sm text-gray-400">Tempat Penetapan</p>
-                        <p class="text-sm text-gray-700 font-medium">Muara Bulian</p>
+                        <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["tempat_penetapan"]) ?></p>
                     </div>
                     <div class="sumber">
                         <p class="text-sm text-gray-400">Sumber</p>
-                        <p class="text-sm text-gray-700 font-medium">Lembaran Daerah Kabupaten Batang Hari</p>
+                        <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["sumber"]) ?></p>
                     </div>
                     <div class="tld">
                         <p class="text-sm text-gray-400">No/Tahun TLD</p>
-                        <p class="text-sm text-gray-700 font-medium">3/2021</p>
+                        <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["nomor_tld"]) ?>/<?= esc($produk_hukum["tahun_tld"]) ?></p>
                     </div>
                 </div>
             </div>
@@ -225,15 +233,19 @@
                     <div class="bidang-hukum space-y-2">
                         <p class="text-sm text-gray-400">Bidang Hukum</p>
                         <div class="flex gap-2 flex-wrap">
-                            <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium">RPJMD</span>
-                            <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium">Pembangunan Daerah</span>
-                            <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium">Perencanaan</span>
+                            <?php if ($bidang_hukum[0] !== ""): ?>
+                                <?php foreach ($bidang_hukum as $bh): ?>
+                                    <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"><?= esc($bh) ?></span>
+                                <?php endforeach ?>
+                            <?php else: ?>
+                                <p>-</p>
+                            <?php endif ?>
                         </div>
                     </div>
                     <div class="subjek">
                         <div class="space-y-1 text-sm leading-relaxed">
                             <p class="text-gray-400">Subjek</p>
-                            <p>Penyelenggaraan Perhubungan, Lalu Lintas dan Angkutan Jalan, Angkutan Sungai/Danau, Perkeretaapian, Perhubungan Udara</p>
+                            <p><?= esc($subjek) ?></p>
                         </div>
                     </div>
                 </div>
@@ -243,15 +255,15 @@
                 <div class="space-y-2.5">
                     <div class="pembuat-peraturan">
                         <p class="text-sm text-gray-400">Pembuat Peraturan</p>
-                        <p class="text-sm text-gray-700 font-medium">Bupati Batang Hari dan DPRD Batang Hari</p>
+                        <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["pejabat_pembuat_peraturan"]) ?></p>
                     </div>
                     <div class="penandatanganan">
                         <p class="text-sm text-gray-400">Penandatanganan</p>
-                        <p class="text-sm text-gray-700 font-medium">Bupati Batang Hari</p>
+                        <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["pejabat_penandatanganan"]) ?></p>
                     </div>
                     <div class="pejabat-penetap">
                         <p class="text-sm text-gray-400">Pejabat Penetap</p>
-                        <p class="text-sm text-gray-700 font-medium">Bupati Batang Hari</p>
+                        <p class="text-sm text-gray-700 font-medium"><?= esc($produk_hukum["pejabat_penetap"]) ?></p>
                     </div>
                 </div>
             </div>
