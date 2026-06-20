@@ -40,7 +40,6 @@ class PopUp {
 }
 
 const popUp = new PopUp();
-
 function deleteDocument(btnIdx, docId, titleDocument) {
     const popUpConfig = {
         "title": 'Hapus Dokumen',
@@ -52,13 +51,56 @@ function deleteDocument(btnIdx, docId, titleDocument) {
             console.log("Dikonfirmasi.")
         })
 }
-
 document.addEventListener('DOMContentLoaded', () => {
     const deleteDocumentBtn = document.querySelectorAll('.delete-document');
     const documentsList = document.querySelectorAll('.judul-dokumen');
+    const searchInput = document.getElementById("search");
+    const documentTypeSelect = document.getElementById("documentType");
+    const documentStatusSelect = document.getElementById("documentStatus");
+    const documentYearSelect = document.getElementById("documentYear");
+    const btnSubmitSearch = document.getElementById("submitSearch");
+    const tableProdukHukum = document.getElementById("tableProdukHukum");
+    const totalDocumentFound = document.getElementById("totalDocumentFound");
     deleteDocumentBtn.forEach((btn, btnIdx) => btn.addEventListener("click", () => {
         const documentId = parseInt(btn.dataset.documentId);
         const titleDocument = documentsList[btnIdx].textContent;
         deleteDocument(btnIdx, documentId, titleDocument)
     }))
+    btnSubmitSearch.addEventListener("click", () => {
+        const searchValue = searchInput.value.trim();
+        const type = documentTypeSelect.value.trim();
+        const status = documentStatusSelect.value.trim();
+        const year = documentYearSelect.value.trim();
+        let url = '/api/cari-dokumen?';
+        const querySearch = new URLSearchParams();
+        if (searchValue !== "") {
+            querySearch.append("judul", searchValue)
+        }
+        if (type !== "semua") {
+            querySearch.append("jenis", type)
+        }
+        if (status !== "semua") {
+            querySearch.append("status", status)
+        }
+        if (year !== "semua") {
+            querySearch.append("tahun", year)
+        }
+        fetch(url + querySearch, {
+            method: 'GET',
+            headers: {
+                "Content-Type": 'application/x-www-form-urlencoded',
+                "X-Requested-With": 'XMLHttpRequest'
+            }
+        })
+            .then(xhr => {
+                return xhr.json();
+            })
+            .then(data => {
+                const { total, view } = data;
+                totalDocumentFound.innerText = total;
+                tableProdukHukum.innerHTML = view;
+            })
+            .catch(err => console.error("Terjadi kesalahan saat mengambil data."))
+    })
+
 })
