@@ -15,33 +15,32 @@
     </div>
     <div class="form-body">
         <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-            <!-- __COMMENT__ Tombol tab saat diklik akan mengarahkan form body berdasarkan ID-nya -->
             <div class="tabs-form flex border-b border-gray-100">
-                <button type="button" data-tab-id="informasiUmum" class="common-informations flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer border-primary text-primary">
+                <button type="button" data-tab-id="informasiUmum" class="common-informations flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-primary text-primary">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                         <use href="/assets/icons.svg#icon-info">
                     </svg>
                     <span>Informasi Umum</span>
                 </button>
-                <button type="button" data-tab-id="abstract" class="attachments flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer border-transparent text-gray-500 hover:text-gray-700">
+                <button type="button" data-tab-id="abstract" class="abstract flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-transparent text-gray-500 hover:text-gray-700">
                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                         <use href="/assets/icons.svg#icon-document">
                     </svg>
                     <span>Abstrak</span>
                 </button>
-                <button type="button" data-tab-id="relatedDocuments" class="attachments flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer border-transparent text-gray-500 hover:text-gray-700">
+                <button type="button" data-tab-id="relatedDocuments" class="relatedDocuments flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-transparent text-gray-500 hover:text-gray-700">
                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                         <use href="/assets/icons.svg#icon-document">
                     </svg>
                     <span>Dokumen Terkait</span>
                 </button>
-                <button type="button" data-tab-id="attachmentSelected" class="attachments flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer border-transparent text-gray-500 hover:text-gray-700">
+                <button type="button" data-tab-id="attachments" class="attachments flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-transparent text-gray-500 hover:text-gray-700">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                         <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
                     </svg>
                     <span>Lampiran</span>
                 </button>
-                <button type="button" data-tab-id="histories" class="histories flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer border-transparent text-gray-500 hover:text-gray-700">
+                <button type="button" data-tab-id="histories" class="histories flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-transparent text-gray-500 hover:text-gray-700">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                         <use href="/assets/icons.svg#icon-clock-history">
                     </svg>
@@ -49,7 +48,7 @@
                 </button>
             </div>
             <div class="form-body p-6">
-                <div id="informasiUmum" class="space-y-5">
+                <div id="informasiUmum" class="tab space-y-5">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="title-document-input">
                             <label for="titleDocument" class="block text-sm font-medium text-gray-700 mb-1.5">
@@ -343,7 +342,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="abstract" class="space-y-4 hidden">
+                <div id="abstract" class="tab space-y-4 hidden">
                     <label for="abstractFile" class="block w-full text-center py-10 text-gray-400">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-9 mx-auto opacity-40 mb-2">
                             <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
@@ -371,7 +370,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="relatedDocuments" class="space-y-4 hidden">
+                <div id="relatedDocuments" class="tab space-y-4 hidden">
                     <div class="flex items-center justify-between gap-3">
                         <p class="text-sm text-gray-600">Dokumen terkait untuk dokumen hukum yang akan ditambahkan. Anda juga dapat memilihnya nanti.</p>
                         <button id="addRelated" class="shrink-0 flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg cursor-pointer transition-colors hover:bg-primary/90">
@@ -430,7 +429,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="attachmentSelect" class="space-y-4 hidden">
+                <div id="attachments" class="tab space-y-4 hidden">
                     <label for="attachment" class="block w-full text-center py-10 text-gray-400">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-9 mx-auto opacity-40 mb-2">
                             <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
@@ -476,7 +475,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="histories" class="space-y-4 hidden">
+                <div id="histories" class="tab space-y-4 hidden">
                     <div class="flex items-center justify-between">
                         <p class="text-sm text-gray-600">Riwayat pertama penetapan dokumen hukum.</p>
                     </div>
@@ -484,7 +483,7 @@
                         <div class="p-4 bg-gray-50 rounded-xl">
                             <div class="w-full flex items-center gap-3">
                                 <span class="text-gray-600 text-sm self-start mt-3">Komentar:</span>
-                                <textarea rows="3" placeholder="Komentar riwayat perubahan..." class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary">Peraturan Daerah tentang "Perlindungan Fakir Miskin" ditetapkan dan diundangkan.</textarea>
+                                <textarea rows="3" placeholder="Komentar riwayat perubahan..." class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary"></textarea>
                             </div>
                         </div>
                     </div>
@@ -510,4 +509,5 @@
         </div>
     </div>
 </section>
+<script type="module" src="/assets/js/add-document-page.js"></script>
 <?= $this->endSection() ?>
