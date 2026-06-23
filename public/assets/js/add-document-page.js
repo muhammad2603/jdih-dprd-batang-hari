@@ -115,26 +115,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const relatedDocumentWrapper = $id('relatedDocumentWrapper');
     const btnAddRelatedDoc = $id('addRelated');
     const relatedDocumentInputs = $('.related-document-inputs');
-    const btnDeleteRelatedDocument = `<button type="button" title="Hapus" class="btn-delete-related p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer">
-        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-            <use href="/assets/icons.svg#icon-trash-strip" />
-        </svg>
-    </button>`;
+    const selectFirstBtnDeleteRelated = () => $('.related-document-inputs > .btn-delete-related');
     let relatedDocumentCounter = 1;
     btnAddRelatedDoc.addEventListener('click', () => {
+        classManipulation(selectFirstBtnDeleteRelated()).remove('hidden')
         const clone = relatedDocumentInputs.cloneNode(true);
-        $$(clone).insertHTML(btnDeleteRelatedDocument, 'beforeend')
         $$(relatedDocumentWrapper).insertHTML(clone.outerHTML, 'beforeend')
         relatedDocumentCounter++;
     })
     relatedDocumentWrapper.addEventListener('click', e => {
         const targetBtnDeleteRelatedDocument = e.target.closest('.btn-delete-related');
-        if (relatedDocumentCounter === 2) {
-            classManipulation(targetBtnDeleteRelatedDocument).add('hidden')
-        };
-        if (!btnDeleteRelatedDocument || relatedDocumentCounter === 1) return;
-        $$(targetBtnDeleteRelatedDocument.parentElement).removeEl()
+        if (!targetBtnDeleteRelatedDocument) return;
         relatedDocumentCounter--;
+        $$(targetBtnDeleteRelatedDocument.parentElement).removeEl()
+        if (relatedDocumentCounter === 1) {
+            classManipulation(selectFirstBtnDeleteRelated()).add('hidden')
+        }
     })
     const createInputFileNameAttachment = filename => {
         return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
@@ -187,5 +183,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
     btnAddAttachments.addEventListener('click', () => attachmentInputFile.click())
-
 })
