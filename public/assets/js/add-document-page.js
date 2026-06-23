@@ -1,6 +1,6 @@
 import { setValue, FormTab, Form } from "./Form.js";
 import { classManipulation } from "./class-manipulation.js";
-import { $id, $$ } from "./dom.js";
+import { $, $id, $$ } from "./dom.js";
 const form = new Form();
 document.addEventListener("DOMContentLoaded", () => {
     const btnTab = document.querySelectorAll('.tabs-form > button');
@@ -89,4 +89,89 @@ document.addEventListener("DOMContentLoaded", () => {
             removeClassifiesSelected(getBtnDeleteOnCategory, subjectSelectedList)
         }
     })
+    const inputFileAbstractWrapper = $id('inputFileAbstractWrapper');
+    const inputSelectFileAbstract = $id('inputSelectFileAbstract');
+    const inputFilenameAbstract = $id('inputFilenameAbstract');
+    const abstractSelected = $id('fileAbstractSelected');
+    const btnDeleteSelectedAbstractFile = $id('deleteSelectedAbstractFile');
+    let fileAbstract = null;
+    inputSelectFileAbstract.addEventListener('change', function () {
+        const file = this.files[0];
+        if (!file) return;
+        // __COMMENT__ Tambahkan validasi untuk file disisi client
+        fileAbstract = file;
+        classManipulation(abstractSelected).remove('hidden')
+        classManipulation(inputFileAbstractWrapper).add('hidden')
+        setValue(inputFilenameAbstract, file.name)
+    })
+    btnDeleteSelectedAbstractFile.addEventListener('click', () => {
+        if (!fileAbstract) return;
+        fileAbstract = null;
+        setValue(inputFilenameAbstract, "")
+        classManipulation(abstractSelected).add('hidden')
+        classManipulation(inputFileAbstractWrapper).remove('hidden')
+    })
+    const relatedDocumentWrapper = $id('relatedDocumentWrapper');
+    const btnAddRelatedDoc = $id('addRelated');
+    const relatedDocumentInputsClone = $('.related-document-inputs').cloneNode(true);
+    btnAddRelatedDoc.addEventListener('click', () => {
+        $$(relatedDocumentWrapper).insertHTML(relatedDocumentInputsClone.outerHTML, 'beforeend')
+    })
+    relatedDocumentWrapper.addEventListener('click', e => {
+        const btnDeleteRelatedDocument = e.target.closest('.btn-delete-related');
+        if (!btnDeleteRelatedDocument) return;
+        $$(btnDeleteRelatedDocument.parentElement).removeEl()
+    })
+    const createInputFileNameAttachment = filename => {
+        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
+    }
+    const btnAddAttachments = $id('addAttachments');
+    const attachmentsSelected = $id('attachmentsSelected');
+    const attachmentInputFile = $id('attachment');
+    let fileAttachmentsSelected = [];
+    let filenameAttachmentsSelected = [];
+    attachmentInputFile.addEventListener('change', function () {
+        const files = Array.from(this.files);
+        if (!files[0]) return;
+        for (const file of files) {
+            const filename = file.name;
+            const replacePdfExtension = filename.replace('.pdf', '');
+            if (filenameAttachmentsSelected.includes(replacePdfExtension)) {
+                alert(`File ${filename} sudah ditambahkan`);
+                continue;
+            }
+            filenameAttachmentsSelected.push(replacePdfExtension);
+            fileAttachmentsSelected.push(file);
+            $$(attachmentsSelected).insertHTML(
+                createInputFileNameAttachment(replacePdfExtension),
+                'beforeend'
+            );
+        }
+        // note: value input file dikosongkan karena semua file yang dipilih disimpan ke-array fileAttachmentsSelected dan filenameAttachmentsSelecteds
+        this.value = '';
+        if (fileAttachmentsSelected.length > 0) {
+            classManipulation(this.parentElement).add('hidden')
+            classManipulation(btnAddAttachments.parentElement).remove('hidden')
+            classManipulation(btnAddAttachments.parentElement).add('flex')
+            classManipulation(attachmentsSelected).remove('hidden')
+        }
+    })
+    attachmentsSelected.addEventListener('click', e => {
+        const btnDeleteAttachment = e.target.closest('.delete-file');
+        if (!btnDeleteAttachment) return;
+        const inputsWrapper = btnDeleteAttachment.parentElement;
+        const getFilename = btnDeleteAttachment.dataset.filename;
+        const getIndexFilenameOnArraySelected = filenameAttachmentsSelected.indexOf(getFilename);
+        $$(inputsWrapper).removeEl(inputsWrapper)
+        fileAttachmentsSelected.splice(getIndexFilenameOnArraySelected, 1)
+        filenameAttachmentsSelected.splice(getIndexFilenameOnArraySelected, 1)
+        if (filenameAttachmentsSelected.length === 0) {
+            classManipulation(attachmentInputFile.parentElement).remove('hidden')
+            classManipulation(btnAddAttachments.parentElement).remove('flex')
+            classManipulation(btnAddAttachments.parentElement).add('hidden')
+            classManipulation(attachmentsSelected).remove('hidden')
+        }
+    })
+    btnAddAttachments.addEventListener('click', () => attachmentInputFile.click())
+
 })
