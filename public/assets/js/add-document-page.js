@@ -100,9 +100,10 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!file) return;
         // __COMMENT__ Tambahkan validasi untuk file disisi client
         fileAbstract = file;
+        const replaceFilenameExtension = file.name.replace('.pdf', '')
         classManipulation(abstractSelected).remove('hidden')
         classManipulation(inputFileAbstractWrapper).add('hidden')
-        setValue(inputFilenameAbstract, file.name)
+        setValue(inputFilenameAbstract, replaceFilenameExtension)
     })
     btnDeleteSelectedAbstractFile.addEventListener('click', () => {
         if (!fileAbstract) return;
@@ -113,14 +114,27 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     const relatedDocumentWrapper = $id('relatedDocumentWrapper');
     const btnAddRelatedDoc = $id('addRelated');
-    const relatedDocumentInputsClone = $('.related-document-inputs').cloneNode(true);
+    const relatedDocumentInputs = $('.related-document-inputs');
+    const btnDeleteRelatedDocument = `<button type="button" title="Hapus" class="btn-delete-related p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer">
+        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+            <use href="/assets/icons.svg#icon-trash-strip" />
+        </svg>
+    </button>`;
+    let relatedDocumentCounter = 1;
     btnAddRelatedDoc.addEventListener('click', () => {
-        $$(relatedDocumentWrapper).insertHTML(relatedDocumentInputsClone.outerHTML, 'beforeend')
+        const clone = relatedDocumentInputs.cloneNode(true);
+        $$(clone).insertHTML(btnDeleteRelatedDocument, 'beforeend')
+        $$(relatedDocumentWrapper).insertHTML(clone.outerHTML, 'beforeend')
+        relatedDocumentCounter++;
     })
     relatedDocumentWrapper.addEventListener('click', e => {
-        const btnDeleteRelatedDocument = e.target.closest('.btn-delete-related');
-        if (!btnDeleteRelatedDocument) return;
-        $$(btnDeleteRelatedDocument.parentElement).removeEl()
+        const targetBtnDeleteRelatedDocument = e.target.closest('.btn-delete-related');
+        if (relatedDocumentCounter === 2) {
+            classManipulation(targetBtnDeleteRelatedDocument).add('hidden')
+        };
+        if (!btnDeleteRelatedDocument || relatedDocumentCounter === 1) return;
+        $$(targetBtnDeleteRelatedDocument.parentElement).removeEl()
+        relatedDocumentCounter--;
     })
     const createInputFileNameAttachment = filename => {
         return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
