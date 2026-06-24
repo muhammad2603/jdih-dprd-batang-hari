@@ -45,13 +45,32 @@ class DocumentCategories extends Model
     protected $afterDelete    = [];
 
     /**
-     * Mengambil seluruh kategori dokumen yang tersedia
+     * Mengambil seluruh kategori dokumen utama (is_view = 1)
      * 
      * @param string $orderBy ASC atau DESC, defaultnya ASC
      * 
      * @return array
      */
     public function getDocumentCategories(string $orderBy = "ASC"): array
+    {
+        return $this
+            ->select([
+                "id",
+                "category"
+            ])
+            ->orderBy("id", $orderBy)
+            ->where("is_view", 1)
+            ->findAll();
+    }
+
+    /**
+     * Mengambil seluruh kategori dokumen yang tersedia
+     * 
+     * @param string $orderBy ASC atau DESC, defaultnya ASC
+     * 
+     * @return array
+     */
+    public function getAllDocumentCategories(string $orderBy = "ASC"): array
     {
         return $this
             ->select([
