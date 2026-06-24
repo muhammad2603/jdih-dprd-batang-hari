@@ -233,7 +233,7 @@ if (!is_null($produk_hukum["berkas"])) {
                     <div class="bidang-hukum space-y-2">
                         <p class="text-sm text-gray-400">Bidang Hukum</p>
                         <div class="flex gap-2 flex-wrap">
-                            <?php if ($bidang_hukum[0] !== ""): ?>
+                            <?php if (count($bidang_hukum) > 0): ?>
                                 <?php foreach ($bidang_hukum as $bh): ?>
                                     <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"><?= esc($bh) ?></span>
                                 <?php endforeach ?>
