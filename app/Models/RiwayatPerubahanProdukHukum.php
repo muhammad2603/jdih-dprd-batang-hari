@@ -47,7 +47,7 @@ class RiwayatPerubahanProdukHukum extends Model
     public function getHistoriesChange(int $ph_id): array
     {
         $selected_fields = [
-            "change_type",
+            "trp.tipe AS change_type",
             "doc_categ.category_synonym AS kategori",
             "docstatact.action AS status",
             "rdp.nomor",
@@ -59,6 +59,7 @@ class RiwayatPerubahanProdukHukum extends Model
             ->select($selected_fields)
             ->join("produk_hukum ph", "ph.id = $ph_id")
             ->join("riwayat_detail_perubahan rdp", "rdp.id = rpph.rdp_id")
+            ->join("tipe_riwayat_perubahan trp", 'trp.id = rpph.change_type')
             ->join("document_categories doc_categ", "doc_categ.id = rdp.category_id", "LEFT")
             ->join("document_status_action docstatact", "docstatact.id = rdp.status_id", "LEFT")
             ->where("rpph.ph_id", $ph_id)
