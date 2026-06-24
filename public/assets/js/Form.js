@@ -1,5 +1,5 @@
 import { classManipulation } from "./class-manipulation.js";
-import { $id } from "./dom.js";
+import { $id, $$ } from "./dom.js";
 const hiddenTab = tab => {
     classManipulation(tab).add("hidden");
 }
@@ -22,12 +22,27 @@ const activatedButtonTab = button => {
 const showTab = tab => {
     classManipulation(tab).remove('hidden')
 }
+const setValue = (inputElement, value) => {
+    inputElement.value = value;
+}
+
+class Form {
+    copyValueFromOtherInput(inputElement, inputTargetElement) {
+        setValue(inputElement, $$(inputTargetElement).getInputValue())
+    }
+    disableInputEvent(inputElement) {
+        classManipulation(inputElement).add('pointer-events-none', 'bg-input-disabled')
+    }
+    enableInputEvent(inputElement) {
+        classManipulation(inputElement).remove('pointer-events-none', 'bg-input-disabled')
+    }
+}
+
 class FormTab {
     constructor(listBtnTab, listTabs) {
         this.listBtnTab = listBtnTab;
         this.listTabs = listTabs;
     }
-
     openTab(currBtn) {
         const tabId = currBtn.dataset.tabId;
         const targetTabEl = $id(tabId);
@@ -37,4 +52,4 @@ class FormTab {
         showTab(targetTabEl)
     }
 }
-export { FormTab };
+export { setValue, Form, FormTab };
