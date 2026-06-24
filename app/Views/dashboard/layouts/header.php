@@ -1,4 +1,4 @@
-<header class="h-16 sticky top-0 left-0 z-9999999 px-6 py-3 flex justify-between items-center bg-white border-b border-gray-200">
+<header class="h-16 sticky top-0 left-0 z-999 px-6 py-3 flex justify-between items-center bg-white border-b border-gray-200">
     <div class="header-left">
         <h1 class="text-xl font-bold"><?= $title ?? "Dashboard" ?></h1>
     </div>
@@ -98,7 +98,6 @@
             </div>
         </div>
         <?php if ($title !== "Kelola Dokumen"): ?>
-            <!-- __COMMENT__ Isi endpoint ke url tambah dokumen -->
             <a href="/user/dashboard/tambah-dokumen" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-lg transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                     <path d="M11.35 22H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v5.35" />
@@ -109,13 +108,12 @@
                 <span>Tambah Dokumen</span>
             </a>
         <?php endif ?>
-        <!-- __COMMENT__ Profile adalah CTA, buat interaksi untuk membuka dropdownnya -->
         <div class="profile relative">
-            <button type="button" class="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-1 rounded-lg" tabindex="-1">
+            <button type="button" id="btnProfile" class="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-1 rounded-lg" tabindex="-1">
                 <!-- __COMMENT__ Ganti "A" dengan first letter username -->
                 <div class="w-9 h-9 bg-accent rounded-full flex items-center justify-center text-white font-semibold text-sm">A</div>
             </button>
-            <div class="profile-dropdown absolute top-[115%] right-0 w-50 bg-white border border-gray-200 shadow-md rounded-lg transition-opacity duration-200 ease-in opacity-0 pointer-events-none">
+            <div id="profileDropdown" class="profile-dropdown absolute top-[115%] right-0 w-50 bg-white border border-gray-200 shadow-md rounded-lg transition-opacity duration-200 ease-in opacity-0 pointer-events-none">
                 <div class="user-info p-3.5 text-left flex flex-col gap-1 border-b border-gray-200">
                     <span class="role text-sm">Administrator</span>
                     <span class="username text-xs text-gray-500">Admin</span>
