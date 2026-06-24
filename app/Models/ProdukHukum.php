@@ -72,11 +72,13 @@ class ProdukHukum extends Model
     public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0, bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false): array
     {
         $selected_field = [
+            "ph.id",
             "title AS judul",
             "nomor",
             "tahun",
             "status",
             "doccateg.category AS kategori",
+            "doccateg.category_synonym AS kategori_sinonim",
             "tanggal_penetapan",
             "nama_berkas AS berkas",
             "slug",
@@ -151,6 +153,8 @@ class ProdukHukum extends Model
             ->select([
                 "ph.id",
                 "ph.title AS judul",
+                "category AS kategori",
+                "category_synonym AS singkatan_kategori",
                 "abstrak",
                 "catatan",
                 "nomor",
@@ -188,10 +192,12 @@ class ProdukHukum extends Model
                     SEPARATOR ','
                 ) AS berkas",
                 "mph.abstrak_pdf",
+                "ph.slug",
                 "jumlah_halaman",
                 "ph.created_at",
                 "ph.updated_at"
             ])
+            ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
@@ -199,13 +205,7 @@ class ProdukHukum extends Model
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
             ->where('ph.is_publish', true);
         if (!is_null($category)) {
-            $builder
-                ->select([
-                    "category AS kategori",
-                    "category_synonym AS singkatan_kategori"
-                ])
-                ->join("document_categories doccateg", "doccateg.id = ph.category_id")
-                ->where("doccateg.category", $category);
+            $builder->where("doccateg.category", $category);
         }
         if (is_int($key)) {
             $builder->where("ph.id", $key);
@@ -256,9 +256,12 @@ class ProdukHukum extends Model
     {
         return $this
             ->select([
+                "rd.id",
                 "rd.judul",
                 "rd.nomor",
                 "rd.tahun",
+                "doc_categ.id AS category_id",
+                "doc_categ.category AS full_name_category",
                 "(
                     CASE
                         WHEN doc_categ.category_synonym IS NULL THEN UPPER(doc_categ.category)
@@ -272,33 +275,6 @@ class ProdukHukum extends Model
             ->join("document_status_action docstatact", "docstatact.id = rd.status_action")
             ->where("rd.ph_id", $ph_id)
             ->findAll();
-    }
-
-    /**
-     * Mengambil total dokumen hukum berdasarkan kategori-nya
-     * @return array
-     */
-    public function getTotalDocumentByCategory(): array
-    {
-        return $this->db->table("document_categories doc_categ")
-            ->select([
-                "doc_categ.id AS category_id",
-                "doc_categ.category AS kategori",
-                "icons.icon_name AS icon",
-                "icons.color",
-                "COUNT(ph.id) AS total_dokumen"
-            ])
-            ->join(
-                "produk_hukum ph",
-                "ph.category_id = doc_categ.id",
-                "left"
-            )
-            ->join("icons", 'icons.id = doc_categ.icon')
-            ->where("doc_categ.is_view", true)
-            ->groupBy("doc_categ.id")
-            ->orderBy("total_dokumen", "DESC")
-            ->get()
-            ->getResultArray();
     }
 
     /**
@@ -354,6 +330,33 @@ class ProdukHukum extends Model
             ->select("GROUP_CONCAT(tahun, ':', total) AS result")
             ->fromSubquery($subquery, "sq")
             ->get()->getFirstRow('array');
+    }
+
+    /**
+     * Mengambil total dokumen hukum berdasarkan kategori-nya
+     * @return array
+     */
+    public function getTotalDocumentByCategory(): array
+    {
+        return $this->db->table("document_categories doc_categ")
+            ->select([
+                "doc_categ.id AS category_id",
+                "doc_categ.category AS kategori",
+                "icons.icon_name AS icon",
+                "icons.color",
+                "COUNT(ph.id) AS total_dokumen"
+            ])
+            ->join(
+                "produk_hukum ph",
+                "ph.category_id = doc_categ.id",
+                "left"
+            )
+            ->join("icons", 'icons.id = doc_categ.icon')
+            ->where("doc_categ.is_view", true)
+            ->groupBy("doc_categ.id")
+            ->orderBy("total_dokumen", "DESC")
+            ->get()
+            ->getResultArray();
     }
 
     /**
@@ -446,5 +449,19 @@ class ProdukHukum extends Model
             ->distinct()
             ->orderBy("tahun", $order_by)
             ->findAll();
+    }
+
+    /**
+     * Menghitung total dokumen hukum berdasarkan status
+     * @param string $status status dokumen yang ingin dicari
+     * @return int
+     */
+    public function getTotalDocumentByStatus(string $status): int
+    {
+        return $this
+            ->select()
+            ->join("document_status docstat", "docstat.id = ph.status_id")
+            ->where("docstat.status", $status)
+            ->countAllResults();
     }
 }
