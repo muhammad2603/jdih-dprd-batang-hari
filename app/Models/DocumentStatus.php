@@ -51,6 +51,11 @@ class DocumentStatus extends Model
      */
     public function getStatus(): array
     {
-        return $this->select("status")->findAll();
+        return $this
+            ->select([
+                "id",
+                "status"
+            ])
+            ->findAll();
     }
 }
