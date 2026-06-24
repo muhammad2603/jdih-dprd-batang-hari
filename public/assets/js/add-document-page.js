@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", () => {
             classManipulation(attachmentInputFile.parentElement).remove('hidden')
             classManipulation(btnAddAttachments.parentElement).remove('flex')
             classManipulation(btnAddAttachments.parentElement).add('hidden')
-            classManipulation(attachmentsSelected).remove('hidden')
+            classManipulation(attachmentsSelected).add('hidden')
         }
     })
     btnAddAttachments.addEventListener('click', () => attachmentInputFile.click())
