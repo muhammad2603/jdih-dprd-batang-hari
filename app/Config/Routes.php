@@ -4,8 +4,6 @@ use App\Filters\VisitCounter;
 use CodeIgniter\Router\RouteCollection;
 use App\Filters\APIFilter;
 
-service('auth')->routes($routes, ['except' => ['login']]);
-
 /**
  * @var RouteCollection $routes
  */
@@ -31,7 +29,11 @@ $routes->post('/api/sendmail', 'SendMail::send');
 $routes->get('/document-viewer', 'DocumentViewer::index');
 $routes->get('/generate/feed', 'GenerateFeed::view');
 $routes->get('/api/cari-dokumen', 'API::searchDocument');
+$routes->get('/login', '\CodeIgniter\Shield\Controllers\LoginController::loginView');
 
+service('auth')->routes($routes, ['except' => ['login']]);
+/** Protected routes */
+$routes->post('/login', 'Auth\LoginController::loginAction');
 /** Routes ini hanya untuk pengembangan, jika sudah selesai, gunakan route dashboard untuk mengalihkan halaman dashboard berdasarkan role user */
 $routes->addPlaceholder("slug", '[a-z0-9]+(?:-[a-z0-9]+)*');
 $routes->get('/user/dashboard', "UserDashboard::home");
