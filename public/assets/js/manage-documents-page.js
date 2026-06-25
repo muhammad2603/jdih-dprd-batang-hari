@@ -85,7 +85,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (year !== "semua") {
             querySearch.append("tahun", year)
         }
-        fetch(url + querySearch, {
+        fetch(url + querySearch.toString(), {
             method: 'GET',
             headers: {
                 "Content-Type": 'application/x-www-form-urlencoded',
