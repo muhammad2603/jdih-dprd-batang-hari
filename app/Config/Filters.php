@@ -77,6 +77,24 @@ class Filters extends BaseFilters
             'honeypot',
             'csrf',
             'invalidchars',
+            'session' => [
+                'except' => [
+                    '/',
+                    'login*',
+                    'register',
+                    'auth/a/*',
+                    'logout',
+                    'produk-hukum*',
+                    'statistik',
+                    'tentang',
+                    'faq',
+                    'layanan*',
+                    'lainnya*',
+                    'api*',
+                    'generate*',
+                    'document-viewer',
+                ]
+            ],
         ],
         'after' => [
             'honeypot',
