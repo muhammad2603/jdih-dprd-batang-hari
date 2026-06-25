@@ -43,24 +43,24 @@ class AuthGroups extends ShieldAuthGroups
     public array $groups = [
         'superadmin' => [
             'title'       => 'Super Admin',
-            'description' => 'Complete control of the site.',
+            'description' => 'Mampu mengakses semua konfigurasi website.',
         ],
-        'admin' => [
-            'title'       => 'Admin',
-            'description' => 'Day to day administrators of the site.',
-        ],
-        'developer' => [
-            'title'       => 'Developer',
-            'description' => 'Site programmers.',
-        ],
+        // 'admin' => [
+        //     'title'       => 'Admin',
+        //     'description' => 'Day to day administrators of the site.',
+        // ],
+        // 'developer' => [
+        //     'title'       => 'Developer',
+        //     'description' => 'Site programmers.',
+        // ],
         'user' => [
             'title'       => 'User',
-            'description' => 'General users of the site. Often customers.',
+            'description' => 'Hanya dapat melihat sumber daya, dan juga dapat membuat dan menghapus beberapa sumber daya.',
         ],
-        'beta' => [
-            'title'       => 'Beta User',
-            'description' => 'Has access to beta-level features.',
-        ],
+        // 'beta' => [
+        //     'title'       => 'Beta User',
+        //     'description' => 'Has access to beta-level features.',
+        // ],
     ];
 
     /**
@@ -79,6 +79,11 @@ class AuthGroups extends ShieldAuthGroups
         'users.edit'          => 'Can edit existing non-admin users',
         'users.delete'        => 'Can delete existing non-admin users',
         'beta.access'         => 'Can access beta-level features',
+        // Operasi record dokumen database
+        'document.access'     => 'Bisa mengakses dokumen',
+        'document.create'     => 'Bisa membuat dokumen',
+        'document.update'     => 'Bisa mengubah data dokumen',
+        'document.delete'     => 'Bisa menghapus data dokumen',
     ];
 
     /**
@@ -95,23 +100,25 @@ class AuthGroups extends ShieldAuthGroups
             'users.*',
             'beta.*',
         ],
-        'admin' => [
-            'admin.access',
-            'users.create',
-            'users.edit',
-            'users.delete',
-            'beta.access',
+        // 'admin' => [
+        //     'admin.access',
+        //     'users.create',
+        //     'users.edit',
+        //     'users.delete',
+        //     'beta.access',
+        // ],
+        // 'developer' => [
+        //     'admin.access',
+        //     'admin.settings',
+        //     'users.create',
+        //     'users.edit',
+        //     'beta.access',
+        // ],
+        'user' => [
+            'document.*',
         ],
-        'developer' => [
-            'admin.access',
-            'admin.settings',
-            'users.create',
-            'users.edit',
-            'beta.access',
-        ],
-        'user' => [],
-        'beta' => [
-            'beta.access',
-        ],
+        // 'beta' => [
+        //     'beta.access',
+        // ],
     ];
 }
