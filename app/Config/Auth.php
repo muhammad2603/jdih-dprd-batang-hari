@@ -25,7 +25,7 @@ use CodeIgniter\Shield\Authentication\Passwords\DictionaryValidator;
 use CodeIgniter\Shield\Authentication\Passwords\NothingPersonalValidator;
 use CodeIgniter\Shield\Authentication\Passwords\PwnedValidator;
 use CodeIgniter\Shield\Authentication\Passwords\ValidatorInterface;
-use CodeIgniter\Shield\Models\UserModel;
+use App\Models\UserModel;
 
 class Auth extends ShieldAuth
 {
@@ -49,14 +49,14 @@ class Auth extends ShieldAuth
         'login'                       => '\App\Views\dashboard\auth\login',
         // 'register'                    => '\CodeIgniter\Shield\Views\register',
         // 'layout'                      => '\CodeIgniter\Shield\Views\layout',
-        'action_email_2fa'            => '\CodeIgniter\Shield\Views\email_2fa_show',
-        'action_email_2fa_verify'     => '\CodeIgniter\Shield\Views\email_2fa_verify',
-        'action_email_2fa_email'      => '\CodeIgniter\Shield\Views\Email\email_2fa_email',
-        'action_email_activate_show'  => '\CodeIgniter\Shield\Views\email_activate_show',
-        'action_email_activate_email' => '\CodeIgniter\Shield\Views\Email\email_activate_email',
-        'magic-link-login'            => '\CodeIgniter\Shield\Views\magic_link_form',
-        'magic-link-message'          => '\CodeIgniter\Shield\Views\magic_link_message',
-        'magic-link-email'            => '\CodeIgniter\Shield\Views\Email\magic_link_email',
+        // 'action_email_2fa'            => '\CodeIgniter\Shield\Views\email_2fa_show',
+        // 'action_email_2fa_verify'     => '\CodeIgniter\Shield\Views\email_2fa_verify',
+        // 'action_email_2fa_email'      => '\CodeIgniter\Shield\Views\Email\email_2fa_email',
+        // 'action_email_activate_show'  => '\CodeIgniter\Shield\Views\email_activate_show',
+        // 'action_email_activate_email' => '\CodeIgniter\Shield\Views\Email\email_activate_email',
+        // 'magic-link-login'            => '\CodeIgniter\Shield\Views\magic_link_form',
+        // 'magic-link-message'          => '\CodeIgniter\Shield\Views\magic_link_message',
+        // 'magic-link-email'            => '\CodeIgniter\Shield\Views\Email\magic_link_email',
     ];
 
     /**
@@ -75,7 +75,7 @@ class Auth extends ShieldAuth
      */
     public array $redirects = [
         // 'register'          => '/',
-        'login'             => '/',
+        'login'             => 'user/dashboard',
         'logout'            => 'login',
         'force_reset'       => '/',
         'permission_denied' => '/',
@@ -181,7 +181,7 @@ class Auth extends ShieldAuth
      * could be modified as the only method of login once an account
      * has been set up.
      */
-    public bool $allowMagicLinkLogins = true;
+    public bool $allowMagicLinkLogins = false;
 
     /**
      * --------------------------------------------------------------------
@@ -284,8 +284,8 @@ class Auth extends ShieldAuth
      * Fields that are available to be used as credentials for login.
      */
     public array $validFields = [
-        'email',
-        // 'username',
+        // 'email',
+        'username',
     ];
 
     /**
@@ -348,7 +348,7 @@ class Auth extends ShieldAuth
      * - PASSWORD_ARGON2I  - As of PHP 7.2 only if compiled with support for it
      * - PASSWORD_ARGON2ID - As of PHP 7.3 only if compiled with support for it
      */
-    public string $hashAlgorithm = PASSWORD_DEFAULT;
+    public string $hashAlgorithm = PASSWORD_BCRYPT;
 
     /**
      * --------------------------------------------------------------------
