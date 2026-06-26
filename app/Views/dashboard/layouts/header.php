@@ -115,8 +115,9 @@
             </button>
             <div id="profileDropdown" class="profile-dropdown absolute top-[115%] right-0 w-50 bg-white border border-gray-200 shadow-md rounded-lg transition-opacity duration-200 ease-in opacity-0 pointer-events-none">
                 <div class="user-info p-3.5 text-left flex flex-col gap-1 border-b border-gray-200">
-                    <span class="role text-sm">Administrator</span>
-                    <span class="username text-xs text-gray-500">Admin</span>
+                    <!-- __FIX__ Pindahkan pengambilan username yang sedang login ke Controller. karena, username bisa digunakan kembali dihalaman lain. -->
+                    <span class="username text-sm"><?= auth()->user()->username ?></span>
+                    <span class="role text-xs text-gray-500"><?= auth()->user()->getGroups()[0] ?></span>
                 </div>
                 <div class="cta-profile">
                     <a href="<?= base_url() ?>" class="back-to-website p-3.5 flex items-center gap-2 border-b border-gray-200 outline-none transition-colors hover:bg-gray-100 focus:bg-gray-100">
@@ -126,8 +127,7 @@
                         </svg>
                         <span class="text-sm">Kembali ke Website</span>
                     </a>
-                    <!-- __COMMENT__ Isi endpoint ke logout -->
-                    <a href="#" class="back-to-website p-3.5 flex items-center gap-2 text-red-500 outline-none transition-colors hover:bg-red-50 focus:bg-red-50">
+                    <a href="/logout" class="back-to-website p-3.5 flex items-center gap-2 text-red-500 outline-none transition-colors hover:bg-red-50 focus:bg-red-50">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                             <path d="m16 17 5-5-5-5" />
                             <path d="M21 12H9" />
