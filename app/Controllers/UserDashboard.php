@@ -68,19 +68,19 @@ class UserDashboard extends BaseController
         $this->get_all_category_bidang_hukum    = $this->kategori_bidang_hukum_model->getKategoriBidangHukum();
         $this->get_all_category_subjek          = $this->kategori_subjek_model->getKategoriSubjek();
     }
-    public function getTotalDocument(): int
+    protected function getTotalDocument(): int
     {
         return $this->produk_hukum_model->getTotalDocument()["total"];
     }
-    public function getTotalDocumentActive(): int
+    protected function getTotalDocumentActive(): int
     {
         return $this->produk_hukum_model->getTotalDocumentByStatus("Aktif");
     }
-    public function getTotalRelatedDocumentIsAmmended(): int
+    protected function getTotalRelatedDocumentIsAmmended(): int
     {
         return $this->related_document_model->getTotalRelatedDocumentByAction("Diubah");
     }
-    public function getTotalRelatedDocumentIsRevoked(): int
+    protected function getTotalRelatedDocumentIsRevoked(): int
     {
         return $this->related_document_model->getTotalRelatedDocumentByAction("Dicabut");
     }
