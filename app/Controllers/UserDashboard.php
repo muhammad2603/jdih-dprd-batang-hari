@@ -18,6 +18,7 @@ use App\Models\KategoriSubjek;
 use App\Models\DocumentStatusAction;
 use App\Models\TipeRiwayatPerubahan;
 use App\Models\RiwayatPerubahanProdukHukum;
+use CodeIgniter\Shield\Entities\User;
 
 class UserDashboard extends BaseController
 {
@@ -43,6 +44,7 @@ class UserDashboard extends BaseController
     private array $get_all_action;
     private array $get_all_category_bidang_hukum;
     private array $get_all_category_subjek;
+    private User $user;
     function __construct()
     {
         $this->db                               = Database::connect();
@@ -67,6 +69,7 @@ class UserDashboard extends BaseController
         $this->get_all_action                   = $this->document_status_action_model->getAction();
         $this->get_all_category_bidang_hukum    = $this->kategori_bidang_hukum_model->getKategoriBidangHukum();
         $this->get_all_category_subjek          = $this->kategori_subjek_model->getKategoriSubjek();
+        $this->user                             = auth()->user();
     }
     protected function getTotalDocument(): int
     {
@@ -256,6 +259,12 @@ class UserDashboard extends BaseController
     }
     public function setting()
     {
-        return view('dashboard/user/settings', ["title" => 'Pengaturan']);
+        $userProfileModel = model(\App\Models\UserProfile::class);
+        $user_id = $this->user->id;
+        $user_profiles = $userProfileModel->getUserProfiles($user_id);
+        return view('dashboard/user/settings', [
+            "title" => 'Pengaturan',
+            "profiles" => $user_profiles,
+        ]);
     }
 }
