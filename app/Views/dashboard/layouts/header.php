@@ -1,3 +1,9 @@
+<?php
+$user = auth()->user();
+$username = $user->username;
+$username_first_char = str_split(esc($username), 1)[0];
+$group = $user->getGroups()[0];
+?>
 <header class="h-16 sticky top-0 left-0 z-999 px-6 py-3 flex justify-between items-center bg-white border-b border-gray-200">
     <div class="header-left">
         <h1 class="text-xl font-bold"><?= $title ?? "Dashboard" ?></h1>
@@ -110,14 +116,12 @@
         <?php endif ?>
         <div class="profile relative">
             <button type="button" id="btnProfile" class="flex items-center gap-2 cursor-pointer hover:bg-gray-100 p-1 rounded-lg" tabindex="-1">
-                <!-- __COMMENT__ Ganti "A" dengan first letter username -->
-                <div class="w-9 h-9 bg-accent rounded-full flex items-center justify-center text-white font-semibold text-sm">A</div>
+                <div class="w-9 h-9 bg-accent uppercase rounded-full flex items-center justify-center text-white font-semibold text-sm"><?= $username_first_char ?></div>
             </button>
             <div id="profileDropdown" class="profile-dropdown absolute top-[115%] right-0 w-50 bg-white border border-gray-200 shadow-md rounded-lg transition-opacity duration-200 ease-in opacity-0 pointer-events-none">
                 <div class="user-info p-3.5 text-left flex flex-col gap-1 border-b border-gray-200">
-                    <!-- __FIX__ Pindahkan pengambilan username yang sedang login ke Controller. karena, username bisa digunakan kembali dihalaman lain. -->
-                    <span class="username text-sm"><?= auth()->user()->username ?></span>
-                    <span class="role text-xs text-gray-500"><?= auth()->user()->getGroups()[0] ?></span>
+                    <span class="username font-semibold"><?= esc($username) ?></span>
+                    <span class="role text-sm text-gray-500"><?= esc($group) ?></span>
                 </div>
                 <div class="cta-profile">
                     <a href="<?= base_url() ?>" class="back-to-website p-3.5 flex items-center gap-2 border-b border-gray-200 outline-none transition-colors hover:bg-gray-100 focus:bg-gray-100">
