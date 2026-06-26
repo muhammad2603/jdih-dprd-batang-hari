@@ -7,8 +7,8 @@ use CodeIgniter\I18n\Time;
 $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
 ?>
 <section class="greeting">
-    <!-- __COMMENT__ Ganti "Admin" sesuai dengan username yang sedang login -->
-    <p class="text-gray-500">Selamat datang, Admin — <?= $current_date ?></p>
+    <!-- __FIX__ Pindahkan pengambilan username yang sedang login ke Controller. karena, username bisa digunakan kembali dihalaman lain. -->
+    <p class="text-gray-500">Selamat datang, <?= esc(auth()->user()->username) ?> — <?= $current_date ?></p>
 </section>
 <section class="document-cards grid grid-cols-4 gap-4">
     <div class="total-document flex justify-between gap-2 bg-white rounded-xl p-5 shadow-sm border border-gray-100">
