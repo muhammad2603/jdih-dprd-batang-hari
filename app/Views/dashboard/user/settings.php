@@ -18,25 +18,21 @@
             </div>
             <div class="p-6">
                 <div class="profile-inputs grid grid-cols-2 gap-4">
-                    <!-- __COMMENT__ Ambil nama lengkap pengguna dari tabel user_profiles -->
                     <div class="input-nama-lengkap">
                         <label for="namaLengkap" class="block text-sm font-medium text-gray-700 mb-1.5">Nama Lengkap</label>
-                        <input type="text" value="Muhammad Fattahillah. Mz" id="namaLengkap" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off">
+                        <input type="text" value="<?= esc($profiles["nama_lengkap"]) ?? "" ?>" id="namaLengkap" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off">
                     </div>
-                    <!-- __COMMENT__ Ambil jabatan pengguna dari tabel user_profiles -->
-                    <div class="input-jabatan">
-                        <label for="jabatan" class="block text-sm font-medium text-gray-700 mb-1.5">Jabatan</label>
-                        <input type="text" value="Administrator" id="jabatan" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off">
+                    <div class="input-divisi">
+                        <label for="jabatan" class="block text-sm font-medium text-gray-700 mb-1.5">Divisi</label>
+                        <input type="text" value="<?= esc($profiles["nama_divisi"]) ?? "" ?>" id="divisi" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off">
                     </div>
-                    <!-- __COMMENT__ Ambil email pengguna dari tabel user_identities -->
-                    <div class="input-email">
-                        <label for="email" class="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
-                        <input type="text" value="fattahillahmuhammad48@gmail.com" id="email" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="email">
+                    <div class="role">
+                        <span class="block text-sm font-medium text-gray-700 mb-1.5">Role</span>
+                        <span class="block w-full py-2.5 px-4 bg-input-disabled uppercase font-semibold text-accent-medium-dark-gray text-sm border border-gray-200 rounded-lg" title="Anda tidak dapat mengubah role (peran) anda."><?= esc(auth()->user()->getGroups()[0]) ?></span>
                     </div>
-                    <!-- __COMMENT__ Ambil nomor telepon pengguna dari tabel user_profiles -->
                     <div class="input-no-telepon">
                         <label for="noTelp" class="block text-sm font-medium text-gray-700 mb-1.5">No. Telepon/HP</label>
-                        <input type="tel" value="082280343857" id="noTelp" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="tel">
+                        <input type="tel" value="<?= esc($profiles["nomor_hp"]) ?? "" ?>" id="noTelp" class="w-full px-4 py-2.5 text-sm border border-gray-200 rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="tel">
                     </div>
                 </div>
             </div>
