@@ -47,6 +47,11 @@ class LoginController extends ShieldLoginController
         $password = $this->request->getPost('password');
         try {
             if (auth()->getAuthenticator()->attempt(["username" => $username, "password" => $password])) {
+                $user_groups = auth()->user()->getGroups();
+                $is_superadmin = in_array("superadmin", $user_groups);
+                if ($is_superadmin) {
+                    return redirect()->to('/admin/dashboard');
+                }
                 return redirect()->to('/user/dashboard');
             }
         } catch (ValidationException $e) {
