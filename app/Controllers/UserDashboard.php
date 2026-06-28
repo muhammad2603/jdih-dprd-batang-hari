@@ -127,7 +127,8 @@ class UserDashboard extends BaseController
     }
     public function addDocument()
     {
-        $meta_page = [
+        $role       = $this->user->getGroups()[0];
+        $meta_page  = [
             "title" => 'Kelola Dokumen',
             "semua_kategori" => $this->get_all_categories,
             "kategori_utama" => $this->get_all_categories_only_view,
@@ -138,6 +139,7 @@ class UserDashboard extends BaseController
             "document_actions" => $this->get_all_action,
             "kategori_bidang_hukum" => $this->get_all_category_bidang_hukum,
             "kategori_subjek" => $this->get_all_category_subjek,
+            "role" => $role,
         ];
         return view('dashboard/user/add_document', $meta_page);
     }
