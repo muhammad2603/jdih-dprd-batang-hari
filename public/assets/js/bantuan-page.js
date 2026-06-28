@@ -137,11 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
         payload.noTelp = $$(inputNomorTelpon).getInputValue();
         payload.subject = $$(inputSubjek).getInputValue();
         payload.message = $$(inputPesan).getInputValue();
-        emptyText(inputErrorNamaLengkap)
-        emptyText(inputErrorEmail)
-        emptyText(inputErrorNomorTelpon)
-        emptyText(inputErrorSubjek)
-        emptyText(inputErrorPesan)
         let statusValidation;
         for (const validation of validationsConfig) {
             statusValidation = validate(validation);
