@@ -6,8 +6,7 @@ use CodeIgniter\I18n\Time;
 ?>
 <section class="form-wrapper max-w-4xl mx-auto">
     <div class="form-header flex items-center gap-4 mb-6">
-        <!-- __COMMENT__ user harus diganti berdasarkan role pengguna yang sedang login -->
-        <a href="/user/dashboard/kelola-dokumen" title="Kembali" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600 transition-colors">
+        <a href="/<?= esc($role) ?>/dashboard/kelola-dokumen" title="Kembali" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600 transition-colors">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                 <use href="/assets/icons.svg#icon-arrow-left">
             </svg>
@@ -55,49 +54,51 @@ use CodeIgniter\I18n\Time;
                 <div id="informasiUmum" class="tab space-y-5">
                     <div class="grid grid-cols-2 gap-4">
                         <div class="title-document-input">
-                            <label for="titleDocument" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="titleDocument" class="text-sm font-medium text-gray-700">
                                 <span>Judul Dokumen</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="titleDocument" id="titleDocument" placeholder="Masukkan judul lengkap dokumen hukum" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="text" name="titleDocument" id="titleDocument" placeholder="Masukkan judul lengkap dokumen hukum" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="titleError" class="ml-1 text-xs text-red-500">Harap isi bidang ini.</span>
                         </div>
                         <div class="document-number-year">
-                            <label for="nomorTahun" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="nomorTahun" class="text-sm font-medium text-gray-700">
                                 <span>Nomor/Tahun</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="nomorTahun" id="nomorTahun" placeholder="Contoh: 15/2021" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="text" name="nomorTahun" id="nomorTahun" placeholder="Contoh: 15/2021" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="noTahunError" class="ml-1 text-xs text-red-500">Harap isi bidang ini.</span>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-4">
                         <div class="type-document">
-                            <label for="typeDocument" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="typeDocument" class="text-sm font-medium text-gray-700">
                                 <span>Jenis Dokumen</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <select name="typeDocument" id="typeDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                            <select name="typeDocument" id="typeDocument" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($kategori_utama as $categ): ?>
                                     <option value="<?= esc($categ["id"]) ?>"><?= esc($categ["category"]) ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                         <div class="status-document">
-                            <label for="statusDocument" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="statusDocument" class="text-sm font-medium text-gray-700">
                                 <span>Status</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <select name="statusDocument" id="statusDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                            <select name="statusDocument" id="statusDocument" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($all_status as $status): ?>
                                     <option value="<?= esc($status["id"]) ?>"><?= esc($status["status"]) ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
                         <div class="teu-document-input">
-                            <label for="teuDocument" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="teuDocument" class="text-sm font-medium text-gray-700">
                                 <span>Tajuk Entri Utama (T.E.U)</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <select name="teuDocument" id="teuDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                            <select name="teuDocument" id="teuDocument" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($pejabat as $p): ?>
                                     <option value="<?= esc($p["id"]) ?>"><?= esc($p["nama"]) ?></option>
                                 <?php endforeach ?>
@@ -106,25 +107,25 @@ use CodeIgniter\I18n\Time;
                     </div>
                     <div class="grid grid-cols-3 gap-4">
                         <div class="tanggal-penetapan">
-                            <label for="tanggalPenetapan" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="tanggalPenetapan" class="text-sm font-medium text-gray-700">
                                 <span>Tanggal Penetapan</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="tanggalPenetapan" value="<?= Time::now()->toDateString() ?>" id="tanggalPenetapan" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="date" name="tanggalPenetapan" value="<?= Time::now()->toDateString() ?>" id="tanggalPenetapan" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                         </div>
                         <div class="tanggal-pendundangan">
-                            <label for="tanggalPengundangan" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="tanggalPengundangan" class="text-sm font-medium text-gray-700">
                                 <span>Tanggal Pengundangan</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="tanggalPengundangan" value="<?= Time::now()->toDateString() ?>" id="tanggalPengundangan" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="date" name="tanggalPengundangan" value="<?= Time::now()->toDateString() ?>" id="tanggalPengundangan" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                         </div>
                         <div class="tanggal-berlaku">
-                            <label for="tanggalBerlaku" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="tanggalBerlaku" class="text-sm font-medium text-gray-700">
                                 <span>Tanggal Berlaku</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="tanggalBerlaku" value="<?= Time::now()->toDateString() ?>" id="tanggalBerlaku" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="date" name="tanggalBerlaku" value="<?= Time::now()->toDateString() ?>" id="tanggalBerlaku" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                             <div class="checkbox-tanggal-berlaku mt-2 flex gap-2">
                                 <input type="checkbox" id="salinTanggalPengundangan" />
                                 <span class="text-sm text-gray-500">Samakan dengan tanggal pengundangan</span>
@@ -135,33 +136,33 @@ use CodeIgniter\I18n\Time;
                         <h2 class="font-semibold text-default-foreground">Pejabat</h2>
                         <div class="grid grid-cols-3 gap-4">
                             <div class="pembuat-peraturan">
-                                <label for="pembuatPeraturan" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="pembuatPeraturan" class="text-sm font-medium text-gray-700">
                                     <span>Pembuat Peraturan</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="pembuatPeraturan" id="pembuatPeraturan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="pembuatPeraturan" id="pembuatPeraturan" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($pejabat as $p): ?>
                                         <option value="<?= esc($p["id"]) ?>"><?= esc($p["nama"]) ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="penandatanganan">
-                                <label for="penandatanganan" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="penandatanganan" class="text-sm font-medium text-gray-700">
                                     <span>Pejabat Penandatanganan</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="penandatanganan" id="penandatanganan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="penandatanganan" id="penandatanganan" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($pejabat as $p): ?>
                                         <option value="<?= esc($p["id"]) ?>"><?= esc($p["nama"]) ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="pejabat-penetap">
-                                <label for="pejabatPenetap" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="pejabatPenetap" class="text-sm font-medium text-gray-700">
                                     <span>Pejabat Penetap</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="pejabatPenetap" id="pejabatPenetap" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="pejabatPenetap" id="pejabatPenetap" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($pejabat as $p): ?>
                                         <option value="<?= esc($p["id"]) ?>"><?= esc($p["nama"]) ?></option>
                                     <?php endforeach ?>
@@ -173,33 +174,34 @@ use CodeIgniter\I18n\Time;
                         <h2 class="font-semibold text-default-foreground">Sumber Dokumen</h2>
                         <div class="grid grid-cols-3 gap-4">
                             <div class="tempat-penetapan">
-                                <label for="tempatPenetapan" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="tempatPenetapan" class="text-sm font-medium text-gray-700">
                                     <span>Tempat Penetapan</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="tempatPenetapan" id="tempatPenetapan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="tempatPenetapan" id="tempatPenetapan" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($lokasi as $l): ?>
                                         <option value="<?= esc($l["id"]) ?>"><?= esc($l["lokasi"]) ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="sumber">
-                                <label for="sumber" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="sumber" class="text-sm font-medium text-gray-700">
                                     <span>Sumber</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="sumber" id="sumber" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="sumber" id="sumber" class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($sumber as $s): ?>
                                         <option value="<?= esc($s["id"]) ?>"><?= esc($s["sumber"]) ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
                             <div class="nomor-tahun-tld">
-                                <label for="noTahunTld" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="noTahunTld" class="text-sm font-medium text-gray-700">
                                     <span>No/Tahun TLD</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="noTahunTld" id="noTahunTld" placeholder="Contoh: 15/2021" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                <input type="text" name="noTahunTld" id="noTahunTld" placeholder="Contoh: 15/2021" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                <span id="noTahunTldError" class="ml-1 text-xs text-red-500">Harap isi bidang ini.</span>
                             </div>
                         </div>
                     </div>
@@ -207,11 +209,11 @@ use CodeIgniter\I18n\Time;
                         <h2 class="font-semibold text-default-foreground">Klasifikasi Dokumen</h2>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="bidang-hukum">
-                                <label for="bidangHukum" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="bidangHukumSelect" class="text-sm font-medium text-gray-700">
                                     <span>Bidang Hukum (Opsional)</span>
                                 </label>
                                 <div class="flex gap-3">
-                                    <select id="bidangHukumSelect" class="shrink w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                    <select id="bidangHukumSelect" class="shrink w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                         <?php foreach ($kategori_bidang_hukum as $kbh): ?>
                                             <?php $kategori = esc($kbh["kategori"]) ?>
                                             <option value="<?= $kategori ?>" data-id="<?= esc($kbh["id"]) ?>"><?= $kategori ?></option>
@@ -222,13 +224,13 @@ use CodeIgniter\I18n\Time;
                                 <div id="selectedBidangHukum" class="selected-bidang-hukum mt-3.5 flex flex-wrap gap-2 min-h-16"></div>
                             </div>
                             <div class="subjek-dokumen">
-                                <label for="subjek" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="subjectSelect" class="text-sm font-medium text-gray-700">
                                     <span>Subjek (Opsional)</span>
                                 </label>
                                 <div class="flex gap-3">
-                                    <select id="subjectSelect" class="shrink w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                    <select id="subjectSelect" class="shrink w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                         <?php foreach ($kategori_subjek as $ks) : ?>
-                                            <option value="<?= esc($ks["id"]) ?>"><?= esc($ks['subjek']) ?></option>
+                                            <option value="<?= esc($ks["subjek"]) ?>" data-id="<?= esc($ks["id"]) ?>"><?= esc($ks['subjek']) ?></option>
                                         <?php endforeach ?>
                                     </select>
                                     <button type="button" id="tambahSubject" class="shrink-0 px-4 py-2 bg-primary text-white text-sm rounded-lg cursor-pointer transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">Tambah</button>
@@ -240,10 +242,10 @@ use CodeIgniter\I18n\Time;
                     <div class="informasi-tambahan space-y-5">
                         <h2 class="font-semibold text-default-foreground">Informasi Tambahan</h2>
                         <div class="note-document-input">
-                            <label for="note" class="block text-sm font-medium text-gray-700 mb-1.5">
+                            <label for="note" class="text-sm font-medium text-gray-700">
                                 <span>Catatan (Opsional)</span>
                             </label>
-                            <textarea id="note" rows="3" placeholder="Tambahkan catatan dokumen..." class="w-full px-4 py-2.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none border-gray-200"></textarea>
+                            <textarea id="note" rows="3" placeholder="Tambahkan catatan dokumen..." class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none border-gray-200"></textarea>
                         </div>
                     </div>
                 </div>
@@ -260,17 +262,18 @@ use CodeIgniter\I18n\Time;
                         <input type="file" id="inputSelectFileAbstract" class="hidden" accept=".pdf" hidden />
                     </div>
                     <div id="fileAbstractSelected" class="file-abstract-selected p-4 bg-gray-50 rounded-xl hidden">
-                        <div class="nama-file-input w-full flex items-center gap-3">
+                        <div class="nama-file-input mb-4 w-full flex items-center gap-3">
                             <label for="inputFilenameAbstract" class="shrink-0">
-                                <span class="text-sm text-gray-500">Nama File:</span>
+                                <span class="text-sm text-gray-500">Judul File:</span>
                             </label>
-                            <input type="text" id="inputFilenameAbstract" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                            <input type="text" id="inputFilenameAbstract" placeholder="Masukkan judul file abstrak..." class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
                             <button type="button" id="deleteSelectedAbstractFile" title="Hapus" class="p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-trash-strip" />
                                 </svg>
                             </button>
                         </div>
+                        <span id="filenameAbstractError" class="block ml-1 text-center text-xs text-red-500"></span>
                     </div>
                 </div>
                 <div id="relatedDocuments" class="tab space-y-4 hidden">
@@ -288,24 +291,24 @@ use CodeIgniter\I18n\Time;
                         <div id="relatedDocumentWrapper" class="space-y-4 p-4 bg-gray-50 rounded-xl">
                             <div class="related-document-inputs w-full flex items-end gap-3">
                                 <div class="flex flex-col gap-1 shrink-0 grow basis-2xs">
-                                    <label for="judulDokumenTerkait" class="text-gray-600 text-sm">Judul Dokumen Terkait</label>
-                                    <input type="text" id="judulDokumenTerkait" placeholder="Judul dokumen hukum yang akan dikaitkan..." class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                    <span class="text-gray-600 text-sm">Judul Dokumen Terkait</span>
+                                    <input type="text" placeholder="Judul dokumen hukum yang akan dikaitkan..." class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                                 </div>
                                 <div class="flex flex-col gap-1 shrink basis-20">
-                                    <label for="noTahunDokumenTerkait" class="text-gray-600 text-sm">No/Tahun</label>
-                                    <input type="text" id="noTahunDokumenTerkait" placeholder="15/2021" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                    <span class="text-gray-600 text-sm">No/Tahun</span>
+                                    <input type="text" placeholder="15/2021" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                                 </div>
                                 <div class="flex flex-col gap-2.5 shrink basis-42">
-                                    <label for="jenisDokumenTerkait" class="text-gray-600 text-sm">Jenis Dokumen Terkait</label>
-                                    <select id="jenisDokumenTerkait" class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                    <span class="text-gray-600 text-sm">Jenis Dokumen Terkait</span>
+                                    <select class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                         <?php foreach ($semua_kategori as $categ): ?>
                                             <option value="<?= esc($categ["id"]) ?>"><?= esc($categ["category"]) ?></option>
                                         <?php endforeach ?>
                                     </select>
                                 </div>
                                 <div class="flex flex-col gap-2.5 shrink">
-                                    <label for="actionStatus" class="text-gray-600 text-sm">Tindakan</label>
-                                    <select id="actionStatus" class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                    <span class="text-gray-600 text-sm">Tindakan</span>
+                                    <select class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                         <?php foreach ($document_actions as $action): ?>
                                             <option value="<?= esc($action["id"]) ?>"><?= esc($action["action"]) ?></option>
                                         <?php endforeach ?>
@@ -349,9 +352,10 @@ use CodeIgniter\I18n\Time;
                     </div>
                     <div class="histories-input">
                         <div class="p-4 bg-gray-50 rounded-xl">
-                            <div class="w-full flex items-center gap-3">
+                            <div class="w-full flex items-center gap-2 flex-wrap">
                                 <span class="text-gray-600 text-sm self-start mt-3">Komentar:</span>
-                                <textarea rows="3" id="historyComment" placeholder='Contoh: Peraturan Daerah tentang "judul dokumen" ditetapkan dan diundangkan.' class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-input-disabled"></textarea>
+                                <textarea rows="3" id="historyComment" placeholder='Contoh: Peraturan Daerah tentang "judul dokumen" ditetapkan dan diundangkan.' class="mb-1 w-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-input-disabled"></textarea>
+                                <span id="historyCommentError" class="ml-1 text-xs text-red-500">Harap isi bidang ini atau berikan tanda centang pada Tanpa Riwayat.</span>
                             </div>
                         </div>
                     </div>
@@ -364,7 +368,7 @@ use CodeIgniter\I18n\Time;
                 </div>
             </div>
             <div class="form-buttons flex items-center justify-end px-6 py-4 bg-gray-50 border-t border-gray-100">
-                <button type="button" class="flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg cursor-pointer transition-colors hover:bg-primary/90">
+                <button type="button" id="btnSubmit" class="flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg cursor-pointer transition-colors hover:bg-primary/90">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                         <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
                         <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
@@ -376,5 +380,6 @@ use CodeIgniter\I18n\Time;
         </div>
     </div>
 </section>
+<?= csrf_field() ?>
 <script type="module" src="/assets/js/add-document-page.js"></script>
 <?= $this->endSection() ?>
