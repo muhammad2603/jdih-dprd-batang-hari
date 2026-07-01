@@ -10,9 +10,9 @@ use App\Models\DocumentCategories;
 helper('pagination');
 class ProdukHukum extends BaseController
 {
-    private $frontend_config_model;
-    private $produk_hukum_model;
-    private $document_categories_model;
+    private FrontendConfig $frontend_config_model;
+    private \App\Models\ProdukHukum $produk_hukum_model;
+    private DocumentCategories $document_categories_model;
     public function __construct()
     {
         $this->frontend_config_model        = new FrontendConfig;
@@ -60,6 +60,7 @@ class ProdukHukum extends BaseController
             "current_page" => $current_page,
             "data_per_page" => $data_per_page,
             "data_index" => $data_index,
+            "data_offset" => $data_offset,
             "total_produk_hukum" => $total_produk_hukum,
             "current_keyword" => $keyword,
             "current_category" => $category,
