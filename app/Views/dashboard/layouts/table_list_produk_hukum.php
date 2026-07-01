@@ -1,3 +1,6 @@
+<?php
+$start = ($data_offset + 1) ?? 1;
+?>
 <table class="w-full">
     <thead>
         <tr class="bg-gray-50 border-b border-gray-100">
@@ -14,7 +17,7 @@
             <?php for ($i = 0; $i < count($produk_hukum); $i++): ?>
                 <?php $ph = $produk_hukum[$i] ?>
                 <tr class="hover:bg-gray-50/80 group">
-                    <td class="px-5 py-3.5 text-sm text-gray-400"><?= $i + 1 ?></td>
+                    <td class="px-5 py-3.5 text-sm text-gray-400"><?= $start + $i ?></td>
                     <td class="py-3.5 px-4">
                         <p class="judul-dokumen text-sm font-medium text-gray-800 line-clamp-2 max-w-md"><?= esc($ph["judul"]) ?></p>
                         <p class="text-xs text-gray-400 mt-1"><?= esc($ph["kategori"]) ?></p>
