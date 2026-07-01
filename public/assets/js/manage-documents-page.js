@@ -7,12 +7,10 @@ class PopUp {
         this.btnClosePopUp = document.getElementById("closePopUp");
         this.btnConfirmationPopUp = document.getElementById("confirmationPopUp");
     }
-
     close() {
         this.wrapper.classList.remove('flex');
         this.wrapper.classList.add('hidden');
     }
-
     show(config) {
         this.wrapper.classList.remove('hidden');
         this.wrapper.classList.add('flex');
@@ -22,7 +20,6 @@ class PopUp {
         this.btnClosePopUp.innerText = config.btnCloseText ?? "Batal";
         this.btnConfirmationPopUp.innerText = config.btnConfirmationText ?? "Konfirmasi";
     }
-
     confirm(config) {
         this.show(config)
         return new Promise((resolve, reject) => {
@@ -31,26 +28,40 @@ class PopUp {
             }
             this.btnClosePopUp.onclick = () => {
                 this.close()
-                reject({
-                    closed: true
-                })
+                reject({ closed: true })
             }
         })
     }
 }
 
+const useFetch = async (fetchConfig) => {
+    const { url, action, headers, success, errors } = fetchConfig;
+    try {
+        const response = await fetch(url, { method: action, headers: headers });
+        if (!response.ok) throw new Error(`${response.status} (${response.statusText}).`);
+        const result = await response.json();
+        success(result)
+    } catch (error) {
+        errors(error)
+    }
+}
+
 const popUp = new PopUp();
-function deleteDocument(btnIdx, docId, titleDocument) {
+const deleteDocument = (btnIdx, docId, titleDocument) => {
     const popUpConfig = {
         "title": 'Hapus Dokumen',
-        "warning": 'Dokumen akan dihapus sementara dan dapat dipulihkan kapan saja',
+        "warning": 'Dokumen akan dihapus secara permanen dan tidak dapat dipulihkan. Apakah anda yakin?',
         "message": titleDocument,
     };
     popUp.confirm(popUpConfig)
         .then(() => {
-            console.log("Dikonfirmasi.")
+            console.log("ID Dokumen:", docId)
+            popUp.close()
         })
+        .catch(err => false)
 }
+
+const url = '/api/cari-dokumen?';
 document.addEventListener('DOMContentLoaded', () => {
     const deleteDocumentBtn = document.querySelectorAll('.delete-document');
     const documentsList = document.querySelectorAll('.judul-dokumen');
@@ -66,12 +77,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const titleDocument = documentsList[btnIdx].textContent;
         deleteDocument(btnIdx, documentId, titleDocument)
     }))
-    btnSubmitSearch.addEventListener("click", () => {
+    btnSubmitSearch.addEventListener("click", async () => {
         const searchValue = searchInput.value.trim();
         const type = documentTypeSelect.value.trim();
         const status = documentStatusSelect.value.trim();
         const year = documentYearSelect.value.trim();
-        let url = '/api/cari-dokumen?';
         const querySearch = new URLSearchParams();
         if (searchValue !== "") {
             querySearch.append("judul", searchValue)
@@ -85,22 +95,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (year !== "semua") {
             querySearch.append("tahun", year)
         }
-        fetch(url + querySearch.toString(), {
-            method: 'GET',
+        useFetch({
+            url: url + querySearch.toString(),
+            action: 'GET',
             headers: {
-                "Content-Type": 'application/x-www-form-urlencoded',
                 "X-Requested-With": 'XMLHttpRequest'
-            }
-        })
-            .then(xhr => {
-                return xhr.json();
-            })
-            .then(data => {
+            },
+            success: data => {
                 const { total, view } = data;
                 totalDocumentFound.innerText = total;
                 tableProdukHukum.innerHTML = view;
-            })
-            .catch(err => console.error("Terjadi kesalahan saat mengambil data."))
+            },
+            errors: err => {
+                console.error(err)
+            }
+        })
     })
-
 })
