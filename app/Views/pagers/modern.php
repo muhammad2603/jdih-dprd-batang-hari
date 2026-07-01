@@ -7,10 +7,8 @@ use CodeIgniter\Pager\PagerRenderer;
  */
 $pager->setSurroundCount(2);
 ?>
-
 <nav aria-label="<?= lang('Pager.pageNavigation') ?>" class="mt-12 mx-auto py-4 flex justify-around max-w-2xl bg-white text-default-foreground rounded-full ring-4 ring-muted/60">
 	<ul class="before-pagination flex items-center">
-		<!-- Jika ada halaman lain sebelum halaman saat ini -->
 		<?php if ($pager->hasPrevious()) : ?>
 			<li>
 				<a href="<?= $pager->getPrevious() ?>" aria-label="<?= lang('Pager.previous') ?>" class="flex gap-1 items-center hover:text-primary">
@@ -22,14 +20,12 @@ $pager->setSurroundCount(2);
 			</li>
 		<?php endif ?>
 	</ul>
-
 	<ul class="main-pagination flex gap-5 items-center">
 		<?php if ($pager->hasPrevious()): ?>
 			<li>
 				<span>...</span>
 			</li>
 		<?php endif ?>
-
 		<?php foreach ($pager->links() as $link) : ?>
 			<li class="relative <?= $link['active'] ? 'active py-0.5 px-2.5 text-foreground before:absolute before:inset-0 before:block before:bg-primary before:rounded-full before:ring-4 before:ring-primary/20' : 'hover:text-primary' ?>">
 				<a href="<?= $link['uri'] ?>" class="relative">
@@ -37,7 +33,6 @@ $pager->setSurroundCount(2);
 				</a>
 			</li>
 		<?php endforeach ?>
-
 		<?php if ($pager->hasNext()): ?>
 			<li>
 				<span>...</span>
@@ -49,7 +44,6 @@ $pager->setSurroundCount(2);
 			</li>
 		<?php endif ?>
 	</ul>
-
 	<ul class="after-pagination flex items-center">
 		<?php if ($pager->hasNext()) : ?>
 			<li>
