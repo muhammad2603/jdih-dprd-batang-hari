@@ -112,16 +112,12 @@ class UserDashboard extends BaseController
     }
     public function manageDocuments()
     {
-        $produk_hukum_highlight                 = $this->produk_hukum_model->getProdukHukumHighlight(8);
-        $total_produk_hukum_highlight_found     = $this->produk_hukum_model->getTotalProdukHukumHighlight();
-        $get_document_years                     = $this->produk_hukum_model->getYearsProductLaw('desc');
-        $meta_page = [
-            "title" => 'Kelola Dokumen',
-            "produk_hukum_highlight" => $produk_hukum_highlight,
-            "total_produk_hukum_highlight_found" => $total_produk_hukum_highlight_found,
-            "document_categories" => $this->get_all_categories_only_view,
-            "document_status" => $this->get_all_status,
-            "document_years" => $get_document_years,
+        $get_document_years = $this->produk_hukum_model->getYearsProductLaw('desc');
+        $meta_page          = [
+            "title"                 => 'Kelola Dokumen',
+            "document_categories"   => $this->get_all_categories_only_view,
+            "document_status"       => $this->get_all_status,
+            "document_years"        => $get_document_years,
         ];
         return view('dashboard/user/manage_documents', $meta_page);
     }
