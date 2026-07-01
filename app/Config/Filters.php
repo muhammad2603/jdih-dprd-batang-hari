@@ -103,6 +103,7 @@ class Filters extends BaseFilters
                 "except" => [
                     'produk-hukum/*',
                     'document-viewer',
+                    'login'
                 ]
             ]
         ],
