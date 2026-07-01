@@ -17,10 +17,13 @@ if (!function_exists('create_pagination')) {
         $page = is_numeric($page) ? (int) $page : 1;
         $offset = ($page - 1) * $data_per_page;
         $create_pager = $pager->makeLinks($page, $data_per_page, $total_data, $pager_template, 0);
+        $start_index = $offset + 1;
+        $total_per_page_index = $page * $data_per_page;
+        $total_per_page_index = $total_per_page_index > $total_data ? $total_data : $total_per_page_index;
         return [
             "page" => $page,
             "offset" => $offset,
-            "data_index" => (($offset + 1) !== $total_data) && ($total_data > $data_per_page) ? ($offset + 1) . " - " . ($page * $data_per_page) : $total_data,
+            "data_index" => $total_data > 1 ? $start_index . " - " . $total_per_page_index : $total_data,
             "pager" => $create_pager
         ];
     }
