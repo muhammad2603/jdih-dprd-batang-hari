@@ -12,7 +12,7 @@ class RiwayatPerubahanProdukHukum extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ["id", "ph_id", "change_type", "status_changed", "comment", "changed_at"];
+    protected $allowedFields    = ["id", "ph_id", "rdp_id", "change_type"];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -22,10 +22,10 @@ class RiwayatPerubahanProdukHukum extends Model
 
     // Dates
     protected $useTimestamps = false;
-    protected $dateFormat    = 'datetime';
-    protected $createdField  = 'created_at';
-    protected $updatedField  = 'updated_at';
-    protected $deletedField  = 'deleted_at';
+    // protected $dateFormat    = 'datetime';
+    // protected $createdField  = 'created_at';
+    // protected $updatedField  = 'updated_at';
+    // protected $deletedField  = 'deleted_at';
 
     // Validation
     protected $validationRules      = [];
