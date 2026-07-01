@@ -2,7 +2,7 @@
 <?= $this->section('content') ?>
 <section class="flex justify-between">
     <div class="left">
-        <p class="text-gray-500"><span id="totalDocumentFound"><?= $total_produk_hukum_highlight_found ?></span> Dokumen ditemukan</p>
+        <p id="dataIndex" class="text-gray-500"></p>
     </div>
     <div class="right">
         <a href="/user/dashboard/tambah-dokumen" class="flex items-center gap-2 px-4 py-2 bg-primary text-white text-sm rounded-lg transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">
@@ -59,9 +59,8 @@
     <button id="submitSearch" class="flex justify-center items-center basis-20 gap-2 px-4 py-2 bg-primary text-white text-sm rounded-lg cursor-pointer transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">Cari</button>
 </section>
 <section class="documents-list bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
-    <div id="tableProdukHukum" class="table-wrapper overflow-x-auto">
-        <?= view('dashboard/layouts/table_list_produk_hukum', ["produk_hukum" => $produk_hukum_highlight]) ?>
-    </div>
+    <div id="tableProdukHukum" class="table-wrapper overflow-x-auto"></div>
 </section>
+<section id="paginationWrapper"></section>
 <script src="/assets/js/manage-documents-page.js"></script>
 <?= $this->endSection() ?>
