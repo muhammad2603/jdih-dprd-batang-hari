@@ -45,3 +45,6 @@ $routes->get('/user/dashboard/kelola-dokumen/edit/(:slug)', "UserDashboard::edit
 $routes->get('/user/dashboard/tambah-dokumen', "UserDashboard::addDocument");
 $routes->get('/user/dashboard/statistik', "UserDashboard::statistic");
 $routes->get('/user/dashboard/pengaturan', "UserDashboard::setting");
+
+/** API's Dashboard */
+$routes->post('/api/tambah-dokumen', "Auth\API\Document::create");
