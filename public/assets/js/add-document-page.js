@@ -90,19 +90,22 @@ document.addEventListener("DOMContentLoaded", () => {
     const abstractSelected = $id('fileAbstractSelected');
     const btnDeleteSelectedAbstractFile = $id('deleteSelectedAbstractFile');
     let fileAbstract = null;
+    const allowedExtensions = ['pdf'];
+    const maximum_mb = 5;
+    const allowedMimes = ['application/pdf'];
     inputSelectFileAbstract.addEventListener('change', function () {
         const file = this.files[0];
         if (!file) return;
-        const allowedExtensions = ['pdf'];
+        setValue(this, "")
         if (!validations(file.name).isAllowedFileExtension(allowedExtensions)) {
-            setValue(this, "")
-            return alert("Ekstensi file tidak diizinkan. Silahkan pilih file kembali dengan ekstensi pdf.")
+            return alert("Ekstensi file abstrak tidak diizinkan. Silahkan pilih file kembali dengan ekstensi pdf.")
         }
-        const maximum_mb = 5;
+        if (!validations(file.type).isAllowedMimesType(allowedMimes)) {
+            return alert(`File abstrak bukan tipe PDF. Ganti file atau pastikan formatnya PDF.`);
+        }
         const isFileSizeLarge = validations(file.size).isFileSizeTooLarge(maximum_mb);
         if (isFileSizeLarge) {
-            setValue(this, "")
-            return alert(`Ukuran file terlalu besar (maks. ${maximum_mb} MB). Silahkan pilih file kembali!`);
+            return alert(`Ukuran file abstrak terlalu besar (maks. ${maximum_mb} MB). Silahkan pilih file kembali!`);
         }
         fileAbstract = file;
         const replaceFilenameExtension = file.name.replace('.pdf', '')
@@ -113,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
     btnDeleteSelectedAbstractFile.addEventListener('click', () => {
         if (!fileAbstract) return;
         fileAbstract = null;
-        setValue(inputFilenameAbstract, "")
         classManipulation(abstractSelected).add('hidden')
         classManipulation(inputFileAbstractWrapper).remove('hidden')
     })
@@ -138,27 +140,30 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     })
     const createInputFileNameAttachment = filename => {
-        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
+        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" placeholder="Judul berkas..." class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
     }
     const btnAddAttachments = $id('addAttachments');
     const attachmentsSelected = $id('attachmentsSelected');
     const attachmentInputFile = $id('attachment');
     let fileAttachmentsSelected = [];
     let filenameAttachmentsSelected = [];
+    const maximumSizeMB = 30;
     attachmentInputFile.addEventListener('change', function () {
         const files = Array.from(this.files);
         if (!files[0]) return;
-        const allowedExtensions = ['pdf'];
+        // note: value input file dikosongkan karena semua file yang dipilih disimpan ke-array fileAttachmentsSelected dan filenameAttachmentsSelecteds
+        setValue(this, '')
         for (const file of files) {
             const filename = file.name;
-            const allowedExtensions = ['pdf'];
             const isExtensionFileAllowed = !validations(filename).isAllowedFileExtension(allowedExtensions);
             if (isExtensionFileAllowed) {
-                setValue(this, '')
                 alert(`Ekstensi file ${filename} tidak diizinkan. Silahkan pilih file kembali dengan ekstensi pdf.`)
                 continue;
             }
-            const maximumSizeMB = 30;
+            if (!validations(file.type).isAllowedMimesType(allowedMimes)) {
+                alert(`File ${filename} bukan tipe PDF. Ganti file atau pastikan formatnya PDF.`)
+                continue;
+            }
             const isSizeTooLarge = validations(file.size).isFileSizeTooLarge(maximumSizeMB);
             if (isSizeTooLarge) {
                 alert(`Ukuran file ${filename} terlalu besar (maks. 30 MB). Silahkan perkecil/kompres file terlebih dahulu.`)
@@ -176,8 +181,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 'beforeend'
             );
         }
-        // note: value input file dikosongkan karena semua file yang dipilih disimpan ke-array fileAttachmentsSelected dan filenameAttachmentsSelecteds
-        setValue(this, '')
         if (fileAttachmentsSelected.length > 0) {
             classManipulation(this.parentElement).add('hidden')
             classManipulation(btnAddAttachments.parentElement).remove('hidden')
@@ -216,13 +219,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const sumber = document.getElementById("sumber");
     const noTahunTld = document.getElementById("noTahunTld");
     const note = document.getElementById("note");
-
     const messageTitleError = document.getElementById("titleError");
     const messageNoTahunError = document.getElementById("noTahunError");
     const messageNoTahunTldError = document.getElementById("noTahunTldError");
     const messageFilenameAbstractError = document.getElementById("filenameAbstractError");
     const messageHistoryCommentError = document.getElementById("historyCommentError");
-
+    const noteError = document.getElementById("noteError");
+    const messageTanggalPenetapanError = document.getElementById("tanggalPenetapanError");
+    const messageTanggalPengundanganError = document.getElementById("tanggalPengundanganError");
+    const messageTanggalBerlakuError = document.getElementById("tanggalBerlakuError");
+    const messagesError = [
+        messageTitleError,
+        messageNoTahunError,
+        messageNoTahunTldError,
+        messageFilenameAbstractError,
+        messageHistoryCommentError,
+        noteError,
+        messageTanggalPenetapanError,
+        messageTanggalPengundanganError,
+        messageTanggalBerlakuError,
+    ];
     const withoutHistory = $id('withoutHistory');
     const historyComment = $id('historyComment');
     withoutHistory.addEventListener('change', function () {
@@ -236,6 +252,9 @@ document.addEventListener("DOMContentLoaded", () => {
     })
     const btnSubmit = document.getElementById("btnSubmit");
     btnSubmit.addEventListener('click', () => {
+        for (const messageEl of messagesError) {
+            messageEl.innerText = "";
+        }
         const judulDokumenValue = titleDocument.value.trim();
         const numberAndYearDocumentValue = numberAndYearDocument.value.trim();
         const typeDocumentValue = typeDocument.value.trim();
@@ -252,25 +271,25 @@ document.addEventListener("DOMContentLoaded", () => {
         const noTahunTldValue = noTahunTld.value.trim();
         const noteValue = note.value.trim();
         const filenameAbstractValue = inputFilenameAbstract.value.trim();
-        const rules = [
-            {
-                value: judulDokumenValue, messageElement: messageTitleError,
-                validators: [
-                    { method: "isEmptyValue", parameters: [], messageError: "Harap isi bidang ini." },
-                    { method: "isValidValueLength", parameters: [5, 255], messageError: "Judul terlalu pendek (min. 5 karakter dan maks. 255 karakter)." },
-                ]
-            },
-            {
-                value: filenameAbstractValue, messageElement: messageFilenameAbstractError,
-                validators: [
-                    { method: "isEmptyValue", parameters: [], messageError: "Judul file abstrak tidak boleh kosong." },
-                    { method: "isValidValueLength", parameters: [5], messageError: "Judul file terlalu pendek (min. 5 karakter)." },
-                ]
-            }
-        ];
         const isHasInvalid = [];
-        for (const rule of rules) {
-            isHasInvalid.push(!validate(rule));
+        if (validations(judulDokumenValue).isEmptyValue()) {
+            isHasInvalid.push(true)
+            messageTitleError.innerText = "Harap isi bidang ini.";
+        } else if (validations(judulDokumenValue).isValidValueLength(5, 255)) {
+            isHasInvalid.push(true)
+            messageTitleError.innerText = "Judul dokumen tidak valid (min. 5 karakter dan maks. 255 karakter).";
+        }
+        if (validations(tanggalPenetapanValue).isInvalidDate()) {
+            isHasInvalid.push(true)
+            messageTanggalPenetapanError.innerText = "Tanggal penetapan tidak dapat diatur lebih dari tanggal saat ini";
+        }
+        if (validations(tanggalPengundanganValue).isInvalidDate()) {
+            isHasInvalid.push(true)
+            messageTanggalPengundanganError.innerText = "Tanggal pengundangan tidak dapat diatur lebih dari tanggal saat ini";
+        }
+        if (validations(tanggalBerlakuValue).isInvalidDate()) {
+            isHasInvalid.push(true)
+            messageTanggalBerlakuError.innerText = "Tanggal berlaku tidak dapat diatur lebih dari tanggal saat ini";
         }
         const numberAndYearSplit = numberAndYearDocumentValue.split("/");
         const [number, year] = numberAndYearSplit;
@@ -286,8 +305,6 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (!validations(year).isInvalidValue(undefined) && validations(year).isValidValueLength(4, 4)) { // __COMMENT__ menggunakan isInvalid diperlukan, karena, jika year memiliki nilai undefined, tidak akan bisa diambil lengthnya.
             isHasInvalid.push(true)
             messageNoTahunError.innerText = "Format tahun dokumen adalah 4 digit. Contoh: 2020, 2021, dst.";
-        } else {
-            messageNoTahunError.innerText = "";
         }
         const numberAndYearTldSplit = noTahunTldValue.split("/");
         const [numberTld, yearTld] = numberAndYearTldSplit;
@@ -303,8 +320,18 @@ document.addEventListener("DOMContentLoaded", () => {
         } else if (!validations(yearTld).isInvalidValue(undefined) && validations(yearTld).isValidValueLength(4, 4)) { // __COMMENT__ menggunakan isInvalid diperlukan, karena, jika yearTld memiliki nilai undefined, tidak akan bisa diambil lengthnya.
             isHasInvalid.push(true)
             messageNoTahunTldError.innerText = "Format tahun dokumen TLD adalah 4 digit. Contoh: 2020, 2021, dst.";
-        } else {
-            messageNoTahunTldError.innerText = "";
+        }
+        if (fileAbstract && validations(filenameAbstractValue).isEmptyValue()) {
+            isHasInvalid.push(true)
+            messageFilenameAbstractError.innerText = "Harap isi bidang ini."
+        }
+        if (fileAbstract && validations(filenameAbstractValue).isValidValueLength(5, 255)) {
+            isHasInvalid.push(true)
+            messageFilenameAbstractError.innerText = "Judul abstrak tidak valid (min. 5 karakter dan maks. 255 karakter)."
+        }
+        if (!validations(noteValue).isEmptyValue() && validations(noteValue).isValidValueLength(8, 255)) {
+            isHasInvalid.push(true)
+            noteError.innerText = "Catatan tidak valid (min. 8 karakter dan maks. 255 karakter)";
         }
         let relatedDocuments = {};
         relatedDocumentWrapper.querySelectorAll('.related-document-inputs')
@@ -320,18 +347,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 const messageElement = element.querySelector('.related-document-error');
                 if (isTitleEmpty) return;
                 if (!isTitleEmpty && isNumberAndYearEmpty) {
-                    return alert(`Format nomor dan tahun pada "${title}" didokumen terkait tidak benar. Contoh: 15/2021`);
+                    isHasInvalid.push(true)
+                    alert(`Format nomor dan tahun pada "${title}" didokumen terkait tidak benar. Contoh: 15/2021`);
+                }
+                if (!isTitleEmpty && validations(title).isValidValueLength(8, 255)) {
+                    isHasInvalid.push(true)
+                    alert(`Judul dokumen terkait pada "${title}" tidak valid (min. 8 karakter dan maks. 255 karakter)`);
                 }
                 const numberAndYearSplit = numberAndYear.split("/");
                 const [number, year] = numberAndYearSplit;
                 const isInvalidNumber = validations(number).isInvalidValue(/\D/);
                 const isInvalidYear = validations(year).isInvalidValue(/\D/);
                 if (!isTitleEmpty && (isInvalidNumber || isInvalidYear)) {
-                    return alert(`Format nomor dan tahun pada "${title}" didokumen terkait harus mengandung angka. Contoh: 15/2021`);
+                    isHasInvalid.push(true)
+                    alert(`Format nomor dan tahun pada "${title}" didokumen terkait harus mengandung angka. Contoh: 15/2021`);
                 }
                 const isInvalidYearLength = validations(year).isValidValueLength(4, 4);
                 if (!isTitleEmpty && isInvalidYearLength) {
-                    return alert(`Format tahun pada "${title}" didokumen terkait adalah 4 digit. Contoh: 2020, 2021, dst.`);
+                    isHasInvalid.push(true)
+                    alert(`Format tahun pada "${title}" didokumen terkait adalah 4 digit. Contoh: 2020, 2021, dst.`);
                 }
                 relatedDocuments[idx] = {
                     judul_dokumen_terkait: title,
@@ -344,14 +378,14 @@ document.addEventListener("DOMContentLoaded", () => {
         const isHistoryCommentDisabled = historyComment.disabled;
         if (!isHistoryCommentDisabled && validations(historyComment.value.trim()).isEmptyValue()) {
             isHasInvalid.push(true)
-            return messageHistoryCommentError.innerText = "Harap isi bidang ini atau berikan tanda centang pada Tanpa Riwayat.";
+            messageHistoryCommentError.innerText = "Harap isi bidang ini atau berikan tanda centang pada Tanpa Riwayat.";
         } else if (!isHistoryCommentDisabled && validations(historyComment.value.trim()).isValidValueLength(8, 255)) {
             isHasInvalid.push(true)
-            return messageHistoryCommentError.innerText = "Komentar riwayat perubahan terlalu pendek atau panjang (min. 8 karakter dan maks. 255 karakter).";
-        } else {
-            messageHistoryCommentError.innerText = "";
+            messageHistoryCommentError.innerText = "Komentar perubahan tidak valid (min. 8 karakter dan maks. 255 karakter).";
         }
-        if (isHasInvalid.includes(true)) return;
+        if (isHasInvalid.includes(true)) {
+            return alert(`Ada data yang tidak valid. Mohon diperiksa kembali!`)
+        };
         const formData = new FormData();
         formData.append("judul_dokumen", judulDokumenValue);
         formData.append("nomor_dokumen", number);
@@ -370,10 +404,10 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("nomor_tld", numberTld);
         formData.append("tahun_tld", yearTld);
         if (bidangHukumSelectedList.length > 0) {
-            formData.append("kategori_bidang_hukum", bidangHukumSelectedList);
+            formData.append("kategori_bidang_hukum", JSON.stringify(bidangHukumSelectedList));
         }
         if (subjectSelectedList.length > 0) {
-            formData.append("kategori_subjek", subjectSelectedList);
+            formData.append("kategori_subjek", JSON.stringify(subjectSelectedList));
         }
         if (noteValue !== "") {
             formData.append("catatan", noteValue);
@@ -382,24 +416,38 @@ document.addEventListener("DOMContentLoaded", () => {
             formData.append("judul_abstrak_pdf", filenameAbstractValue)
             formData.append("abstrak_pdf", fileAbstract)
         }
-
-        if (relatedDocumentsJsonStr !== '{}') {
+        if (relatedDocuments !== '{}') {
             formData.append("dokumen_terkait", JSON.stringify(relatedDocuments))
         }
-        let saveFilenameAttachments = [];
-        filenameAttachmentsSelected.forEach((fn, idx) => {
+        const inputFilenameAttachments = Array.from(attachmentsSelected.querySelectorAll(`input[type=text]`));
+        fileAttachmentsSelected.forEach((file, idx) => {
             const key = crypto.randomUUID();
-            formData.append(`files[${key}]`, fileAttachmentsSelected[idx])
-            saveFilenameAttachments.push({
-                key: key,
-                judul: filenameAttachmentsSelected[idx]
-            })
+            formData.append(`attachment_files[${key}]`, file)
+            formData.append(`attachment_titles[${key}]`, inputFilenameAttachments[idx].value)
         })
-        formData.append("nama_berkas", JSON.stringify(saveFilenameAttachments))
         if (!isHistoryCommentDisabled) {
-            const historyCommentValue = historyComment.value.trim();
-            formData.append("komentar_perubahan", historyCommentValue)
+            formData.append("komentar_perubahan", historyComment.value.trim())
         }
-        // TODO Kirim data ke back-end setelah divalidasi disisi client
+        formData.append("csrf_token", tokenCsrf.value)
+        fetch('/api/tambah-dokumen', {
+            method: "POST",
+            body: formData,
+        })
+            .then(async resp => {
+                const data = await resp.json();
+                if (!resp.ok) throw data;
+                return data;
+            })
+            .then(data => {
+                const { success, message } = data;
+                if (success) {
+                    return window.location.replace('/user/dashboard/kelola-dokumen');
+                }
+            })
+            .catch(err => {
+                const { success, message, new_token } = err;
+                tokenCsrf.value = new_token;
+                if (success === false) alert(`Terjadi kesalahan: ${message}. Silahkan coba lagi beberapa saat.`)
+            })
     })
 })
