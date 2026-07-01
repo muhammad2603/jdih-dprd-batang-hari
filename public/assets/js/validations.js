@@ -23,11 +23,11 @@ function validations(value) {
             return this.value.includes(char);
         },
         isInvalidDate() {
-            return (new Date(this.value)).getTime() > (new Date()).getTime();
+            return new Date(this.value) > new Date();
         },
-        /** max_mb {int: kilobytes} */
-        isFileSizeTooLarge(max_mb) {
-            return (this.value / (1024 * 1024)) >= max_mb;
+        /** maxMB {int: MegaBytes} */
+        isFileSizeTooLarge(maxMB) {
+            return (this.value / (1024 * 1024)) >= maxMB;
         },
         /** allowedExtensionsArray {array: list allowed extension} */
         isAllowedFileExtension(allowedExtensionsArray) {
@@ -36,6 +36,10 @@ function validations(value) {
                 return false;
             }
             return allowedExtensionsArray.includes(getExtension[0]);
+        },
+        /** allowedMimesType {array: list allowed mimes type} */
+        isAllowedMimesType(allowedMimes) {
+            return allowedMimes.includes(this.value);
         }
     }
 }
