@@ -112,6 +112,7 @@ use CodeIgniter\I18n\Time;
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="date" name="tanggalPenetapan" value="<?= Time::now()->toDateString() ?>" id="tanggalPenetapan" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="tanggalPenetapanError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                         <div class="tanggal-pendundangan">
                             <label for="tanggalPengundangan" class="text-sm font-medium text-gray-700">
@@ -119,6 +120,7 @@ use CodeIgniter\I18n\Time;
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="date" name="tanggalPengundangan" value="<?= Time::now()->toDateString() ?>" id="tanggalPengundangan" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="tanggalPengundanganError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                         <div class="tanggal-berlaku">
                             <label for="tanggalBerlaku" class="text-sm font-medium text-gray-700">
@@ -126,6 +128,7 @@ use CodeIgniter\I18n\Time;
                                 <span class="text-red-500">*</span>
                             </label>
                             <input type="date" name="tanggalBerlaku" value="<?= Time::now()->toDateString() ?>" id="tanggalBerlaku" class="w-full mt-1.5 px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="tanggalBerlakuError" class="ml-1 text-xs text-red-500"></span>
                             <div class="checkbox-tanggal-berlaku mt-2 flex gap-2">
                                 <input type="checkbox" id="salinTanggalPengundangan" />
                                 <span class="text-sm text-gray-500">Samakan dengan tanggal pengundangan</span>
@@ -246,6 +249,7 @@ use CodeIgniter\I18n\Time;
                                 <span>Catatan (Opsional)</span>
                             </label>
                             <textarea id="note" rows="3" placeholder="Tambahkan catatan dokumen..." class="w-full mt-1.5 px-4 py-2.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none border-gray-200"></textarea>
+                            <span id="noteError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                     </div>
                 </div>
