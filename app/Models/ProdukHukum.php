@@ -22,9 +22,11 @@ class ProdukHukum extends Model
         "tanggal_penetapan",
         "tanggal_pengundangan",
         "tanggal_berlaku",
+        "tajuk_entri_utama",
         "category_id",
         "status_id",
         "slug",
+        "is_publish",
         "created_at",
         "updated_at",
         "deleted_at"
@@ -37,7 +39,7 @@ class ProdukHukum extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
