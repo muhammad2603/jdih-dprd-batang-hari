@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controllers\Auth\API;
 
 use CodeIgniter\HTTP\ResponseInterface;
@@ -15,6 +17,7 @@ use App\Models\KlasifikasiBidangHukum;
 use App\Models\KlasifikasiSubjek;
 use App\Models\RelatedDocument;
 use App\Models\LampiranProdukHukum;
+use CodeIgniter\Shield\Entities\User;
 
 class Document extends ResourceController
 {
@@ -27,9 +30,11 @@ class Document extends ResourceController
     private KlasifikasiSubjek $ks_model;
     private RelatedDocument $rd_model;
     private LampiranProdukHukum $lph_model;
+    private User|null $user;
     public function __construct()
     {
         $this->db               = Database::connect();
+        $this->user             = auth()->user();
         $this->ph_model         = new ProdukHukum;
         $this->meta_ph_model    = new MetaProdukHukum;
         $this->rpph_model       = new RiwayatPerubahanProdukHukum;
@@ -71,6 +76,27 @@ class Document extends ResourceController
     private function setLogMessage(string $level, int $user_id, string $username, string $operation, string $message): void
     {
         log_message($level, "[ID: $user_id - User $username] [$operation]: $message");
+    }
+
+    /**
+     * Cek apakah akun user yang terautentikasi dibanned?
+     * 
+     * @return bool true jika akun user dibanned
+     */
+    private function isUserGotBanned(): bool
+    {
+        return $this->user->isBanned();
+    }
+
+    /**
+     * Cek apakah user diizinkan untuk melakukan operasi CRUD pada dokumen?
+     * 
+     * @param string $permission operasi yang diizinkan. list permission: create|update|delete
+     * @return bool true jika user diizinkan
+     */
+    private function isUserHasPermission(string $permission): bool
+    {
+        return $this->user->can("document." . $permission);
     }
 
     /**
@@ -116,11 +142,8 @@ class Document extends ResourceController
         if (!$user->can("document.create")) {
             return self::setErrorResponse("Maaf, anda tidak dapat menambahkan dokumen. Operasi tidak diizinkan.");
         }
-        if ($user->isNotActivated()) {
-            return self::setErrorResponse("Maaf, akun anda tidak aktif. Hubungi administrator untuk mengaktifkan akun anda kembali.");
-        }
         if ($user->isBanned()) {
-            return self::setErrorResponse("Maaf, akun anda telah dibanned. Hubungi administrator untuk mengaktifkan akun anda kembali.");
+            return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan: {$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.");
         }
         $rules = [
             'judul_dokumen' => [
@@ -428,12 +451,68 @@ class Document extends ResourceController
     /**
      * Delete the designated resource object from the model.
      *
-     * @param int|string|null $id
+     * @param int|null $id
      *
      * @return ResponseInterface
      */
     public function delete($id = null)
     {
-        //
+        if (self::isUserGotBanned()) {
+            return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan:{$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.", 403);
+        }
+        if (!self::isUserHasPermission("delete")) {
+            return self::setErrorResponse("Maaf, anda tidak dapat menghapus dokumen. Operasi tidak diizinkan.", 403);
+        }
+        $validate_id = $this->validateData(["id" => $id], ["id" => "required|is_natural_no_zero"]);
+        if (!$validate_id) {
+            return self::setErrorResponse("ID tidak valid.");
+        }
+        $is_data_exist = $this->db->table("produk_hukum")
+            ->select("id")
+            ->where("id", $id)
+            ->get()->getFirstRow('array');
+
+        if (is_null($is_data_exist)) {
+            return self::setErrorResponse("Dokumen tidak ditemukan. Cek kembali apakah data masih tersedia.", 404);
+        }
+        $is_attachments_exist = $this->db->table('lampiran_produk_hukum')
+            ->select("nama_berkas")
+            ->where("ph_id", $id)
+            ->get()->getResultArray();
+        $get_abstract_file = $this->db->table('meta_produk_hukum')
+            ->select("abstrak_pdf")
+            ->where("ph_id", $id)
+            ->where("abstrak_pdf IS NOT", null)
+            ->get()->getResultArray()[0]["abstrak_pdf"] ?? null;
+        $this->db->transStart();
+        try {
+            $this->ph_model->delete($id, true);
+            $this->db->transComplete();
+            if ($this->db->transStatus() === false) {
+                throw new Exception("Gagal menghapus dokumen hukum");
+            }
+        } catch (\Throwable $e) {
+            $this->db->transRollback();
+            self::setLogMessage("critical", auth()->user()->id, auth()->user()->username, "DELETE DOCUMENT", "Gagal menghapus dokumen hukum dengan ID: {$id}. [{$e->getCode()}]: {$e->getMessage()}");
+            return self::setErrorResponse($e->getMessage(), 500);
+        }
+        $attachment_path = WRITEPATH . 'uploads/dokumen-hukum/';
+        foreach ($is_attachments_exist as $file) {
+            $filename = $file["nama_berkas"];
+            $is_file_exist = file_exists($attachment_path . $filename);
+            if ($is_file_exist) {
+                $remove_file = unlink($attachment_path . $filename);
+                $attachments_deleted[] = $remove_file;
+            }
+        }
+        $abstract_path = FCPATH . "assets/abstrak/";
+        if ($get_abstract_file !== null && file_exists($abstract_path . $get_abstract_file)) {
+            $remove_file = unlink($abstract_path . $get_abstract_file);
+        }
+        return $this->response->setJSON([
+            "status" => true,
+            "message" => "Dokumen berhasil dihapus secara permanen.",
+            "new_token" => csrf_hash()
+        ]);
     }
 }
