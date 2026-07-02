@@ -48,3 +48,4 @@ $routes->get('/user/dashboard/pengaturan', "UserDashboard::setting");
 
 /** API's Dashboard */
 $routes->post('/api/tambah-dokumen', "Auth\API\Document::create");
+$routes->delete('/api/hapus-dokumen/(:num)', "Auth\API\Document::delete/$1");
