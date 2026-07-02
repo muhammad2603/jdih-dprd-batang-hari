@@ -63,4 +63,5 @@
 </section>
 <section id="paginationWrapper"></section>
 <script src="/assets/js/manage-documents-page.js"></script>
+<?= csrf_field() ?>
 <?= $this->endSection() ?>
