@@ -138,11 +138,10 @@ class Document extends ResourceController
      */
     public function create()
     {
-        $user = auth()->user();
-        if (!$user->can("document.create")) {
+        if (!$this->user->can("document.create")) {
             return self::setErrorResponse("Maaf, anda tidak dapat menambahkan dokumen. Operasi tidak diizinkan.");
         }
-        if ($user->isBanned()) {
+        if ($this->user->isBanned()) {
             return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan: {$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.");
         }
         $rules = [
@@ -399,7 +398,7 @@ class Document extends ResourceController
                     unlink($file_path);
                 }
             }
-            self::setLogMessage("critical", $user->id, $user->username, "CREATE DOCUMENT", "Operasi gagal. Error: {$e->getMessage()}");
+            self::setLogMessage("critical", $this->user->id, $this->user->username, "CREATE DOCUMENT", "Operasi gagal. Error: {$e->getMessage()}");
             return self::setErrorResponse($e->getMessage(), 500);
         }
         $get_abstrak_file_from_temp = $temporary_path . $path_file_abstrak;
