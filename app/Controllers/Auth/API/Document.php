@@ -144,6 +144,9 @@ class Document extends ResourceController
         if ($this->user->isBanned()) {
             return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan: {$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.");
         }
+        if (!$this->request->isAJAX()) {
+            return self::setErrorResponse("Maaf, operasi tidak dapat dilakukan. Jika masalah ini terus berlanjut, hubungi administrator anda.");
+        }
         $rules = [
             'judul_dokumen' => [
                 'label' => 'Judul dokumen',
@@ -461,6 +464,9 @@ class Document extends ResourceController
         }
         if (!self::isUserHasPermission("delete")) {
             return self::setErrorResponse("Maaf, anda tidak dapat menghapus dokumen. Operasi tidak diizinkan.", 403);
+        }
+        if (!$this->request->isAJAX()) {
+            return self::setErrorResponse("Maaf, operasi tidak dapat dilakukan. Jika masalah ini terus berlanjut, hubungi administrator anda.");
         }
         $validate_id = $this->validateData(["id" => $id], ["id" => "required|is_natural_no_zero"]);
         if (!$validate_id) {
