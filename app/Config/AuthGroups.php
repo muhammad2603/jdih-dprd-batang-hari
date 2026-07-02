@@ -80,7 +80,6 @@ class AuthGroups extends ShieldAuthGroups
         'users.delete'        => 'Can delete existing non-admin users',
         'beta.access'         => 'Can access beta-level features',
         // Operasi record dokumen database
-        'document.access'     => 'Bisa mengakses dokumen',
         'document.create'     => 'Bisa membuat dokumen',
         'document.update'     => 'Bisa mengubah data dokumen',
         'document.delete'     => 'Bisa menghapus data dokumen',
