@@ -37,15 +37,31 @@ const useFetch = async (fetchConfig) => {
     const { url, action, headers, success, errors } = fetchConfig;
     try {
         const response = await fetch(url, { method: action, headers: headers });
-        if (!response.ok) throw new Error(`${response.status} (${response.statusText}).`);
         const result = await response.json();
+        if (!response.ok) throw result;
         success(result)
     } catch (error) {
         errors(error)
     }
 }
+const fetchDocuments = (url, elements) => useFetch({
+    url: url,
+    action: 'GET',
+    headers: {
+        "X-Requested-With": 'XMLHttpRequest'
+    },
+    success: data => {
+        const { data_index, total, view } = data;
+        elements.dataIndex.innerHTML = data_index;
+        elements.dataView.innerHTML = view.produk_hukum;
+        elements.pagination.innerHTML = view.pager;
+    },
+    errors: err => {
+        console.error(err)
+    }
+});
 const popUp = new PopUp();
-const deleteDocument = (btnIdx, docId, titleDocument) => {
+const deleteDocument = (tokenCsrfInput, docId, titleDocument) => {
     const popUpConfig = {
         "title": 'Hapus Dokumen',
         "warning": 'Dokumen akan dihapus secara permanen dan tidak dapat dipulihkan. Apakah anda yakin?',
@@ -53,7 +69,25 @@ const deleteDocument = (btnIdx, docId, titleDocument) => {
     };
     popUp.confirm(popUpConfig)
         .then(() => {
-            console.log("ID Dokumen:", docId)
+            useFetch({
+                url: `/api/hapus-dokumen/${docId}`,
+                action: 'DELETE',
+                headers: {
+                    "X-Requested-With": 'XMLHttpRequest',
+                    "X-CSRF-TOKEN": tokenCsrfInput.value.trim(),
+                },
+                success: resp => {
+                    const { status, message, new_token } = resp;
+                    tokenCsrfInput.value = new_token;
+                    console.log(status ? "OK" : "FAIL")
+                    console.log(message)
+                },
+                errors: err => {
+                    const { message, new_token } = err;
+                    tokenCsrfInput.value = new_token;
+                    document.getElementById("dataIndex").innerText = message;
+                }
+            })
             popUp.close()
         })
         .catch(err => false)
@@ -71,22 +105,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const tableProdukHukum = document.getElementById("tableProdukHukum");
     const dataIndex = document.getElementById("dataIndex");
     const paginationWrapper = document.getElementById("paginationWrapper");
-    useFetch({
-        url: url,
-        action: 'GET',
-        headers: {
-            "X-Requested-With": 'XMLHttpRequest'
-        },
-        success: data => {
-            const { data_index, total, view } = data;
-            dataIndex.innerHTML = data_index;
-            tableProdukHukum.innerHTML = view.produk_hukum;
-            paginationWrapper.innerHTML = view.pager;
-        },
-        errors: err => {
-            console.error(err)
-        }
-    })
+    const tokenCsrf = document.querySelector("input[name=csrf_token]");
+    fetchDocuments(url, { dataIndex: dataIndex, dataView: tableProdukHukum, pagination: paginationWrapper })
     paginationWrapper.addEventListener("click", e => {
         const target = e.target;
         const isPaginationClicked = target.closest("li[data-page]");
@@ -100,28 +120,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 query.append(param, value)
             })
         }
-        useFetch({
-            url: url + query.toString(),
-            action: 'GET',
-            headers: {
-                "X-Requested-With": 'XMLHttpRequest'
-            },
-            success: data => {
-                const { data_index, total, view } = data;
-                dataIndex.innerHTML = data_index;
-                tableProdukHukum.innerHTML = view.produk_hukum;
-                paginationWrapper.innerHTML = view.pager;
-            },
-            errors: err => {
-                console.error(err)
-            }
-        })
+        const urlQueries = url + query.toString();
+        fetchDocuments(urlQueries, { dataIndex: dataIndex, dataView: tableProdukHukum, pagination: paginationWrapper })
     })
-    deleteDocumentBtn.forEach((btn, btnIdx) => btn.addEventListener("click", () => {
-        const documentId = parseInt(btn.dataset.documentId);
-        const titleDocument = documentsList[btnIdx].textContent;
-        deleteDocument(btnIdx, documentId, titleDocument)
-    }))
+    tableProdukHukum.addEventListener("click", e => {
+        const target = e.target;
+        const btnDelete = target.closest('.delete-document');
+        if (!btnDelete) return;
+        const documentId = parseInt(btnDelete.dataset.documentId);
+        const titleDocument = btnDelete.closest('tr').querySelector('.judul-dokumen').innerText;
+        deleteDocument(tokenCsrf, documentId, titleDocument)
+    })
     btnSubmitSearch.addEventListener("click", async () => {
         querySaved = {};
         const searchValue = searchInput.value.trim();
@@ -145,21 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
             querySaved["tahun"] = year;
             querySearch.append("tahun", year)
         }
-        useFetch({
-            url: url + querySearch.toString(),
-            action: 'GET',
-            headers: {
-                "X-Requested-With": 'XMLHttpRequest'
-            },
-            success: data => {
-                const { data_index, total, view } = data;
-                dataIndex.innerHTML = data_index;
-                tableProdukHukum.innerHTML = view.produk_hukum;
-                paginationWrapper.innerHTML = view.pager;
-            },
-            errors: err => {
-                console.error(err)
-            }
-        })
+        const urlQuery = url + querySearch.toString();
+        fetchDocuments(urlQuery, {dataIndex: dataIndex, dataView: tableProdukHukum, pagination: paginationWrapper})
     })
 })
