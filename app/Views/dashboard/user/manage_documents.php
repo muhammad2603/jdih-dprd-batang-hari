@@ -62,6 +62,6 @@
     <div id="tableProdukHukum" class="table-wrapper overflow-x-auto"></div>
 </section>
 <section id="paginationWrapper"></section>
-<script src="/assets/js/manage-documents-page.js"></script>
+<script type="module" src="/assets/js/manage-documents-page.js"></script>
 <?= csrf_field() ?>
 <?= $this->endSection() ?>
