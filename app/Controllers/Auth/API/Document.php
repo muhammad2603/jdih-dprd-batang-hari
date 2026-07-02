@@ -492,7 +492,7 @@ class Document extends ResourceController
             }
         } catch (\Throwable $e) {
             $this->db->transRollback();
-            self::setLogMessage("critical", auth()->user()->id, auth()->user()->username, "DELETE DOCUMENT", "Gagal menghapus dokumen hukum dengan ID: {$id}. [{$e->getCode()}]: {$e->getMessage()}");
+            self::setLogMessage("critical", $this->user->id, $this->user->username, "DELETE DOCUMENT", "Gagal menghapus dokumen hukum dengan ID: {$id}. [{$e->getCode()}]: {$e->getMessage()}");
             return self::setErrorResponse($e->getMessage(), 500);
         }
         $attachment_path = WRITEPATH . 'uploads/dokumen-hukum/';
