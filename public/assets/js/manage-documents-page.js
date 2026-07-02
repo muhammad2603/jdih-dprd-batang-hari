@@ -6,22 +6,41 @@ class PopUp {
         this.messagePopUp = document.getElementById("messagePopUp");
         this.btnClosePopUp = document.getElementById("closePopUp");
         this.btnConfirmationPopUp = document.getElementById("confirmationPopUp");
+        this.iconWrapper = document.getElementById("iconWrapper");
+        this.iconPopUp = document.getElementById("icon");
+        this.iconInfo = "icon-information";
+        this.iconEdit = "icon-pencil-square";
+        this.iconDelete = "icon-triangle-alert";
+    }
+    #setIcon(icon, colors) {
+        const { background, foreground } = colors;
+        const getTargetIcon = this[icon];
+        const getUseEl = popUp.iconPopUp.querySelector('use');
+        const getUseHref = getUseEl.href;
+        getUseEl.href.baseVal = `/assets/icons.svg#${getTargetIcon}`;
+        this.iconWrapper.classList.add(background)
+        this.iconPopUp.classList.add(foreground)
+    }
+    #elementConfig(config) {
+        const { title, warning, message, btnConfirmationText, icons } = config;
+        this.#setIcon(icons.type, icons.colors)
+        this.titlePopUp.innerText = title ?? "";
+        this.warningTextPopUp.innerText = warning ?? "";
+        this.messagePopUp.innerText = message ?? "";
+        this.btnConfirmationPopUp.innerText = btnConfirmationText ?? "Konfirmasi";
     }
     close() {
         this.wrapper.classList.remove('flex');
         this.wrapper.classList.add('hidden');
     }
-    show(config) {
+    show() {
         this.wrapper.classList.remove('hidden');
         this.wrapper.classList.add('flex');
-        this.titlePopUp.innerText = config.title ?? "";
-        this.warningTextPopUp.innerText = config.warning ?? "";
-        this.messagePopUp.innerText = config.message ?? "";
-        this.btnClosePopUp.innerText = config.btnCloseText ?? "Batal";
-        this.btnConfirmationPopUp.innerText = config.btnConfirmationText ?? "Konfirmasi";
     }
     confirm(config) {
-        this.show(config)
+        this.#elementConfig(config)
+        this.btnClosePopUp.innerText = config.btnCloseText ?? "Batal";
+        this.show()
         return new Promise((resolve, reject) => {
             this.btnConfirmationPopUp.onclick = () => {
                 resolve(true)
@@ -63,9 +82,16 @@ const fetchDocuments = (url, elements) => useFetch({
 const popUp = new PopUp();
 const deleteDocument = (tokenCsrfInput, docId, titleDocument) => {
     const popUpConfig = {
-        "title": 'Hapus Dokumen',
-        "warning": 'Dokumen akan dihapus secara permanen dan tidak dapat dipulihkan. Apakah anda yakin?',
-        "message": titleDocument,
+        title: 'Hapus Dokumen',
+        warning: 'Dokumen akan dihapus secara permanen dan tidak dapat dipulihkan. Apakah anda yakin?',
+        message: titleDocument,
+        icons: {
+            type: "iconDelete",
+            colors: {
+                background: 'bg-red-100',
+                foreground: 'text-red-600'
+            }
+        }
     };
     popUp.confirm(popUpConfig)
         .then(() => {
@@ -155,6 +181,6 @@ document.addEventListener('DOMContentLoaded', () => {
             querySearch.append("tahun", year)
         }
         const urlQuery = url + querySearch.toString();
-        fetchDocuments(urlQuery, {dataIndex: dataIndex, dataView: tableProdukHukum, pagination: paginationWrapper})
+        fetchDocuments(urlQuery, { dataIndex: dataIndex, dataView: tableProdukHukum, pagination: paginationWrapper })
     })
 })
