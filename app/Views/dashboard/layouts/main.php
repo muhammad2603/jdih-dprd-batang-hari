@@ -27,7 +27,7 @@
             </div>
             <div class="pop-up-actions flex gap-3">
                 <button type="button" id="closePopUp" class="flex-1 px-4 py-2 border border-gray-200 rounded-lg text-sm font-medium text-gray-700 transition-colors cursor-pointer outline-none hover:bg-gray-50 focus:bg-gray-100"></button>
-                <button type="button" id="confirmationPopUp" class="flex-1 px-4 py-2 bg-red-600 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer outline-none hover:bg-red-700 focus:bg-red-700"></button>
+                <button type="button" id="confirmationPopUp" class="flex-1 px-4 py-2 text-white rounded-lg text-sm font-medium transition-colors cursor-pointer outline-none"></button>
             </div>
         </div>
     </div>
