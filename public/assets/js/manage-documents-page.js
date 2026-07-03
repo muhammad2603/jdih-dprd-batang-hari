@@ -1,14 +1,35 @@
 import { PopUp } from "./Class/PopUp.js";
-
-const useFetch = async (fetchConfig) => {
-    const { url, action, headers, success, errors } = fetchConfig;
-    try {
-        const response = await fetch(url, { method: action, headers: headers });
-        const result = await response.json();
-        if (!response.ok) throw result;
-        success(result)
-    } catch (error) {
-        errors(error)
+import { useFetch } from "./Class/Fetch.js";
+const popUp = new PopUp();
+const createPopUpConfig = () => {
+    return {
+        alert: (title = "Peringatan!", warning = "", message = "Tindakan ini harus dilakukan dengan hati-hati.") => {
+            return {
+                title: title,
+                warning: warning,
+                message: message,
+                btnCloseText: "Batal",
+                icon: "WARNING"
+            }
+        },
+        info: (title = "Pemberitahuan", warning = "", message) => {
+            return {
+                title: title,
+                warning: warning,
+                message: message,
+                btnConfirmationText: "OK",
+                icon: "INFO"
+            }
+        },
+        danger: (title = "Terjadi Kesalahan!", warning = "", message) => {
+            return {
+                title: title,
+                warning: warning,
+                message: message,
+                btnConfirmationText: "OK",
+                icon: "WARNING"
+            }
+        },
     }
 }
 const fetchDocuments = (url, elements) => useFetch({
@@ -24,23 +45,16 @@ const fetchDocuments = (url, elements) => useFetch({
         elements.pagination.innerHTML = view.pager;
     },
     errors: err => {
-        console.error(err)
+        const popUpConfig = createPopUpConfig().danger(
+            "Terjadi Kesalahan!",
+            "Permintaan gagal dipenuhi.",
+            err.message
+        );
+        popUp.alert(popUpConfig)
     }
 });
-const popUp = new PopUp();
 const deleteDocument = async (tokenCsrfInput, docId, titleDocument) => {
-    const popUpConfig = {
-        title: 'Hapus Dokumen',
-        warning: 'Dokumen akan dihapus secara permanen dan tidak dapat dipulihkan. Apakah anda yakin?',
-        message: titleDocument,
-        icons: {
-            type: "ALERT",
-            colors: {
-                background: 'bg-red-100',
-                foreground: 'text-red-600'
-            }
-        }
-    };
+    const popUpConfig = createPopUpConfig().alert("Hapus Dokumen", 'Dokumen akan dihapus secara permanen dan tidak dapat dipulihkan. Apakah anda yakin?', titleDocument);
     const isConfirmed = await popUp.confirm(popUpConfig);
     if (isConfirmed) {
         useFetch({
@@ -53,13 +67,14 @@ const deleteDocument = async (tokenCsrfInput, docId, titleDocument) => {
             success: resp => {
                 const { status, message, new_token } = resp;
                 tokenCsrfInput.value = new_token;
-                console.log(status ? "OK" : "FAIL")
-                console.log(message)
+                const popUpConfig = createPopUpConfig().info("Dokumen berhasil dihapus!", `Status: success`, message)
+                popUp.alert(popUpConfig)
             },
             errors: err => {
                 const { message, new_token } = err;
                 tokenCsrfInput.value = new_token;
-                document.getElementById("dataIndex").innerText = message;
+                const popUpConfig = createPopUpConfig().danger("Terjadi Kesalahan!", "Dokumen gagal dihapus.", err.message);
+                popUp.alert(popUpConfig)
             }
         })
         popUp.close()
