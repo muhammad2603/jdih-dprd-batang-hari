@@ -1,25 +1,8 @@
-/** @typedef {"INFO"|"CHANGE"|"ALERT"} PopupIconType */
+/** @typedef {"INFO"|"CHANGE"|"WARNING"} PopupIconType */
 
 /**
  * @typedef {Object} PopupConfig
  * 
- * @property {string} title
- * Judul Pop Up
- * @property {string} warning
- * Pesan warning atau peringatan dibawah judul
- * @property {string} message
- * Pesan dibody Pop Up
- * @property {string} [btnCloseText]
- * Text pada tombol close. Nilai default adalah "Batal"
- * @property {string} [btnConfirmationText]
- * Text pada tombol konfirmasi. Nilai default adalah "Konfirmasi"
- * @property {PopupIcon} icons
- * Konfigurasi Icon Pop Up
- */
-
-/**
- * @typedef {Object} PopupConfig
- *
  * @property {string} title
  * Judul Pop Up
  * @property {string} warning
@@ -63,7 +46,7 @@ class PopUp {
     static ICONS = Object.freeze({
         INFO: "icon-information",
         CHANGE: "icon-pencil-square",
-        ALERT: "icon-triangle-alert",
+        WARNING: "icon-triangle-alert",
     });
 
     constructor() {
@@ -103,15 +86,22 @@ class PopUp {
 
     /**
      * Atur konfigurasi elemen pop up
-     * @param {PopupConfig} config 
+     * @param {PopupConfig} config
+     * @param {"confirm"|"alert"} [type]
+     * Tipe pop up, default adalah "confirm".
      * @returns {void}
      */
-    #elementConfig(config) {
-        const { title, warning, message, btnConfirmationText, icons } = config;
+    #elementConfig(config, type = "confirm") {
+        const { title, warning, message, btnCloseText, btnConfirmationText, icons } = config;
         this.#setIcon(icons.type, icons.colors)
         this.titlePopUp.innerText = title ?? "";
         this.warningTextPopUp.innerText = warning ?? "";
         this.messagePopUp.innerText = message ?? "";
+        if (btnCloseText && type === "confirm") {
+            this.btnClosePopUp.innerText = config.btnCloseText ?? "Batal";
+        } else {
+            this.btnClosePopUp.classList.add('hidden')
+        }
         this.btnConfirmationPopUp.innerText = btnConfirmationText ?? "Konfirmasi";
     }
 
@@ -134,15 +124,14 @@ class PopUp {
     }
 
     /**
-     * Buka dan konfigurasi Pop Up.
+     * Pop Up confirmation event
      *
      * @param {PopupConfig} config
      * Konfigurasi Pop Up
-     * @returns {Promise<boolean>}
+     * @returns {Promise<boolean>} Pop Up akan tertutup ketika tombol close diklik
      */
     confirm(config) {
         this.#elementConfig(config)
-        this.btnClosePopUp.innerText = config.btnCloseText ?? "Batal";
         this.show()
         return new Promise(resolve => {
             this.btnConfirmationPopUp.onclick = () => {
@@ -151,6 +140,23 @@ class PopUp {
             this.btnClosePopUp.onclick = () => {
                 this.close()
                 resolve(false)
+            }
+        })
+    }
+
+    /**
+     * Pop Up info event
+     * 
+     * @param {PopupConfig} config 
+     * @returns {Promise<boolean>} Pop Up akan tertutup ketika tombol konfirmasi diklik
+     */
+    alert(config) {
+        this.#elementConfig(config, "alert")
+        this.show()
+        return new Promise(resolve => {
+            this.btnConfirmationPopUp.onclick = () => {
+                this.close()
+                resolve(true)
             }
         })
     }
