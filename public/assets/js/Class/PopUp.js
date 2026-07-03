@@ -31,8 +31,9 @@
  * 
  * @property {string} ICON
  * ID icon di SVG sprite
- * @property {PopupIconColors} COLORS
+ * @property {PopupIconColors} ICON_COLORS
  * Konfigurasi warna icon
+ * @property {string[]} BUTTON_CONFIRM_COLORS
  */
 
 class PopUp {
@@ -48,24 +49,27 @@ class PopUp {
     static ICONS = Object.freeze({
         INFO: {
             ICON: "icon-information",
-            COLORS: {
+            ICON_COLORS: {
                 background: 'bg-blue-100',
                 foreground: 'text-blue-600'
-            }
+            },
+            BUTTON_CONFIRM_COLORS: ["bg-blue-600", "hover:bg-blue-700", "focus:bg-blue-700"],
         },
         CHANGE: {
             ICON: "icon-pencil-square",
-            COLORS: {
+            ICON_COLORS: {
                 background: 'bg-indigo-100',
                 foreground: 'text-indigo-600'
-            }
+            },
+            BUTTON_CONFIRM_COLORS: ["bg-indigo-600", "hover:bg-indigo-700", "focus:bg-indigo-700"],
         },
         WARNING: {
             ICON: "icon-triangle-alert",
-            COLORS: {
+            ICON_COLORS: {
                 background: 'bg-red-100',
                 foreground: 'text-red-600'
-            }
+            },
+            BUTTON_CONFIRM_COLORS: ["bg-red-600", "hover:bg-red-700", "focus:bg-red-700"],
         },
     });
 
@@ -89,17 +93,33 @@ class PopUp {
     }
 
     /**
+     * Hapus semua warna icon SVG Pop Up dan warna background dan event ditombol konfirmasi menggunakan looping
+     * 
+     * @returns {void}
+     */
+    #loopForRemoveColorIcons() {
+        Object.entries(PopUp.ICONS).forEach(([key, values]) => {
+            const { ICON_COLORS, BUTTON_CONFIRM_COLORS } = values;
+            this.iconWrapper.classList.remove(ICON_COLORS.background)
+            this.iconPopUp.classList.remove(ICON_COLORS.foreground)
+            BUTTON_CONFIRM_COLORS.forEach(color => this.btnConfirmationPopUp.classList.remove(color))
+        })
+    }
+
+    /**
      * Setting Icon Pop Up
      * 
      * @param {PopupIconType} icon
      */
     #setIcon(icon) {
+        this.#loopForRemoveColorIcons();
         const getTargetIcon = PopUp.ICONS[icon];
         const getUseEl = this.iconPopUp.querySelector('use');
         const getUseHref = getUseEl.href;
         getUseEl.href.baseVal = `/assets/icons.svg#${getTargetIcon.ICON}`;
-        this.iconWrapper.classList.add(getTargetIcon.COLORS.background)
-        this.iconPopUp.classList.add(getTargetIcon.COLORS.foreground)
+        this.iconWrapper.classList.add(getTargetIcon.ICON_COLORS.background)
+        this.iconPopUp.classList.add(getTargetIcon.ICON_COLORS.foreground)
+        this.btnConfirmationPopUp.classList.add(...getTargetIcon.BUTTON_CONFIRM_COLORS)
     }
 
     /**
@@ -110,12 +130,13 @@ class PopUp {
      * @returns {void}
      */
     #elementConfig(config, type = "confirm") {
-        const { title, warning, message, btnCloseText, btnConfirmationText, icons } = config;
-        this.#setIcon(icons.type, icons.colors)
+        const { title, warning, message, btnCloseText, btnConfirmationText, icon } = config;
+        this.#setIcon(icon)
         this.titlePopUp.innerText = title ?? "";
         this.warningTextPopUp.innerText = warning ?? "";
         this.messagePopUp.innerText = message ?? "";
         if (btnCloseText && type === "confirm") {
+            this.btnClosePopUp.classList.remove('hidden')
             this.btnClosePopUp.innerText = config.btnCloseText ?? "Batal";
         } else {
             this.btnClosePopUp.classList.add('hidden')
