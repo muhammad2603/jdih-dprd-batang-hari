@@ -13,16 +13,8 @@
  * Text pada tombol close. Nilai default adalah "Batal"
  * @property {string} [btnConfirmationText]
  * Text pada tombol konfirmasi. Nilai default adalah "Konfirmasi"
- * @property {PopupIcon} icons
+ * @property {PopupIconType} icon
  * Konfigurasi Icon Pop Up
- */
-
-/**
- * @typedef {Object} PopupIcon
- *
- * @property {PopupIconType} type
- * Tipe Icon.
- * @property {PopupIconColors} colors
  */
 
 /**
@@ -34,6 +26,15 @@
  * Warna vektor icon svg, gunakan class dari utility tailwind
  */
 
+/**
+ * @typedef {Object} PopupIconDefinition
+ * 
+ * @property {string} ICON
+ * ID icon di SVG sprite
+ * @property {PopupIconColors} COLORS
+ * Konfigurasi warna icon
+ */
+
 class PopUp {
     /**
      * Daftar icons yang tersedia
@@ -42,11 +43,30 @@ class PopUp {
      * Gunakan key sebagai identitas dan value adalah ID icon SVG sprite
      * 
      * @readonly
+     * @type {Readonly<Record<PopupIconType, PopupIconDefinition>>}
     */
     static ICONS = Object.freeze({
-        INFO: "icon-information",
-        CHANGE: "icon-pencil-square",
-        WARNING: "icon-triangle-alert",
+        INFO: {
+            ICON: "icon-information",
+            COLORS: {
+                background: 'bg-blue-100',
+                foreground: 'text-blue-600'
+            }
+        },
+        CHANGE: {
+            ICON: "icon-pencil-square",
+            COLORS: {
+                background: 'bg-indigo-100',
+                foreground: 'text-indigo-600'
+            }
+        },
+        WARNING: {
+            ICON: "icon-triangle-alert",
+            COLORS: {
+                background: 'bg-red-100',
+                foreground: 'text-red-600'
+            }
+        },
     });
 
     constructor() {
@@ -71,17 +91,15 @@ class PopUp {
     /**
      * Setting Icon Pop Up
      * 
-     * @param {PopupIconType} icon 
-     * @param {PopupIconColors} colors 
+     * @param {PopupIconType} icon
      */
-    #setIcon(icon, colors) {
-        const { background, foreground } = colors;
+    #setIcon(icon) {
         const getTargetIcon = PopUp.ICONS[icon];
         const getUseEl = this.iconPopUp.querySelector('use');
         const getUseHref = getUseEl.href;
-        getUseEl.href.baseVal = `/assets/icons.svg#${getTargetIcon}`;
-        this.iconWrapper.classList.add(background)
-        this.iconPopUp.classList.add(foreground)
+        getUseEl.href.baseVal = `/assets/icons.svg#${getTargetIcon.ICON}`;
+        this.iconWrapper.classList.add(getTargetIcon.COLORS.background)
+        this.iconPopUp.classList.add(getTargetIcon.COLORS.foreground)
     }
 
     /**
