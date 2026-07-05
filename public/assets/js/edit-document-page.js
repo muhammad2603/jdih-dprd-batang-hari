@@ -3,6 +3,20 @@ import { classManipulation } from "./class-manipulation.js";
 import { $, $id, $$ } from "./dom.js";
 const form = new Form();
 document.addEventListener("DOMContentLoaded", () => {
+    const judulDokumenInput = $id("titleDocument");
+    const noTahunInput = $id("nomorTahun");
+    const jenisDokumenSelect = $id("typeDocument");
+    const statusDokumenSelect = $id("statusDocument");
+    const teuDokumenSelect = $id("teuDocument");
+    const tanggalPenetapanDate = $id("tanggalPenetapan");
+    const pembuatPeraturanSelect = $id("pembuatPeraturan");
+    const penandatangananSelect = $id("penandatanganan");
+    const pejabatPenetapSelect = $id("pejabatPenetap");
+    const tempatPenetapanSelect = $id("tempatPenetapan");
+    const sumberSelect = $id("sumber");
+    const noTahunTldInput = $id("noTahunTld");
+    const noteInput = $id("note");
+
     const btnTab = document.querySelectorAll('.tabs-form > button');
     const tabs = document.querySelectorAll('.tab');
     const formTab = new FormTab(btnTab, tabs);
@@ -40,26 +54,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const removeClassifiesSelected = (buttonDeleteOnCategory, listClassifiesSelected) => {
         const category = buttonDeleteOnCategory.parentElement;
-        const getIndexClassifyOnListArray = listClassifiesSelected.indexOf(category.dataset.category);
+        const getIndexClassifyOnListArray = listClassifiesSelected.indexOf(category.dataset.categoryId);
         $$(category).removeEl()
         listClassifiesSelected.splice(getIndexClassifyOnListArray, 1)
     }
-    const insertSelected = category => {
-        return `<span data-category="${category}" class="selected h-fit inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full"><span>${category}</span><button type="button" title="Hapus" class="delete-selected cursor-pointer hover:text-red-600"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3"><use href="/assets/icons.svg#icon-trash-strip"></svg></button></span>`;
+    const insertSelected = (categoryId, category) => {
+        return `<span data-category-id="${categoryId}" data-category="${category}" class="selected h-fit inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full"><span>${category}</span><button type="button" title="Hapus" class="delete-selected cursor-pointer hover:text-red-600"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3"><use href="/assets/icons.svg#icon-trash-strip"></svg></button></span>`;
     };
     const btnAddBidangHukum = $id('tambahBidangHukum');
     const bidangHukumSelect = $id('bidangHukumSelect');
     const parentSelectedBidangHukum = $id('selectedBidangHukum');
     const getInitSelectedBidangHukum = parentSelectedBidangHukum.querySelectorAll('span.selected');
-    let bidangHukumSelectedList = Array.from(getInitSelectedBidangHukum).map(element => element.dataset.category);
+    let bidangHukumSelectedList = Array.from(getInitSelectedBidangHukum).map(element => element.dataset.categoryId);
     btnAddBidangHukum.addEventListener('click', () => {
-        const getCategoryText = bidangHukumSelect.options[bidangHukumSelect.selectedIndex].text;
-        const isCategoryInserted = bidangHukumSelectedList.includes(getCategoryText);
+        const getOptionSelected = bidangHukumSelect.options[bidangHukumSelect.selectedIndex];
+        const getCategoryId = getOptionSelected.dataset.id;
+        const getCategoryText = getOptionSelected.text;
+        const isCategoryInserted = bidangHukumSelectedList.includes(getCategoryId);
         if (isCategoryInserted) {
             return alert(`Bidang hukum "${getCategoryText}" sudah dipilih.`);
         }
-        bidangHukumSelectedList.push(getCategoryText);
-        $$(parentSelectedBidangHukum).insertHTML(insertSelected(getCategoryText), 'beforeend');
+        bidangHukumSelectedList.push(getCategoryId);
+        $$(parentSelectedBidangHukum).insertHTML(insertSelected(getCategoryId, getCategoryText), 'beforeend');
     })
     parentSelectedBidangHukum.addEventListener('click', e => {
         const getBtnDeleteOnCategory = e.target.closest('.delete-selected');
@@ -72,15 +88,17 @@ document.addEventListener("DOMContentLoaded", () => {
     const subjectSelect = $id('subjectSelect');
     const parentSelectedSubject = $id('selectedSubject');
     const getInitSelectedSubject = parentSelectedSubject.querySelectorAll('span.selected');
-    let subjectSelectedList = Array.from(getInitSelectedSubject).map(element => element.dataset.category);
+    let subjectSelectedList = Array.from(getInitSelectedSubject).map(element => element.dataset.categoryId);
     btnAddSubject.addEventListener('click', () => {
-        const getCategoryText = subjectSelect.options[subjectSelect.selectedIndex].text;
-        const isCategoryInserted = subjectSelectedList.includes(getCategoryText);
+        const getOptionSelected = subjectSelect.options[subjectSelect.selectedIndex];
+        const getCategoryId = getOptionSelected.dataset.id;
+        const getCategoryText = getOptionSelected.text;
+        const isCategoryInserted = subjectSelectedList.includes(getCategoryId);
         if (isCategoryInserted) {
             return alert(`Subjek "${getCategoryText}" sudah dipilih.`);
         }
-        subjectSelectedList.push(getCategoryText);
-        $$(parentSelectedSubject).insertHTML(insertSelected(getCategoryText), 'beforeend');
+        subjectSelectedList.push(getCategoryId);
+        $$(parentSelectedSubject).insertHTML(insertSelected(getCategoryId, getCategoryText), 'beforeend');
     })
     parentSelectedSubject.addEventListener('click', e => {
         const getBtnDeleteOnCategory = e.target.closest('.delete-selected');
@@ -100,10 +118,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!file) return;
         // __COMMENT__ Tambahkan validasi untuk file disisi client
         fileAbstract = file;
-        const replaceFilenameExtension = file.name.replace('.pdf', '')
         classManipulation(abstractSelected).remove('hidden')
         classManipulation(inputFileAbstractWrapper).add('hidden')
-        setValue(inputFilenameAbstract, replaceFilenameExtension)
+        setValue(inputFilenameAbstract, file.name)
     })
     // __COMMENT__ Disaat ingin refactoring, perhatikan kode event-nya, logika tidak mirip dengan script add-document-page.js
     btnDeleteSelectedAbstractFile.addEventListener('click', () => {
@@ -138,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     const createInputFileNameAttachment = filename => {
-        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
+        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="new-attachment w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
     }
     const btnAddAttachments = $id('addAttachments');
     const attachmentsSelected = $id('attachmentsSelected');
@@ -201,5 +218,174 @@ document.addEventListener("DOMContentLoaded", () => {
             historyComment.disabled = false;
             changeType.disabled = false;
         }
+    })
+
+    const currentValues = {};
+    currentValues["judul_dokumen"] = $$(judulDokumenInput).getInputValue();
+    currentValues["nomor_tahun_dokumen"] = $$(noTahunInput).getInputValue();
+    currentValues["jenis_dokumen"] = $$(jenisDokumenSelect).getInputValue();
+    currentValues["status_dokumen"] = $$(statusDokumenSelect).getInputValue();
+    currentValues["teu_dokumen"] = $$(teuDokumenSelect).getInputValue();
+    currentValues["tanggal_penetapan"] = $$(tanggalPenetapanDate).getInputValue();
+    currentValues["tanggal_pengundangan"] = $$(inputTanggalPengundangan).getInputValue();
+    currentValues["tanggal_berlaku"] = $$(inputTanggalBerlaku).getInputValue();
+    currentValues["pembuat_peraturan"] = $$(pembuatPeraturanSelect).getInputValue();
+    currentValues["penandatanganan"] = $$(penandatangananSelect).getInputValue();
+    currentValues["pejabat_penetap"] = $$(pejabatPenetapSelect).getInputValue();
+    currentValues["tempat_penetapan"] = $$(tempatPenetapanSelect).getInputValue();
+    currentValues["sumber"] = $$(sumberSelect).getInputValue();
+    currentValues["nomor_tahun_tld"] = $$(noTahunTldInput).getInputValue();
+    currentValues["catatan"] = $$(noteInput).getInputValue();
+
+    const currentDynamicValues = {};
+    currentDynamicValues["bidang_hukum"] = [...bidangHukumSelectedList];
+    currentDynamicValues["subjek"] = [...subjectSelectedList];
+    currentDynamicValues["abstrak_pdf"] = $$(inputFilenameAbstract).getInputValue();
+    currentDynamicValues["lampiran"] = [...filenameAttachmentsSelected];
+    currentDynamicValues["dokumen_terkait"] = {};
+    const getCurrentRelatedDocuments = relatedDocumentWrapper.querySelectorAll(".related-document-inputs[data-related-id]");
+    getCurrentRelatedDocuments.forEach((wrapper, idx) => {
+        const inputs = wrapper.querySelectorAll("input[type='text']");
+        const selects = wrapper.querySelectorAll("select");
+        const judulInput = inputs[0];
+        const noTahunInput = inputs[1];
+        const jenisSelect = selects[0];
+        const aksiSelect = selects[1];
+        currentDynamicValues["dokumen_terkait"][idx] = {
+            id: wrapper.dataset.relatedId,
+            judul_dokumen_terkait: $$(judulInput).getInputValue(),
+            nomor_tahun_dokumen_terkait: $$(noTahunInput).getInputValue(),
+            jenis_dokumen_terkait: $$(jenisSelect).getInputValue(),
+            aksi_dokumen_terkait: $$(aksiSelect).getInputValue()
+        }
+    })
+
+    const getInputsTitleAttachment = Array.from(document.querySelectorAll('[data-attachment-id]'));
+
+    const btnSaveChanges = $id("saveChanges");
+    btnSaveChanges.addEventListener("click", () => {
+        console.log(fileAttachmentsSelected)
+        console.log(filenameAttachmentsSelected)
+        return;
+
+        const changesValue = {};
+
+        /**
+         * Set perubahan value pada input, dan jangan sertakan value yang tidak ada perubahan
+         */
+        Object.entries(currentValues).forEach(([attrName, currValue]) => {
+            const getElement = $$(document.querySelector(`[name=${attrName}]`));
+            const newValue = getElement.getInputValue();
+            const isValueChanged = newValue !== currValue;
+            if (!isValueChanged) return;
+            changesValue[attrName] = newValue;
+        })
+
+        // const isHasChanges = Object.keys(changesValue).length > 0;
+        // if (!isHasChanges) return alert("Tidak ada perubahan yang terjadi!");
+
+        /**
+         * Perubahan bidang hukum
+         */
+        const currBidangHukumSet = new Set(currentDynamicValues["bidang_hukum"]);
+        const newBidangHukumSet = new Set(bidangHukumSelectedList);
+        const bidangHukumChanges = {
+            add: bidangHukumSelectedList.filter(id => !currBidangHukumSet.has(id)),
+            delete: currentDynamicValues["bidang_hukum"].filter(id => !newBidangHukumSet.has(id))
+        };
+
+        /**
+         * Perubahan subjek
+         */
+        const currSubjekSet = new Set(currentDynamicValues["subjek"]);
+        const newSubjekSet = new Set(subjectSelectedList);
+        const subjekChanges = {
+            add: subjectSelectedList.filter(id => !currSubjekSet.has(id)),
+            delete: currentDynamicValues["subjek"].filter(id => !newSubjekSet.has(id))
+        };
+
+        /**
+         * Lacak perubahan yang terjadi didokumen terkait yang sudah tersimpan di Database.
+         * Jika ada yang berubah, masukkan ke var dokumenTerkaitChanges diproperty changed
+         * Jika ada yang dihapus, masukkan ke var dokumenTerkaitChanges diproperty deleted
+        */
+        const dokumenTerkaitChanges = {
+            add: {},
+            changed: {},
+            deleted: []
+        };
+        Object.entries(currentDynamicValues["dokumen_terkait"]).forEach(([idx, obj]) => {
+            const id = obj.id;
+            const relatedDocument = document.querySelector(`[data-related-id='${id}']`);
+            if (relatedDocument === null) {
+                dokumenTerkaitChanges.deleted.push(id)
+            } else {
+                let isChanged = false;
+                const inputs = relatedDocument.querySelectorAll("input[type='text']");
+                const selects = relatedDocument.querySelectorAll("select");
+                const values = {
+                    judul_dokumen_terkait: $$(inputs[0]).getInputValue(),
+                    nomor_tahun_dokumen_terkait: $$(inputs[1]).getInputValue(),
+                    jenis_dokumen_terkait: $$(selects[0]).getInputValue(),
+                    aksi_dokumen_terkait: $$(selects[1]).getInputValue()
+                };
+                for (const [key, value] of Object.entries(values)) {
+                    const isValueChanges = value !== currentDynamicValues["dokumen_terkait"][idx][key];
+                    if (!isValueChanges) {
+                        delete values[key];
+                        continue;
+                    };
+                    values[key] = value;
+                    isChanged = true;
+                }
+                if (isChanged) {
+                    dokumenTerkaitChanges.changed[id] = values;
+                }
+            }
+        })
+        /**
+         * Simpan dokumen terkait yang baru (jika ditambahkan)
+        */
+        const getNewRelatedDocument = relatedDocumentWrapper.querySelectorAll('.related-document-inputs.new');
+        getNewRelatedDocument.forEach((el, idx) => {
+            const getInputs = el.querySelectorAll("input");
+            const getTitleInput = getInputs[0];
+            const getNoTahunInput = getInputs[1];
+            if (getTitleInput.value.trim() === "" || getNoTahunInput.value.trim() === "") return;
+            const getSelects = el.querySelectorAll("select");
+            const getTypeSelect = getSelects[0];
+            const getActionSelect = getSelects[1];
+            dokumenTerkaitChanges.add[idx] = {
+                judul_dokumen_terkait: $$(getTitleInput).getInputValue(),
+                nomor_tahun_dokumen_terkait: $$(getNoTahunInput).getInputValue(),
+                jenis_dokumen_terkait: $$(getTypeSelect).getInputValue(),
+                aksi_dokumen_terkait: $$(getActionSelect).getInputValue()
+            };
+        })
+
+        /**
+         * Lacak perubahan yang terjadi diberkas/lampiran yang sudah tersimpan di Database.
+        */
+        const attachmentChanges = {
+            add: {},
+            changed: {},
+            deleted: []
+        };
+        getInputsTitleAttachment.forEach((input, idx) => {
+            const getAttachmentId = input.dataset.attachmentId;
+            // Block if ini mengecek apakah input masih tersedia di-DOM, jika tidak tersedia berarti lampiran harus dihapus.
+            if (!input.isConnected) return attachmentChanges.deleted.push(getAttachmentId);
+            const value = $$(input).getInputValue();
+            const isTitleAttachmentChange = value !== filenameAttachmentsSelected[idx];
+            if (!isTitleAttachmentChange) return;
+            attachmentChanges.changed[getAttachmentId] = { nama_berkas: value };
+        })
+
+        if (fileAttachmentsSelected.length > 0) {
+            console.log("Ada lampiran baru.")
+        }
+
+        console.info("Lampiran baru:")
+        console.log(fileAttachmentsSelected)
     })
 })
