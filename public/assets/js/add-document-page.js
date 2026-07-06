@@ -321,14 +321,6 @@ document.addEventListener("DOMContentLoaded", () => {
             isHasInvalid.push(true)
             messageNoTahunTldError.innerText = "Format tahun dokumen TLD adalah 4 digit. Contoh: 2020, 2021, dst.";
         }
-        if (fileAbstract && validations(filenameAbstractValue).isEmptyValue()) {
-            isHasInvalid.push(true)
-            messageFilenameAbstractError.innerText = "Harap isi bidang ini."
-        }
-        if (fileAbstract && validations(filenameAbstractValue).isValidValueLength(5, 255)) {
-            isHasInvalid.push(true)
-            messageFilenameAbstractError.innerText = "Judul abstrak tidak valid (min. 5 karakter dan maks. 255 karakter)."
-        }
         if (!validations(noteValue).isEmptyValue() && validations(noteValue).isValidValueLength(8, 255)) {
             isHasInvalid.push(true)
             noteError.innerText = "Catatan tidak valid (min. 8 karakter dan maks. 255 karakter) atau kosongkan jika tanpa catatan.";
