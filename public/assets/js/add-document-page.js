@@ -331,7 +331,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (!validations(noteValue).isEmptyValue() && validations(noteValue).isValidValueLength(8, 255)) {
             isHasInvalid.push(true)
-            noteError.innerText = "Catatan tidak valid (min. 8 karakter dan maks. 255 karakter)";
+            noteError.innerText = "Catatan tidak valid (min. 8 karakter dan maks. 255 karakter) atau kosongkan jika tanpa catatan.";
         }
         let relatedDocuments = {};
         relatedDocumentWrapper.querySelectorAll('.related-document-inputs')
@@ -431,6 +431,9 @@ document.addEventListener("DOMContentLoaded", () => {
         formData.append("csrf_token", tokenCsrf.value)
         fetch('/api/tambah-dokumen', {
             method: "POST",
+            headers: {
+                "X-REQUESTED-WITH": 'XMLHttpRequest'
+            },
             body: formData,
         })
             .then(async resp => {
