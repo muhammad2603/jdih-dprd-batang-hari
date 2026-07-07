@@ -1,7 +1,16 @@
 import { setValue, FormTab, Form } from "./Form.js";
 import { classManipulation } from "./class-manipulation.js";
 import { $, $id, $$ } from "./dom.js";
+import { validate, validations } from "./validations.js";
 const form = new Form();
+/**
+ * Filter pengambilan hanya pada perubahan
+ * @param object object yang akan digunakan untuk melakukan filterisasi
+ * @return {[string, string[]][]} mengembalikan array tuple yang berisi array[key object: string, operation: array]
+*/
+const changesFilterFromObjectEntries = object => {
+    return Object.entries(object).filter(([_, operation]) => operation.length !== 0);
+}
 document.addEventListener("DOMContentLoaded", () => {
     const judulDokumenInput = $id("titleDocument");
     const noTahunInput = $id("nomorTahun");
@@ -110,13 +119,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputFileAbstractWrapper = $id('inputFileAbstractWrapper');
     const inputSelectFileAbstract = $id('inputSelectFileAbstract');
     const inputFilenameAbstract = $id('inputFilenameAbstract');
+    const getCurrentFilenameAbstract = $$(inputFilenameAbstract).getInputValue();
     const abstractSelected = $id('fileAbstractSelected');
     const btnDeleteSelectedAbstractFile = $id('deleteSelectedAbstractFile');
     let fileAbstract = null;
+    const allowedExtensions = ['pdf'];
+    const maximum_mb = 5;
+    const allowedMimes = ['application/pdf'];
     inputSelectFileAbstract.addEventListener('change', function () {
         const file = this.files[0];
         if (!file) return;
-        // __COMMENT__ Tambahkan validasi untuk file disisi client
+        if (!validations(file.name).isAllowedFileExtension(allowedExtensions)) {
+            return alert("Ekstensi file abstrak tidak diizinkan. Silahkan pilih file kembali dengan ekstensi pdf.")
+        }
+        if (!validations(file.type).isAllowedMimesType(allowedMimes)) {
+            return alert(`File abstrak bukan tipe PDF. Ganti file atau pastikan formatnya PDF.`);
+        }
+        const isFileSizeLarge = validations(file.size).isFileSizeTooLarge(maximum_mb);
+        if (isFileSizeLarge) {
+            return alert(`Ukuran file abstrak terlalu besar (maks. ${maximum_mb} MB). Silahkan pilih file kembali!`);
+        }
         fileAbstract = file;
         classManipulation(abstractSelected).remove('hidden')
         classManipulation(inputFileAbstractWrapper).add('hidden')
@@ -155,18 +177,37 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     const createInputFileNameAttachment = filename => {
-        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" value="${filename}" class="new-attachment w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
+        return `<div class="w-full flex items-center gap-3"><label class="shrink-0"><span class="text-sm text-gray-500">Nama Berkas:</span></label><input type="text" placeholder="Masukkan nama berkas..." value="${filename}" class="new-attachment w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" /><button type="button" title="Hapus" data-filename="${filename}" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer"><svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4"><use href="/assets/icons.svg#icon-trash-strip" /></svg></button></div>`;
     }
     const btnAddAttachments = $id('addAttachments');
     const attachmentsSelected = $id('attachmentsSelected');
     const attachmentInputFile = $id('attachment');
+    const getCurrentAttachments = attachmentsSelected.querySelectorAll('input[data-attachment-id]');
+    const isAttachmentExist = getCurrentAttachments.length > 0;
     let fileAttachmentsSelected = [];
-    let filenameAttachmentsSelected = Array.from(attachmentsSelected.querySelectorAll('input[type=text]')).map(input => input.value);
+    let filenameAttachmentsSelected = [];
+    const maximumSizeMB = 30;
     attachmentInputFile.addEventListener('change', function () {
         const files = Array.from(this.files);
         if (!files[0]) return;
+        // note: value input file dikosongkan karena semua file yang dipilih disimpan ke-array fileAttachmentsSelected dan filenameAttachmentsSelecteds
+        setValue(this, '')
         for (const file of files) {
             const filename = file.name;
+            const isExtensionFileAllowed = !validations(filename).isAllowedFileExtension(allowedExtensions);
+            if (isExtensionFileAllowed) {
+                alert(`Ekstensi file ${filename} tidak diizinkan. Silahkan pilih file kembali dengan ekstensi pdf.`)
+                continue;
+            }
+            if (!validations(file.type).isAllowedMimesType(allowedMimes)) {
+                alert(`File ${filename} bukan tipe PDF. Ganti file atau pastikan formatnya PDF.`)
+                continue;
+            }
+            const isSizeTooLarge = validations(file.size).isFileSizeTooLarge(maximumSizeMB);
+            if (isSizeTooLarge) {
+                alert(`Ukuran file ${filename} terlalu besar (maks. ${maximumSizeMB} MB). Silahkan perkecil/kompres file terlebih dahulu.`)
+                continue;
+            }
             const replacePdfExtension = filename.replace('.pdf', '');
             if (filenameAttachmentsSelected.includes(replacePdfExtension)) {
                 alert(`File ${filename} sudah ditambahkan`);
@@ -179,9 +220,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 'beforeend'
             );
         }
-        // note: value input file dikosongkan karena semua file yang dipilih disimpan ke-array fileAttachmentsSelected dan filenameAttachmentsSelecteds
-        this.value = '';
-        if (filenameAttachmentsSelected.length > 0) {
+        if (fileAttachmentsSelected.length > 0) {
             classManipulation(this.parentElement).add('hidden')
             classManipulation(btnAddAttachments.parentElement).remove('hidden')
             classManipulation(btnAddAttachments.parentElement).add('flex')
@@ -195,28 +234,38 @@ document.addEventListener("DOMContentLoaded", () => {
         const getFilename = btnDeleteAttachment.dataset.filename;
         const getIndexFilenameOnArraySelected = filenameAttachmentsSelected.indexOf(getFilename);
         $$(inputsWrapper).removeEl(inputsWrapper)
-        if (filenameAttachmentsSelected.length === 1) {
+        if (getIndexFilenameOnArraySelected !== -1) {
+            fileAttachmentsSelected.splice(getIndexFilenameOnArraySelected, 1)
+            filenameAttachmentsSelected.splice(getIndexFilenameOnArraySelected, 1)
+        };
+        if (
+            (isAttachmentExist && (attachmentsSelected.querySelectorAll('input[data-attachment-id]').length === 0 && filenameAttachmentsSelected.length === 0))
+        ) {
             classManipulation(attachmentInputFile.parentElement).remove('hidden')
             classManipulation(btnAddAttachments.parentElement).remove('flex')
             classManipulation(btnAddAttachments.parentElement).add('hidden')
             classManipulation(attachmentsSelected).add('hidden')
         }
-        fileAttachmentsSelected.splice(getIndexFilenameOnArraySelected, 1)
-        filenameAttachmentsSelected.splice(getIndexFilenameOnArraySelected, 1)
     })
     btnAddAttachments.addEventListener('click', () => attachmentInputFile.click())
 
     const withoutHistory = $id('withoutHistory');
     const historyComment = $id('historyComment');
     const changeType = $id('changeType');
+    const historyCommentError = $id('historyCommentError');
     withoutHistory.addEventListener('change', function () {
         const isChecked = this.checked;
         if (isChecked) {
             historyComment.disabled = true;
             changeType.disabled = true;
+            classManipulation(historyCommentError).add("hidden")
         } else {
             historyComment.disabled = false;
             changeType.disabled = false;
+            if ($$(historyComment).getInputValue() === "") {
+                $$(historyCommentError).text('Harap isi bidang ini atau berikan tanda centang pada Tanpa Riwayat.')
+                classManipulation(historyCommentError).remove("hidden")
+            }
         }
     })
 
@@ -240,8 +289,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const currentDynamicValues = {};
     currentDynamicValues["bidang_hukum"] = [...bidangHukumSelectedList];
     currentDynamicValues["subjek"] = [...subjectSelectedList];
-    currentDynamicValues["abstrak_pdf"] = $$(inputFilenameAbstract).getInputValue();
-    currentDynamicValues["lampiran"] = [...filenameAttachmentsSelected];
+    currentDynamicValues["abstrak_pdf"] = getCurrentFilenameAbstract !== "" ? getCurrentFilenameAbstract : null;
+    currentDynamicValues["lampiran"] = Array.from(getCurrentAttachments).map(input => input.value);
     currentDynamicValues["dokumen_terkait"] = {};
     const getCurrentRelatedDocuments = relatedDocumentWrapper.querySelectorAll(".related-document-inputs[data-related-id]");
     getCurrentRelatedDocuments.forEach((wrapper, idx) => {
@@ -261,13 +310,77 @@ document.addEventListener("DOMContentLoaded", () => {
     })
 
     const getInputsTitleAttachment = Array.from(document.querySelectorAll('[data-attachment-id]'));
+    const noTahunError = $$(noTahunInput).nextEl();
+    const noTahunTldError = $$(noTahunTldInput).nextEl();
+
+    const validationConfig = [
+        {
+            identityField: "judul_dokumen",
+            messageElement: $$(judulDokumenInput).nextEl(),
+            validators: [
+                {
+                    method: "isEmptyValue",
+                    parameters: [],
+                    messageError: "Harap isi bidang ini.",
+                },
+                {
+                    method: "isValidValueLength",
+                    parameters: [5, 255],
+                    messageError: "Judul dokumen tidak valid (min. 5 karakter dan maks. 255 karakter)."
+                }
+            ]
+        },
+        {
+            identityField: "tanggal_penetapan",
+            messageElement: $$(tanggalPenetapanDate).nextEl(),
+            validators: [
+                {
+                    method: "isInvalidDate",
+                    parameters: [],
+                    messageError: "Tanggal penetapan tidak dapat diatur lebih dari tanggal saat ini"
+                },
+            ]
+        },
+        {
+            identityField: "tanggal_pengundangan",
+            messageElement: $$(inputTanggalPengundangan).nextEl(),
+            validators: [
+                {
+                    method: "isInvalidDate",
+                    parameters: [],
+                    messageError: "Tanggal pengundangan tidak dapat diatur lebih dari tanggal saat ini"
+                },
+            ]
+        },
+        {
+            identityField: "tanggal_berlaku",
+            messageElement: $$(inputTanggalBerlaku).nextEl(),
+            validators: [
+                {
+                    method: "isInvalidDate",
+                    parameters: [],
+                    messageError: "Tanggal berlaku tidak dapat diatur lebih dari tanggal saat ini"
+                },
+            ]
+        },
+        {
+            identityField: "catatan",
+            messageElement: $$(noteInput).nextEl(),
+            validators: [
+                {
+                    method: "isValidOptionalValueLength",
+                    parameters: [8, 255],
+                    messageError: "Catatan tidak valid (min. 8 karakter dan maks. 255 karakter) atau kosongkan jika tanpa catatan."
+                }
+            ]
+        }
+    ];
 
     const btnSaveChanges = $id("saveChanges");
     btnSaveChanges.addEventListener("click", () => {
-        console.log(fileAttachmentsSelected)
-        console.log(filenameAttachmentsSelected)
-        return;
+        [noTahunError, noTahunTldError, historyCommentError].forEach(el => $$(el).text(''));
 
+        let isValid = true;
         const changesValue = {};
 
         /**
@@ -280,9 +393,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!isValueChanged) return;
             changesValue[attrName] = newValue;
         })
-
-        // const isHasChanges = Object.keys(changesValue).length > 0;
-        // if (!isHasChanges) return alert("Tidak ada perubahan yang terjadi!");
 
         /**
          * Perubahan bidang hukum
@@ -306,12 +416,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
         /**
          * Lacak perubahan yang terjadi didokumen terkait yang sudah tersimpan di Database.
-         * Jika ada yang berubah, masukkan ke var dokumenTerkaitChanges diproperty changed
-         * Jika ada yang dihapus, masukkan ke var dokumenTerkaitChanges diproperty deleted
         */
         const dokumenTerkaitChanges = {
-            add: {},
-            changed: {},
+            add: [],
+            changed: [],
             deleted: []
         };
         Object.entries(currentDynamicValues["dokumen_terkait"]).forEach(([idx, obj]) => {
@@ -320,14 +428,47 @@ document.addEventListener("DOMContentLoaded", () => {
             if (relatedDocument === null) {
                 dokumenTerkaitChanges.deleted.push(id)
             } else {
-                let isChanged = false;
+                let isRelatedDocumentChanged = false;
                 const inputs = relatedDocument.querySelectorAll("input[type='text']");
+                const titleValue = $$(inputs[0]).getInputValue();
+                const isTitleEmpty = validations(titleValue).isEmptyValue();
+                const noTahunValue = $$(inputs[1]).getInputValue();
+                const isNomorTahunEmpty = validations(noTahunValue).isEmptyValue();
+                if (isTitleEmpty) return;
+                if (!isTitleEmpty && isNomorTahunEmpty) {
+                    isValid = false;
+                    alert(`Format nomor dan tahun pada "${titleValue}" didokumen terkait tidak benar. Contoh: 15/2021`);
+                    return;
+                }
+                if (!isTitleEmpty && validations(titleValue).isValidValueLength(8, 255)) {
+                    isValid = false;
+                    alert(`Judul dokumen terkait pada "${titleValue}" tidak valid (min. 8 karakter dan maks. 255 karakter)`);
+                    return;
+                }
+                const [number, year] = noTahunValue.split("/");
+                const isInvalidNumber = validations(number).isInvalidValue(/\D/);
+                const isInvalidYear = validations(year).isInvalidValue(/\D/);
+                // Jika judul dokumen terkait tidak kosong, cek apakah nomor/tahunnya valid? (harus mengandung digit/angka)
+                if (!isTitleEmpty && (isInvalidNumber || isInvalidYear)) {
+                    isValid = false;
+                    alert(`Format nomor dan tahun pada "${titleValue}" didokumen terkait harus mengandung angka. Contoh: 15/2021`);
+                    return;
+                }
+                const isInvalidYearLength = validations(year).isValidValueLength(4, 4);
+                // Jika judul dokumen terkait tidak kosong, dan nomor/tahun valid semua, cek apakah format tahun benar? (harus 4 digit/angka)
+                if (!isTitleEmpty && (!isInvalidNumber && !isInvalidYear) && isInvalidYearLength) {
+                    isValid = false;
+                    alert(`Format tahun pada "${titleValue}" didokumen terkait adalah 4 digit. Contoh: 2020, 2021, dst.`);
+                    return;
+                }
                 const selects = relatedDocument.querySelectorAll("select");
+                const typeValue = $$(selects[0]).getInputValue();
+                const actionValue = $$(selects[1]).getInputValue();
                 const values = {
-                    judul_dokumen_terkait: $$(inputs[0]).getInputValue(),
-                    nomor_tahun_dokumen_terkait: $$(inputs[1]).getInputValue(),
-                    jenis_dokumen_terkait: $$(selects[0]).getInputValue(),
-                    aksi_dokumen_terkait: $$(selects[1]).getInputValue()
+                    judul_dokumen_terkait: titleValue,
+                    nomor_tahun_dokumen_terkait: noTahunValue,
+                    jenis_dokumen_terkait: typeValue,
+                    aksi_dokumen_terkait: actionValue
                 };
                 for (const [key, value] of Object.entries(values)) {
                     const isValueChanges = value !== currentDynamicValues["dokumen_terkait"][idx][key];
@@ -336,56 +477,206 @@ document.addEventListener("DOMContentLoaded", () => {
                         continue;
                     };
                     values[key] = value;
-                    isChanged = true;
+                    isRelatedDocumentChanged = true;
                 }
-                if (isChanged) {
-                    dokumenTerkaitChanges.changed[id] = values;
+                if (isRelatedDocumentChanged) {
+                    values["id"] = id;
+                    dokumenTerkaitChanges.changed.push(values);
                 }
             }
         })
+
         /**
          * Simpan dokumen terkait yang baru (jika ditambahkan)
         */
         const getNewRelatedDocument = relatedDocumentWrapper.querySelectorAll('.related-document-inputs.new');
         getNewRelatedDocument.forEach((el, idx) => {
             const getInputs = el.querySelectorAll("input");
-            const getTitleInput = getInputs[0];
-            const getNoTahunInput = getInputs[1];
-            if (getTitleInput.value.trim() === "" || getNoTahunInput.value.trim() === "") return;
+            const titleValue = $$(getInputs[0]).getInputValue();
+            const isTitleEmpty = validations(titleValue).isEmptyValue();
+            const noTahunValue = $$(getInputs[1]).getInputValue();
+            const isNomorTahunEmpty = validations(noTahunValue).isEmptyValue();
+            if (isTitleEmpty) return;
+            if (!isTitleEmpty && isNomorTahunEmpty) {
+                isValid = false;
+                alert(`Format nomor dan tahun pada "${titleValue}" didokumen terkait tidak benar. Contoh: 15/2021`);
+            }
+            if (!isTitleEmpty && validations(titleValue).isValidValueLength(8, 255)) {
+                isValid = false;
+                alert(`Judul dokumen terkait pada "${titleValue}" tidak valid (min. 8 karakter dan maks. 255 karakter)`);
+            }
+            const [number, year] = noTahunValue.split("/");
+            const isInvalidNumber = validations(number).isInvalidValue(/\D/);
+            const isInvalidYear = validations(year).isInvalidValue(/\D/);
+            // Jika judul dokumen terkait tidak kosong, cek apakah nomor/tahunnya valid? (harus mengandung digit/angka)
+            if (!isTitleEmpty && (isInvalidNumber || isInvalidYear)) {
+                isValid = false;
+                alert(`Format nomor dan tahun pada "${titleValue}" didokumen terkait harus mengandung angka. Contoh: 15/2021`);
+            }
+            const isInvalidYearLength = validations(year).isValidValueLength(4, 4);
+            // Jika judul dokumen terkait tidak kosong, dan nomor/tahun valid semua, cek apakah format tahun benar? (harus 4 digit/angka)
+            if (!isTitleEmpty && (!isInvalidNumber && !isInvalidYear) && isInvalidYearLength) {
+                isValid = false;
+                alert(`Format tahun pada "${titleValue}" didokumen terkait adalah 4 digit. Contoh: 2020, 2021, dst.`);
+            }
             const getSelects = el.querySelectorAll("select");
-            const getTypeSelect = getSelects[0];
-            const getActionSelect = getSelects[1];
-            dokumenTerkaitChanges.add[idx] = {
-                judul_dokumen_terkait: $$(getTitleInput).getInputValue(),
-                nomor_tahun_dokumen_terkait: $$(getNoTahunInput).getInputValue(),
-                jenis_dokumen_terkait: $$(getTypeSelect).getInputValue(),
-                aksi_dokumen_terkait: $$(getActionSelect).getInputValue()
-            };
+            const typeValue = $$(getSelects[0]).getInputValue();
+            const actionValue = $$(getSelects[1]).getInputValue();
+            dokumenTerkaitChanges.add.push({
+                judul_dokumen_terkait: titleValue,
+                nomor_tahun_dokumen_terkait: noTahunValue,
+                jenis_dokumen_terkait: typeValue,
+                aksi_dokumen_terkait: actionValue
+            });
         })
 
         /**
          * Lacak perubahan yang terjadi diberkas/lampiran yang sudah tersimpan di Database.
         */
         const attachmentChanges = {
-            add: {},
-            changed: {},
+            add: [],
+            changed: [],
             deleted: []
         };
-        getInputsTitleAttachment.forEach((input, idx) => {
+
+        for (let idx = 0; idx < getInputsTitleAttachment.length; idx++) {
+            const input = getInputsTitleAttachment[idx];
             const getAttachmentId = input.dataset.attachmentId;
             // Block if ini mengecek apakah input masih tersedia di-DOM, jika tidak tersedia berarti lampiran harus dihapus.
-            if (!input.isConnected) return attachmentChanges.deleted.push(getAttachmentId);
+            if (!input.isConnected) {
+                attachmentChanges.deleted.push(getAttachmentId)
+                continue;
+            };
             const value = $$(input).getInputValue();
-            const isTitleAttachmentChange = value !== filenameAttachmentsSelected[idx];
-            if (!isTitleAttachmentChange) return;
-            attachmentChanges.changed[getAttachmentId] = { nama_berkas: value };
-        })
-
-        if (fileAttachmentsSelected.length > 0) {
-            console.log("Ada lampiran baru.")
+            classManipulation(input).remove("border-input-error")
+            const isTitleAttachmentChange = value !== currentDynamicValues["lampiran"][idx];
+            if (!isTitleAttachmentChange) break;
+            const isFileTitleEmpty = validations(value).isEmptyValue();
+            if (isFileTitleEmpty) {
+                isValid = false;
+                classManipulation(input).add("border-input-error")
+                alert("Nama berkas tidak ada yang boleh kosong.");
+                break;
+            }
+            const isFileTitleValidLength = validations(value).isValidValueLength(8, 255);
+            if (isFileTitleValidLength) {
+                isValid = false;
+                classManipulation(input).add("border-input-error")
+                alert("Nama berkas tidak valid (min. 8 karakter dan maks. 255 karakter)");
+                break;
+            }
+            attachmentChanges.changed.push({ id: getAttachmentId, nama_berkas: value });
         }
 
-        console.info("Lampiran baru:")
-        console.log(fileAttachmentsSelected)
+        const getTitleNewAttachments = document.querySelectorAll('input.new-attachment');
+        if (fileAttachmentsSelected.length > 0) {
+            fileAttachmentsSelected.forEach((file, idx) => {
+                const input = getTitleNewAttachments[idx];
+                classManipulation(input).remove("border-input-error")
+                const value = $$(input).getInputValue();
+                const isFileTitleEmpty = validations(value).isEmptyValue();
+                if (isFileTitleEmpty) {
+                    isValid = false;
+                    classManipulation(input).add("border-input-error")
+                    return alert("Nama berkas tidak ada yang boleh kosong.");
+                }
+                if (validations(value).isValidValueLength(8, 255)) {
+                    isValid = false;
+                    classManipulation(input).add("border-input-error")
+                    return alert("Nama berkas tidak valid (min. 8 karakter dan maks. 255 karakter)");
+                }
+                attachmentChanges.add.push({
+                    nama_berkas: value,
+                    file: file
+                });
+            })
+        }
+
+        let fileAbstractModify = {};
+        if (validations($$(inputFilenameAbstract).getInputValue()).isEmptyValue() && currentDynamicValues["abstrak_pdf"] !== null) {
+            const isDeleteFileAbstractConfirmed = confirm("Apakah anda yakin ingin menghapus File Abstrak dokumen ini?");
+            if (!isDeleteFileAbstractConfirmed) return;
+            fileAbstractModify.delete = true;
+        }
+        if (fileAbstract !== null && currentDynamicValues["abstrak_pdf"] !== null) {
+            fileAbstractModify.changed = fileAbstract;
+        }
+
+        const historyCommentValue = $$(historyComment).getInputValue();
+        const isHistoryCommentDisabled = historyComment.disabled;
+        if (!isHistoryCommentDisabled && validations(historyCommentValue).isValidOptionalValueLength(8, 255)) {
+            isValid = false;
+            $$(historyCommentError).text('Komentar perubahan tidak valid (min. 8 karakter dan maks. 255 karakter).')
+        }
+
+        const changesValueEntries = Object.entries(changesValue);
+        const bidangHukumChangesEntries = changesFilterFromObjectEntries(bidangHukumChanges);
+        const subjekChangesEntries = changesFilterFromObjectEntries(subjekChanges);
+        const isFileAbstractModified = changesFilterFromObjectEntries(fileAbstractModify);
+        const relatedDocumentChangesEntries = changesFilterFromObjectEntries(dokumenTerkaitChanges);
+        const attachmentChangesEntries = changesFilterFromObjectEntries(attachmentChanges);
+
+        // __COMMENT__ Block if ini mencegah saat tidak ada perubahan sama sekali.
+        if (
+            changesValueEntries.length === 0 &&
+            isFileAbstractModified.length === 0 &&
+            bidangHukumChangesEntries.length === 0 &&
+            subjekChangesEntries.length === 0 &&
+            relatedDocumentChangesEntries.length === 0 &&
+            attachmentChangesEntries.length === 0 &&
+            isValid === true
+        ) return alert("Tidak ada perubahan yang dilakukan.");
+
+        for (const [key, value] of changesValueEntries) {
+            const getValidationConfig = validationConfig.find(config => config.identityField === key);
+            if (!getValidationConfig) continue;
+            getValidationConfig.value = value;
+            const result = validate(getValidationConfig);
+            isValid = result;
+        }
+
+        if (changesValue["nomor_tahun_dokumen"] !== undefined) {
+            $$(noTahunError).text('')
+            const noTahunValue = $$(noTahunInput).getInputValue();
+            const numberAndYearSplit = noTahunValue.split("/");
+            const [number, year] = numberAndYearSplit;
+            if (validations(noTahunValue).isEmptyValue()) {
+                isValid = false;
+                $$(noTahunError).text("Harap isi bidang ini.")
+            } else if (!validations(noTahunValue).isValueIncludedChar("/") || (validations(number).isEmptyValue() || validations(year).isEmptyValue())) {
+                isValid = false;
+                $$(noTahunError).text("Format nomor dan tahun dokumen tidak valid. Contoh: 15/2021")
+            } else if (validations(number).isInvalidValue(/\D/) || validations(year).isInvalidValue(/\D/)) {
+                isValid = false;
+                $$(noTahunError).text("Format nomor dan tahun dokumen harus mengandung angka. Contoh: 15/2021.")
+            } else if (!validations(year).isInvalidValue(undefined) && validations(year).isValidValueLength(4, 4)) { // __COMMENT__ menggunakan isInvalid diperlukan, karena, jika year memiliki nilai undefined, tidak akan bisa diambil lengthnya.
+                isValid = false;
+                $$(noTahunError).text("Format tahun dokumen adalah 4 digit. Contoh: 2020, 2021, dst.")
+            }
+        }
+
+        if (changesValue["nomor_tahun_tld"] !== undefined) {
+            $$(noTahunTldError).text('')
+            const noTahunTldValue = $$(noTahunTldInput).getInputValue();
+            const numberAndYearTldSplit = noTahunTldValue.split("/");
+            const [numberTld, yearTld] = numberAndYearTldSplit;
+            if (validations(noTahunTldValue).isEmptyValue()) {
+                isValid = false;
+                $$(noTahunTldError).text("Harap isi bidang ini.")
+            } else if (!validations(noTahunTldValue).isValueIncludedChar("/") || (validations(numberTld).isEmptyValue() || validations(yearTld).isEmptyValue())) {
+                isValid = false;
+                $$(noTahunTldError).text("Format nomor dan tahun TLD dokumen tidak valid. Contoh: 15/2021")
+            } else if (validations(numberTld).isInvalidValue(/\D/) || validations(yearTld).isInvalidValue(/\D/)) {
+                isValid = false;
+                $$(noTahunTldError).text("Format nomor dan tahun TLD dokumen harus mengandung angka. Contoh: 15/2021.")
+            } else if (!validations(yearTld).isInvalidValue(undefined) && validations(yearTld).isValidValueLength(4, 4)) { // __COMMENT__ menggunakan isInvalid diperlukan, karena, jika yearTld memiliki nilai undefined, tidak akan bisa diambil lengthnya.
+                isValid = false;
+                $$(noTahunTldError).text("Format tahun TLD dokumen adalah 4 digit. Contoh: 2020, 2021, dst.")
+            }
+        }
+
+        if (!isValid) return alert("Ada input yang tidak valid mohon cek kembali!");
+
+        const formData = new FormData();
     })
 })
