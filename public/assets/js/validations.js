@@ -1,3 +1,19 @@
+/**
+ * @typedef {Object} ValidationConfig
+ * @property {HTMLInputElement} [inputElement] element input yang akan dicek value-nya. jika undefined, property value akan digunakan.
+ * @property {any} [value] value yang akan dicek. jika undefined, property inputElement akan digunakan.
+ * @property {HTMLElement} messageElement element untuk menampilkan pesan kesalahan
+ * @property {Validator[]} validators
+*/
+
+/**
+ * @typedef {Object} Validator
+ * @property {string} method method validations yang ingin digunakan.
+ * @property {Array} parameters parameter yang dibutuhkan dari method validations.
+ * @property {string} messageError pesan yang akan ditampilkan ke messageElement jika hasil method tidak valid.
+ * @property {boolean} isNegate Apakah hasil dari method validations harus dinegasi? true jika ya, false jika tidak.
+*/
+
 function validations(value) {
     return {
         value,
@@ -40,9 +56,21 @@ function validations(value) {
         /** allowedMimesType {array: list allowed mimes type} */
         isAllowedMimesType(allowedMimes) {
             return allowedMimes.includes(this.value);
+        },
+        /**
+         * Cek apakah input yang opsional saat diisi memiliki panjang karakter yang valid?
+         */
+        isValidOptionalValueLength(min, max) {
+            return (!this.isEmptyValue() && this.isValidValueLength(min, max));
         }
     }
 }
+
+/**
+ * Validasi otomatis menggunakan config
+ * @param {ValidationConfig[]} validation config validasi
+ * @return {boolean} false jika ada yang tidak valid, true jika semuanya valid
+*/
 function validate(validation) {
     let isPassed;
     const { inputElement, messageElement, validators, value } = validation;
@@ -52,8 +80,8 @@ function validate(validation) {
         const { method, parameters, messageError } = validator;
         const useNegate = validator.isNegate ?? false;
         const result = validations(useValue)[method](...parameters);
-        const isValid = useNegate ? !result : result;
-        if (isValid) {
+        const hasError = useNegate ? !result : result;
+        if (hasError) {
             isPassed = false
             messageElement.innerText = messageError;
             return isPassed;
