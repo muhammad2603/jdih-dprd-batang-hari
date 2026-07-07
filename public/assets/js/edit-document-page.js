@@ -596,30 +596,23 @@ document.addEventListener("DOMContentLoaded", () => {
         if (validations($$(inputFilenameAbstract).getInputValue()).isEmptyValue() && currentDynamicValues["abstrak_pdf"] !== null) {
             const isDeleteFileAbstractConfirmed = confirm("Apakah anda yakin ingin menghapus File Abstrak dokumen ini?");
             if (!isDeleteFileAbstractConfirmed) return;
-            fileAbstractModify.delete = true;
+            fileAbstractModify.delete = 1;
         }
         if (fileAbstract !== null && currentDynamicValues["abstrak_pdf"] !== null) {
             fileAbstractModify.changed = fileAbstract;
         }
 
-        const historyCommentValue = $$(historyComment).getInputValue();
-        const isHistoryCommentDisabled = historyComment.disabled;
-        if (!isHistoryCommentDisabled && validations(historyCommentValue).isValidOptionalValueLength(8, 255)) {
-            isValid = false;
-            $$(historyCommentError).text('Komentar perubahan tidak valid (min. 8 karakter dan maks. 255 karakter).')
-        }
-
         const changesValueEntries = Object.entries(changesValue);
         const bidangHukumChangesEntries = changesFilterFromObjectEntries(bidangHukumChanges);
         const subjekChangesEntries = changesFilterFromObjectEntries(subjekChanges);
-        const isFileAbstractModified = changesFilterFromObjectEntries(fileAbstractModify);
+        const fileAbstractModifiedEntries = changesFilterFromObjectEntries(fileAbstractModify);
         const relatedDocumentChangesEntries = changesFilterFromObjectEntries(dokumenTerkaitChanges);
         const attachmentChangesEntries = changesFilterFromObjectEntries(attachmentChanges);
 
         // __COMMENT__ Block if ini mencegah saat tidak ada perubahan sama sekali.
         if (
             changesValueEntries.length === 0 &&
-            isFileAbstractModified.length === 0 &&
+            fileAbstractModifiedEntries.length === 0 &&
             bidangHukumChangesEntries.length === 0 &&
             subjekChangesEntries.length === 0 &&
             relatedDocumentChangesEntries.length === 0 &&
@@ -675,8 +668,39 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         }
 
+        const isHistoryCommentDisabled = historyComment.disabled;
+        const historyCommentValue = $$(historyComment).getInputValue();
+        if (!isHistoryCommentDisabled && validations(historyCommentValue).isValidOptionalValueLength(8, 255)) {
+            isValid = false;
+            $$(historyCommentError).text('Komentar perubahan tidak valid (min. 8 karakter dan maks. 255 karakter).')
+        }
+        const isHistoryCommentEmpty = (!isHistoryCommentDisabled && validations(historyCommentValue).isEmptyValue());
+        if (isHistoryCommentEmpty) {
+            isValid = false;
+            $$(historyCommentError).text('Harap isi bidang ini atau berikan tanda centang pada Tanpa Riwayat.')
+        }
+
         if (!isValid) return alert("Ada input yang tidak valid mohon cek kembali!");
 
         const formData = new FormData();
+        changesValueEntries.forEach(([field, value]) => formData.append(field, value))
+        fileAbstractModifiedEntries.forEach(([operation, value]) => formData.append(`file_abstract[${operation}]`, value))
+        relatedDocumentChangesEntries.forEach(([operation, data]) => formData.append(`dokumen_terkait[${operation}]`, JSON.stringify(data)))
+        attachmentChangesEntries.forEach(([operation, data]) => {
+            if (operation === "add") {
+                data.forEach(data => {
+                    const fileKey = crypto.randomUUID();
+                    formData.append(`attachment_files[add][${fileKey}]`, data.file)
+                    formData.append(`attachment_titles[add][${fileKey}]`, data.nama_berkas)
+                })
+            } else {
+                formData.append(`attachment_files[${operation}]`, JSON.stringify(data))
+            }
+        });
+        if (!isHistoryCommentDisabled) {
+            formData.append('riwayat_perubahan', historyCommentValue)
+        }
+
+        /** Lakukan fetch data dibawah ini */
     })
 })
