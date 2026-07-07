@@ -167,16 +167,35 @@ class UserDashboard extends BaseController
         }
         $ph_id                      = $produk_hukum_details["id"];
         $related_documents          = $this->produk_hukum_model->getRelatedDocuments($ph_id);
-        $classifies_document        = $this->produk_hukum_model->getClassifyProdukHukum($ph_id);
         $tipe_perubahan             = $this->tipe_riwayat_perubahan_model->getTipePerubahan("Dibuat");
+        // __COMMENT__ Karena method getClassifyProdukHukum tidak menyediakan ID kategori bidang hukum atau subjek, buat Query SQL-nya sendiri.
+        // Tambahkan refactoring ini di next update, karena penggunaannya terlalu hard-coded
+        $bidang_hukum = $this->db->table("klasifikasi_bidang_hukum kbh")
+            ->select([
+                "id",
+                "kategori"
+            ])
+            ->where("ph_id", $ph_id)
+            ->join("kategori_bidang_hukum kat_bh", 'kat_bh.id = kbh.bidang_hukum_id')->get()->getResultArray();
+        $subjek = $this->db->table("klasifikasi_subjek ks")
+            ->select([
+                "id",
+                "subjek"
+            ])
+            ->where("ph_id", $ph_id)
+            ->join("kategori_subjek kat_sub", 'kat_sub.id = ks.subjek_id')->get()->getResultArray();
+        $attachments = $this->db->table("lampiran_produk_hukum")
+            ->select(["id", "judul_berkas", "nama_berkas"])
+            ->where("ph_id", $ph_id)
+            ->get()->getResultArray();
         $meta_page                  = [
             "title" => 'Kelola Dokumen',
             "produk_hukum" => $produk_hukum_details,
             "related_documents" => $related_documents,
             "kategori_bidang_hukum" => $this->get_all_category_bidang_hukum,
-            "bidang_hukum" => explode(', ', $classifies_document["bidang_hukum"]),
+            "bidang_hukum" => $bidang_hukum,
             "kategori_subjek" => $this->get_all_category_subjek,
-            "subjek" => explode(', ', $classifies_document["subjek"]),
+            "subjek" => $subjek,
             "document_actions" => $this->get_all_action,
             "document_categories" => $this->get_all_categories_only_view,
             "semua_kategori_dokumen" => $this->get_all_categories,
@@ -185,6 +204,7 @@ class UserDashboard extends BaseController
             "lokasi" => $this->get_all_location,
             "sumber" => $this->get_all_sumber,
             "tipe_perubahan" => $tipe_perubahan,
+            "attachments" => $attachments
         ];
         return view('dashboard/user/edit_document', $meta_page);
     }
