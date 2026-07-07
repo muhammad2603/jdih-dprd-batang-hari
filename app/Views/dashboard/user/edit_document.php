@@ -10,7 +10,6 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
 ?>
 <section class="form-wrapper max-w-4xl mx-auto">
     <div class="form-header flex items-center gap-4 mb-6">
-        <!-- __COMMENT__ user harus diganti berdasarkan role pengguna yang sedang login -->
         <a href="/user/dashboard/kelola-dokumen" title="Kembali" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600 transition-colors">
             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5">
                 <use href="/assets/icons.svg#icon-arrow-left">
@@ -22,7 +21,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
         </div>
     </div>
     <div class="form-body">
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="bg-white rounded-t-xl shadow-sm border border-gray-100 overflow-hidden">
             <div class="tabs-form flex border-b border-gray-100">
                 <button type="button" data-tab-id="informasiUmum" class="common-informations flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer border-primary text-primary">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
@@ -63,14 +62,16 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 <span>Judul Dokumen</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="titleDocument" id="titleDocument" placeholder="Masukkan judul lengkap dokumen hukum" value="<?= esc($produk_hukum["judul"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="text" name="judul_dokumen" id="titleDocument" placeholder="Masukkan judul lengkap dokumen hukum" value="<?= esc($produk_hukum["judul"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="titleError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                         <div class="document-number-year">
                             <label for="nomorTahun" class="block text-sm font-medium text-gray-700 mb-1.5">
                                 <span>Nomor/Tahun</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="text" name="nomorTahun" id="nomorTahun" placeholder="Contoh: 15/2021" value="<?= esc($produk_hukum["nomor"]) ?>/<?= esc($produk_hukum["tahun"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="text" name="nomor_tahun_dokumen" id="nomorTahun" placeholder="Contoh: 15/2021" value="<?= esc($produk_hukum["nomor"]) ?>/<?= esc($produk_hukum["tahun"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="noTahunError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                     </div>
                     <div class="grid grid-cols-3 gap-4">
@@ -79,7 +80,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 <span>Jenis Dokumen</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <select name="typeDocument" id="typeDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                            <select name="jenis_dokumen" id="typeDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($document_categories as $category): ?>
                                     <option value="<?= esc($category["id"]) ?>" <?= (esc($category["category"]) === esc($produk_hukum["kategori"]) ? "selected" : "") ?>><?= esc($category["category"]) ?></option>
                                 <?php endforeach ?>
@@ -90,7 +91,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 <span>Status</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <select name="statusDocument" id="statusDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                            <select name="status_dokumen" id="statusDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($document_status as $status): ?>
                                     <option value="<?= esc($status["id"]) ?>" <?= (esc($status["status"]) === $produk_hukum["status"]) ? "selected" : "" ?>><?= esc($status["status"]) ?></option>
                                 <?php endforeach ?>
@@ -101,7 +102,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 <span>Tajuk Entri Utama (T.E.U)</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <select name="teuDocument" id="teuDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                            <select name="teu_dokumen" id="teuDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($pejabat as $p): ?>
                                     <option value="<?= esc($p["id"]) ?>" <?= (esc($p["nama"]) === esc($produk_hukum["tajuk_entri_utama"]) ? "selected" : "") ?>><?= esc($p["nama"]) ?></option>
                                 <?php endforeach ?>
@@ -114,21 +115,24 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 <span>Tanggal Penetapan</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="tanggalPenetapan" id="tanggalPenetapan" value="<?= $produk_hukum["tanggal_penetapan"] ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="date" name="tanggal_penetapan" id="tanggalPenetapan" value="<?= $produk_hukum["tanggal_penetapan"] ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="tanggalPenetapanError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                         <div class="tanggal-pendundangan">
                             <label for="tanggalPengundangan" class="block text-sm font-medium text-gray-700 mb-1.5">
                                 <span>Tanggal Pengundangan</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="tanggalPengundangan" id="tanggalPengundangan" value="<?= esc($produk_hukum["tanggal_pengundangan"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="date" name="tanggal_pengundangan" id="tanggalPengundangan" value="<?= esc($produk_hukum["tanggal_pengundangan"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="tanggalPengundanganError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                         <div class="tanggal-berlaku">
                             <label for="tanggalBerlaku" class="block text-sm font-medium text-gray-700 mb-1.5">
                                 <span>Tanggal Berlaku</span>
                                 <span class="text-red-500">*</span>
                             </label>
-                            <input type="date" name="tanggalBerlaku" id="tanggalBerlaku" value="<?= esc($produk_hukum["tanggal_berlaku"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <input type="date" name="tanggal_berlaku" id="tanggalBerlaku" value="<?= esc($produk_hukum["tanggal_berlaku"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                            <span id="tanggalBerlakuError" class="ml-1 text-xs text-red-500"></span>
                             <div class="checkbox-tanggal-berlaku mt-2 flex gap-2">
                                 <input type="checkbox" id="salinTanggalPengundangan" <?= (esc($produk_hukum["tanggal_pengundangan"]) === esc($produk_hukum["tanggal_berlaku"])) ? 'checked' : '' ?> />
                                 <span class="text-sm text-gray-500">Samakan dengan tanggal pengundangan</span>
@@ -143,7 +147,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                     <span>Pembuat Peraturan</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="pembuatPeraturan" id="pembuatPeraturan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="pembuat_peraturan" id="pembuatPeraturan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($pejabat as $p): ?>
                                         <option value="<?= esc($p["id"]) ?>" <?= (esc($p["nama"]) === esc($produk_hukum["pejabat_pembuat_peraturan"]) ? "selected" : "") ?>><?= esc($p["nama"]) ?></option>
                                     <?php endforeach ?>
@@ -165,7 +169,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                     <span>Pejabat Penetap</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="pejabatPenetap" id="pejabatPenetap" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="pejabat_penetap" id="pejabatPenetap" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($pejabat as $p): ?>
                                         <option value="<?= esc($p["id"]) ?>" <?= (esc($p["nama"]) === esc($produk_hukum["pejabat_penetap"]) ? "selected" : "") ?>><?= esc($p["nama"]) ?></option>
                                     <?php endforeach ?>
@@ -181,7 +185,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                     <span>Tempat Penetapan</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <select name="tempatPenetapan" id="tempatPenetapan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                <select name="tempat_penetapan" id="tempatPenetapan" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($lokasi as $l): ?>
                                         <option value="<?= esc($l["id"]) ?>" <?= (esc($l["lokasi"]) === esc($produk_hukum["tempat_penetapan"])) ? "selected" : "" ?>><?= $l["lokasi"] ?></option>
                                     <?php endforeach ?>
@@ -203,7 +207,8 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                     <span>No/Tahun TLD</span>
                                     <span class="text-red-500">*</span>
                                 </label>
-                                <input type="text" name="noTahunTld" id="noTahunTld" placeholder="Contoh: 15/2021" value="<?= esc($produk_hukum["nomor_tld"]) ?>/<?= esc($produk_hukum["tahun_tld"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                <input type="text" name="nomor_tahun_tld" id="noTahunTld" placeholder="Contoh: 15/2021" value="<?= esc($produk_hukum["nomor_tld"]) ?>/<?= esc($produk_hukum["tahun_tld"]) ?>" class="w-full px-4 py-2.5 text-sm border border-accent-light-gray rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                <span id="noTahunTldError" class="ml-1 text-xs text-red-500"></span>
                             </div>
                         </div>
                     </div>
@@ -211,7 +216,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                         <h2 class="font-semibold text-default-foreground">Klasifikasi Dokumen</h2>
                         <div class="grid grid-cols-2 gap-4">
                             <div class="bidang-hukum">
-                                <label for="bidangHukum" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="bidangHukumSelect" class="block text-sm font-medium text-gray-700 mb-1.5">
                                     <span>Bidang Hukum (Opsional)</span>
                                 </label>
                                 <div class="flex gap-3">
@@ -226,8 +231,8 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 <div id="selectedBidangHukum" class="selected-bidang-hukum mt-3.5 flex flex-wrap gap-2 min-h-16">
                                     <?php if (count($bidang_hukum) > 0): ?>
                                         <?php foreach ($bidang_hukum as $bh): ?>
-                                            <span data-category="<?= esc($bh) ?>" class="selected h-fit inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-                                                <span><?= esc($bh) ?></span>
+                                            <span data-category-id="<?= esc($bh["id"]) ?>" data-category="<?= esc($bh["kategori"]) ?>" class="selected h-fit inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+                                                <span><?= esc($bh["kategori"]) ?></span>
                                                 <button type="button" title="Hapus" class="delete-selected cursor-pointer hover:text-red-600">
                                                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3">
                                                         <use href="/assets/icons.svg#icon-trash-strip">
@@ -238,24 +243,23 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                     <?php endif ?>
                                 </div>
                             </div>
-
                             <div class="subjek-dokumen">
-                                <label for="subjek" class="block text-sm font-medium text-gray-700 mb-1.5">
+                                <label for="subjectSelect" class="block text-sm font-medium text-gray-700 mb-1.5">
                                     <span>Subjek (Opsional)</span>
                                 </label>
                                 <div class="flex gap-3">
                                     <select id="subjectSelect" class="shrink w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                         <?php foreach ($kategori_subjek as $ks) : ?>
-                                            <option value="<?= esc($ks["id"]) ?>"><?= esc($ks['subjek']) ?></option>
+                                            <option value="<?= esc($ks["subjek"]) ?>" data-id="<?= esc($ks["id"]) ?>"><?= esc($ks['subjek']) ?></option>
                                         <?php endforeach ?>
                                     </select>
                                     <button type="button" id="tambahSubject" class="shrink-0 px-4 py-2 bg-primary text-white text-sm rounded-lg cursor-pointer transition-colors hover:bg-primary/90 focus:outline-primary focus:bg-primary/90">Tambah</button>
                                 </div>
                                 <div id="selectedSubject" class="selected-subject mt-3.5 flex flex-wrap gap-2 min-h-16">
-                                    <?php if (count($subjek) > 0): ?>
+                                    <?php if (!is_null($subjek)): ?>
                                         <?php foreach ($subjek as $s): ?>
-                                            <span data-category="<?= esc($s) ?>" class="selected h-fit inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
-                                                <span><?= esc($s) ?></span>
+                                            <span data-category-id="<?= esc($s["id"]) ?>" data-category="<?= esc($s["subjek"]) ?>" class="selected h-fit inline-flex items-center gap-1.5 px-3 py-1 bg-primary/10 text-primary text-sm rounded-full">
+                                                <span><?= esc($s["subjek"]) ?></span>
                                                 <button type="button" title="Hapus" class="delete-selected cursor-pointer hover:text-red-600">
                                                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-3">
                                                         <use href="/assets/icons.svg#icon-trash-strip">
@@ -274,7 +278,8 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                             <label for="note" class="block text-sm font-medium text-gray-700 mb-1.5">
                                 <span>Catatan (Opsional)</span>
                             </label>
-                            <textarea id="note" rows="3" placeholder="Tambahkan catatan dokumen..." class="w-full px-4 py-2.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none border-gray-200"><?= esc($produk_hukum["catatan"]) ?></textarea>
+                            <textarea name="catatan" id="note" rows="3" placeholder="Tambahkan catatan dokumen..." class="w-full px-4 py-2.5 text-sm border rounded-lg outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary resize-none border-gray-200"><?= esc($produk_hukum["catatan"]) ?></textarea>
+                            <span id="noteError" class="ml-1 text-xs text-red-500"></span>
                         </div>
                     </div>
                 </div>
@@ -295,13 +300,15 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                             <label for="inputFilenameAbstract" class="shrink-0">
                                 <span class="text-sm text-gray-500">Nama File:</span>
                             </label>
-                            <input type="text" id="inputFilenameAbstract" value="<?= str_replace('.pdf', '', $abstract_pdf) ?>" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" <?= $abstract_pdf ? 'data-file-exist="1"' : '' ?> />
+                            <input type="text" name="abstrak_pdf" id="inputFilenameAbstract" placeholder="Masukkan judul file abstrak..." value="<?= $abstract_pdf ?>" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-input-disabled" <?= $abstract_pdf ? 'data-file-exist="1"' : '' ?> disabled />
                             <button type="button" id="deleteSelectedAbstractFile" title="Hapus" class="p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-trash-strip" />
                                 </svg>
                             </button>
                         </div>
+                        <p class="mt-2 text-sm text-gray-500">Note: Jika ingin mengganti file abstrak yang telah terpilih, silahkan hapus abstrak saat ini terlebih dahulu, dan silahkan pilih file kembali.</p>
+                        <span id="filenameAbstractError" class="block ml-1 text-center text-xs text-red-500"></span>
                     </div>
                 </div>
                 <div id="relatedDocuments" class="tab space-y-4 hidden">
@@ -318,26 +325,26 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                         <div id="relatedDocumentWrapper" class="space-y-4 p-4 bg-gray-50 rounded-xl">
                             <?php if (count($related_documents) > 0): ?>
                                 <?php foreach ($related_documents as $rd): ?>
-                                    <div class="related-document-inputs w-full flex items-end gap-3">
+                                    <div data-related-id="<?= esc($rd["id"]) ?>" class="related-document-inputs w-full flex items-end gap-3">
                                         <div class="flex flex-col gap-1 shrink-0 grow basis-2xs">
-                                            <label for="judulDokumenTerkait" class="text-gray-600 text-sm">Judul Dokumen Terkait</label>
-                                            <input type="text" id="judulDokumenTerkait" placeholder="Judul dokumen hukum yang akan dikaitkan..." value="<?= esc($rd["judul"]) ?>" class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                            <label class="text-gray-600 text-sm">Judul Dokumen Terkait</label>
+                                            <input type="text" placeholder="Judul dokumen hukum yang akan dikaitkan..." value="<?= esc($rd["judul"]) ?>" class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                                         </div>
                                         <div class="flex flex-col gap-1 shrink basis-20">
-                                            <label for="noTahunDokumenTerkait" class="text-gray-600 text-sm">No/Tahun</label>
-                                            <input type="text" id="noTahunDokumenTerkait" placeholder="15/2021" value="<?= esc($rd["nomor"]) ?>/<?= esc($rd["tahun"]) ?>" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
+                                            <label class="text-gray-600 text-sm">No/Tahun</label>
+                                            <input type="text" placeholder="15/2021" value="<?= esc($rd["nomor"]) ?>/<?= esc($rd["tahun"]) ?>" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" autocomplete="off" />
                                         </div>
                                         <div class="flex flex-col gap-2.5 shrink basis-42">
-                                            <label for="jenisDokumenTerkait" class="text-gray-600 text-sm">Jenis Dokumen Terkait</label>
-                                            <select id="jenisDokumenTerkait" class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                            <label class="text-gray-600 text-sm">Jenis Dokumen Terkait</label>
+                                            <select class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                                 <?php foreach ($semua_kategori_dokumen as $categ): ?>
-                                                    <option value="<?= esc($categ["category"]) ?>" <?= (esc($categ["category"]) === esc($rd["full_name_category"])) ? "selected" : "" ?>><?= esc($categ["category"]) ?></option>
+                                                    <option value="<?= esc($categ["id"]) ?>" <?= (esc($categ["category"]) === esc($rd["full_name_category"])) ? "selected" : "" ?>><?= esc($categ["category"]) ?></option>
                                                 <?php endforeach ?>
                                             </select>
                                         </div>
                                         <div class="flex flex-col gap-2.5 shrink">
-                                            <label for="actionStatus" class="text-gray-600 text-sm">Tindakan</label>
-                                            <select id="actionStatus" class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
+                                            <label class="text-gray-600 text-sm">Tindakan</label>
+                                            <select class="w-full px-2 py-2 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                                 <?php foreach ($document_actions as $action): ?>
                                                     <option value="<?= esc($action["id"]) ?>" <?= (esc($action["action"]) === esc($rd["ref_status"])) ? "selected" : "" ?>><?= esc($action["action"]) ?></option>
                                                 <?php endforeach ?>
@@ -407,13 +414,13 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                         <input type="file" id="attachment" class="hidden" accept=".pdf" multiple hidden />
                     </div>
                     <div id="attachmentsSelected" class="attachments-selected p-4 bg-gray-50 rounded-xl space-y-2 <?= is_null(esc($produk_hukum["berkas"])) ? 'hidden' : '' ?>">
-                        <?php foreach ($attachments_to_array as $idx => $items): ?>
+                        <?php foreach ($attachments as $file): ?>
                             <div class="w-full flex items-center gap-3">
                                 <label class="shrink-0">
                                     <span class="text-sm text-gray-500">Nama Berkas:</span>
                                 </label>
-                                <input type="text" value="<?= esc($items[0]) ?>" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
-                                <button type="button" data-filename="<?= esc($items[0]) ?>" title="Hapus" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer">
+                                <input type="text" value="<?= esc($file["judul_berkas"]) ?>" placeholder="Masukkan nama berkas..." data-attachment-id="<?= esc($file["id"]) ?>" class="w-full mt-1 px-3 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary" />
+                                <button type="button" data-filename="<?= esc($file["nama_berkas"]) ?>" title="Hapus" class="delete-file p-2 rounded-lg hover:bg-red-100 text-gray-400 hover:text-red-600 transition-colors mt-0.5 cursor-pointer">
                                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                         <use href="/assets/icons.svg#icon-trash-strip" />
                                     </svg>
@@ -437,10 +444,11 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 </select>
                             </div>
                         </div>
-                        <div class="py-3 px-4 bg-gray-50 rounded-xl">
-                            <div class="w-full flex flex-col gap-1">
-                                <span class="text-gray-600 text-sm self-start">Komentar:</span>
-                                <textarea rows="3" id="historyComment" placeholder="Komentar perubahan..." class="w-full mt-1 px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-input-disabled"></textarea>
+                        <div class="p-4 bg-gray-50 rounded-xl">
+                            <div class="w-full flex items-center gap-2 flex-wrap">
+                                <span class="text-gray-600 text-sm self-start mt-3">Komentar:</span>
+                                <textarea rows="3" id="historyComment" placeholder='Contoh: Peraturan Daerah tentang "judul dokumen" ditetapkan dan diundangkan.' class="mb-1 w-full px-2 py-2 text-sm border border-gray-200 rounded-lg bg-white outline-none resize-none focus:ring-2 focus:ring-primary/20 focus:border-primary disabled:bg-input-disabled"></textarea>
+                                <span id="historyCommentError" class="ml-1 text-xs text-red-500">Harap isi bidang ini atau berikan tanda centang pada Tanpa Riwayat.</span>
                             </div>
                         </div>
                     </div>
@@ -453,8 +461,8 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                 </div>
             </div>
         </div>
-        <div class="form-buttons flex items-center justify-end px-6 py-4 bg-gray-50 border-t border-gray-100">
-            <button type="button" class="flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg cursor-pointer transition-colors hover:bg-primary/90">
+        <div class="form-buttons flex items-center justify-end px-6 py-4 bg-gray-50 border-t border-gray-100 rounded-b-xl shadow-sm">
+            <button type="button" id="saveChanges" class="flex items-center gap-2 px-5 py-2 bg-primary text-white text-sm font-medium rounded-lg cursor-pointer transition-colors hover:bg-primary/90">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                     <path d="M15.2 3a2 2 0 0 1 1.4.6l3.8 3.8a2 2 0 0 1 .6 1.4V19a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z" />
                     <path d="M17 21v-7a1 1 0 0 0-1-1H8a1 1 0 0 0-1 1v7" />
