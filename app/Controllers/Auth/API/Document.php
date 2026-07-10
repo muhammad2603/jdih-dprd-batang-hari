@@ -138,11 +138,11 @@ class Document extends ResourceController
      */
     public function create()
     {
-        if (!$this->user->can("document.create")) {
-            return self::setErrorResponse("Maaf, anda tidak dapat menambahkan dokumen. Operasi tidak diizinkan.");
+        if (self::isUserGotBanned()) {
+            return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan:{$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.", 403);
         }
-        if ($this->user->isBanned()) {
-            return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan: {$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.");
+        if (!self::isUserHasPermission("create")) {
+            return self::setErrorResponse("Maaf, anda tidak dapat menghapus dokumen. Operasi tidak diizinkan.", 403);
         }
         if (!$this->request->isAJAX()) {
             return self::setErrorResponse("Maaf, operasi tidak dapat dilakukan. Jika masalah ini terus berlanjut, hubungi administrator anda.");
@@ -447,6 +447,15 @@ class Document extends ResourceController
      */
     public function update($id = null)
     {
+        if (self::isUserGotBanned()) {
+            return self::setErrorResponse("Maaf, akun anda telah dibanned, alasan:{$this->user->getBanMessage()}. Hubungi administrator untuk mengaktifkan akun anda kembali.", 403);
+        }
+        if (!self::isUserHasPermission("update")) {
+            return self::setErrorResponse("Maaf, anda tidak dapat menghapus dokumen. Operasi tidak diizinkan.", 403);
+        }
+        if (!$this->request->isAJAX()) {
+            return self::setErrorResponse("Maaf, operasi tidak dapat dilakukan. Jika masalah ini terus berlanjut, hubungi administrator anda.");
+        }
         $request = $this->request;
         $payloads = $request->getPost();
         $files = $request->getFiles();
