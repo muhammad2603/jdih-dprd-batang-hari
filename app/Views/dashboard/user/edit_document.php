@@ -8,6 +8,7 @@ if (!is_null(esc($produk_hukum["berkas"]))) {
 }
 $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
 ?>
+<meta name="PRODUK-HUKUM-ID" value="<?= esc($produk_hukum["id"]) ?>" />
 <section class="form-wrapper max-w-4xl mx-auto">
     <div class="form-header flex items-center gap-4 mb-6">
         <a href="/user/dashboard/kelola-dokumen" title="Kembali" class="p-2 rounded-lg hover:bg-gray-200 text-gray-600 transition-colors">
@@ -104,7 +105,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                             </label>
                             <select name="teu_dokumen" id="teuDocument" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                 <?php foreach ($pejabat as $p): ?>
-                                    <option value="<?= esc($p["id"]) ?>" <?= (esc($p["nama"]) === esc($produk_hukum["tajuk_entri_utama"]) ? "selected" : "") ?>><?= esc($p["nama"]) ?></option>
+                                    <option value="<?= esc($p["id"]) ?>" <?= (esc($p["id"]) === esc($produk_hukum["tajuk_entri_utama"]) ? "selected" : "") ?>><?= esc($p["nama"]) ?></option>
                                 <?php endforeach ?>
                             </select>
                         </div>
@@ -198,7 +199,7 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
                                 </label>
                                 <select name="sumber" id="sumber" class="w-full px-4 py-2.5 text-sm border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary bg-white border-gray-200">
                                     <?php foreach ($sumber as $s): ?>
-                                        <option value="<?= esc($s["sumber"]) ?>" <?= (esc($s["sumber"]) === esc($produk_hukum["sumber"])) ? "selected" : "" ?>><?= esc($s["sumber"]) ?></option>
+                                        <option value="<?= esc($s["id"]) ?>" <?= (esc($s["sumber"]) === esc($produk_hukum["sumber"])) ? "selected" : "" ?>><?= esc($s["sumber"]) ?></option>
                                     <?php endforeach ?>
                                 </select>
                             </div>
@@ -474,5 +475,6 @@ $abstract_pdf = esc($produk_hukum["abstrak_pdf"]);
     </div>
     </div>
 </section>
+<?= csrf_field() ?>
 <script type="module" src="/assets/js/edit-document-page.js"></script>
 <?= $this->endSection() ?>
