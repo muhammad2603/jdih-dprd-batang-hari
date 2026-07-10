@@ -263,7 +263,7 @@ class Document extends ResourceController
                 return self::setErrorResponse("Abstrak bukan tipe PDF. Ganti file atau pastikan formatnya PDF.");
             }
             if ($abstrak->getSize() > $abstrak_pdf_file_maxsize) {
-                return self::setErrorResponse('Abstrak maksimal 5 MB');
+                return self::setErrorResponse('Ukuran file abstrak maksimal 5 MB');
             }
             $abstrak_filename = $abstrak->getRandomName();
             $abstrak->move($temporary_path, $abstrak_filename);
@@ -447,7 +447,424 @@ class Document extends ResourceController
      */
     public function update($id = null)
     {
-        //
+        $request = $this->request;
+        $payloads = $request->getPost();
+        $files = $request->getFiles();
+        $files_uploaded_count = count($files);
+        /*
+         * Hitung payload yang diterima, jika tidak ada payload perubahan field yang diterima, berikan response error.
+         * 1 dikecualikan karena ia adalah _method spoofing yang ditambah disisi client (fetch).
+         */
+        if (count($payloads) <= 1 && $files_uploaded_count === 0) return self::setErrorResponse("Tidak ada perubahan yang diterima.");
+        $rules = [
+            "judul_dokumen" => 'permit_empty|min_length[5]|max_length[255]',
+            "nomor" => 'permit_empty|numeric',
+            "tahun" => 'permit_empty|numeric|exact_length[4]',
+            "nomor_tld" => 'permit_empty|numeric',
+            "tahun_tld" => 'permit_empty|numeric|exact_length[4]',
+            "jenis_dokumen" => 'permit_empty|numeric',
+            "status_dokumen" => 'permit_empty|numeric',
+            "teu_dokumen" => 'permit_empty|numeric',
+            "tanggal_penetapan" => 'permit_empty|valid_date[Y-m-d]',
+            "tanggal_pengundangan" => 'permit_empty|valid_date[Y-m-d]',
+            "tanggal_berlaku" => 'permit_empty|valid_date[Y-m-d]',
+            "pembuat_peraturan" => 'permit_empty|numeric',
+            "penandatanganan" => 'permit_empty|numeric',
+            "pejabat_penetap" => 'permit_empty|numeric',
+            "tempat_penetapan" => 'permit_empty|numeric',
+            "sumber" => 'permit_empty|numeric',
+            "catatan" => 'permit_empty|min_length[8]|max_length[255]',
+            "tipe_perubahan" => 'permit_empty|required_with[riwayat_perubahan]|numeric',
+            "riwayat_perubahan" => 'permit_empty|required_with[tipe_perubahan]|min_length[8]|max_length[255]'
+        ];
+        if (!$this->validate($rules)) return self::setErrorResponse($this->validator->getErrors());
+        $ph_id = intval($id);
+        $table_riwayat_detail_perubahan = [
+            "title",
+            "category_id",
+            "status_id",
+            "sumber_id",
+            "tempat_penetapan",
+            "nomor",
+            "tahun",
+            "nomor_tld",
+            "tahun_tld",
+            "pembuat_peraturan",
+            "penandatanganan",
+            "pejabat_penetap"
+        ];
+        $set_inserts_riwayat_detail_perubahan = [];
+        $table_produk_hukum = [
+            'judul_dokumen'         => 'title',
+            'nomor'                 => 'nomor',
+            'tahun'                 => 'tahun',
+            'tanggal_penetapan'     => 'tanggal_penetapan',
+            'tanggal_pengundangan'  => 'tanggal_pengundangan',
+            'tanggal_berlaku'       => 'tanggal_berlaku',
+            'teu_dokumen'           => 'tajuk_entri_utama',
+            'jenis_dokumen'         => 'category_id',
+            'status_dokumen'        => 'status_id',
+        ];
+        $produk_hukum_changes = [];
+        if (array_key_exists("judul_dokumen", $payloads)) {
+            $produk_hukum_changes["slug"] = url_title(esc($payloads["judul_dokumen"]), '-', true);
+        }
+        foreach ($table_produk_hukum as $payloadKey => $dbField) {
+            if (array_key_exists($payloadKey, $payloads)) {
+                $value = esc($payloads[$payloadKey]);
+                if (in_array($dbField, $table_riwayat_detail_perubahan)) {
+                    $set_inserts_riwayat_detail_perubahan[$dbField] = $value;
+                }
+                $produk_hukum_changes[$dbField] = $value;
+            }
+        }
+        $table_meta_produk_hukum = [
+            'catatan' => 'catatan',
+            'sumber' => 'sumber_id',
+            'tempat_penetapan' => 'tempat_penetapan',
+            'nomor_tld' => 'nomor_tld',
+            'tahun_tld' => 'tahun_tld',
+            'pembuat_peraturan' => 'pembuat_peraturan',
+            'penandatanganan' => 'penandatanganan',
+            'pejabat_penetap' => 'pejabat_penetap'
+        ];
+        $meta_produk_hukum_changes = [];
+        foreach ($table_meta_produk_hukum as $payloadKey => $dbField) {
+            if (array_key_exists($payloadKey, $payloads)) {
+                $value = esc($payloads[$payloadKey]);
+                if (in_array($dbField, $table_riwayat_detail_perubahan)) {
+                    $set_inserts_riwayat_detail_perubahan[$dbField] = $value;
+                }
+                $meta_produk_hukum_changes[$dbField] = $value;
+            }
+        }
+        $temp_path = WRITEPATH . 'uploads/temp/';
+        $abstract_path = FCPATH . 'assets/abstrak/';
+        $abstract_filename_on_temp = null;
+        $get_curr_abstract_name = $this->meta_ph_model->select('abstrak_pdf')->where('ph_id', $ph_id)->first()["abstrak_pdf"];
+        $is_file_abstract_exist = !is_null($get_curr_abstract_name) && file_exists($abstract_path . $get_curr_abstract_name);
+        /** @var bool|string Jika isinya menjadi string, itu adalah nama file abstrak beserta pathnya yang harus dihapus, jika false, jangan dihapus */
+        $is_delete_file_abstract = false;
+        if (isset($files["file_abstrak"])) {
+            $add_abstract = $files["file_abstrak"]["add"] ?? null;
+            $abstrak_pdf_file_maxsize = 5 * (1024 * 1024);
+            if (!is_null($add_abstract)  && $add_abstract->isValid()) {
+                if (strtolower($add_abstract->getClientExtension()) !== 'pdf') {
+                    return self::setErrorResponse("Abstrak harus PDF");
+                }
+                if ($add_abstract->getMimeType() !== 'application/pdf') {
+                    return self::setErrorResponse("Abstrak bukan tipe PDF. Ganti file atau pastikan formatnya PDF.");
+                }
+                if ($add_abstract->getSize() > $abstrak_pdf_file_maxsize) {
+                    return self::setErrorResponse('Ukuran file abstrak maksimal 5 MB');
+                }
+                if ($is_file_abstract_exist) {
+                    $is_delete_file_abstract = $abstract_path . $get_curr_abstract_name;
+                }
+                $abstrak_random_name = $add_abstract->getRandomName();
+                $add_abstract->move($temp_path, $abstrak_random_name);
+                $meta_produk_hukum_changes["abstrak_pdf"] = $abstrak_random_name;
+                $abstract_filename_on_temp = $temp_path . $abstrak_random_name;
+            }
+        }
+        if (isset($payloads["file_abstrak"])) {
+            $is_deleted_file_abstract = esc($payloads["file_abstrak"]["delete"]) ?? null;
+            if (!is_null($is_deleted_file_abstract) && $is_deleted_file_abstract === "1") {
+                if ($is_file_abstract_exist) {
+                    $is_delete_file_abstract = $abstract_path . $get_curr_abstract_name;
+                }
+                $meta_produk_hukum_changes["abstrak_pdf"] = null;
+            }
+        }
+        $table_related_document = [
+            'id' => 'id',
+            'judul_dokumen_terkait' => 'judul',
+            'nomor_dokumen_terkait' => 'nomor',
+            'tahun_dokumen_terkait' => 'tahun',
+            'jenis_dokumen_terkait' => 'category_id',
+            'aksi_dokumen_terkait' => 'status_action'
+        ];
+        $related_document = $payloads["dokumen_terkait"] ?? [];
+        $related_document_add = [];
+        $related_document_changes = [];
+        if (isset($related_document["add"])) {
+            foreach (json_decode($related_document["add"], true) as $values) {
+                $judul_dokumen_terkait = $values['judul_dokumen_terkait'] ?? null;
+                $nomor_dokumen_terkait = $values['nomor_dokumen_terkait'] ?? null;
+                $tahun_dokumen_terkait = $values['tahun_dokumen_terkait'] ?? null;
+                $jenis_dokumen_terkait = $values['jenis_dokumen_terkait'] ?? null;
+                $aksi_dokumen_terkait = $values['aksi_dokumen_terkait'] ?? null;
+                if (!is_null($judul_dokumen_terkait)) {
+                    if (strlen($judul_dokumen_terkait) < 8 && strlen($judul_dokumen_terkait) > 255) {
+                        return self::setErrorResponse("Error: Judul dokumen terkait harus memiliki karakter min. 8 karakter dan maks. 255 karakter!");
+                    }
+                }
+                if (!is_null($nomor_dokumen_terkait)) {
+                    if (!is_numeric($nomor_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Nomor dokumen terkait hanya boleh mengandung angka!");
+                    }
+                }
+                if (!is_null($tahun_dokumen_terkait)) {
+                    if (!is_numeric($tahun_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Tahun dokumen terkait hanya boleh mengandung angka!");
+                    }
+                    if (strlen($tahun_dokumen_terkait) !== 4) {
+                        return self::setErrorResponse("Error: Tahun dokumen hanya boleh 4 digit angka!");
+                    }
+                }
+                if (!is_null($jenis_dokumen_terkait)) {
+                    if (!is_numeric($jenis_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Jenis dokumen terkait hanya boleh mengandung angka!");
+                    }
+                }
+                if (!is_null($aksi_dokumen_terkait)) {
+                    if (!is_numeric($aksi_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Tindakan/Aksi dokumen terkait hanya boleh mengandung angka!");
+                    }
+                }
+                $set_insert_entries = ["ph_id" => $ph_id];
+                foreach ($table_related_document as $payloadKey => $dbField) {
+                    if (array_key_exists($payloadKey, $values)) {
+                        $set_insert_entries[$dbField] = esc($values[$payloadKey]);
+                    }
+                }
+                array_push($related_document_add, $set_insert_entries);
+            }
+        }
+        if (isset($related_document["changed"])) {
+            foreach (json_decode($related_document["changed"], true) as $values) {
+                $set_update_entries = [];
+                $judul_dokumen_terkait = $values['judul_dokumen_terkait'] ?? null;
+                $nomor_dokumen_terkait = $values['nomor_dokumen_terkait'] ?? null;
+                $tahun_dokumen_terkait = $values['tahun_dokumen_terkait'] ?? null;
+                $jenis_dokumen_terkait = $values['jenis_dokumen_terkait'] ?? null;
+                $aksi_dokumen_terkait = $values['aksi_dokumen_terkait'] ?? null;
+                if (!is_null($judul_dokumen_terkait)) {
+                    if (strlen($judul_dokumen_terkait) < 8 && strlen($judul_dokumen_terkait) > 255) {
+                        return self::setErrorResponse("Error: Judul dokumen terkait harus memiliki karakter min. 8 karakter dan maks. 255 karakter!");
+                    }
+                }
+                if (!is_null($nomor_dokumen_terkait)) {
+                    if (!is_numeric($nomor_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Nomor dokumen terkait hanya boleh mengandung angka!");
+                    }
+                }
+                if (!is_null($tahun_dokumen_terkait)) {
+                    if (!is_numeric($tahun_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Tahun dokumen terkait hanya boleh mengandung angka!");
+                    }
+                    if (strlen($tahun_dokumen_terkait) !== 4) {
+                        return self::setErrorResponse("Error: Tahun dokumen hanya boleh 4 digit angka!");
+                    }
+                }
+                if (!is_null($jenis_dokumen_terkait)) {
+                    if (!is_numeric($jenis_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Jenis dokumen terkait hanya boleh mengandung angka!");
+                    }
+                }
+                if (!is_null($aksi_dokumen_terkait)) {
+                    if (!is_numeric($aksi_dokumen_terkait)) {
+                        return self::setErrorResponse("Error: Tindakan/Aksi dokumen terkait hanya boleh mengandung angka!");
+                    }
+                }
+                foreach ($table_related_document as $payloadKey => $dbField) {
+                    if (array_key_exists($payloadKey, $values)) {
+                        $set_update_entries[$dbField] = esc($values[$payloadKey]);
+                    }
+                }
+                array_push($related_document_changes, $set_update_entries);
+            }
+        }
+        $table_lampiran_produk_hukum = [
+            'id' => 'id',
+            'nama_berkas' => 'judul_berkas'
+        ];
+        $attachment_changes = [];
+        $attachments_files = $payloads["attachment_files"] ?? null;
+        $attachments_titles = $payloads["attachment_titles"] ?? null;
+        if (isset($attachments_files["changed"])) {
+            foreach (json_decode($attachments_files["changed"], true) as $values) {
+                $set_update_entries = ["ph_id" => $ph_id];
+                foreach ($table_lampiran_produk_hukum as $payloadKey => $dbField) {
+                    if (array_key_exists($payloadKey, $values)) {
+                        $set_update_entries[$dbField] = esc($values[$payloadKey]);
+                    }
+                }
+                array_push($attachment_changes, $set_update_entries);
+            }
+        }
+        $attachment_path = WRITEPATH . 'uploads/dokumen-hukum/';
+        $attachment_max_size = (30 * (1024 * 1024));
+        $attachment_insert_entries = [];
+        $attachment_filename_on_temp = [];
+        if (isset($attachments_titles["add"])) {
+            $get_attachment_files = $files["attachment_files"]["add"];
+            foreach ($attachments_titles["add"] as $fileKey => $title) {
+                $file = $get_attachment_files[$fileKey];
+                if (!$file->isValid()) {
+                    continue;
+                }
+                if (strtolower($file->getClientExtension()) !== 'pdf') {
+                    return self::setErrorResponse("Lampiran $title harus PDF.");
+                }
+                if ($file->getMimeType() !== 'application/pdf') {
+                    return self::setErrorResponse("Lampiran $title bukan tipe PDF. Ganti file atau pastikan formatnya PDF.");
+                }
+                if ($file->getSize() > $attachment_max_size) {
+                    return self::setErrorResponse("Lampiran $title maksimal 30 MB.");
+                }
+                if (!isset($title) || strlen($title) < 5 || strlen($title) > 80) {
+                    return self::setErrorResponse("Judul lampiran $title tidak valid.");
+                }
+                $filename = $file->getRandomName();
+                $file->move($temp_path, $filename);
+                array_push($attachment_filename_on_temp, $filename);
+                array_push($attachment_insert_entries, [
+                    "ph_id" => $ph_id,
+                    "judul_berkas" => esc($title),
+                    "nama_berkas" => $filename
+                ]);
+            }
+        }
+
+        $is_history_type_and_comment_exist = (isset($payloads["tipe_perubahan"]) && isset($payloads["riwayat_perubahan"]));
+
+        $this->db->transStart();
+        try {
+            if (count($produk_hukum_changes) > 0) {
+                $this->db->table("produk_hukum")
+                    ->where("id", $ph_id)
+                    ->update($produk_hukum_changes);
+            }
+            if (count($meta_produk_hukum_changes) > 0) {
+                $this->db->table("meta_produk_hukum")
+                    ->where("ph_id", $ph_id)
+                    ->update($meta_produk_hukum_changes);
+            }
+            if (isset($payloads["bidang_hukum"])) {
+                if (isset($payloads["bidang_hukum"]["add"])) {
+                    $bidang_hukum_add_array = json_decode($payloads["bidang_hukum"]["add"]);
+                    foreach ($bidang_hukum_add_array as $bh_id) {
+                        $this->kbh_model->save(["ph_id" => $ph_id, "bidang_hukum_id" => $bh_id]);
+                    }
+                }
+                if (isset($payloads["bidang_hukum"]["deleted"])) {
+                    $bidang_hukum_deleted_array = json_decode($payloads["bidang_hukum"]["deleted"]);
+                    foreach ($bidang_hukum_deleted_array as $bh_id) {
+                        $this->kbh_model
+                            ->where("ph_id", $ph_id)
+                            ->where("bidang_hukum_id", $bh_id)
+                            ->delete();
+                    }
+                }
+            }
+            if (isset($payloads["subjek"])) {
+                if (isset($payloads["subjek"]["add"])) {
+                    $bidang_hukum_add_array = json_decode($payloads["subjek"]["add"]);
+                    foreach ($bidang_hukum_add_array as $bh_id) {
+                        $this->ks_model->save(["ph_id" => $ph_id, "subjek_id" => $bh_id]);
+                    }
+                }
+                if (isset($payloads["subjek"]["deleted"])) {
+                    $bidang_hukum_deleted_array = json_decode($payloads["subjek"]["deleted"]);
+                    foreach ($bidang_hukum_deleted_array as $bh_id) {
+                        $this->ks_model
+                            ->where("ph_id", $ph_id)
+                            ->where("subjek_id", $bh_id)
+                            ->delete();
+                    }
+                }
+            }
+            if (count($related_document_add) > 0) {
+                $this->db->table('related_document')
+                    ->insertBatch($related_document_add);
+            }
+            if (count($related_document_changes) > 0) {
+                $this->db->table('related_document')
+                    ->updateBatch($related_document_changes, 'id');
+            }
+            if (isset($related_document["deleted"])) {
+                $id_array = json_decode($related_document["deleted"], true);
+                $this->db->table('related_document')
+                    ->where("ph_id", $ph_id)
+                    ->whereIn("id", $id_array)
+                    ->delete();
+            }
+            if (count($attachment_insert_entries) > 0) {
+                $this->db->table('lampiran_produk_hukum')
+                    ->insertBatch($attachment_insert_entries);
+            }
+            if (count($attachment_changes) > 0) {
+                $this->db->table('lampiran_produk_hukum')
+                    ->updateBatch($attachment_changes, 'id');
+            }
+            $attachments_filename_deleted = [];
+            if (isset($attachments_files["deleted"])) {
+                $id_array = json_decode($attachments_files["deleted"], true);
+                $attachments_filename_deleted = array_map(fn($row) => $row["nama_berkas"], $this->lph_model->select("nama_berkas")->whereIn('id', $id_array)->findAll());
+                $this->db->table('lampiran_produk_hukum')
+                    ->where('ph_id', $ph_id)
+                    ->whereIn('id', $id_array)
+                    ->delete();
+            }
+            if ($is_history_type_and_comment_exist) {
+                $new_rdp_id = $this->rdp_model
+                    ->insert([
+                        ...$set_inserts_riwayat_detail_perubahan,
+                        "comment" => $payloads["riwayat_perubahan"]
+                    ]);
+                $this->db->table("riwayat_perubahan_produk_hukum")
+                    ->insert([
+                        "ph_id" => $ph_id,
+                        "rdp_id" => $new_rdp_id,
+                        "change_type" => $payloads["tipe_perubahan"]
+                    ]);
+            }
+            $this->db->transComplete();
+            if ($this->db->transStatus() === false) throw new Exception("Update data gagal.");
+        } catch (\Throwable $e) {
+            $this->db->transRollback();
+            if (file_exists($abstract_filename_on_temp)) {
+                unlink($abstract_filename_on_temp);
+            }
+            foreach ($attachment_filename_on_temp as $filename) {
+                $full_path_temp = $temp_path . $filename;
+                if (file_exists($full_path_temp)) {
+                    unlink($full_path_temp);
+                }
+            }
+            self::setLogMessage("critical", $this->user->id, $this->user->username, "UPDATE DOCUMENT", "Operasi gagal. Error: {$e->getMessage()}");
+            return self::setErrorResponse($e->getMessage(), 500);
+        }
+        if ($is_delete_file_abstract !== false) {
+            unlink($is_delete_file_abstract);
+        }
+        if (!is_null($abstract_filename_on_temp) && file_exists($abstract_filename_on_temp)) {
+            rename(
+                $abstract_filename_on_temp,
+                $abstract_path . basename($abstract_filename_on_temp)
+            );
+        }
+        foreach ($attachment_filename_on_temp as $filename) {
+            $full_path_temp = $temp_path . $filename;
+            if (file_exists($full_path_temp)) {
+                rename(
+                    $full_path_temp,
+                    $attachment_path . $filename
+                );
+            }
+        }
+        foreach ($attachments_filename_deleted as $filename) {
+            $file_fullpath = $attachment_path . $filename;
+            if (file_exists($file_fullpath)) {
+                unlink($file_fullpath);
+            }
+        }
+        return $this->response
+            ->setJSON([
+                "status" => true,
+                "message" => "Update data berhasil.",
+            ]);
     }
 
     /**
