@@ -4,7 +4,8 @@ namespace App\Controllers\Auth;
 
 use CodeIgniter\Shield\Controllers\LoginController as ShieldLoginController;
 use CodeIgniter\HTTP\RedirectResponse;
-use CodeIgniter\Shield\Exceptions\ValidationException;
+// use CodeIgniter\Shield\Exceptions\ValidationException;
+use CodeIgniter\Shield\Authentication\AuthenticationException;
 
 class LoginController extends ShieldLoginController
 {
@@ -46,7 +47,8 @@ class LoginController extends ShieldLoginController
         $username = $this->request->getPost('username');
         $password = $this->request->getPost('password');
         try {
-            if (auth()->getAuthenticator()->attempt(["username" => $username, "password" => $password])) {
+            $attemptResult = auth()->getAuthenticator()->attempt(["username" => $username, "password" => $password]);
+            if ($attemptResult->isOK()) {
                 $user_groups = auth()->user()->getGroups();
                 $is_superadmin = in_array("superadmin", $user_groups);
                 if ($is_superadmin) {
@@ -54,7 +56,7 @@ class LoginController extends ShieldLoginController
                 }
                 return redirect()->to('/user/dashboard');
             }
-        } catch (ValidationException $e) {
+        } catch (AuthenticationException $e) {
             return redirect()->back()->withInput()->with("error", $e->getMessage());
         }
         return redirect()->back()->withInput()->with("error", 'Username atau password salah.');
