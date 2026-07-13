@@ -36,11 +36,6 @@
                             </svg>
                             <input id="username" type="text" name="username" value="<?= old('username') ?>" placeholder="Masukkan username anda" class="px-9 py-2 w-full bg-input-background text-sm border border-input rounded-md focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus:outline-none placeholder:text-muted-foreground" inputmode="text" autocomplete="username" autofocus required />
                         </div>
-                        <?php if (session('errors.username')): ?>
-                            <span class="text-sm text-red-500">
-                                <?= session('errors.username') ?>
-                            </span>
-                        <?php endif ?>
                     </div>
                     <div class="password-input">
                         <label for="password" class="text-sm leading-none font-medium">Password</label>
@@ -50,19 +45,14 @@
                             </svg>
                             <input id="password" type="password" name="password" placeholder="••••••••" class="px-9 py-2 w-full bg-input-background text-sm border border-input rounded-md focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] focus:outline-none placeholder:text-muted-foreground" inputmode="text" autocomplete="off" required />
                         </div>
-                        <?php if (session('errors.password')): ?>
-                            <span class="text-sm text-red-500">
-                                <?= session('errors.password') ?>
-                            </span>
-                        <?php endif ?>
                     </div>
                     <button type="submit" class="w-full bg-[#8B0000] text-foreground py-1.5 rounded-md outline-none cursor-pointer transition-all hover:bg-[#6B0000]">Login</button>
+                    <?php if (session('error')): ?>
+                        <div class="message-error text-red-600">
+                            <p class="text-center"><?= session('error') ?></p>
+                        </div>
+                    <?php endif ?>
                 </form>
-                <?php if (session('error')): ?>
-                    <div class="message-error">
-                        <p class="text-center"><?= session('error') ?></p>
-                    </div>
-                <?php endif ?>
             </div>
         </div>
         <div class="copyright-text">
