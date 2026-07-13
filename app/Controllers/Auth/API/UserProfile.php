@@ -121,43 +121,34 @@ class UserProfile extends BaseController
                 ]
             ],
         ];
-
         if (!$this->validate($rules)) return $this->response->setStatusCode(400)
             ->setJSON([
                 "status" => false,
                 "message" => $this->validator->getErrors(),
                 "new_token" => csrf_hash()
             ]);
-
         $requests = $this->request->getPost();
-
         $table_users_profile = [
             "nama_lengkap",
             "nama_divisi",
             "nomor_hp"
         ];
-
         $users_profile_changes = [];
-
         foreach ($requests as $req_name => $value) {
             if (in_array($req_name, $table_users_profile)) {
                 $dbField = $req_name;
                 $users_profile_changes[$dbField] = $value;
             }
         }
-
         $is_password_change = isset($requests["currentPassword"]) && isset($requests["newPassword"]) && isset($requests["confirmNewPassword"]);
         $is_valid_password_to_change = false;
-
         if ($is_password_change) {
             $get_current_password = $requests["currentPassword"];
             $is_curr_password_valid = $this->passwords->verify($get_current_password, $this->user->password_hash);
             if (!$is_curr_password_valid) return self::setErrorResponse("Password saat ini tidak benar! Coba lagi dan isi dengan benar.");
             $is_valid_password_to_change = true;
         }
-
         $this->db->transStart();
-
         try {
             if (count($users_profile_changes) > 0) {
                 $this->user_profile_model
@@ -182,11 +173,9 @@ class UserProfile extends BaseController
             self::setErrorResponse("Terjadi kesalahan. Mohon hubungi administrator untuk memperbaiki masalah ini lebih lanjut!");
             return;
         }
-
         if (isset($is_pass_changed) && $is_pass_changed) {
             auth()->logout();
         }
-
         return $this->response
             ->setJSON([
                 "status" => true,
