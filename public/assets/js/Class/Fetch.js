@@ -15,10 +15,12 @@
  * 
  * @property {string} url
  * URL endpoint
- * @property {string} action
- * Method request. Ex: GET|POST|UPDATE|PATCH|DELETE
+ * @property {string} [action]
+ * Method request, ex: [GET | POST | UPDATE | PATCH | DELETE]. Default adalah GET.
  * @property {HeadersInit} [headers]
  * Inisialisasi headers request
+ * @property {object} [body]
+ * Body request. Jika GET, body tidak dibutuhkan
  * @property {SuccessCallback} success
  * Callback ketika fetch berhasil
  * @property {ErrorCallback} errors
@@ -32,9 +34,17 @@
  * @returns {void}
  */
 const useFetch = async (fetchConfig) => {
-    const { url, action, headers, success, errors } = fetchConfig;
+    const { url, action, headers, body, success, errors } = fetchConfig;
     try {
-        const response = await fetch(url, { method: action, headers: headers });
+        const setMethod = action ?? "GET";
+        const setConfigFetch = {
+            method: setMethod,
+            headers: headers
+        };
+        if (setMethod.toLowerCase() !== "get") {
+            setConfigFetch.body = body;
+        }
+        const response = await fetch(url, setConfigFetch);
         const result = await response.json();
         if (!response.ok) throw result;
         success(result)
