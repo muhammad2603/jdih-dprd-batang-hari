@@ -12,7 +12,7 @@ class UserProfile extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ["user_id", "nama_lengkap", "nama_divisi", "nomor_hp", "updated_at"];
+    protected $allowedFields    = ["id", "user_id", "nama_lengkap", "nama_divisi", "nomor_hp", "updated_at"];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -23,8 +23,8 @@ class UserProfile extends Model
     // Dates
     protected $useTimestamps = false;
     protected $dateFormat    = 'datetime';
-    // protected $createdField  = 'created_at';
-    // protected $updatedField  = 'updated_at';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
     // Validation
