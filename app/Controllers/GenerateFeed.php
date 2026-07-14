@@ -27,15 +27,27 @@ class GenerateFeed extends BaseController
             "UPPER(doc_categs.category) AS jenis",
             "ph.nomor AS noPeraturan",
             "ph.title AS judul",
-            "UPPER(doc_categs.category_synonym) AS singkatanJenis",
+            "CASE
+                WHEN doc_categs.category_synonym IS NULL THEN ''
+                ELSE UPPER(doc_categs.category_synonym)
+            END AS singkatanJenis",
             "'Indonesia' AS tempatTerbit",
             "CONCAT(sph.akronim, ': ', mph.jumlah_halaman, ' hlm') AS sumber",
             "doc_status.status",
             "mph.bahasa",
-            "GROUP_CONCAT(kbh.kategori SEPARATOR ', ') AS bidangHukum",
-            "ph.tajuk_entri_utama AS teuBadan",
-            "ph.updated_at AS last_updated",
-            "CONCAT('$abstract_url', mph.abstrak_pdf) AS urlAbstrak",
+            "CASE
+                WHEN kbh.kategori IS NULL THEN ''
+                ELSE GROUP_CONCAT(kbh.kategori SEPARATOR ', ')
+            END AS bidangHukum",
+            "pjb.nama AS teuBadan",
+            "CASE
+                WHEN ph.updated_at IS NULL THEN ''
+                ELSE ph.updated_at
+            END AS last_updated",
+            "CASE
+                WHEN mph.abstrak_pdf IS NULL THEN ''
+                ELSE CONCAT('$abstract_url', mph.abstrak_pdf)
+            END AS urlAbstrak",
             "CONCAT('$produk_hukum_url', REPLACE(LOWER(doc_categs.category), ' ', '-'), '/', ph.slug) AS urlDetailPeraturan",
             // __COMMENT__ selalu pantau field dibawah ini didokumentasi JDIHN BPHN, karena mereka akan meminta field ini diupdate mendatang
             "'-' AS fileDownload",
