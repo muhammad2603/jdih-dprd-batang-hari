@@ -8,7 +8,7 @@ use App\Models\FrontendConfig;
 use App\Models\ProdukHukum;
 use App\Models\RiwayatPerubahanProdukHukum;
 
-helper('string');
+helper(['string', 'document_attributes']);
 
 class ProdukHukumDetails extends BaseController
 {
@@ -36,6 +36,7 @@ class ProdukHukumDetails extends BaseController
         $related_documents = $this->ph_model->getRelatedDocuments($ph_id);
         $document_title = esc($document["judul"]);
         $document_category = esc($document["kategori"]);
+        $status_document_colors = status_document_colors();
         $page_title = $document_title . " | JDIH DPRD Kabupaten Batang Hari";
         $page_alias = "Produk Hukum";
         $autofill_category = str_starts_with($document_category, "Peraturan") ? $document_category : "Peraturan " . $document_category;
@@ -55,7 +56,8 @@ class ProdukHukumDetails extends BaseController
             "histories_change"  => $histories_change,
             "bidang_hukum"      => explode(", ", $classify_document["bidang_hukum"]),
             "subjek"            => $classify_document["subjek"],
-            "related_documents" => $related_documents
+            "related_documents" => $related_documents,
+            "status_document_colors" => $status_document_colors
         ];
         $page_data = create_page_meta(
             $page_title,
