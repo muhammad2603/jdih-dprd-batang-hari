@@ -5,10 +5,12 @@ helper('string');
 
 use CodeIgniter\I18n\Time;
 
+$attachments_to_array = [];
 if (!is_null($produk_hukum["berkas"])) {
     $split_attachments = explode(",", $produk_hukum["berkas"]);
     $attachments_to_array = split_string_on_array(":", $split_attachments);
 }
+$total_attachment = count($attachments_to_array);
 ?>
 <div class="details-document-wrapper max-w-4xl mx-auto space-y-5">
     <div class="header flex items-center justify-between">
@@ -143,21 +145,25 @@ if (!is_null($produk_hukum["berkas"])) {
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-primary">
                         <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
                     </svg>
-                    <span>Lampiran (<?= count($attachments_to_array) ?>)</span>
+                    <span>Lampiran (<?= $total_attachment ?>)</span>
                 </h2>
                 <div class="space-y-4">
-                    <?php foreach ($attachments_to_array as $attach): ?>
-                        <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
-                                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
-                                        <use href="/assets/icons.svg#icon-document">
-                                    </svg>
+                    <?php if ($total_attachment > 0): ?>
+                        <?php foreach ($attachments_to_array as $attach): ?>
+                            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary size-4">
+                                            <use href="/assets/icons.svg#icon-document">
+                                        </svg>
+                                    </div>
+                                    <span class="filename text-sm text-gray-700"><?= esc($attach[0]) ?></span>
                                 </div>
-                                <span class="filename text-sm text-gray-700"><?= esc($attach[0]) ?></span>
                             </div>
-                        </div>
-                    <?php endforeach ?>
+                        <?php endforeach ?>
+                    <?php else: ?>
+                        <?= view('components/data-not-found', ["message" => "Lampiran belum ditambahkan."]) ?>
+                    <?php endif ?>
                 </div>
             </div>
         </aside>
@@ -233,7 +239,7 @@ if (!is_null($produk_hukum["berkas"])) {
                     <div class="bidang-hukum space-y-2">
                         <p class="text-sm text-gray-400">Bidang Hukum</p>
                         <div class="flex gap-2 flex-wrap">
-                            <?php if (count($bidang_hukum) > 0): ?>
+                            <?php if (count($bidang_hukum) > 0 && $bidang_hukum[0] !== ""): ?>
                                 <?php foreach ($bidang_hukum as $bh): ?>
                                     <span class="px-2.5 py-1 bg-primary/10 text-primary text-xs rounded-full font-medium"><?= esc($bh) ?></span>
                                 <?php endforeach ?>
@@ -245,7 +251,7 @@ if (!is_null($produk_hukum["berkas"])) {
                     <div class="subjek">
                         <div class="space-y-1 text-sm leading-relaxed">
                             <p class="text-gray-400">Subjek</p>
-                            <p><?= esc($subjek) ?></p>
+                            <p><?= esc($subjek) ?? "Tidak memiliki subjek" ?></p>
                         </div>
                     </div>
                 </div>
