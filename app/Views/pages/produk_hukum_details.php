@@ -365,10 +365,6 @@ session()->set('document_access', true);
                         <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["lokasi_terbit"]) ?></span>
                     </div>
                     <div>
-                        <span class="block text-muted-foreground mb-2">Jumlah Halaman</span>
-                        <span class="block font-medium text-default-foreground"><?= esc($produk_hukum["jumlah_halaman"]) ?> halaman</span>
-                    </div>
-                    <div>
                         <span class="block text-muted-foreground mb-2">Tanggal upload</span>
                         <span class="block font-medium text-default-foreground"><time datetime="<?= $timeServices->translateDateToLocalFormat($produk_hukum["created_at"], "y-MM-d") ?>"><?= $timeServices->translateDateToLocalFormat($produk_hukum["created_at"]) ?></time></span>
                     </div>
