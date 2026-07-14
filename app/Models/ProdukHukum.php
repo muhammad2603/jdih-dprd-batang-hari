@@ -163,7 +163,7 @@ class ProdukHukum extends Model
                 "tahun",
                 "nomor_tld",
                 "tahun_tld",
-                "tajuk_entri_utama",
+                "pjb.nama AS tajuk_entri_utama",
                 "(
                     CASE
                         WHEN docstat.sinonim IS NULL THEN docstat.status
@@ -195,12 +195,12 @@ class ProdukHukum extends Model
                 ) AS berkas",
                 "mph.abstrak_pdf",
                 "ph.slug",
-                "jumlah_halaman",
                 "ph.created_at",
                 "ph.updated_at"
             ])
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("meta_produk_hukum mph", "mph.ph_id = ph.id")
+            ->join("pejabat pjb", "pjb.id = ph.tajuk_entri_utama")
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
