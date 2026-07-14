@@ -64,11 +64,12 @@ const deleteDocument = async (tokenCsrfInput, docId, titleDocument) => {
                 "X-Requested-With": 'XMLHttpRequest',
                 "X-CSRF-TOKEN": tokenCsrfInput.value.trim(),
             },
-            success: resp => {
+            success: async resp => {
                 const { status, message, new_token } = resp;
                 tokenCsrfInput.value = new_token;
                 const popUpConfig = createPopUpConfig().info("Dokumen berhasil dihapus!", `Status: success`, message)
-                popUp.alert(popUpConfig)
+                const stateClosedPopUp = await popUp.alert(popUpConfig)
+                if (stateClosedPopUp) window.location.reload();
             },
             errors: err => {
                 const { message, new_token } = err;
