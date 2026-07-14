@@ -222,7 +222,7 @@ session()->set('document_access', true);
                                                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-5 text-purple-600">
                                                         <use href="/assets/icons.svg#icon-document-history">
                                                     </svg>
-                                                    <span class="font-semibold text-default-foreground"><?= !is_null($history["status"]) ? esc($history["status"]) : esc($history["change_type"]) ?></span>
+                                                    <span class="font-semibold text-default-foreground"><?= esc($history["change_type"]) ?></span>
                                                 </div>
                                                 <div class="date-change flex gap-2 text-sm text-muted-foreground">
                                                     <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
