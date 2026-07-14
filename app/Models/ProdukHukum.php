@@ -163,13 +163,7 @@ class ProdukHukum extends Model
                 "nomor_tld",
                 "tahun_tld",
                 "pjb.nama AS tajuk_entri_utama",
-                "(
-                    CASE
-                        WHEN docstat.sinonim IS NULL THEN docstat.status
-                        ELSE docstat.sinonim
-                    END
-                ) AS status",
-                "warna_aksen",
+                "status",
                 "sumber",
                 "(
                 SELECT nama FROM pejabat pjb WHERE pjb.id = mph.pembuat_peraturan
