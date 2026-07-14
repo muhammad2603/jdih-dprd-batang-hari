@@ -15,15 +15,15 @@ class UserProfile extends BaseController
 {
     private UserProfileModel $user_profile_model;
     private User $user;
-    private UserModel $userModel;
+    private UserModel $userProvider;
     private BaseConnection $db;
     private object $passwords;
 
     public function __construct()
     {
         $this->passwords            = service('passwords');
+        $this->userProvider         = auth()->getProvider();
         $this->user                 = auth()->user();
-        $this->userModel            = new UserModel;
         $this->db                   = Database::connect();
         $this->user_profile_model   = new UserProfileModel;
     }
@@ -158,12 +158,11 @@ class UserProfile extends BaseController
             }
             if ($is_valid_password_to_change) {
                 $get_new_password = $requests["newPassword"];
-                $userProvider = auth()->getProvider();
-                $user = $userProvider->findById($user_id);
+                $user = $this->userProvider->findById($user_id);
                 $user->fill([
                     "password" => $get_new_password
                 ]);
-                $is_pass_changed = $userProvider->save($user);
+                $is_pass_changed = $this->userProvider->save($user);
             }
             $this->db->transComplete();
             if ($this->db->transStatus() === false) throw new Exception($this->db->error()["message"]);
