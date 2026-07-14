@@ -166,7 +166,7 @@ session()->set('document_access', true);
                             </article>
                         <?php endforeach ?>
                     <?php else: ?>
-                        <?= view("components/data-not-found", ["message" => "Dokumen terkait tidak ditemukan."]) ?>
+                        <?= view("components/data-not-found", ["message" => "Dokumen terkait belum tersedia."]) ?>
                     <?php endif ?>
                 </div>
             </div>
@@ -198,7 +198,7 @@ session()->set('document_access', true);
                             </div>
                         <?php endforeach ?>
                     <?php else: ?>
-                        <?= view('components/data-not-found', ["message" => 'Lampiran tidak ditemukan.']) ?>
+                        <?= view('components/data-not-found', ["message" => 'Lampiran belum tersedia.']) ?>
                     <?php endif ?>
                 </div>
             </div>
