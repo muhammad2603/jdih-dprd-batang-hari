@@ -15,6 +15,8 @@ $shareWhatsAppText .= "Nomor/Tahun: " . esc($produk_hukum["nomor"]) . "/" . esc(
 $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
 $document_note = esc($produk_hukum["catatan"]);
+$status_document = esc($produk_hukum["status"]);
+$status_color = $status_document_colors[$status_document];
 session()->set('document_access', true);
 ?>
 <div class="jumbotron bg-primary text-white py-8">
@@ -35,8 +37,8 @@ session()->set('document_access', true);
                 <div class="header-document flex items-center gap-3 mb-3 flex-wrap">
                     <span class="px-3 py-1 bg-white/20 text-white text-sm font-medium rounded-full"><?= esc($produk_hukum["kategori"]) ?></span>
                     <span class="font-semibold">Nomor <?= esc($produk_hukum["nomor"]) ?> Tahun <?= esc($produk_hukum["tahun"]) ?></span>
-                    <span id="tagStatus" class="px-4 py-1 rounded-full text-sm font-medium border flex items-center gap-2">
-                        <span><?= esc($produk_hukum["status"]) ?></span>
+                    <span id="tagStatus" class="px-4 py-1 rounded-full text-sm font-medium border flex items-center gap-2 <?= $status_color ?>">
+                        <span><?= $status_document ?></span>
                     </span>
                 </div>
                 <h1 class="text-2xl sm:text-3xl font-bold mt-6 xl:mt-0 mb-2"><?= esc($produk_hukum["judul"]) ?></h1>
