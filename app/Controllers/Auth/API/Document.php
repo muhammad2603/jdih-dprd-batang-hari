@@ -231,9 +231,18 @@ class Document extends ResourceController
                 return self::setErrorResponse("$tanggal tidak boleh lebih dari hari ini");
             }
         }
-        $kategoriBidangHukum = json_decode($request->getPost('kategori_bidang_hukum'), true) ?? [];
-        $kategoriSubjek = json_decode($request->getPost('kategori_subjek'), true) ?? [];
-        $dokumenTerkait = json_decode($request->getPost('dokumen_terkait'), true) ?? [];
+        $kategoriBidangHukum = json_decode(
+            $request->getPost('kategori_bidang_hukum') ?? '',
+            true
+        ) ?? [];
+        $kategoriSubjek = json_decode(
+            $request->getPost('kategori_subjek') ?? '',
+            true
+        ) ?? [];
+        $dokumenTerkait = json_decode(
+            $request->getPost('dokumen_terkait') ?? '',
+            true
+        ) ?? [];
         foreach (array_merge($kategoriBidangHukum, $kategoriSubjek) as $id) {
             if (!is_numeric($id)) {
                 return self::setErrorResponse('Kategori harus berupa ID angka');
@@ -311,8 +320,10 @@ class Document extends ResourceController
         $tahun_tld                  = esc($request->getPost('tahun_tld'));
         $sumber                     = esc($request->getPost('sumber'));
         $tempat_penetapan           = esc($request->getPost('tempat_penetapan'));
-        $catatan                    = str_replace(['"', "'"], "", esc($request->getPost('catatan')));
-        $komentar_perubahan         = str_replace(['"', "'"], "", esc($request->getPost('komentar_perubahan')) ?? "Peraturan Daerah tentang $title_document ditetapkan dan diundangkan.");
+        $catatan                    = esc($request->getPost('catatan')) ?? null;
+        $catatan                    = !is_null($catatan) ? str_replace(['"', "'"], "", $catatan) : null;
+        $komentar_perubahan         = esc($request->getPost('komentar_perubahan')) ?? null;
+        $komentar_perubahan         = !is_null($komentar_perubahan) ? str_replace(['"', "'"], "", $komentar_perubahan) : "Peraturan Daerah tentang $title_document ditetapkan dan diundangkan.";
         $slug                       = url_title($title_document, '-', true);
         $path_file_abstrak          = $abstrak_filename ?? null;
         $is_publish                 = 1; // Produk Hukum ditampilkan/dipublish diwebsite
