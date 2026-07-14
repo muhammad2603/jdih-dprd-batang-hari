@@ -839,7 +839,7 @@ class Document extends ResourceController
                     ]);
             }
             $set_update_produk_hukum
-                ->set(["updated_at" => Time::now()->toDateString()])
+                ->set(["updated_at" => Time::now()->toDateTimeString()])
                 ->where("id", $ph_id)
                 ->update();
             $this->db->transComplete();
