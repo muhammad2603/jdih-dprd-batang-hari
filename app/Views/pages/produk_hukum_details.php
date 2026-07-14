@@ -14,17 +14,9 @@ $shareWhatsAppText .= "Jenis Peraturan: " . esc($produk_hukum["kategori"]) . "\n
 $shareWhatsAppText .= "Nomor/Tahun: " . esc($produk_hukum["nomor"]) . "/" . esc($produk_hukum["tahun"]) . "\n\n";
 $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
-$status_accent = json_decode($produk_hukum["warna_aksen"], true);
 $document_note = esc($produk_hukum["catatan"]);
 session()->set('document_access', true);
 ?>
-<style <?= csp_style_nonce() ?>>
-    #tagStatus {
-        background-color: <?= esc($status_accent["background"]) ?>;
-        color: <?= esc($status_accent["text"]) ?>;
-        border-color: <?= esc($status_accent["border"]) ?>;
-    }
-</style>
 <div class="jumbotron bg-primary text-white py-8">
     <div class="max-w-7xl mx-auto px-6">
         <a href="<?= previous_url() ?>" class="w-fit flex items-center gap-2 text-white/80 hover:text-white mb-6 transition-colors" tabindex="-1">
