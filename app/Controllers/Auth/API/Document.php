@@ -18,6 +18,7 @@ use App\Models\KlasifikasiSubjek;
 use App\Models\RelatedDocument;
 use App\Models\LampiranProdukHukum;
 use CodeIgniter\Shield\Entities\User;
+use \CodeIgniter\I18n\Time;
 
 class Document extends ResourceController
 {
@@ -735,15 +736,12 @@ class Document extends ResourceController
                 ]);
             }
         }
-
         $is_history_type_and_comment_exist = (isset($payloads["tipe_perubahan"]) && isset($payloads["riwayat_perubahan"]));
-
         $this->db->transStart();
         try {
+            $set_update_produk_hukum = $this->db->table("produk_hukum");
             if (count($produk_hukum_changes) > 0) {
-                $this->db->table("produk_hukum")
-                    ->where("id", $ph_id)
-                    ->update($produk_hukum_changes);
+                $set_update_produk_hukum->set($produk_hukum_changes);
             }
             if (count($meta_produk_hukum_changes) > 0) {
                 $this->db->table("meta_produk_hukum")
@@ -829,11 +827,15 @@ class Document extends ResourceController
                         "change_type" => $payloads["tipe_perubahan"]
                     ]);
             }
+            $set_update_produk_hukum
+                ->set(["updated_at" => Time::now()->toDateString()])
+                ->where("id", $ph_id)
+                ->update();
             $this->db->transComplete();
             if ($this->db->transStatus() === false) throw new Exception("Update data gagal.");
         } catch (\Throwable $e) {
             $this->db->transRollback();
-            if (file_exists($abstract_filename_on_temp)) {
+            if (!is_null($abstract_filename_on_temp) && file_exists($abstract_filename_on_temp)) {
                 unlink($abstract_filename_on_temp);
             }
             foreach ($attachment_filename_on_temp as $filename) {
