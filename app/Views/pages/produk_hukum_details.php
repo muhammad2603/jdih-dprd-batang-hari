@@ -233,7 +233,7 @@ session()->set('document_access', true);
                                             </div>
                                             <p class="text-default-foreground mb-3 xl:mb-2"><?= esc($history["comment"]) ?></p>
                                             <div class="flex items-center gap-2 text-sm">
-                                                <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($history["kategori"]) ?? esc($produk_hukum["singkatan_kategori"]) ?> No. <?= esc($history["nomor"]) ?? esc($produk_hukum["nomor"]) ?> Tahun <?= esc($history["tahun"]) ?? esc($produk_hukum["tahun"]) ?></p>
+                                                <p class="px-2 py-1 bg-primary/10 text-primary rounded font-medium"><?= esc($produk_hukum["singkatan_kategori"]) ?? esc($produk_hukum["kategori"]) ?> No. <?= esc($history["nomor"]) ?> Tahun <?= esc($history["tahun"]) ?></p>
                                             </div>
                                         </div>
                                     <?php endforeach ?>
