@@ -5,6 +5,7 @@
 use CodeIgniter\I18n\Time;
 
 $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
+$percentage_berlaku = esc($percentage_berlaku_document);
 ?>
 <section class="greeting">
     <!-- __FIX__ Pindahkan pengambilan username yang sedang login ke Controller. karena, username bisa digunakan kembali dihalaman lain. -->
@@ -27,7 +28,7 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Berlaku</span>
             <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_berlaku) ?></span>
-            <span class="text-xs text-gray-400"><?= sprintf('%.2f', esc($percentage_active_document)) ?>% dari total dokumen</span>
+            <span class="text-xs text-gray-400"><?= $percentage_berlaku > 0 && $percentage_berlaku < 100 ? sprintf('%.2f', $percentage_berlaku) : $percentage_berlaku ?>% dari total dokumen</span>
         </div>
         <div class="card-icon w-11 h-11 bg-green-600 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -135,7 +136,6 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
                         <div class="flex items-center gap-2 mt-0.5">
                             <span class="text-xs text-gray-400"><?= esc($ph["kategori"]) ?></span>
                             <span class="text-gray-300">·</span>
-                            <!-- __COMMENT__ Ini adalah tanggal peraturan, bukan tanggal upload -->
                             <span class="text-xs text-gray-400"><?= esc($ph["tahun"]) ?></span>
                             <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700"><?= esc($ph["status"]) ?></span>
                         </div>
@@ -149,98 +149,6 @@ $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
                     </div>
                 </div>
             <?php endforeach ?>
-            <!-- <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
-                <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                        <use href="/assets/icons.svg#icon-document">
-                    </svg>
-                </div>
-                <div class="document-details flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate">Penyelenggaraan Perhubungan</p>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="text-xs text-gray-400">Peraturan Daerah</span>
-                        <span class="text-gray-300">·</span>
-                        <span class="text-xs text-gray-400">2026</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700">Berlaku</span>
-                    </div>
-                </div>
-                <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                            <use href="/assets/icons.svg#icon-eye">
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
-                <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                        <use href="/assets/icons.svg#icon-document">
-                    </svg>
-                </div>
-                <div class="document-details flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate">Pencegahan dan Penanggulangan Penyakit</p>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="text-xs text-gray-400">Peraturan Daerah</span>
-                        <span class="text-gray-300">·</span>
-                        <span class="text-xs text-gray-400">2022</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-yellow-100 text-yellow-700">Diubah</span>
-                    </div>
-                </div>
-                <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                            <use href="/assets/icons.svg#icon-eye">
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
-                <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                        <use href="/assets/icons.svg#icon-document">
-                    </svg>
-                </div>
-                <div class="document-details flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate">Perlindungan Perempuan</p>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="text-xs text-gray-400">Peraturan Daerah</span>
-                        <span class="text-gray-300">·</span>
-                        <span class="text-xs text-gray-400">2020</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700">Berlaku</span>
-                    </div>
-                </div>
-                <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                            <use href="/assets/icons.svg#icon-eye">
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
-                <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                        <use href="/assets/icons.svg#icon-document">
-                    </svg>
-                </div>
-                <div class="document-details flex-1 min-w-0">
-                    <p class="text-sm font-medium text-gray-800 truncate">Hak Keuangan dan Administratif Pimpinan dan Anggota Dewan Perwakilan Rakyat Daerah Kabupaten Batang Hari</p>
-                    <div class="flex items-center gap-2 mt-0.5">
-                        <span class="text-xs text-gray-400">Peraturan Daerah</span>
-                        <span class="text-gray-300">·</span>
-                        <span class="text-xs text-gray-400">2017</span>
-                        <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-red-100 text-red-700">Dicabut</span>
-                    </div>
-                </div>
-                <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                    <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                            <use href="/assets/icons.svg#icon-eye">
-                        </svg>
-                    </a>
-                </div>
-            </div> -->
         </div>
     </div>
     <style <?= csp_style_nonce() ?>>
