@@ -75,28 +75,28 @@ class UserDashboard extends BaseController
     {
         return $this->produk_hukum_model->getTotalDocument()["total"];
     }
-    protected function getTotalDocumentActive(): int
+    protected function getTotalDocumentBerlaku(): int
     {
-        return $this->produk_hukum_model->getTotalDocumentByStatus("Aktif");
+        return $this->produk_hukum_model->getTotalDocumentByStatus("Berlaku");
     }
     protected function getTotalRelatedDocumentIsAmmended(): int
     {
-        return $this->related_document_model->getTotalRelatedDocumentByAction("Diubah");
+        return $this->produk_hukum_model->getTotalDocumentByStatus("Diubah");
     }
     protected function getTotalRelatedDocumentIsRevoked(): int
     {
-        return $this->related_document_model->getTotalRelatedDocumentByAction("Dicabut");
+        return $this->produk_hukum_model->getTotalDocumentByStatus("Dicabut");
     }
     public function home()
     {
         $total_document                         = $this->getTotalDocument();
-        $total_document_berlaku                 = $this->getTotalDocumentActive();
+        $total_document_berlaku                 = $this->getTotalDocumentBerlaku();
         $total_document_diubah                  = $this->getTotalRelatedDocumentIsAmmended();
         $total_document_dicabut                 = $this->getTotalRelatedDocumentIsRevoked();
         $curr_month                             = date('m');
         $total_document_current_month           =  $this->produk_hukum_model->getTotalDocumentByMonth($curr_month);
         $total_document_per_category            = $this->produk_hukum_model->getTotalDocumentByCategory();
-        $percentage_of_active_doc_by_total_doc  = ($total_document_berlaku / $total_document) * 100;
+        $percentage_of_berlaku_by_total_doc     = ($total_document_berlaku / $total_document) * 100;
         $meta_data = [
             "title" => 'Dashboard',
             "total_document" => $total_document,
@@ -104,7 +104,7 @@ class UserDashboard extends BaseController
             "total_document_diubah" => $total_document_diubah,
             "total_document_dicabut" => $total_document_dicabut,
             "total_document_current_month" => $total_document_current_month,
-            "percentage_active_document" => $percentage_of_active_doc_by_total_doc,
+            "percentage_berlaku_document" => $percentage_of_berlaku_by_total_doc,
             "total_document_per_category" => $total_document_per_category,
             "produk_hukum_highlight" => $this->produk_hukum_model->getProdukHukumHighlight(5),
         ];
@@ -168,8 +168,7 @@ class UserDashboard extends BaseController
         $ph_id                      = $produk_hukum_details["id"];
         $related_documents          = $this->produk_hukum_model->getRelatedDocuments($ph_id);
         $tipe_perubahan             = $this->tipe_riwayat_perubahan_model->getTipePerubahan("Dibuat");
-        // __COMMENT__ Karena method getClassifyProdukHukum tidak menyediakan ID kategori bidang hukum atau subjek, buat Query SQL-nya sendiri.
-        // Tambahkan refactoring ini di next update, karena penggunaannya terlalu hard-coded
+        // __COMMENT__ Tambahkan refactoring ini di next update, karena penggunaannya terlalu hard-coded
         $bidang_hukum = $this->db->table("klasifikasi_bidang_hukum kbh")
             ->select([
                 "id",
@@ -211,54 +210,31 @@ class UserDashboard extends BaseController
     public function statistic()
     {
         $total_document                 = $this->getTotalDocument();
-        $total_document_active          = $this->getTotalDocumentActive();
+        $total_document_active          = $this->getTotalDocumentBerlaku();
         $total_document_ammended        = $this->getTotalRelatedDocumentIsAmmended();
         $total_document_revoked         = $this->getTotalRelatedDocumentIsRevoked();
         $sq_ph = "SELECT
                 category_id,
                 COUNT(ph.id) AS total_dokumen,
-                COUNT(CASE WHEN doc_status.status = 'Aktif' THEN 1 END) AS total_dokumen_berlaku
+                COUNT(CASE WHEN doc_status.status = 'Berlaku' THEN 1 END) AS total_dokumen_berlaku,
+                COUNT(CASE WHEN doc_status.status = 'Diubah' THEN 1 END) AS total_dokumen_diubah,
+                COUNT(CASE WHEN doc_status.status = 'Dicabut' THEN 1 END) AS total_dokumen_dicabut,
+                COUNT(CASE WHEN doc_status.status = 'Tidak Berlaku' THEN 1 END) AS total_dokumen_tidak_berlaku
             FROM produk_hukum ph
             JOIN document_status doc_status ON doc_status.id = ph.status_id
             GROUP BY category_id";
-        $sq_rd = "SELECT
-                    rd.category_id,
-                    COUNT(
-                        CASE 
-                            WHEN dsa.action = 'Diubah' 
-                            THEN 1 
-                        END
-                    ) AS total_dokumen_diubah,
-                    COUNT(
-                        CASE 
-                            WHEN dsa.action = 'Dicabut' 
-                            THEN 1 
-                        END
-                    ) AS total_dokumen_dicabut
-                FROM related_document rd
-                JOIN document_status_action dsa
-                ON dsa.id = rd.status_action
-                GROUP BY rd.category_id";
-
-        $statistics_breakdown           = $this->db->table("document_categories doc_categ")
+        $statistics_breakdown = $this->db->table('document_categories doc_categ')
             ->select([
                 "doc_categ.category AS kategori",
-                "icons.color",
                 "COALESCE(ph.total_dokumen, 0) AS total_dokumen",
                 "COALESCE(ph.total_dokumen_berlaku, 0) AS total_dokumen_berlaku",
-                "COALESCE(rd.total_dokumen_diubah, 0) AS total_dokumen_diubah",
-                "COALESCE(rd.total_dokumen_dicabut, 0) AS total_dokumen_dicabut"
+                "COALESCE(ph.total_dokumen_diubah, 0) AS total_dokumen_diubah",
+                "COALESCE(ph.total_dokumen_dicabut, 0) AS total_dokumen_dicabut",
+                "COALESCE(ph.total_dokumen_tidak_berlaku, 0) AS total_dokumen_tidak_berlaku",
             ])
-            ->join("icons", 'icons.id = doc_categ.icon')
             ->join(
                 "($sq_ph) ph",
-                "ph.category_id = doc_categ.id",
-                'left',
-                false
-            )
-            ->join(
-                "($sq_rd) rd",
-                'rd.category_id = doc_categ.id',
+                'ph.category_id = doc_categ.id',
                 'left',
                 false
             )
