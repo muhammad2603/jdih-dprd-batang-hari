@@ -74,7 +74,7 @@
                     $category_class = url_title($category, '-', true);
                     $total_document_by_category = (int) esc($stat["total_dokumen"]);
                     $average_total_document = $total_document !== 0 ? ($total_document_by_category / $total_document) * 100 : 0;
-                    $style_bar .= ".$category_class { width: " . $average_total_document . "%; background-color: " . esc($stat["color"]) . " }\n";
+                    $style_bar .= ".$category_class { width: " . $average_total_document . "%; }\n";
                     ?>
                     <tr class="hover:bg-gray-50">
                         <td class="py-3 text-sm text-gray-800 font-medium"><?= $category ?></td>
@@ -85,7 +85,7 @@
                         <td class="py-3 pl-4">
                             <div class="flex items-center gap-2">
                                 <div class="meter-wrapper flex-1 h-2 bg-gray-100 rounded-full">
-                                    <div class="h-full rounded-full <?= $category_class ?>"></div>
+                                    <div class="h-full rounded-full bg-blue-600 <?= $category_class ?>"></div>
                                 </div>
                                 <span class="meter-info text-xs text-gray-400 w-10 text-right"><?= ($average_total_document === 100 || $average_total_document === 0) ? $average_total_document : sprintf('%.1f', $average_total_document) ?>%</span>
                             </div>
