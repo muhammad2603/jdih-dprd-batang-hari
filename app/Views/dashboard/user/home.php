@@ -28,7 +28,7 @@ $percentage_berlaku = esc($percentage_berlaku_document);
         <div class="card-details flex flex-col gap-1">
             <span class="text-sm text-gray-500">Dokumen Berlaku</span>
             <span class="font-bold text-3xl text-default-foreground"><?= esc($total_document_berlaku) ?></span>
-            <span class="text-xs text-gray-400"><?= $percentage_berlaku > 0 && $percentage_berlaku < 100 ? sprintf('%.2f', $percentage_berlaku) : $percentage_berlaku ?>% dari total dokumen</span>
+            <span class="text-xs text-gray-400"><?= ($percentage_berlaku > 0 && $percentage_berlaku < 100) ? percentage_to_str($percentage_berlaku) : $percentage_berlaku ?>% dari total dokumen</span>
         </div>
         <div class="card-icon w-11 h-11 bg-green-600 rounded-xl flex items-center justify-center">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-white">
@@ -98,13 +98,13 @@ $percentage_berlaku = esc($percentage_berlaku_document);
             <?php foreach ($total_document_per_category as $doc): ?>
                 <?php
                 $total_doc = (int) esc($doc["total_dokumen"]);
-                $calc_doc_percentage = ($total_doc / $total_document) * 100;
+                $calc_doc_percentage = get_percentage_by_total($total_doc, $total_document);
                 $category = esc($doc["kategori"]);
                 ?>
                 <div class="document-type">
                     <div class="type-info flex justify-between mb-1.5">
                         <span class="text-gray-600 text-sm"><?= $category ?></span>
-                        <span class="font-semibold text-default-foreground text-sm"><?= sprintf("%.2f", $calc_doc_percentage) ?>%</span>
+                        <span class="font-semibold text-default-foreground text-sm"><?= percentage_to_str($calc_doc_percentage) ?>%</span>
                     </div>
                     <div class="meter w-full h-2 bg-gray-100 rounded-full overflow-hidden">
                         <div class="h-full bg-primary rounded-full meter-<?= url_title($category, "-", true) ?>"></div>
@@ -152,7 +152,7 @@ $percentage_berlaku = esc($percentage_berlaku_document);
         </div>
     </div>
     <style <?= csp_style_nonce() ?>>
-        <?php foreach ($total_document_per_category as $doc): ?><?= '.meter-' . url_title(esc($doc["kategori"]), "-", true) . "{ width: " . (esc($doc["total_dokumen"]) / $total_document) * 100 . "%; background-color: " . esc($doc["color"]) . "; }" ?><?php endforeach ?>
+        <?php foreach ($total_document_per_category as $doc): ?><?= '.meter-' . url_title(esc($doc["kategori"]), "-", true) . "{ width: " . get_percentage_by_total(esc($doc["total_dokumen"]), $total_document) . "%; background-color: " . esc($doc["color"]) . "; }" ?><?php endforeach ?>
     </style>
 </section>
 <?= $this->endSection() ?>
