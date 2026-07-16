@@ -47,3 +47,16 @@ if (!function_exists('str_number_to_humanize')) {
         return number_format($string_number / 1000000000, 1, '.') . 'B';
     }
 }
+
+if (!function_exists('percentage_to_str')) {
+    /**
+     * Mengubah format persentase float menjadi string
+     * @param int|float $float_number bilangan pecahan atau bilangan bulat.
+     * @return string jika bilangannya adalah 0 (bilangan bulat), return string 0. Jika pecahan akan menghasilkan format desimal dalam bentuk string dengan 2 fraksi.
+     */
+    function percentage_to_str(int|float $float_number): string
+    {
+        if ($float_number == 0 || $float_number == 100) return "$float_number";
+        return sprintf('%.2f', $float_number);
+    }
+}
