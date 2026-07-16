@@ -15,6 +15,10 @@ Sistem Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Har
 
 # Apa Yang Baru?
 
+Versi 2.2.1:
+
+1. Perbaikan routing publik dengan menggunakan method verbs yang menerima GET dan HEAD.
+
 Versi 2.2.0:
 
 1. Dashboard telah tersedia
