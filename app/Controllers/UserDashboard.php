@@ -96,7 +96,7 @@ class UserDashboard extends BaseController
         $curr_month                             = date('m');
         $total_document_current_month           =  $this->produk_hukum_model->getTotalDocumentByMonth($curr_month);
         $total_document_per_category            = $this->produk_hukum_model->getTotalDocumentByCategory();
-        $percentage_of_berlaku_by_total_doc     = ($total_document_berlaku / $total_document) * 100;
+        $percentage_of_berlaku_by_total_doc     = ($total_document > 0) ? ($total_document_berlaku / $total_document) * 100 : 0;
         $meta_data = [
             "title" => 'Dashboard',
             "total_document" => $total_document,
