@@ -11,19 +11,19 @@ use App\Filters\APIFilter;
 service('auth')->routes($routes, ['except' => ['login']]);
 
 $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
-    $routes->get('/', 'Home::index');
-    $routes->get('/produk-hukum', 'ProdukHukum::index');
-    $routes->get('/produk-hukum/(:any)', 'ProdukHukumDetails::index/$1');
-    $routes->get('/statistik', 'Statistics::index');
-    $routes->get('/tentang', 'About::index');
-    $routes->get('/faq', 'Faq::index');
-    $routes->get('/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
-    $routes->get('/layanan/peraturan-sekretaris-dewan', 'PencarianSekretarisDewan::index');
-    $routes->get('/layanan/keputusan-pimpinan-dewan', 'PencarianKeputusanPimpinanDewan::index');
-    $routes->get('/layanan/peraturan-keputusan-dewan', 'PencarianKeputusanDewan::index');
-    $routes->get('/layanan/bantuan', 'LayananBantuan::index');
-    $routes->get('/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
-    $routes->get('/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
+    $routes->match(["get", "head"], '/', 'Home::index');
+    $routes->match(["get", "head"], '/produk-hukum', 'ProdukHukum::index');
+    $routes->match(["get", "head"], '/produk-hukum/(:any)', 'ProdukHukumDetails::index/$1');
+    $routes->match(["get", "head"], '/statistik', 'Statistics::index');
+    $routes->match(["get", "head"], '/tentang', 'About::index');
+    $routes->match(["get", "head"], '/faq', 'Faq::index');
+    $routes->match(["get", "head"], '/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
+    $routes->match(["get", "head"], '/layanan/peraturan-sekretaris-dewan', 'PencarianSekretarisDewan::index');
+    $routes->match(["get", "head"], '/layanan/keputusan-pimpinan-dewan', 'PencarianKeputusanPimpinanDewan::index');
+    $routes->match(["get", "head"], '/layanan/peraturan-keputusan-dewan', 'PencarianKeputusanDewan::index');
+    $routes->match(["get", "head"], '/layanan/bantuan', 'LayananBantuan::index');
+    $routes->match(["get", "head"], '/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
+    $routes->match(["get", "head"], '/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
 });
 
 $routes->get('/login', '\CodeIgniter\Shield\Controllers\LoginController::loginView');
@@ -36,7 +36,6 @@ $routes->get('/generate/feed', 'GenerateFeed::view');
 $routes->get('/api/cari-dokumen', 'API::searchDocument');
 
 /** Protected routes */
-/** Routes ini hanya untuk pengembangan, jika sudah selesai, gunakan route dashboard untuk mengalihkan halaman dashboard berdasarkan role user */
 $routes->addPlaceholder("slug", '[a-z0-9]+(?:-[a-z0-9]+)*');
 $routes->get('/user/dashboard', "UserDashboard::home");
 $routes->get('/user/dashboard/kelola-dokumen', "UserDashboard::manageDocuments");
