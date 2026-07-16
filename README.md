@@ -15,6 +15,12 @@ Sistem Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Har
 
 # Apa Yang Baru?
 
+Versi 2.2.5:
+
+1. Perbaikan kalkulasi persentase statistik dihalaman beranda dan statistik pada Dashboard.
+2. Menambahkan helper untuk fungsi matematis.
+3. Menambahkan fungsi pada string helper untuk mengubah format float menjadi string yang hanya mengambil 2 fraksi (pecahan).
+
 Versi 2.2.2:
 
 1. Perbaikan kalkulasi persentase dokumen berlaku dihalaman home Dashboard yang tidak dapat dibagi 0 disaat dokumen belum ada record didatabase.
