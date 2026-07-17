@@ -12,16 +12,16 @@ helper(['string', 'document_attributes']);
 
 class ProdukHukumDetails extends BaseController
 {
-    private $fe_config_model;
-    private $ph_model;
-    private $riwayat_perubahan_ph_model;
+    private FrontendConfig $fe_config_model;
+    private ProdukHukum $ph_model;
+    private RiwayatPerubahanProdukHukum $riwayat_perubahan_ph_model;
     public function __construct()
     {
         $this->fe_config_model              = new FrontendConfig;
         $this->ph_model                     = new ProdukHukum;
         $this->riwayat_perubahan_ph_model   = new RiwayatPerubahanProdukHukum;
     }
-    public function index(...$segments)
+    public function index(array ...$segments)
     {
         [$category, $slug] = $segments;
         $category = uri_title_to_words($category);
@@ -32,7 +32,7 @@ class ProdukHukumDetails extends BaseController
         }
         $ph_id = intval($document["id"]);
         $classify_document = $this->ph_model->getClassifyProdukHukum($ph_id);
-        $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
+        $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id, "ASC");
         $related_documents = $this->ph_model->getRelatedDocuments($ph_id);
         $document_title = esc($document["judul"]);
         $document_category = esc($document["kategori"]);
