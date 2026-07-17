@@ -209,7 +209,24 @@ session()->set('document_access', true);
                         <div class="space-y-6">
                             <div id="changeHistoryWrapper" class="relative pl-8 xl:pl-16">
                                 <div id="contentHistoryWrapper" class="space-y-6">
-                                    <?php foreach ($histories_change as $history): ?>
+                                    <?php
+                                    $lastNomor = null;
+                                    $lastTahun = null;
+                                    foreach ($histories_change as &$row) {
+                                        if (!is_null($row["nomor"])) {
+                                            $lastNomor = $row["nomor"];
+                                        } else {
+                                            $row["nomor"] = $lastNomor;
+                                        }
+                                        if (!is_null($row["tahun"])) {
+                                            $lastTahun = $row["tahun"];
+                                        } else {
+                                            $row["tahun"] = $lastTahun;
+                                        }
+                                    }
+                                    unset($row);
+                                    ?>
+                                    <?php foreach (array_reverse($histories_change) as $history): ?>
                                         <div class="change-history bg-muted/50 rounded-lg p-4 hover:bg-muted transition-colors">
                                             <div class="flex flex-col xl:flex-row items-start justify-between gap-3 xl:gap-4 mb-4 xl:mb-2">
                                                 <div class="flex items-center gap-2">
