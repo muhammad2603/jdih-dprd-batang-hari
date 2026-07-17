@@ -12,7 +12,7 @@ class RiwayatDetailPerubahan extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = ["id", "title", "status_id", "sumber_id", "tempat_penetapan", "nomor", "tahun", "nomor_tld", "tahun_tld", "pembuat_peraturan", "penandatanganan", "pejabat_penetap", "comment", "changed_at"];
+    protected $allowedFields    = ["id", "title", "category_id", "status_id", "sumber_id", "tempat_penetapan", "nomor", "tahun", "nomor_tld", "tahun_tld", "pembuat_peraturan", "penandatanganan", "pejabat_penetap", "comment", "changed_at"];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
