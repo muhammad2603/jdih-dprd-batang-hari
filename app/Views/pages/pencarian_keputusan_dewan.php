@@ -23,12 +23,16 @@ $timeServices = service("timeServices");
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
-                <input id="searchInput" type="text" value="<?= uri_title_to_words($current_search) ?>" placeholder="Cari kata kunci keputusan dewan..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                <input id="searchInput" type="text" value="<?= uri_title_to_words(esc($current_search)) ?>" placeholder="Cari kata kunci keputusan dewan..." class="w-full pl-12 pr-4 py-4 bg-input-background rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
             </div>
             <select id="yearDocument" class="w-full px-4 py-3 bg-input-background rounded-lg border-0 focus:ring-2 focus:ring-primary outline-none appearance-none cursor-pointer">
                 <option value="*">Semua Tahun Peraturan</option>
                 <?php foreach ($years_product_law as $year): ?>
-                    <option value="<?= $year["tahun"] ?>" <?= $current_selected_year === $year["tahun"] ? "selected" : "" ?>><?= $year["tahun"] ?></option>
+                    <?php
+                    $year_option = esc($year["tahun"]);
+                    $year_keyword = esc($current_selected_year);
+                    ?>
+                    <option value="<?= $year_option ?>" <?= $year_keyword === $year_option ? "selected" : "" ?>><?= $year_option ?></option>
                 <?php endforeach ?>
             </select>
             <button id="submitSearchBtn" type="button" class="px-6 py-4 bg-primary text-white rounded-lg hover:bg-primary/90 focus:outline-none focus:bg-primary/90 transition-colors cursor-pointer">Cari</button>
@@ -48,5 +52,5 @@ $timeServices = service("timeServices");
         </div>
     </div>
 </div>
-<script src="/assets/js/pencarian-kep-dprd.js"></script>
+<script type="module" src="/assets/js/pencarian-kep-dprd.js"></script>
 <?= $this->endSection() ?>
