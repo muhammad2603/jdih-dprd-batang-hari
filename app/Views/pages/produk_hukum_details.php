@@ -16,7 +16,7 @@ $shareWhatsAppText .= "Lihat selengkapnya: " . current_url();
 $whatsAppUrl        = "https://wa.me/?text=" . urlencode($shareWhatsAppText);
 $document_note = esc($produk_hukum["catatan"]);
 $status_document = esc($produk_hukum["status"]);
-$status_color = $status_document_colors[$status_document];
+$status_color = status_document_colors($status_document);
 session()->set('document_access', true);
 ?>
 <div class="jumbotron bg-primary text-white py-8">
