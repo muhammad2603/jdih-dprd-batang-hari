@@ -11,8 +11,8 @@ helper("pagination");
 
 class PencarianKeputusanPimpinanDewan extends BaseController
 {
-    private $fe_config_model;
-    private $ph_model;
+    private FrontendConfig $fe_config_model;
+    private ProdukHukum $ph_model;
     public function __construct()
     {
         $this->fe_config_model  = new FrontendConfig;
@@ -49,7 +49,7 @@ class PencarianKeputusanPimpinanDewan extends BaseController
             "JDIH Kabupaten Batang Hari",
             "Keputusan Pimpinan DPRD Batang Hari",
         ];
-        $get_years_product_law = $this->ph_model->getYearsProductLaw();
+        $get_years_product_law = $this->ph_model->getYearsProductLaw('asc', $category_id);
         $other_meta = [
             "dokumen"               => $get_dokumen_keputusan_pimpinan_dewan,
             "pager_links"           => $total_dokumen_keputusan_pimpinan_dewan > $data_per_page ? $pager : false,
