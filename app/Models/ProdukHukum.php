@@ -436,14 +436,19 @@ class ProdukHukum extends Model
     /**
      * Mengambil tahun peraturan produk hukum yang tersedia didatabase
      * @param string $order_by (asc|desc) Mengatur urutan tahun, default asc (terendah - tertinggi)
+     * @param bool|int $by_category Berdasarkan ID kategori, default false
      * @return array
      */
-    public function getYearsProductLaw(string $order_by = 'asc'): array
+    public function getYearsProductLaw(string $order_by = 'asc', bool|int $by_category = false): array
     {
-        return $this
+        $builder = $this
             ->select("tahun")
+            ->orderBy("tahun", $order_by);
+        if ($by_category !== false) {
+            $builder->where("category_id", $by_category);
+        }
+        return $builder
             ->distinct()
-            ->orderBy("tahun", $order_by)
             ->findAll();
     }
 
