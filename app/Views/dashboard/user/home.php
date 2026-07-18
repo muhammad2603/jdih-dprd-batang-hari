@@ -4,6 +4,7 @@
 
 use CodeIgniter\I18n\Time;
 
+helper('document_attributes');
 $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
 $percentage_berlaku = esc($percentage_berlaku_document);
 ?>
@@ -125,6 +126,10 @@ $percentage_berlaku = esc($percentage_berlaku_document);
         <div class="list px-5 divide-y divide-gray-50">
             <?php if ($total_document > 0): ?>
                 <?php foreach ($produk_hukum_highlight as $ph): ?>
+                    <?php
+                    $status = esc($ph["status"]);
+                    $status_color = status_document_colors($status);
+                    ?>
                     <div class="document flex items-start gap-3 py-3 hover:bg-gray-50 group">
                         <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
                             <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
@@ -137,7 +142,7 @@ $percentage_berlaku = esc($percentage_berlaku_document);
                                 <span class="text-xs text-gray-400"><?= esc($ph["kategori"]) ?></span>
                                 <span class="text-gray-300">·</span>
                                 <span class="text-xs text-gray-400"><?= esc($ph["tahun"]) ?></span>
-                                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700"><?= esc($ph["status"]) ?></span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium <?= $status_color ?>"><?= $status ?></span>
                             </div>
                         </div>
                         <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
