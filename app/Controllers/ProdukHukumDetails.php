@@ -21,7 +21,7 @@ class ProdukHukumDetails extends BaseController
         $this->ph_model                     = new ProdukHukum;
         $this->riwayat_perubahan_ph_model   = new RiwayatPerubahanProdukHukum;
     }
-    public function index(array ...$segments)
+    public function index(string ...$segments)
     {
         [$category, $slug] = $segments;
         $category = uri_title_to_words($category);
@@ -36,7 +36,6 @@ class ProdukHukumDetails extends BaseController
         $related_documents = $this->ph_model->getRelatedDocuments($ph_id);
         $document_title = esc($document["judul"]);
         $document_category = esc($document["kategori"]);
-        $status_document_colors = status_document_colors();
         $page_title = $document_title . " | JDIH DPRD Kabupaten Batang Hari";
         $page_alias = "Produk Hukum";
         $autofill_category = str_starts_with($document_category, "Peraturan") ? $document_category : "Peraturan " . $document_category;
@@ -57,7 +56,6 @@ class ProdukHukumDetails extends BaseController
             "bidang_hukum"      => explode(", ", $classify_document["bidang_hukum"]),
             "subjek"            => $classify_document["subjek"],
             "related_documents" => $related_documents,
-            "status_document_colors" => $status_document_colors
         ];
         $page_data = create_page_meta(
             $page_title,
