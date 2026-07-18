@@ -21,9 +21,9 @@ class PencarianKeputusanPimpinanDewan extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $current_page = $this->request->getVar("page") ?? 1;
-        $get_keyword = $this->request->getVar("keyword") ?? false;
-        $get_year = $this->request->getVar("year") ?? false;
+        $current_page = esc($this->request->getVar("page")) ?? 1;
+        $get_keyword = esc($this->request->getVar("keyword")) ?? false;
+        $get_year = esc($this->request->getVar("year")) ?? false;
         $data_per_page = 10;
         $category_id = 3; // Keputusan Pimpinan Dewan
         $total_dokumen_keputusan_pimpinan_dewan = $this->ph_model->getTotalProdukHukumHighlight($get_keyword, $category_id, $get_year);
