@@ -1,4 +1,5 @@
 <?php
+helper('document_attributes');
 $start = ($data_offset + 1) ?? 1;
 ?>
 <table class="w-full">
@@ -15,7 +16,11 @@ $start = ($data_offset + 1) ?? 1;
     <tbody class="divide-y divide-gray-50">
         <?php if (count($produk_hukum) > 0): ?>
             <?php for ($i = 0; $i < count($produk_hukum); $i++): ?>
-                <?php $ph = $produk_hukum[$i] ?>
+                <?php
+                $ph = $produk_hukum[$i];
+                $status = esc($ph["status"]);
+                $status_color = status_document_colors($status);
+                ?>
                 <tr class="hover:bg-gray-50/80 group">
                     <td class="px-5 py-3.5 text-sm text-gray-400"><?= $start + $i ?></td>
                     <td class="py-3.5 px-4">
@@ -29,7 +34,7 @@ $start = ($data_offset + 1) ?? 1;
                         <span class="text-sm text-gray-600 whitespace-nowrap"><?= esc($ph["nomor"]) ?>/<?= esc($ph["tahun"]) ?></span>
                     </td>
                     <td class="py-3.5 px-4">
-                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-green-100 text-green-700"><?= esc($ph["status"]) ?></span>
+                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium <?= $status_color ?>"><?= $status ?></span>
                     </td>
                     <td class="py-3.5 px-5">
                         <div class="flex items-center justify-end gap-1">
