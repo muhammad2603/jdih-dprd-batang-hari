@@ -6,6 +6,7 @@ use CodeIgniter\I18n\Time;
 
 $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
 $percentage_berlaku = esc($percentage_berlaku_document);
+$base_url_detail_document = '/user/dashboard/kelola-dokumen/detail/';
 ?>
 <section class="greeting">
     <p class="text-gray-500">Selamat datang, <?= esc(auth()->user()->username) ?> — <?= $current_date ?></p>
@@ -128,6 +129,8 @@ $percentage_berlaku = esc($percentage_berlaku_document);
                     <?php
                     $status = esc($ph["status"]);
                     $status_color = status_document_colors($status);
+                    $slug = esc($ph["slug"]);
+                    $detail_url = $base_url_detail_document . $slug;
                     ?>
                     <div class="document flex items-start gap-3 py-3 hover:bg-gray-50 group">
                         <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
@@ -145,7 +148,7 @@ $percentage_berlaku = esc($percentage_berlaku_document);
                             </div>
                         </div>
                         <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                            <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
+                            <a href="<?= $detail_url ?>" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-eye">
                                 </svg>
