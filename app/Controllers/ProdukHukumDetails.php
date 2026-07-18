@@ -8,7 +8,7 @@ use App\Models\FrontendConfig;
 use App\Models\ProdukHukum;
 use App\Models\RiwayatPerubahanProdukHukum;
 
-helper(['string', 'document_attributes']);
+helper('string');
 
 class ProdukHukumDetails extends BaseController
 {

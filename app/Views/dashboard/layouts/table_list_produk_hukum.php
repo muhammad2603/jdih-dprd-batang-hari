@@ -1,5 +1,4 @@
 <?php
-helper('document_attributes');
 $start = ($data_offset + 1) ?? 1;
 ?>
 <table class="w-full">

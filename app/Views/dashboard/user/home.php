@@ -4,7 +4,6 @@
 
 use CodeIgniter\I18n\Time;
 
-helper('document_attributes');
 $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
 $percentage_berlaku = esc($percentage_berlaku_document);
 ?>
