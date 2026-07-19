@@ -17,20 +17,20 @@ Sistem Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Har
 
 Versi 2.3.5:
 
-[NEW] Menambahkan konfigurasi SMTP yang dapat diaktifkan atau dinonaktifkan difile env.
-[NEW] Pengaduan pesan pada Layanan Bantuan sekarang juga disimpan ke database.
-[NEW] Membuat tabel public_complaints didatabase untuk menyimpan pesan pengaduan pengguna.
-[NEW] Dokumen hukum sudah bisa diupdate status publishnya melalui route PATCH /api/update-dokumen.
-[NEW] Tombol CTA untuk mengubah status publish dokumen dihalaman kelola dokumen telah ditambahkan.
-[FIX] Perbaikan pada penggunaan routes publik yang menggunakan match dengan method request get dan head yang sudah deprecated.
-[FIX] Perbaikan dihalaman beranda Dashboard bagian dokumen terbaru yang tidak menampilkan apa-apa ketika dokumen belum ditambahkan sama sekali.
-[FIX] Perbaikan urutan data riwayat perubahan produk hukum menjadi ascending.
-[FIX] Perbaikan data nomor dan tahun dihalaman detail produk hukum dibagian riwayat perubahannya saat data tersebut bernilai NULL.
-[FIX] Perbaikan pencarian dokumen hukum berdasarkan kategori dihalaman layanan, pencarian dapat dilakukan meskipun hanya salah satu input yang diisi.
-[FIX] Menambahkan parameter tambahan dimodel ProdukHukum::getYearsProductLaw dengan opsi pencarian tahun dokumen yang tersedia berdasarkan ID kategori.
-[FIX] Helper document_attributes sudah didaftarkan didalam autoload config, sehingga helper tersebut tidak perlu diload manual.
-[FIX] Perbaikan bug.
-[FIX] Perbaikan keamanan.
+- Menambahkan konfigurasi SMTP yang dapat diaktifkan atau dinonaktifkan difile env.
+- Pengaduan pesan pada Layanan Bantuan sekarang juga disimpan ke database.
+- Membuat tabel public_complaints didatabase untuk menyimpan pesan pengaduan pengguna.
+- Dokumen hukum sudah bisa diupdate status publishnya melalui route PATCH /api/update-dokumen.
+- Tombol CTA untuk mengubah status publish dokumen dihalaman kelola dokumen telah ditambahkan.
+- Perbaikan pada penggunaan routes publik yang menggunakan match dengan method request get dan head yang sudah deprecated.
+- Perbaikan dihalaman beranda Dashboard bagian dokumen terbaru yang tidak menampilkan apa-apa ketika dokumen belum ditambahkan sama sekali.
+- Perbaikan urutan data riwayat perubahan produk hukum menjadi ascending.
+- Perbaikan data nomor dan tahun dihalaman detail produk hukum dibagian riwayat perubahannya saat data tersebut bernilai NULL.
+- Perbaikan pencarian dokumen hukum berdasarkan kategori dihalaman layanan, pencarian dapat dilakukan meskipun hanya salah satu input yang diisi.
+- Menambahkan parameter tambahan dimodel ProdukHukum::getYearsProductLaw dengan opsi pencarian tahun dokumen yang tersedia berdasarkan ID kategori.
+- Helper document_attributes sudah didaftarkan didalam autoload config, sehingga helper tersebut tidak perlu diload manual.
+- Perbaikan bug.
+- Perbaikan keamanan.
 
 Versi 2.2.5:
 
