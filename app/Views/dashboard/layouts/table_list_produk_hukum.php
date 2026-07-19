@@ -9,6 +9,7 @@ $start = ($data_offset + 1) ?? 1;
             <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider w-32">Jenis</th>
             <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider w-24">No/Tahun</th>
             <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider w-24">Status</th>
+            <th class="text-left px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider w-40">Status Publikasi</th>
             <th class="text-right px-4 py-3 text-xs font-semibold text-gray-500 uppercase tracking-wider w-28">Aksi</th>
         </tr>
     </thead>
@@ -19,6 +20,13 @@ $start = ($data_offset + 1) ?? 1;
                 $ph = $produk_hukum[$i];
                 $status = esc($ph["status"]);
                 $status_color = status_document_colors($status);
+                $slug = esc($ph["slug"]);
+                $state_publish = $ph["is_publish"];
+                $state_publish_text = $state_publish ? "Dipublikasikan" : "Tidak Dipublikasikan";
+                $state_publish_color = $state_publish ? "bg-green-100 text-green-700" : "bg-red-100 text-red-700";
+                $state_publish_icon = $state_publish ? 'icon-globe-off' : 'icon-globe';
+                $state_publish_change_state = $state_publish ? '0' : '1';
+                $state_publish_change_color_hover = $state_publish ? 'hover:bg-red-100 hover:text-red-700' : 'hover:bg-green-100 hover:text-green-700';
                 ?>
                 <tr class="hover:bg-gray-50/80 group">
                     <td class="px-5 py-3.5 text-sm text-gray-400"><?= $start + $i ?></td>
@@ -35,14 +43,22 @@ $start = ($data_offset + 1) ?? 1;
                     <td class="py-3.5 px-4">
                         <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium <?= $status_color ?>"><?= $status ?></span>
                     </td>
+                    <td class="py-3.5 px-4">
+                        <span class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium <?= $state_publish_color ?>"><?= $state_publish_text ?></span>
+                    </td>
                     <td class="py-3.5 px-5">
-                        <div class="flex items-center justify-end gap-1">
-                            <a href="/user/dashboard/kelola-dokumen/detail/<?= esc($ph["slug"]) ?>" title="Lihat Detail" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
+                        <div class="actions-parent flex items-center justify-end gap-1" data-document-id="<?= esc($ph["id"]) ?>">
+                            <a href="/user/dashboard/kelola-dokumen/detail/<?= $slug ?>" title="Lihat Detail" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-blue-50 hover:text-blue-700">
                                 <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <use href="/assets/icons.svg#icon-eye">
                                 </svg>
                             </a>
-                            <a href="/user/dashboard/kelola-dokumen/edit/<?= esc($ph["slug"]) ?>" title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
+                            <button type="button" data-change-state="<?= $state_publish_change_state ?>" title="Ubah Status Publikasi" class="change-state-publish p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer <?= $state_publish_change_color_hover ?>">
+                                <svg width="24" height="24" class="size-4">
+                                    <use href="/assets/icons.svg#<?= $state_publish_icon ?>">
+                                </svg>
+                            </button>
+                            <a href="/user/dashboard/kelola-dokumen/edit/<?= $slug ?>" title="Edit" class="p-1.5 rounded-lg text-gray-400 transition-colors cursor-pointer hover:bg-yellow-50 hover:text-yellow-700">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
                                     <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
                                 </svg>
