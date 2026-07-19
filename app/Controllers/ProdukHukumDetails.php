@@ -8,20 +8,20 @@ use App\Models\FrontendConfig;
 use App\Models\ProdukHukum;
 use App\Models\RiwayatPerubahanProdukHukum;
 
-helper(['string', 'document_attributes']);
+helper('string');
 
 class ProdukHukumDetails extends BaseController
 {
-    private $fe_config_model;
-    private $ph_model;
-    private $riwayat_perubahan_ph_model;
+    private FrontendConfig $fe_config_model;
+    private ProdukHukum $ph_model;
+    private RiwayatPerubahanProdukHukum $riwayat_perubahan_ph_model;
     public function __construct()
     {
         $this->fe_config_model              = new FrontendConfig;
         $this->ph_model                     = new ProdukHukum;
         $this->riwayat_perubahan_ph_model   = new RiwayatPerubahanProdukHukum;
     }
-    public function index(...$segments)
+    public function index(string ...$segments)
     {
         [$category, $slug] = $segments;
         $category = uri_title_to_words($category);
@@ -32,11 +32,10 @@ class ProdukHukumDetails extends BaseController
         }
         $ph_id = intval($document["id"]);
         $classify_document = $this->ph_model->getClassifyProdukHukum($ph_id);
-        $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id);
+        $histories_change = $this->riwayat_perubahan_ph_model->getHistoriesChange($ph_id, "ASC");
         $related_documents = $this->ph_model->getRelatedDocuments($ph_id);
         $document_title = esc($document["judul"]);
         $document_category = esc($document["kategori"]);
-        $status_document_colors = status_document_colors();
         $page_title = $document_title . " | JDIH DPRD Kabupaten Batang Hari";
         $page_alias = "Produk Hukum";
         $autofill_category = str_starts_with($document_category, "Peraturan") ? $document_category : "Peraturan " . $document_category;
@@ -57,7 +56,6 @@ class ProdukHukumDetails extends BaseController
             "bidang_hukum"      => explode(", ", $classify_document["bidang_hukum"]),
             "subjek"            => $classify_document["subjek"],
             "related_documents" => $related_documents,
-            "status_document_colors" => $status_document_colors
         ];
         $page_data = create_page_meta(
             $page_title,

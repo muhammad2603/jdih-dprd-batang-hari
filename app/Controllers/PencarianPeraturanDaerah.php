@@ -11,8 +11,8 @@ helper("pagination");
 
 class PencarianPeraturanDaerah extends BaseController
 {
-    private $fe_config_model;
-    private $ph_model;
+    private FrontendConfig $fe_config_model;
+    private ProdukHukum $ph_model;
     public function __construct()
     {
         $this->fe_config_model  = new FrontendConfig;
@@ -21,10 +21,10 @@ class PencarianPeraturanDaerah extends BaseController
     public function index()
     {
         $data_feconfig = $this->fe_config_model->getAllData();
-        $current_page = $this->request->getVar("page") ?? 1;
+        $current_page = esc($this->request->getVar("page")) ?? 1;
         $per_page = 10;
-        $by_keyword = $this->request->getVar("keyword") ?? false;
-        $by_year = $this->request->getVar("year") ?? false;
+        $by_keyword = esc($this->request->getVar("keyword")) ?? false;
+        $by_year = esc($this->request->getVar("year")) ?? false;
         $by_category = 1; // 1 -> PerDa (Peraturan Daerah)
         $total_produk_hukum_perda = $this->ph_model->getTotalProdukHukumHighlight($by_keyword, $by_category, $by_year);
         [
@@ -49,7 +49,7 @@ class PencarianPeraturanDaerah extends BaseController
             "JDIH Kabupaten Batang Hari",
             "Regulasi Daerah Batang Hari",
         ];
-        $get_years_product_law = $this->ph_model->getYearsProductLaw();
+        $get_years_product_law = $this->ph_model->getYearsProductLaw('asc', $by_category);
         $other_meta = [
             "dokumen_perda"             => $produk_hukum_perda,
             "pager_links"               => $total_produk_hukum_perda > $per_page ? $mk_pager : false,

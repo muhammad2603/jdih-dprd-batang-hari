@@ -44,12 +44,18 @@ class RiwayatPerubahanProdukHukum extends Model
     protected $beforeDelete   = [];
     protected $afterDelete    = [];
 
-    public function getHistoriesChange(int $ph_id): array
+    /**
+     * Ambil riwayat perubahan produk hukum
+     * @param int $ph_id ID Produk Hukum
+     * @param string $orderByChanged Urutan yang akan ditentukan, default desc. [DESC|ASC]
+     * @return array
+     */
+    public function getHistoriesChange(int $ph_id, string $orderByChanged = "DESC"): array
     {
         $selected_fields = [
+            "rdp.id",
             "trp.tipe AS change_type",
             "doc_categ.category_synonym AS kategori",
-            "docstatact.action AS status",
             "rdp.nomor",
             "rdp.tahun",
             "rdp.comment",
@@ -61,10 +67,8 @@ class RiwayatPerubahanProdukHukum extends Model
             ->join("riwayat_detail_perubahan rdp", "rdp.id = rpph.rdp_id")
             ->join("tipe_riwayat_perubahan trp", 'trp.id = rpph.change_type')
             ->join("document_categories doc_categ", "doc_categ.id = rdp.category_id", "LEFT")
-            ->join("document_status_action docstatact", "docstatact.id = rdp.status_id", "LEFT")
             ->where("rpph.ph_id", $ph_id)
-            ->orderBy("rdp.changed_at", "DESC")
-            ->orderBy("rdp.id", "DESC")
+            ->orderBy("rdp.changed_at", $orderByChanged)
             ->findAll();
     }
 }

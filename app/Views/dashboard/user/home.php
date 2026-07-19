@@ -6,9 +6,9 @@ use CodeIgniter\I18n\Time;
 
 $current_date = Time::now()->toLocalizedString('EEEE, dd MMMM YYYY');
 $percentage_berlaku = esc($percentage_berlaku_document);
+$base_url_detail_document = '/user/dashboard/kelola-dokumen/detail/';
 ?>
 <section class="greeting">
-    <!-- __FIX__ Pindahkan pengambilan username yang sedang login ke Controller. karena, username bisa digunakan kembali dihalaman lain. -->
     <p class="text-gray-500">Selamat datang, <?= esc(auth()->user()->username) ?> — <?= $current_date ?></p>
 </section>
 <section class="document-cards grid grid-cols-4 gap-4">
@@ -113,7 +113,7 @@ $percentage_berlaku = esc($percentage_berlaku_document);
             <?php endforeach ?>
         </div>
     </div>
-    <div class="new-documents-uploaded col-span-3 bg-white rounded-xl shadow-sm border border-gray-100">
+    <div class="new-documents-uploaded col-span-3 bg-white rounded-xl shadow-sm border border-gray-100 <?= $total_document === 0 ? 'h-fit' : '' ?>">
         <div class="legend flex items-center justify-between px-5 py-4 border-b border-gray-100">
             <h2 class="font-semibold text-lg text-default-foreground">Dokumen Terbaru</h2>
             <a href="/user/dashboard/kelola-dokumen" class="flex items-center gap-1 text-sm text-primary outline-none hover:underline focus:underline">
@@ -123,32 +123,44 @@ $percentage_berlaku = esc($percentage_berlaku_document);
                 </svg>
             </a>
         </div>
-        <div class="list divide-y divide-gray-50">
-            <?php foreach ($produk_hukum_highlight as $ph): ?>
-                <div class="document flex items-start gap-3 px-5 py-3 hover:bg-gray-50 group">
-                    <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
-                        <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
-                            <use href="/assets/icons.svg#icon-document">
-                        </svg>
-                    </div>
-                    <div class="document-details flex-1 min-w-0">
-                        <p class="text-sm font-medium text-gray-800 truncate"><?= esc($ph["judul"]) ?></p>
-                        <div class="flex items-center gap-2 mt-0.5">
-                            <span class="text-xs text-gray-400"><?= esc($ph["kategori"]) ?></span>
-                            <span class="text-gray-300">·</span>
-                            <span class="text-xs text-gray-400"><?= esc($ph["tahun"]) ?></span>
-                            <span class="px-1.5 py-0.5 rounded text-[10px] font-medium bg-green-100 text-green-700"><?= esc($ph["status"]) ?></span>
+        <div class="list px-5 divide-y divide-gray-50">
+            <?php if ($total_document > 0): ?>
+                <?php foreach ($produk_hukum_highlight as $ph): ?>
+                    <?php
+                    $status = esc($ph["status"]);
+                    $status_color = status_document_colors($status);
+                    $slug = esc($ph["slug"]);
+                    $detail_url = $base_url_detail_document . $slug;
+                    ?>
+                    <div class="document flex items-start gap-3 py-3 hover:bg-gray-50 group">
+                        <div class="icon w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4 text-primary">
+                                <use href="/assets/icons.svg#icon-document">
+                            </svg>
+                        </div>
+                        <div class="document-details flex-1 min-w-0">
+                            <p class="text-sm font-medium text-gray-800 truncate"><?= esc($ph["judul"]) ?></p>
+                            <div class="flex items-center gap-2 mt-0.5">
+                                <span class="text-xs text-gray-400"><?= esc($ph["kategori"]) ?></span>
+                                <span class="text-gray-300">·</span>
+                                <span class="text-xs text-gray-400"><?= esc($ph["tahun"]) ?></span>
+                                <span class="px-1.5 py-0.5 rounded text-[10px] font-medium <?= $status_color ?>"><?= $status ?></span>
+                            </div>
+                        </div>
+                        <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
+                            <a href="<?= $detail_url ?>" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
+                                <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                                    <use href="/assets/icons.svg#icon-eye">
+                                </svg>
+                            </a>
                         </div>
                     </div>
-                    <div class="cta flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity shrink-0">
-                        <a href="#" class="p-1.5 rounded-lg hover:bg-gray-200 text-gray-500 hover:text-gray-700" title="Lihat Detail Dokumen">
-                            <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                                <use href="/assets/icons.svg#icon-eye">
-                            </svg>
-                        </a>
-                    </div>
+                <?php endforeach ?>
+            <?php else: ?>
+                <div class="py-3">
+                    <?= view('components/data-not-found', ["message" => 'Dokumen hukum tidak ditemukan.']) ?>
                 </div>
-            <?php endforeach ?>
+            <?php endif ?>
         </div>
     </div>
     <style <?= csp_style_nonce() ?>>

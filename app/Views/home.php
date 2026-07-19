@@ -208,7 +208,7 @@ $timeServices = service("timeServices");
                 <?php foreach ($new_documents as $doc): ?>
                     <?php $uri_path = urldecode("produk-hukum/" . url_title(esc($doc["kategori"]), "-", true) . "/" . esc($doc["slug"])) ?>
                     <article class="document group bg-white border border-primary-border rounded-xl p-6 hover:shadow-md hover:border-primary/30 transition-all">
-                        <div class="content flex flex-col sm:flex-row items-start gap-5 xl:gap-6 sm:flex-wrap">
+                        <div class="content flex flex-col sm:flex-row items-start gap-5 xl:gap-6 sm:flex-wrap xl:flex-nowrap">
                             <div class="icon-document bg-primary/10 w-14 h-14 rounded-lg hidden sm:flex items-center justify-center shrink-0 group-hover:bg-primary group-hover:scale-110 transition-all">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-7 h-7 text-primary group-hover:text-white transition-colors">
                                     <use href="/assets/icons.svg#icon-document"></use>
@@ -234,7 +234,7 @@ $timeServices = service("timeServices");
                                     </div>
                                 </div>
                             </div>
-                            <div class="actions w-full xl:w-0 flex justify-end items-center gap-4">
+                            <div class="actions w-full xl:w-fit flex justify-end items-center gap-4">
                                 <a href="<?= base_url() . $uri_path ?>" class="download xl:order-1 px-4 py-2 bg-primary/10 text-primary rounded-lg hover:bg-primary hover:text-white transition-all flex items-center gap-2 shrink-0 text-sm xl:text-base">
                                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-4 h-4">
                                         <use href="/assets/icons.svg#icon-book"></use>

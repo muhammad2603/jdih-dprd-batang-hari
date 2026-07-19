@@ -11,19 +11,19 @@ use App\Filters\APIFilter;
 service('auth')->routes($routes, ['except' => ['login']]);
 
 $routes->group("", ["filter" => VisitCounter::class], function ($routes) {
-    $routes->match(["get", "head"], '/', 'Home::index');
-    $routes->match(["get", "head"], '/produk-hukum', 'ProdukHukum::index');
-    $routes->match(["get", "head"], '/produk-hukum/(:any)', 'ProdukHukumDetails::index/$1');
-    $routes->match(["get", "head"], '/statistik', 'Statistics::index');
-    $routes->match(["get", "head"], '/tentang', 'About::index');
-    $routes->match(["get", "head"], '/faq', 'Faq::index');
-    $routes->match(["get", "head"], '/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
-    $routes->match(["get", "head"], '/layanan/peraturan-sekretaris-dewan', 'PencarianSekretarisDewan::index');
-    $routes->match(["get", "head"], '/layanan/keputusan-pimpinan-dewan', 'PencarianKeputusanPimpinanDewan::index');
-    $routes->match(["get", "head"], '/layanan/peraturan-keputusan-dewan', 'PencarianKeputusanDewan::index');
-    $routes->match(["get", "head"], '/layanan/bantuan', 'LayananBantuan::index');
-    $routes->match(["get", "head"], '/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
-    $routes->match(["get", "head"], '/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
+    $routes->match(["GET", "HEAD"], '/', 'Home::index');
+    $routes->match(["GET", "HEAD"], '/produk-hukum', 'ProdukHukum::index');
+    $routes->match(["GET", "HEAD"], '/produk-hukum/(:any)', 'ProdukHukumDetails::index/$1');
+    $routes->match(["GET", "HEAD"], '/statistik', 'Statistics::index');
+    $routes->match(["GET", "HEAD"], '/tentang', 'About::index');
+    $routes->match(["GET", "HEAD"], '/faq', 'Faq::index');
+    $routes->match(["GET", "HEAD"], '/layanan/peraturan-daerah', 'PencarianPeraturanDaerah::index');
+    $routes->match(["GET", "HEAD"], '/layanan/peraturan-sekretaris-dewan', 'PencarianSekretarisDewan::index');
+    $routes->match(["GET", "HEAD"], '/layanan/keputusan-pimpinan-dewan', 'PencarianKeputusanPimpinanDewan::index');
+    $routes->match(["GET", "HEAD"], '/layanan/peraturan-keputusan-dewan', 'PencarianKeputusanDewan::index');
+    $routes->match(["GET", "HEAD"], '/layanan/bantuan', 'LayananBantuan::index');
+    $routes->match(["GET", "HEAD"], '/lainnya/kebijakan-privasi', 'KebijakanPrivasi::index');
+    $routes->match(["GET", "HEAD"], '/lainnya/syarat-ketentuan', 'SyaratKetentuan::index');
 });
 
 $routes->get('/login', '\CodeIgniter\Shield\Controllers\LoginController::loginView');

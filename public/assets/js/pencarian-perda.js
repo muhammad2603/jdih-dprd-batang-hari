@@ -1,17 +1,23 @@
+import { $id, $$ } from './dom.js';
+import { validations } from './validations.js';
+
+const vld = new validations();
+
 document.addEventListener("DOMContentLoaded", () => {
-    const submitSearchBtn = document.getElementById("submitSearchBtn");
-    const searchInput = document.getElementById("searchInput");
-    const yearDocument = document.getElementById("yearDocument");
+    const submitSearchBtn = $id("submitSearchBtn");
+    const searchInput = $id("searchInput");
+    const yearDocument = $id("yearDocument");
     const uriPath = window.location.pathname + '?';
     submitSearchBtn.addEventListener("click", () => {
-        if (searchInput.value === "") {
-            return alert("Silahkan isi input pencarian!")
-        };
-        const searchValue = searchInput.value.toLowerCase();
-        const yearValue = yearDocument.value;
+        const searchValue = $$(searchInput).getInputValue().toLowerCase();
+        const yearValue = $$(yearDocument).getInputValue();
         const queryParams = new URLSearchParams();
-        queryParams.append("keyword", searchValue.trim())
-        if (yearValue !== "*") {
+        const isEmptySearch = validations(searchValue).isEmptyValue();
+        const isYearDefaultalue = validations(yearValue).isInvalidValue("*");
+        if (!isEmptySearch) {
+            queryParams.append("keyword", searchValue)
+        }
+        if (!isYearDefaultalue) {
             queryParams.append("year", yearValue)
         }
         window.location.href = uriPath + queryParams.toString();

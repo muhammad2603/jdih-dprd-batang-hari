@@ -31,14 +31,14 @@ class API extends BaseController
         $tahun          = $this->request->getVar('tahun') ?? false;
         $status         = $this->request->getVar('status') ?? false;
         $data_per_page  = 8;
-        $total_produk_hukum_highlight_found = $this->produk_hukum_model->getTotalProdukHukumHighlight($keyword, $type, $tahun, $status);
+        $total_produk_hukum_highlight_found = $this->produk_hukum_model->getTotalProdukHukumHighlight($keyword, $type, $tahun, $status, false);
         [
             "page" => $current_page,
             "offset" => $data_offset,
             "data_index" => $data_index,
             "pager" => $mk_pager
         ] = create_pagination($current_page, $data_per_page, $total_produk_hukum_highlight_found, false, "modern_dynamic");
-        $produk_hukum_highlight = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset, $keyword, $type, $tahun, $status);
+        $produk_hukum_highlight = $this->produk_hukum_model->getProdukHukumHighlight($data_per_page, $data_offset, $keyword, $type, $tahun, $status, false);
         return $this->response
             ->setHeader("Content-Type", 'application/json')
             ->setJSON([
