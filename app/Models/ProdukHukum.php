@@ -34,7 +34,9 @@ class ProdukHukum extends Model
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
 
-    protected array $casts = [];
+    protected array $casts = [
+        "is_publish" => 'boolean',
+    ];
     protected array $castHandlers = [];
 
     // Dates
@@ -68,9 +70,10 @@ class ProdukHukum extends Model
      * @param bool|string $byKeyword keyword untuk mencari produk hukum berdasarkan field title, biarkan jika tidak ingin melakukan pencarian
      * @param bool|string $byCategory keyword untuk mencari produk hukum berdasarkan field category_id, biarkan jika tidak ingin melakukan pencarian
      * @param bool|string $byYear keyword untuk mencari produk hukum berdasarkan field tahun, biarkan jika tidak ingin melakukan pencarian
+     * @param bool $onlyPublish apakah hanya mengambil data yang telah dipublikasikan? default true
      * @return array
      */
-    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0, bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false): array
+    public function getProdukHukumHighlight(int|null $perPage = null, int $offset = 0, bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false, bool $onlyPublish = true): array
     {
         $selected_field = [
             "ph.id",
@@ -83,6 +86,7 @@ class ProdukHukum extends Model
             "tanggal_penetapan",
             "nama_berkas AS berkas",
             "slug",
+            "is_publish",
             "DATE_FORMAT(ph.created_at, '%Y-%m-%d') AS tanggal_upload"
         ];
         $builder = $this
@@ -91,10 +95,12 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
-            ->where('ph.is_publish', true)
             ->groupBy("ph.id")
             ->orderBy("ph.created_at", "DESC")
             ->orderBy("ph.id", "DESC");
+        if ($onlyPublish) {
+            $builder->where('ph.is_publish', true);
+        }
         if ($byKeyword !== false) {
             $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
         }
@@ -115,9 +121,10 @@ class ProdukHukum extends Model
      * @param bool|string $byKeyword berdasarkan kata kunci pencarian
      * @param bool|int $byCategory berdasarkan kategori
      * @param bool|string $byYear berdasarkan tahun upload
+     * @param bool $onlyPublish apakah hanya mengambil data yang telah dipublikasikan? default true
      * @return int
      */
-    public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false): int
+    public function getTotalProdukHukumHighlight(bool|string $byKeyword = false, bool|int $byCategory = false, bool|string $byYear = false, bool|string $byStatus = false, bool $onlyPublish = true): int
     {
         $builder = $this
             ->select("ph.id")
@@ -125,8 +132,10 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
-            ->where('ph.is_publish', true)
             ->groupBy("ph.id");
+        if($onlyPublish) {
+            $builder->where('ph.is_publish', true);
+        }
         if ($byKeyword !== false) {
             $builder->where("MATCH(title) AGAINST('$byKeyword' IN NATURAL LANGUAGE MODE)");
         };
