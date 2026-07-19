@@ -133,7 +133,7 @@ class ProdukHukum extends Model
             ->join("document_categories doccateg", "doccateg.id = ph.category_id")
             ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
             ->groupBy("ph.id");
-        if($onlyPublish) {
+        if ($onlyPublish) {
             $builder->where('ph.is_publish', true);
         }
         if ($byKeyword !== false) {
@@ -157,7 +157,7 @@ class ProdukHukum extends Model
      * @param string|null $category kategori produk hukum yang ingin dicari. Default null
      * @return array|bool false jika produk hukum memiliki status publish = false
      */
-    public function getProdukHukumDetails(int|string $key, string|null $category = null): array|bool
+    public function getProdukHukumDetails(int|string $key, string|null $category = null, bool $onlyPublish = true): array|bool
     {
         $builder = $this
             ->select([
@@ -206,8 +206,10 @@ class ProdukHukum extends Model
             ->join("document_status docstat", "docstat.id = ph.status_id")
             ->join("sumber_produk_hukum sph", "sph.id = mph.sumber_id")
             ->join("lokasi_produk_hukum lokph", "lokph.id = mph.tempat_penetapan")
-            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left')
-            ->where('ph.is_publish', true);
+            ->join("lampiran_produk_hukum lph", "lph.ph_id = ph.id", 'left');
+        if ($onlyPublish) {
+            $builder->where('ph.is_publish', true);
+        }
         if (!is_null($category)) {
             $builder->where("doccateg.category", $category);
         }
