@@ -1,5 +1,6 @@
 import { PopUp } from "./Class/PopUp.js";
 import { useFetch } from "./Class/Fetch.js";
+import { $$ } from './dom.js';
 const popUp = new PopUp();
 const createPopUpConfig = () => {
     return {
@@ -62,11 +63,10 @@ const deleteDocument = async (tokenCsrfInput, docId, titleDocument) => {
             action: 'DELETE',
             headers: {
                 "X-Requested-With": 'XMLHttpRequest',
-                "X-CSRF-TOKEN": tokenCsrfInput.value.trim(),
+                "X-CSRF-TOKEN": $$(tokenCsrfInput).getInputValue(),
             },
             success: async resp => {
-                const { status, message, new_token } = resp;
-                tokenCsrfInput.value = new_token;
+                const { status, message } = resp;
                 const popUpConfig = createPopUpConfig().info("Dokumen berhasil dihapus!", `Status: success`, message)
                 const stateClosedPopUp = await popUp.alert(popUpConfig)
                 if (stateClosedPopUp) window.location.reload();
@@ -80,7 +80,41 @@ const deleteDocument = async (tokenCsrfInput, docId, titleDocument) => {
         })
         popUp.close()
     }
-}
+};
+const changeStatePublishDocument = async (tokenCsrfInput, docId, titleDocument, changeState) => {
+    const setWarningMessage = (changeState === 1) ? "Dokumen akan ditampilkan diwebsite." : "Dokumen akan disembunyikan dan tidak akan ditampilkan diwebsite.";
+    const setConfig = createPopUpConfig().alert("Ubah status publikasi?", setWarningMessage, titleDocument);
+    const isConfirmed = await popUp.confirm(setConfig);
+    if (isConfirmed) {
+        const formData = new FormData();
+        formData.append("_method", "PATCH")
+        formData.append("is_publish", changeState)
+        useFetch({
+            action: "POST",
+            url: `/api/update-dokumen/${docId}`,
+            headers: {
+                "X-Requested-With": 'XMLHttpRequest',
+                "X-CSRF-TOKEN": $$(tokenCsrfInput).getInputValue(),
+            },
+            body: formData,
+            success: async resp => {
+                const { status } = resp;
+                if (status) {
+                    const setFinalMessage = (changeState === 1) ? "Dokumen telah ditampilkan diwebsite." : "Dokumen telah disembunyikan diwebsite.";
+                    const setSuccessConfig = createPopUpConfig().info("Status Publikasi Berhasil Diubah!", "Status: success", setFinalMessage);
+                    const showAlertPopUp = await popUp.alert(setSuccessConfig);
+                    if (showAlertPopUp) window.location.reload();
+                }
+            },
+            errors: err => {
+                const { new_token } = err;
+                tokenCsrfInput.value = new_token;
+                const popUpConfig = createPopUpConfig().danger("Terjadi Kesalahan!", "Status publikasi gagal diubah.", "Jika ini terus berlanjut, mohon hubungi Administrator!");
+                popUp.alert(popUpConfig)
+            }
+        })
+    }
+};
 const url = '/api/cari-dokumen?';
 let querySaved = {};
 document.addEventListener('DOMContentLoaded', () => {
@@ -115,10 +149,17 @@ document.addEventListener('DOMContentLoaded', () => {
     tableProdukHukum.addEventListener("click", e => {
         const target = e.target;
         const btnDelete = target.closest('.delete-document');
-        if (!btnDelete) return;
-        const documentId = parseInt(btnDelete.dataset.documentId);
-        const titleDocument = btnDelete.closest('tr').querySelector('.judul-dokumen').innerText;
-        deleteDocument(tokenCsrf, documentId, titleDocument)
+        const btnChangeStatePublish = target.closest('.change-state-publish');
+        if (!btnDelete && !btnChangeStatePublish) return;
+        const documentId = parseInt(target.closest('.actions-parent')?.dataset.documentId);
+        const titleDocument = target.closest('tr').querySelector('.judul-dokumen').innerText;
+        if (btnDelete) {
+            deleteDocument(tokenCsrf, documentId, titleDocument)
+        }
+        if (btnChangeStatePublish) {
+            const changeState = parseInt(btnChangeStatePublish.dataset.changeState);
+            changeStatePublishDocument(tokenCsrf, documentId, titleDocument, changeState)
+        }
     })
     btnSubmitSearch.addEventListener("click", async () => {
         querySaved = {};
