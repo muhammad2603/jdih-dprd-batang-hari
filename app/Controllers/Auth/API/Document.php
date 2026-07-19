@@ -496,7 +496,8 @@ class Document extends ResourceController
             "sumber" => 'permit_empty|numeric',
             "catatan" => 'permit_empty|min_length[8]|max_length[255]',
             "tipe_perubahan" => 'permit_empty|required_with[riwayat_perubahan]|numeric',
-            "riwayat_perubahan" => 'permit_empty|required_with[tipe_perubahan]|min_length[8]|max_length[255]'
+            "riwayat_perubahan" => 'permit_empty|required_with[tipe_perubahan]|min_length[8]|max_length[255]',
+            "is_publish" => 'permit_empty|in_list[0,1]'
         ];
         if (!$this->validate($rules)) return self::setErrorResponse($this->validator->getErrors());
         $ph_id = intval($id);
@@ -525,6 +526,7 @@ class Document extends ResourceController
             'teu_dokumen'           => 'tajuk_entri_utama',
             'jenis_dokumen'         => 'category_id',
             'status_dokumen'        => 'status_id',
+            'is_publish'            => 'is_publish'
         ];
         $produk_hukum_changes = [];
         if (array_key_exists("judul_dokumen", $payloads)) {
@@ -533,6 +535,7 @@ class Document extends ResourceController
         foreach ($table_produk_hukum as $payloadKey => $dbField) {
             if (array_key_exists($payloadKey, $payloads)) {
                 $value = esc($payloads[$payloadKey]);
+                $value = ($payloadKey === 'is_publish') ? (bool) $value : $value;
                 if (in_array($dbField, $table_riwayat_detail_perubahan)) {
                     $set_inserts_riwayat_detail_perubahan[$dbField] = $value;
                 }
