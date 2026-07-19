@@ -145,7 +145,7 @@ class UserDashboard extends BaseController
     public function detailDocument(string $slug)
     {
         $slug                   = $slug ?? false;
-        $produk_hukum_details   = $this->produk_hukum_model->getProdukHukumDetails($slug);
+        $produk_hukum_details   = $this->produk_hukum_model->getProdukHukumDetails($slug, null, false);
         if (!$produk_hukum_details) {
             return throw new \CodeIgniter\Exceptions\PageNotFoundException("Produk hukum yang anda cari tidak ditemukan.");
         }
@@ -164,7 +164,7 @@ class UserDashboard extends BaseController
     public function editDocument(string $slug)
     {
         $slug                       = $slug ?? false;
-        $produk_hukum_details       = $this->produk_hukum_model->getProdukHukumDetails($slug);
+        $produk_hukum_details       = $this->produk_hukum_model->getProdukHukumDetails($slug, null, false);
         if (!$produk_hukum_details) {
             return throw new \CodeIgniter\Exceptions\PageNotFoundException("Produk hukum yang anda cari tidak ditemukan.");
         }
