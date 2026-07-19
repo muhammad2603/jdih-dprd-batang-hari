@@ -15,6 +15,9 @@ Sistem Jaringan Dokumentasi dan Informasi Hukum (JDIH) DPRD Kabupaten Batang Har
 
 # Apa Yang Baru?
 
+Versi 2.3.6 & 2.3.7:
+- Perbaikan list version README.md
+
 Versi 2.3.5:
 
 - Menambahkan konfigurasi SMTP yang dapat diaktifkan atau dinonaktifkan difile env.
@@ -34,45 +37,45 @@ Versi 2.3.5:
 
 Versi 2.2.5:
 
-1. Perbaikan kalkulasi persentase statistik dihalaman beranda dan statistik pada Dashboard.
-2. Menambahkan helper untuk fungsi matematis.
-3. Menambahkan fungsi pada string helper untuk mengubah format float menjadi string yang hanya mengambil 2 fraksi (pecahan).
+- Perbaikan kalkulasi persentase statistik dihalaman beranda dan statistik pada Dashboard.
+- Menambahkan helper untuk fungsi matematis.
+- Menambahkan fungsi pada string helper untuk mengubah format float menjadi string yang hanya mengambil 2 fraksi (pecahan).
 
 Versi 2.2.2:
 
-1. Perbaikan kalkulasi persentase dokumen berlaku dihalaman home Dashboard yang tidak dapat dibagi 0 disaat dokumen belum ada record didatabase.
+- Perbaikan kalkulasi persentase dokumen berlaku dihalaman home Dashboard yang tidak dapat dibagi 0 disaat dokumen belum ada record didatabase.
 
 Versi 2.2.1:
 
-1. Perbaikan routing publik dengan menggunakan method verbs yang menerima GET dan HEAD.
+- Perbaikan routing publik dengan menggunakan method verbs yang menerima GET dan HEAD.
 
 Versi 2.2.0:
 
-1. Dashboard telah tersedia
+- Dashboard telah tersedia
 
 Versi 2.1.1:
 
-1. Menambahkan informasi statistik total kategori produk hukum dihalaman beranda
+- Menambahkan informasi statistik total kategori produk hukum dihalaman beranda
 
 Versi 2.1.0:
 
-1. Perbaikan halaman statistik saat produk hukum tidak tersedia
-2. Perbaikan join dibeberapa method model Produk Hukum
-3. Perbaikan struktur table database
-4. Menambahkan table khusus untuk tindakan antar produk hukum
-5. Perbaikan query sql dimodel produk hukum
-6. Mengganti pencarian produk hukum dari berdasarkan tahun upload dengan tahun peraturan
+- Perbaikan halaman statistik saat produk hukum tidak tersedia
+- Perbaikan join dibeberapa method model Produk Hukum
+- Perbaikan struktur table database
+- Menambahkan table khusus untuk tindakan antar produk hukum
+- Perbaikan query sql dimodel produk hukum
+- Mengganti pencarian produk hukum dari berdasarkan tahun upload dengan tahun peraturan
 
 Versi 2.0.0:
 
-1. Integrasi/sinkronisasi ke Portal JDIHN BPHN Pusat melalui feed
-2. Mengubah struktur table metadata produk hukum
-3. Menambahkan beberapa lapisan keamanan
+- Integrasi/sinkronisasi ke Portal JDIHN BPHN Pusat melalui feed
+- Mengubah struktur table metadata produk hukum
+- Menambahkan beberapa lapisan keamanan
 
 Versi 1.1.5:
 
-1. Menambahkan file abstrak dokumen hukum yang dapat dilihat dan diunduh dihalaman detail produk hukum
-2. Mengganti library PDF Viewer dari EmbedPDF JS beralih ke PDF.JS Mozilla
-3. Perbaikan bug
+- Menambahkan file abstrak dokumen hukum yang dapat dilihat dan diunduh dihalaman detail produk hukum
+- Mengganti library PDF Viewer dari EmbedPDF JS beralih ke PDF.JS Mozilla
+- Perbaikan bug
 
 Versi 1.0.0: Release stable version
