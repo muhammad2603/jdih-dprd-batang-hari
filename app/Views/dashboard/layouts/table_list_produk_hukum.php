@@ -78,7 +78,7 @@ $start = ($data_offset + 1) ?? 1;
             <?php endfor ?>
         <?php else: ?>
             <tr>
-                <td colspan="5" class="py-6 px-4">
+                <td colspan="7" class="py-6 px-4">
                     <p class="text-center font-medium text-gray-800">Data tidak ditemukan.</p>
                 </td>
             </tr>
