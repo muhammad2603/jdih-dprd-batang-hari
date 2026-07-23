@@ -38,10 +38,10 @@ use CodeIgniter\I18n\Time;
                     <span>Dokumen Terkait</span>
                 </button>
                 <button type="button" data-tab-id="attachments" class="attachments flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-transparent text-gray-500 hover:text-gray-700">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
-                        <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
+                    <svg width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
+                        <use href="/assets/icons.svg#icon-sheet">
                     </svg>
-                    <span>Lampiran</span>
+                    <span>Dokumen</span>
                 </button>
                 <button type="button" data-tab-id="histories" class="histories flex items-center gap-2 px-5 py-3.5 text-sm font-medium border-b-2 transition-all cursor-pointer outline-none border-transparent text-gray-500 hover:text-gray-700">
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-4">
@@ -334,7 +334,7 @@ use CodeIgniter\I18n\Time;
                                 <path d="M5 12h14" />
                                 <path d="M12 5v14" />
                             </svg>
-                            <span>Tambah Lampiran</span>
+                            <span>Tambah Dokumen</span>
                         </button>
                     </div>
                     <div class="attachment-input-wrapper">
@@ -342,7 +342,7 @@ use CodeIgniter\I18n\Time;
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="size-9 mx-auto opacity-40 mb-2">
                                 <path d="m16 6-8.414 8.586a2 2 0 0 0 2.829 2.829l8.414-8.586a4 4 0 1 0-5.657-5.657l-8.379 8.551a6 6 0 1 0 8.485 8.485l8.379-8.551" />
                             </svg>
-                            <p class="text-sm">Belum ada lampiran yang dipilih. Klik untuk memilih.</p>
+                            <p class="text-sm">Belum ada file yang dipilih. Klik disini untuk memilih.</p>
                             <p class="text-sm">Hanya ekstensi pdf yang diizinkan.</p>
                             <p class="text-sm">Ukuran per-file maksimal 30 MB</p>
                         </label>
